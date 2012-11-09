@@ -174,11 +174,11 @@ containers = lib+'containers/';
     copy: {
         dist: {
             files: {
-                '<%= dist %>/bootstrap-editable/css/img' : 'src/editable-form/img/*',
-                '<%= dist %>/jqueryui-editable/css/img' : 'src/editable-form/img/*',
-                '<%= dist %>/jquery-editable/css/img' : 'src/editable-form/img/*',
-                '<%= dist %>/bootstrap-editable/js/locales' : 'src/inputs/date/locales/*',
-                '<%= dist %>': ['LICENSE-GPL', 'LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
+                '<%= dist %>/bootstrap-editable/css/img/' : 'src/editable-form/img/*',
+                '<%= dist %>/jqueryui-editable/css/img/' : 'src/editable-form/img/*',
+                '<%= dist %>/jquery-editable/css/img/' : 'src/editable-form/img/*',
+                '<%= dist %>/bootstrap-editable/js/locales/' : 'src/inputs/date/locales/*',
+                '<%= dist %>/': ['LICENSE-GPL', 'LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
             },
             options: {
                flatten: true
