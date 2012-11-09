@@ -93,6 +93,7 @@ containers = lib+'containers/';
       };
  }
 
+ //module for testing
  var module = ''; 
 //module = '&module=textarea';
 //module = '&module=select';
@@ -177,8 +178,9 @@ containers = lib+'containers/';
                 '<%= dist %>/bootstrap-editable/css/img/' : 'src/editable-form/img/*',
                 '<%= dist %>/jqueryui-editable/css/img/' : 'src/editable-form/img/*',
                 '<%= dist %>/jquery-editable/css/img/' : 'src/editable-form/img/*',
-                '<%= dist %>/bootstrap-editable/js/locales/' : 'src/inputs/date/locales/*',
-                '<%= dist %>/': ['LICENSE-GPL', 'LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
+              //do not include locales. One can download it on-demand
+              //  '<%= dist %>/bootstrap-editable/js/locales/' : 'src/inputs/date/locales/*',
+                '<%= dist %>/': ['LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
             },
             options: {
                flatten: true

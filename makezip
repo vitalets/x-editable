@@ -5,6 +5,6 @@ version=$(head -1 bootstrap-editable/js/bootstrap-editable.js | sed -n 's/^.*v\(
 
 mkdir -p zip
 rm -rf zip/*.zip
-zip -rT zip/bootstrap-editable-$version.zip bootstrap-editable LICENSE-GPL LICENSE-MIT README.md CHANGELOG.txt
-zip -rT zip/jqueryui-editable-$version.zip jqueryui-editable LICENSE-GPL LICENSE-MIT README.md CHANGELOG.txt
-zip -rT zip/jquery-editable-$version.zip jquery-editable LICENSE-GPL LICENSE-MIT README.md CHANGELOG.txt
+zip -rT zip/bootstrap-editable-$version.zip bootstrap-editable LICENSE-MIT README.md CHANGELOG.txt
+zip -rT zip/jqueryui-editable-$version.zip jqueryui-editable LICENSE-MIT README.md CHANGELOG.txt
+zip -rT zip/jquery-editable-$version.zip jquery-editable LICENSE-MIT README.md CHANGELOG.txt
