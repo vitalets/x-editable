@@ -1,0 +1,10 @@
+C:/jscoverage-0.5.1/jscoverage --exclude=locales ../src/js/ instrumented/
+
+cp index.html instrumented/index.html
+
+sed -i "s/..\/src\/js\/bootstrap-editable.js/instrumented\/bootstrap-editable.js/g" instrumented/index.html
+
+sed -i "s/<\/title>/<\/title>\n<base href=\"..\/\">/g" instrumented/index.html
+
+echo Success! 
+echo To get coverage report open instrumented/jscoverage.html?index.html
