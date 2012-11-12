@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Vitaliy Potapov">
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+        <meta http-equiv="pragma" content="no-cache" />
+
+        <title>X-editable Demo</title>
+
+        <script src="assets/jquery/jquery-1.8.2.min.js"></script>  
+        <script src="assets/mockjax/jquery.mockjax.js"></script> 
+        <script src="assets/loader.js"></script>
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->   
+
+        <script>
+            var fc = getFC(),
+            assets = getAssets(fc.f, fc.c, 'assets/');
+
+            loadAssets(assets.css, assets.js);
+
+            $(function(){
+                $('select[name="f"]').val(fc.f);
+                $('select[name="c"]').val(fc.c);
+            });
+        </script>
+
+        <style type="text/css">
+            body {
+                padding-top: 50px;
+            }
+        </style>         
+
+    </head>
+
+    <body> 
+
+        <div style="width: 80%; margin: auto;"> 
+            <h1>X-editable Demo</h1>
+            <hr>
+
+            <h2>Settings</h2>        
+            <form method="get" id="frm-config" class="form-inline">
+                <label>Form style:
+                    <select name="f">
+                        <option value="bootstrap">Bootstrap</option>
+                        <option value="jqueryui">jQuery UI</option>
+                        <option value="plain">Plain</option>
+                    </select>
+                </label>
+                <label style="margin-left: 30px">Display:
+                    <select name="c">
+                        <option value="popup">Popup</option>
+                        <option value="inline">Inline</option>
+                    </select>
+                </label>
+                <button class="btn btn-primary" style="margin-left: 30px">refresh</button>
+            </form>
+
+            <hr>
+
+            <h2>Example</h2>   
+            <p style="text-align: left"><button id="enable" class="btn">enable / disable</button></p>
+            <table id="user" class="table table-bordered table-striped">
+                <tbody> 
+                    <tr>         
+                        <td width="15%">Username</td>
+                        <td width="45%"><a href="#" id="username" data-type="text" data-pk="1" data-name="username" data-original-title="Enter username">superuser</a></td>
+                        <td width="40%"><span class="muted">Simple text field</span></td>
+                    </tr>
+                    <tr>         
+                        <td>First name</td>
+                        <td><a href="#" id="firstname" data-type="text" data-pk="1" data-name="firstname" data-placement="right" data-placeholder="Required" data-original-title="Enter your firstname">John</a></td>
+                        <td><span class="muted">Required text field, placement: right</span></td>
+                    </tr>  
+                    <tr>         
+                        <td>Last name</td>
+                        <td><a href="#" id="lastname" data-type="text" data-pk="1" data-name="lastname" data-original-title="Enter your lastname"></a></td>
+                        <td><span class="muted">Originally empty text field</span></td>
+                    </tr>  
+                    <tr>         
+                        <td>Sex</td>
+                        <td><a href="#" id="sex" data-type="select" data-name="sex" data-pk="1" data-prepend="Not set" data-original-title="Select sex"></a></td>
+                        <td><span class="muted">Select, loaded from json</span></td>
+                    </tr>
+                    <tr>         
+                        <td>Action</td>
+                        <td><a href="#" id="action" data-type="select" data-name="action" data-pk="1" data-value="1" data-source='{"0": "None", "1":"Insert", "2": "Update", "3": "Delete"}' data-original-title="Select action">Insert</a></td>
+                        <td><span class="muted">Select, loaded from inline HTML. Custom render.</span></td>
+                    </tr>                                     
+                    <tr>         
+                        <td>Group</td>
+                        <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="groups.php" data-original-title="Select group">Admin</a></td>
+                        <td><span class="muted">Select, loaded from server</span></td>
+                    </tr> 
+                    <tr>         
+                        <td>Status</td>
+                        <td><a href="#" id="status" data-type="select" data-name="status" data-pk="1" data-value="0" data-source="status.php" data-original-title="Select status">Active</a></td>
+                        <td><span class="muted">Select, loaded from server (error)</span></td>
+                    </tr>       
+                    <tr>         
+                        <td>Date of birth</td>
+                        <td><a href="#" id="dob" data-type="date" data-viewformat="dd.mm.yyyy" data-pk="1" data-name="dob" data-original-title="Select Date of birth">15.05.1984</a></td>
+                        <td><span class="muted">Date field, format dd.mm.yyyy</span></td>
+                    </tr> 
+                    <tr>         
+                        <td>Comments</td>
+                        <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-name="comments" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
+                        <td><span class="muted">Textarea</span></td>
+                    </tr>                                     
+                    <tr>         
+                        <td>Weight, kg</td>
+                        <td><a href="#" id="weight" data-type="text" data-pk="1" data-name="weight" data-inputclass="span1" data-original-title="Weight">65</a></td>
+                        <td><span class="muted">Server-side validation error</span></td>
+                    </tr>                                     
+                    <tr>         
+                        <td>Note</td>
+                        <td><span id="note" data-pk="1" data-toggle="manual" data-original-title="Enter note">pretty note..</span></td>
+                        <td><a href="#" id="pencil"><i class="icon-pencil"></i> [edit]</a> <span class="muted">Toggle by another element</span></td>
+                    </tr>                                                                                            
+
+                </tbody>
+            </table>
+            <br>
+            <div><span class="muted">All ajax requests here are emulated:</span></div>
+            <div><textarea id="console" rows="8" style="width: 70%" autocomplete="off"></textarea></div>
+            <hr>
+            
+            <h2>Create New Record</h2>
+            <p>Please, fill out data and create new user</p>
+            <div>
+                <div id="msg" class="alert hide">
+                </div>
+                <span style="display: none" id="user_id"></span>
+                <table id="user" class="table table-bordered table-striped">
+                    <tbody> 
+                        <tr>         
+                            <td width="30%">Username</td>
+                            <td><a href="#" class="myeditable" id="new_username" data-type="text" data-name="username" data-original-title="Enter username"></a></td>
+                        </tr>
+                        <tr>         
+                            <td>First name</td>
+                            <td><a href="#" class="myeditable" data-type="text" data-name="firstname" data-original-title="Enter your firstname"></a></td>
+                        </tr>  
+                        <tr>         
+                            <td>Group</td>
+                            <td><a href="#" class="myeditable" data-type="select" data-name="group" data-source="groups.php" data-original-title="Select group"></a></td>
+                        </tr>     
+                        <tr>         
+                            <td>Date of birth</td>
+                            <td><a href="#" class="myeditable" data-type="date" data-name="dob" data-format="dd.mm.yyyy" data-original-title="Select Date of birth"></a></td>
+                        </tr>  
+                        <tr>         
+                            <td>Comments</td>
+                            <td><a href="#" class="myeditable" data-type="textarea" data-name="comments" data-original-title="Enter comments"></a></td>
+                        </tr>                                                                                            
+
+                    </tbody>
+                </table>
+                <button id="save-btn" class="btn btn-primary">Create user!</button>
+            </div>          
+            
+            <br>
+            <hr>
+            <br>
+        </div>
+    </body>
+</html>

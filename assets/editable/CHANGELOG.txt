@@ -1,0 +1,9 @@
+X-editable changelog
+=============================
+                 
+Version 1.0.0 wip
+----------------------------
+Initial release. Based on bootstrap-editable 1.1.4, but strongly refactored.   
+- support of bootstrap, jqueryui or pure jquery as core library
+- directory structure re-arranged: split on several js files
+- all known bugs of bootstrap-editable closed

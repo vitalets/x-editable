@@ -1,0 +1,28 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.hero-unit {
+    padding: 40px;  
+}
+       /*      
+            section#example {
+                padding-top: 80px;
+                padding-bottom: 0;
+            } 
+            
+            section {
+                padding-top: 23px;
+                padding-bottom: 23px;  
+                vertical-align: middle;  
+            }  
+            
+            input:-moz-placeholder {
+               color: #999999;
+            } 
+            */

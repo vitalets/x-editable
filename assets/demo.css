@@ -1,0 +1,28 @@
+body {
+  font-size: 12px;
+  font-family: sans-serif;  
+}
+
+#user {
+  border-collapse: collapse; 
+  width: 80%;  
+}
+
+#user > tbody > tr > td {
+    border: solid 1px gray;
+    height: 25px;
+    padding: 3px;
+}
+
+.muted {
+   color: #999999;
+}
+
+.alert {
+  padding: 5px;
+  margin-bottom: 10px;  
+}
+
+h2 {
+ margin-top: 40px;   
+}
