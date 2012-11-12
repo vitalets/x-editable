@@ -187,6 +187,24 @@ containers = lib+'containers/';
             }
         }
     },
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.title || pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: "<%= pkg.homepage %>",
+      //  logo: 'src/editable-form/img/loading.gif',
+        options: {
+          paths: "src/",
+          ignorePaths: ['src/inputs/date/locales'],
+          outdir: "../docs/",
+//          theme: "simple",
+          themedir: "../yuidoc-theme"
+          //themedir: "../yuidoc-bootstrap-theme-master"
+        }
+      }
+    },
+    
     //compress does not work properly for MAC OS (see https://github.com/vitalets/bootstrap-editable/issues/19)
     //zip will be created manually
     /*

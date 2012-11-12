@@ -1,11 +1,9 @@
 /**
-* Editable-element
-* Initialize HTML element that can be editable by click.
-* 1. methods
-* 
-* 2. events
-* - render 
-*/
+Makes editable any HTML element on page.
+Applied as jquery method.
+
+@class editable
+**/
 (function ($) {
 
     var Editable = function (element, options) {
@@ -27,7 +25,7 @@
                 
             //editableContainer must be defined
             if(!$.fn.editableContainer) {
-                $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editablePopover)');
+                $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editable-popover.js)');
                 return;
             }    
                 
@@ -89,11 +87,28 @@
                 } else {
                     this.enable(); 
                 }
+               /**        
+               Fired each time when element's text is rendered. Occurs on initialization and on each update of value.
+               Can be used for customizing display of value.
+                              
+               @event render 
+               @param {Object} event event object
+               @param {Object} editable editable instance
+               @example
+               $('#action').on('render', function(e, editable) {
+                    var colors = {0: "gray", 1: "green", 2: "blue", 3: "red"};
+                    $(this).css("color", colors[editable.value]);  
+               });                  
+               **/                  
                 this.$element.triggerHandler('render', this);
                 this.isInit = false;    
             }, this));
         },
         
+        /**
+        Enables editable
+        @method enable()
+        **/          
         enable: function() {
             this.options.disabled = false;
             this.$element.removeClass('editable-disabled');
@@ -106,6 +121,10 @@
             }
         },
         
+        /**
+        Disables editable
+        @method disable()
+        **/         
         disable: function() {
             this.options.disabled = true; 
             this.hide();           
@@ -117,6 +136,10 @@
             }
         },
         
+        /**
+        Toggles enabled / disabled state of editable element
+        @method toggleDisabled()
+        **/         
         toggleDisabled: function() {
             if(this.options.disabled) {
                 this.enable();
@@ -125,6 +148,13 @@
             }
         },  
         
+        /**
+        Sets new option
+        
+        @method option(key, value)
+        @param {string} key 
+        @param {mixed} value 
+        **/          
         option: function(key, value) {
             if(key === 'disabled') {
                 if(value) {
@@ -143,7 +173,7 @@
             }
         },              
         
-        /**
+        /*
         * set emptytext if element is empty (reverse: remove emptytext if needed)
         */
         handleEmpty: function () {
@@ -175,8 +205,9 @@
         },
         
         /**
-        * show container with form
-        */
+        Shows container with form
+        @method show()
+        **/  
         show: function () {
             if(this.options.disabled) {
                 return;
@@ -206,8 +237,9 @@
         },
         
         /**
-        * hide container with form
-        */        
+        Hides container with form
+        @method hide()
+        **/       
         hide: function () {
             if(this.container && this.container.tip().is(':visible')) {
                 this.container.hide();
@@ -220,8 +252,9 @@
         },
         
         /**
-        * show/hide form container
-        */
+        Toggles container visibility (show / hide)
+        @method toggle()
+        **/  
         toggle: function () {
             if(this.container && this.container.tip().is(':visible')) {
                 this.hide();
@@ -230,7 +263,7 @@
             }
         },
         
-        /**
+        /*
         * called when form was submitted
         */          
         save: function(e, params) {
@@ -261,6 +294,12 @@
             }
         },
         
+        /**
+        Sets new value of editable
+        @method setValue(v, convertStr)
+        @param {mixed} v new value 
+        @param {boolean} convertStr wether to convert value from string to internal format        
+        **/         
         setValue: function(v, convertStr) {
             if(convertStr) {
                 this.value = this.input.str2value(v);
@@ -281,10 +320,35 @@
     /* EDITABLE PLUGIN DEFINITION
     * ======================= */
 
+    /**
+    jQuery method to initialize editable element.
+    
+    @method $().editable(options)
+    @params {Object} options
+    @example
+    $('#username').editable({
+        type: 'text',
+        url: 'post.php',
+        pk: 1
+    });
+    **/    
     $.fn.editable = function (option) {
-        //special methods returning non-jquery object
+        //special API methods returning non-jquery object
         var result = {}, args = arguments, datakey = 'editable';
         switch (option) {
+            /**
+            Runs client-side validation for all editables in jquery array
+            
+            @method validate()
+            @returns {Object} validation errors map
+            @example
+            $('#username, #fullname').editable('validate');
+            // possible result:
+            {
+            username: "username is requied",
+            fullname: "fullname should be minimum 3 letters length"
+            }
+            **/             
             case 'validate':
                 this.each(function () {
                     var $this = $(this), data = $this.data(datakey), error;
@@ -294,6 +358,18 @@
                 });
             return result;
 
+            /**
+            Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned
+            @method getValue()
+            @returns {Object} object of element names and values
+            @example
+            $('#username, #fullname').editable('validate');
+            // possible result:
+            {
+            username: "superuser",
+            fullname: "John"
+            }
+            **/               
             case 'getValue':
                 this.each(function () {
                     var $this = $(this), data = $this.data(datakey);
@@ -303,6 +379,18 @@
                 });
             return result;
 
+            /**  
+            This method collects values from several editable elements and submit them all to server. 
+            It is designed mainly for creating new records. 
+            
+            @method submit(options)
+            @param {object} options 
+            @param {object} options.url url to submit data 
+            @param {object} options.data additional data to submit
+            @param {function} options.error error handler (called on both client-side and server-side validation errors)
+            @param {function} options.success success handler 
+            @returns {Object} jQuery object
+            **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
                 var config = arguments[1] || {},
                 $elems = this,
@@ -360,14 +448,71 @@
             
 
     $.fn.editable.defaults = {
-        type:'text',
+        /**
+        Type of input. Can be text|textarea|select|date
+
+        @property type 
+        @type String
+        @default 'text'
+        **/
+        type: 'text',        
+        /**
+        Sets disabled state of editable
+
+        @property disabled 
+        @type boolean
+        @default false
+        **/         
         disabled: false,
+        /**
+        How to toggle editable. Can be click|manual.
+
+        @property toggle 
+        @type string
+        @default 'click'
+        **/          
         toggle: 'click',
-        trigger: 'manual',
+        /**
+        Text shown when element is empty.
+
+        @property emptytext 
+        @type string
+        @default 'Empty'
+        **/         
         emptytext: 'Empty',
+        /**
+        Allows to automatically set element's text based on it's value. Usefull for select and date.
+        For example, if element's list is <code>{1: 'a', 2: 'b'}</code> value set to <code>1</code>, it's text will be automatically set to <code>a</code>.
+        Can be auto|always|never. <code>auto</code> means text will be set only if element is empty.
+        <code>always|never</code> means always(never) try to set element's text.
+
+        @property autotext 
+        @type string
+        @default 'auto'
+        **/          
         autotext: 'auto', 
+        /**
+        Wether to return focus on element after form is closed. 
+        This allows fully keyboard input.
+
+        @property enablefocus 
+        @type boolean
+        @default false
+        **/          
         enablefocus: false,
-        success: function(response, newValue) {} //value successfully sent on server and response status = 200
+        /**
+        Success callback. Called when value successfully sent on server and response status = 200.
+        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
+        
+        @property success 
+        @type function
+        @default null
+        @example
+        success: function(response, newValue) {
+            if(!response.success) return response.msg;
+        }
+        **/          
+        success: function(response, newValue) {} 
     };
     
 }(window.jQuery));

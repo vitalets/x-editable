@@ -1,6 +1,10 @@
 /**
-* Editable-form jQuery UI engine
-*/
+Editableform based on jQuery UI
+
+@class editableform (jqueryui)
+@module editableform
+@uses editableform
+**/
 (function ($) {
     
     $.extend($.fn.editableform.Constructor.prototype, {
