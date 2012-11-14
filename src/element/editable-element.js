@@ -1,8 +1,8 @@
 /**
-Makes editable any HTML element on page.
-Applied as jquery method.
+Makes editable any HTML element on the page. Applied as jQuery method.
 
 @class editable
+@uses editableContainer
 **/
 (function ($) {
 
@@ -449,7 +449,7 @@ Applied as jquery method.
 
     $.fn.editable.defaults = {
         /**
-        Type of input. Can be text|textarea|select|date
+        Type of input. Can be <code>text|textarea|select|date</code>
 
         @property type 
         @type String
@@ -482,7 +482,7 @@ Applied as jquery method.
         emptytext: 'Empty',
         /**
         Allows to automatically set element's text based on it's value. Usefull for select and date.
-        For example, if element's list is <code>{1: 'a', 2: 'b'}</code> value set to <code>1</code>, it's text will be automatically set to <code>a</code>.
+        For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and elements value set to <code>1</code>, it's html will be automatically set to <code>a</code>.
         Can be auto|always|never. <code>auto</code> means text will be set only if element is empty.
         <code>always|never</code> means always(never) try to set element's text.
 
@@ -500,6 +500,14 @@ Applied as jquery method.
         @default false
         **/          
         enablefocus: false,
+        /**
+        Initial value of input
+
+        @property value 
+        @type mixed
+        @default element's text
+        **/
+        value: null,
         /**
         Success callback. Called when value successfully sent on server and response status = 200.
         Can be used to process json response. If this function returns string - means error occured and string is shown as error message.

@@ -1,6 +1,9 @@
 /**
-* select
-*/
+Select input
+
+@class select
+@extends abstract
+**/
 (function ($) {
 
     var Select = function (options) {
@@ -213,9 +216,38 @@
     });      
 
     Select.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <select></select>
+        **/         
         tpl:'<select></select>',
-        source:null,  //can be string (url), object or array [{value: 1, text: 'abc'}, {...}]
+        /**
+        Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+        Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
+        For compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.      
+
+        @property source 
+        @type string|array|object
+        @default null
+        @example
+        source: 'groups.php' 
+        **/         
+        source:null, 
+        /**
+        Data automatically prepended to the begining of dropdown list.
+        
+        @property prepend 
+        @type string|array|object
+        @default false
+        **/         
         prepend:false,
+        /**
+        Error message shown when list cannot be loaded (e.g. ajax error)
+        
+        @property sourceError 
+        @type string
+        @default Error when loading options
+        **/          
         sourceError: 'Error when loading options'
     });
 

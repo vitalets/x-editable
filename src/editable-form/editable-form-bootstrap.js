@@ -1,10 +1,6 @@
-/**
+/*
 Editableform based on Twitter Bootstrap
-
-@class editableform (bootstrap)
-@module editableform
-@uses editableform
-**/
+*/
 (function ($) {
     
     //form template

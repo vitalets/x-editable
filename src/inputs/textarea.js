@@ -1,6 +1,10 @@
 /**
-* textarea
-*/
+Textarea input
+
+@class textarea
+@extends abstract
+@module inputs
+**/
 (function ($) {
 
     var Textarea = function (options) {
@@ -53,8 +57,24 @@
     });
 
     Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <textarea rows="8"></textarea>
+        **/          
         tpl:'<textarea rows="8"></textarea>',
-        inputclass:'span3'
+        /**
+        @property inputclass 
+        @default 'span3'
+        **/          
+        inputclass:'span3',
+        /**
+        Placeholder attribute of input. Shown when input is empty.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null        
     });
 
     $.fn.editableform.types.textarea = Textarea;    

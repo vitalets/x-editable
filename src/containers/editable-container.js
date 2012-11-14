@@ -1,8 +1,11 @@
 /**
-Container for editableform. It can be popup (bootstrap-popover, jqueryui-tooltip, poshytip..) or inline.
-Applied as jQuery method to any element. Element is used only for positioning!
+Attaches stand-alone container with editable-form to HTML element. Element is used only for positioning, value is not stored anywhere.<br>
+This method applied internally in <code>$().editable()</code>. You should subscribe on it's events (save / cancel) to get profit of it.<br>
+Final realization can be different: bootstrap-popover, jqueryui-tooltip, poshytip, inline-div. It depends on which js file you include.<br>
+Applied as jQuery method.
 
 @class editableContainer
+@uses editableform
 **/
 (function ($) {
 
@@ -168,10 +171,11 @@ Applied as jQuery method to any element. Element is used only for positioning!
         @property value 
         @type mixed
         @default null
+        @private
         **/        
         value: null,
         /**
-        Placement of container relative to element. Can be top|right|bottom|left. Not used for inline container.
+        Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.
 
         @property placement 
         @type string
@@ -184,6 +188,7 @@ Applied as jQuery method to any element. Element is used only for positioning!
         @property autohide 
         @type boolean
         @default true
+        @private 
         **/        
         autohide: true
     };

@@ -4,6 +4,8 @@ Applied as jQuery method to DIV tag (not to form tag!)
 Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
 @class editableform
+@uses text
+@uses textarea
 **/
 (function ($) {
     
@@ -39,7 +41,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @method render
         **/        
         render: function() {
-            this.$loading = $(this.options.loading);        
+            this.$loading = $($.fn.editableform.loading);        
             this.$container.empty().append(this.$loading);
             this.showLoading();
            
@@ -258,7 +260,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /* see also defaults for input */
         
         /**
-        Type of input. Can be text|textarea|select|date
+        Type of input. Can be <code>text|textarea|select|date</code>
 
         @property type 
         @type String
@@ -316,14 +318,6 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/          
         send: 'auto', 
         /**
-        Template for loading element
-
-        @property loading 
-        @type String
-        @default <div class="editableform-loading"></div>
-        **/         
-        loading: '<div class="editableform-loading"></div>',
-        /**
         Function for client-side validation. If returns string - means validation not passed and string showed as error.
 
         @property validate 
@@ -348,14 +342,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     '<div class="editable-error-block"></div>' + 
     '</form>';
       
+      //loading div
+      $.fn.editableform.loading = '<div class="editableform-loading"></div>';
+      
       //error class attahced to control-group
-      $.fn.editableform.errorGroupClass = null;
+      $.fn.editableform.errorGroupClass = null;  
+      
       //error class attahced to editable-error-block
       $.fn.editableform.errorBlockClass = 'editable-error';
 
         
     //input types
-    $.fn.editableform.types = {};
-    $.fn.editableform.utils = {};
+//    $.fn.editableform.types = {};
+    //$.fn.editableform.utils = {};
 
 }(window.jQuery));

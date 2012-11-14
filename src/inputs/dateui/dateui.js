@@ -1,7 +1,10 @@
 /**
-* jQuery UI Datepicker
-* Note: you can not use both date and dateui on the one page!
-*/
+jQuery UI Datepicker
+Note: you can not use both date and dateui on the same page.
+
+@class dateui
+@extends abstract
+**/
 (function ($) {
 
     var DateUI = function (options) {
@@ -86,14 +89,48 @@
     });
     
     DateUI.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <div style="float: left"></div>
+        **/         
         tpl:'<div style="float: left"></div>',
+        /**
+        @property inputclass 
+        @default ''
+        **/         
         inputclass: '',
-        format:'yyyy-mm-dd', //format used for sending to server and converting from value
-        viewformat: null,  //used for display date in element
+        /**
+        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+        Full <a href="http://docs.jquery.com/UI/Datepicker/formatDate">list of tokens</a>.  
         
-        //special options
-        firstDay: 0,
-        datepicker:{
+        @property format 
+        @type string
+        @default yyyy-mm-dd
+        **/          
+        format:'yyyy-mm-dd', 
+        /**
+        Format used for displaying date. If not specified equals to <code>format</code>
+        
+        @property viewformat 
+        @type string
+        @default null
+        **/          
+        viewformat: null,
+        
+        /**
+        Configuration of datepicker.
+        Full list of <a href="http://api.jqueryui.com/datepicker">possible options</a>. 
+        
+        @property datepicker 
+        @type object
+        @default {
+           firstDay: 0, 
+           changeYear: true, 
+           changeMonth: true
+        }
+        **/
+        datepicker: {
+            firstDay: 0,
             changeYear: true,
             changeMonth: true
         }
