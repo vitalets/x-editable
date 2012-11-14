@@ -263,7 +263,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Type of input. Can be <code>text|textarea|select|date</code>
 
         @property type 
-        @type String
+        @type string
         @default 'text'
         **/
         type: 'text',
@@ -271,7 +271,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Url for submit
 
         @property url 
-        @type String|Object|Array
+        @type string|object|array
         @default null
         **/        
         url:null,
@@ -279,7 +279,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Additional params for submit
 
         @property params 
-        @type Object
+        @type object
         @default null
         **/          
         params:null,
@@ -287,7 +287,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Name of field. Will be submitted on server. Can be taken from id attribute.
 
         @property name 
-        @type String
+        @type string
         @default null
         **/         
         name: null,
@@ -295,7 +295,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Primary key of editable object (e.g. record id in database). Use Object for composite keys.
 
         @property pk 
-        @type String|Object|Function
+        @type string|object|function
         @default null
         **/         
         pk: null,
@@ -304,7 +304,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         For <i>select</i> type should be defined (as it is ID of shown text).
 
         @property value 
-        @type String|Object
+        @type string|object
         @default null
         **/        
         value: null,
@@ -313,7 +313,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         When 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.
 
         @property send 
-        @type String
+        @type string
         @default 'auto'
         **/          
         send: 'auto', 
@@ -321,7 +321,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Function for client-side validation. If returns string - means validation not passed and string showed as error.
 
         @property validate 
-        @type Function
+        @type function
         @default null
         @example
         validate: function(value) {
@@ -351,9 +351,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
       //error class attahced to editable-error-block
       $.fn.editableform.errorBlockClass = 'editable-error';
 
-        
-    //input types
-//    $.fn.editableform.types = {};
-    //$.fn.editableform.utils = {};
+      //input types
+      $.fn.editableform.types = {};
+      //utils
+      $.fn.editableform.utils = {};
 
 }(window.jQuery));
