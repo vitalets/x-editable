@@ -1,8 +1,23 @@
 /**
-Select input
+Select (dropdown) input
 
 @class select
 @extends abstract
+@example
+<a href="#" id="status" data-type="select" data-pk="1" data-url="post.php" data-original-title="Select status"></a>
+<script>
+$(function(){
+    $('#status').editable({
+        value: 2,    
+        source: [
+              {value: 1, text: 'Active'},
+              {value: 2, text: 'Blocked'},
+              {value: 3, text: 'Deleted'}
+           ]
+        }
+    });
+});
+</script>
 **/
 (function ($) {
 
@@ -31,7 +46,7 @@ Select input
         },
 
         html2value: function (html) {
-            return null; //it's not good idea to set value by text for SELECT. better set NULL
+            return null; //it's not good idea to set value by text for SELECT. Better set NULL
         },
 
         value2html: function (value, element) {
@@ -229,8 +244,6 @@ Select input
         @property source 
         @type string|array|object
         @default null
-        @example
-        source: 'groups.php' 
         **/         
         source:null, 
         /**

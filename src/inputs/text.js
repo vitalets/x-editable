@@ -3,6 +3,16 @@ Text input
 
 @class text
 @extends abstract
+@example
+<a href="#" id="username" data-type="text" data-pk="1">awesome</a>
+<script>
+$(function(){
+    $('#username').editable({
+        url: 'post.php',
+        title: 'Enter username'
+    });
+});
+</script>
 **/
 (function ($) {
     var Text = function (options) {

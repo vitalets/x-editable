@@ -45,10 +45,10 @@ Applied as jQuery method.
             return this.$form;
         },        
 
-        /**
+        /*
         Returns jquery object of container
         @method tip()
-        **/         
+        */         
         tip: function() {
             return this.container().$tip;
         },
@@ -82,10 +82,10 @@ Applied as jQuery method.
             this.call('hide'); 
         },
 
-        /**
+        /*
         Updates the position of container when content changed.
         @method setPosition()
-        **/       
+        */       
         setPosition: function() {
             //tbd in child class
         },
@@ -113,8 +113,17 @@ Applied as jQuery method.
             @event save 
             @param {Object} event event object
             @param {Object} params additional params
-                @param {mixed} params.newValue submitted value
-                @param {Object} params.response ajax response
+            @param {mixed} params.newValue submitted value
+            @param {Object} params.response ajax response
+            @example
+            $('#username').on('save', function(e, params) {
+                //assuming server response: '{success: true}'
+                if(params.response && params.response.success) {
+                    alert('value ' + params.newValue + ' saved!');
+                } else {
+                    alert('error!'); 
+                } 
+            });
             **/             
             this.$element.triggerHandler('save', params);
         },
@@ -141,7 +150,19 @@ Applied as jQuery method.
 
     };
 
-    //jQuery plugin definition
+    /**
+    jQuery method to initialize editableContainer.
+    
+    @method $().editableContainer(options)
+    @params {Object} options
+    @example
+    $('#edit').editableContainer({
+        type: 'text',
+        url: 'post.php',
+        pk: 1,
+        value: 'hello'
+    });
+    **/  
     $.fn.editableContainer = function (option) {
         var args = arguments;
         return this.each(function () {

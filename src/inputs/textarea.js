@@ -3,7 +3,16 @@ Textarea input
 
 @class textarea
 @extends abstract
-@module inputs
+@example
+<a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
+<script>
+$(function(){
+    $('#comments').editable({
+        url: 'post.php',
+        title: 'Enter comments'
+    });
+});
+</script>
 **/
 (function ($) {
 
@@ -64,7 +73,7 @@ Textarea input
         tpl:'<textarea rows="8"></textarea>',
         /**
         @property inputclass 
-        @default 'span3'
+        @default span3
         **/          
         inputclass:'span3',
         /**

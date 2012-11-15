@@ -1,7 +1,25 @@
 /**
-* date
-* based on fork: https://github.com/vitalets/bootstrap-datepicker
-*/
+Bootstrap-datepicker.  
+Description and examples: http://vitalets.github.com/bootstrap-datepicker.  
+For localization you can include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+
+@class date
+@extends abstract
+@example
+<a href="#" id="dob" data-type="date" data-pk="1" data-url="post.php" data-original-title="Select date">15/05/1984</a>
+<script>
+$(function(){
+    $('#dob').editable({
+        format: 'yyyy-mm-dd',    
+        viewformat: 'dd/mm/yyyy',    
+        datepicker: {
+                weekStart: 1
+           }
+        }
+    });
+});
+</script>
+**/
 (function ($) {
 
     var Date = function (options) {
@@ -68,15 +86,50 @@
     });
     
     Date.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <div style="float: left; padding: 0; margin: 0 0 9px 0"></div>
+        **/         
         tpl:'<div style="float: left; padding: 0; margin: 0 0 9px 0"></div>',
+        /**
+        @property inputclass 
+        @default well
+        **/         
         inputclass: 'well',
-        format:'yyyy-mm-dd', //format used for sending to server and converting from value
-        viewformat: null,  //used for display date in element
-        //special options
-        weekStart: 0,
-        startView: 0,
+        /**
+        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+        Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
+        
+        @property format 
+        @type string
+        @default yyyy-mm-dd
+        **/         
+        format:'yyyy-mm-dd',
+        /**
+        Format used for displaying date. Also applied when converting date from element's text on init.   
+        If not specified equals to <code>format</code>
+        
+        @property viewformat 
+        @type string
+        @default null
+        **/          
+        viewformat: null,  
+        /**
+        Configuration of datepicker.
+        Full list of options: http://vitalets.github.com/bootstrap-datepicker
+        
+        @property datepicker 
+        @type object
+        @default {
+            weekStart: 0,
+            startView: 0,
+            autoclose: false
+        }
+        **/
         datepicker:{
-            autoclose:false
+            weekStart: 0,
+            startView: 0,
+            autoclose: false
         }
     });   
 

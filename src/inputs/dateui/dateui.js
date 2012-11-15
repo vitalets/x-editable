@@ -1,9 +1,24 @@
 /**
-jQuery UI Datepicker
-Note: you can not use both date and dateui on the same page.
+jQuery UI Datepicker.  
+Description and examples: http://jqueryui.com/datepicker.  
+Do not use it together with bootstrap-datepicker.
 
 @class dateui
 @extends abstract
+@example
+<a href="#" id="dob" data-type="date" data-pk="1" data-url="post.php" data-original-title="Select date">15/05/1984</a>
+<script>
+$(function(){
+    $('#dob').editable({
+        format: 'yyyy-mm-dd',    
+        viewformat: 'dd/mm/yyyy',    
+        datepicker: {
+                firstDay: 1
+           }
+        }
+    });
+});
+</script>
 **/
 (function ($) {
 
@@ -101,7 +116,7 @@ Note: you can not use both date and dateui on the same page.
         inputclass: '',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        Full <a href="http://docs.jquery.com/UI/Datepicker/formatDate">list of tokens</a>.  
+        Full list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate
         
         @property format 
         @type string
@@ -109,7 +124,8 @@ Note: you can not use both date and dateui on the same page.
         **/          
         format:'yyyy-mm-dd', 
         /**
-        Format used for displaying date. If not specified equals to <code>format</code>
+        Format used for displaying date. Also applied when converting date from element's text on init.    
+        If not specified equals to <code>format</code>
         
         @property viewformat 
         @type string
@@ -119,7 +135,7 @@ Note: you can not use both date and dateui on the same page.
         
         /**
         Configuration of datepicker.
-        Full list of <a href="http://api.jqueryui.com/datepicker">possible options</a>. 
+        Full list of options: http://api.jqueryui.com/datepicker
         
         @property datepicker 
         @type object

@@ -89,7 +89,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
                /**        
                Fired each time when element's text is rendered. Occurs on initialization and on each update of value.
-               Can be used for customizing display of value.
+               Can be used for display customization.
                               
                @event render 
                @param {Object} event event object
@@ -296,15 +296,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         
         /**
         Sets new value of editable
-        @method setValue(v, convertStr)
-        @param {mixed} v new value 
+        @method setValue(value, convertStr)
+        @param {mixed} value new value 
         @param {boolean} convertStr wether to convert value from string to internal format        
         **/         
-        setValue: function(v, convertStr) {
+        setValue: function(value, convertStr) {
             if(convertStr) {
-                this.value = this.input.str2value(v);
+                this.value = this.input.str2value(value);
             } else {
-                this.value = v;
+                this.value = value;
             }
             if(this.container) {
                 this.container.option('value', this.value);
@@ -337,7 +337,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         var result = {}, args = arguments, datakey = 'editable';
         switch (option) {
             /**
-            Runs client-side validation for all editables in jquery array
+            Runs client-side validation for all matched editables
             
             @method validate()
             @returns {Object} validation errors map
@@ -345,8 +345,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             $('#username, #fullname').editable('validate');
             // possible result:
             {
-            username: "username is requied",
-            fullname: "fullname should be minimum 3 letters length"
+              username: "username is requied",
+              fullname: "fullname should be minimum 3 letters length"
             }
             **/             
             case 'validate':
@@ -381,14 +381,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
             /**  
             This method collects values from several editable elements and submit them all to server. 
-            It is designed mainly for creating new records. 
+            It is designed mainly for <a href="#newrecord">creating new records</a>. 
             
             @method submit(options)
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
-            @param {function} options.error error handler (called on both client-side and server-side validation errors)
-            @param {function} options.success success handler 
+            @param {function} options.error(obj) error handler (called on both client-side and server-side validation errors)
+            @param {function} options.success(obj) success handler 
             @returns {Object} jQuery object
             **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
@@ -452,7 +452,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Type of input. Can be <code>text|textarea|select|date</code>
 
         @property type 
-        @type String
+        @type string
         @default 'text'
         **/
         type: 'text',        
@@ -465,7 +465,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         disabled: false,
         /**
-        How to toggle editable. Can be click|manual.
+        How to toggle editable. Can be <code>click|manual</code>. 
+        When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.  
+        Note: if you are calling <code>show</code> on **click** event you need to apply <code>e.stopPropagation()</code> because container has behavior to hide on any click outside.
+        
+        @example
+        $('#edit-button').click(function(e) {
+            e.stopPropagation();
+            $('#username').editable('toggle');
+        });
 
         @property toggle 
         @type string
@@ -481,10 +489,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         emptytext: 'Empty',
         /**
-        Allows to automatically set element's text based on it's value. Usefull for select and date.
-        For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and elements value set to <code>1</code>, it's html will be automatically set to <code>a</code>.
-        Can be auto|always|never. <code>auto</code> means text will be set only if element is empty.
-        <code>always|never</code> means always(never) try to set element's text.
+        Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Usefull for select and date.
+        For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  
+        <code>auto</code> - text will be automatically set only if element is empty.  
+        <code>always|never</code> - always(never) try to set element's text.
 
         @property autotext 
         @type string

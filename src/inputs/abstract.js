@@ -115,7 +115,7 @@ To create your own input you should inherit from this class.
         
     Abstract.defaults = {  
         /**
-        HTML template of input
+        HTML template of input. Normally you should not change it.
 
         @property tpl 
         @type string
@@ -127,7 +127,7 @@ To create your own input you should inherit from this class.
 
         @property inputclass 
         @type string
-        @default 'span2'
+        @default span2
         **/         
         inputclass: 'span2',
         /**

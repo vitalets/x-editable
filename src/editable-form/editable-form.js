@@ -271,7 +271,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         Url for submit
 
         @property url 
-        @type string|object|array
+        @type string|function
         @default null
         **/        
         url:null,
@@ -284,7 +284,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/          
         params:null,
         /**
-        Name of field. Will be submitted on server. Can be taken from id attribute.
+        Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute
 
         @property name 
         @type string
@@ -301,7 +301,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         pk: null,
         /**
         Initial value. If not defined - will be taken from element's content.
-        For <i>select</i> type should be defined (as it is ID of shown text).
+        For __select__ type should be defined (as it is ID of shown text).
 
         @property value 
         @type string|object
@@ -309,7 +309,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/        
         value: null,
         /**
-        Strategy for sending data on server. Can be auto|always|never.
+        Strategy for sending data on server. Can be <code>auto|always|never</code>.
         When 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.
 
         @property send 
