@@ -94,7 +94,7 @@
 <pre class="prettyprint linenums">&lt;link href=&quot;path/to/bootstrap/css/bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;path/to/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;</pre>
 </li>
-<li>Download corresponding X-editable build from <a href="index.html">home</a><br><br></li>
+<li>Download corresponding X-editable build from <a href="index.html">Home</a><br><br></li>
 <li>Include <i>popup</i> or <i>inline</i> version of X-editable:</li>
 popup
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
@@ -985,7 +985,7 @@ $('#username').on('save', function(e, params) {
             <td>tpl</td>
             <td>string</td>
             <td>&lt;input type=&quot;text&quot;&gt;</td>
-            <td><p>HTML template of input</p>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1065,7 +1065,7 @@ $(function(){
             <td>tpl</td>
             <td>string</td>
             <td>&lt;textarea rows=&quot;8&quot;&gt;&lt;/textarea&gt;</td>
-            <td><p>HTML template of input</p>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1145,7 +1145,7 @@ $(function(){
             <td>tpl</td>
             <td>string</td>
             <td>&lt;select&gt;&lt;/select&gt;</td>
-            <td><p>HTML template of input</p>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1252,7 +1252,7 @@ $(function(){
             <td>tpl</td>
             <td>string</td>
             <td>&lt;div style=&quot;float: left; padding: 0; margin: 0 0 9px 0&quot;&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input</p>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1362,7 +1362,7 @@ $(function(){
             <td>tpl</td>
             <td>string</td>
             <td>&lt;div style=&quot;float: left&quot;&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input</p>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1531,7 +1531,7 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
     <li>
         <strong>server-side validation error</strong><br>
         Server response pattern must <strong>not</strong> be like: <code>{id: &lt;something&gt;}</code>. Good solution is response like <code>{errors: &lt;object with error messages&gt;}</code>
-        to have silimar handling of server-side and client-side validation errors. 
+        to have silimar handling of server-side and client-side validation errors.<br> 
         Callback parameter <code>obj</code> is hash object containing field names and errors (the same as previous).<br><br>
     </li>
     <li>

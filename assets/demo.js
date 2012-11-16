@@ -1,5 +1,6 @@
-$(function(){
-    setTimeout(function() {
+(function(){
+//    setTimeout(function() {
+//function runDemo() {
   
     //defaults
 //    $.fn.editable.defaults.url = 'error.php'; 
@@ -28,10 +29,10 @@ $(function(){
     $('#lastname').editable();
     
     $('#sex').editable({
-        source:{
-            0: 'Male',
-            1: 'Female'
-        }   
+        source: [
+            {value: 0, text: 'Male'},
+            {value: 1, text: 'Female'}
+        ]   
     });    
     
     $('#action').on('render', function(e, editable) {
@@ -65,5 +66,5 @@ $(function(){
         $('#note').editable('toggle');
    });    
 
-    }, 300);
-});
+   // }, 300);
+}());

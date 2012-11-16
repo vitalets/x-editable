@@ -28,12 +28,14 @@ function getAssets(f, c, libs) {
     //tune js and css
     if(f==='jqueryui') { 
         //core
-        js.unshift(jqueryui+'js/jquery-ui-1.9.1.custom.js')
-        css.unshift(jqueryui+'css/redmond/jquery-ui-1.9.1.custom.css');
+//        js.unshift(jqueryui+'js/jquery-ui-1.9.1.custom.js');
+//        css.unshift(jqueryui+'css/redmond/jquery-ui-1.9.1.custom.css');
+        js.unshift('http://code.jquery.com/ui/1.9.1/jquery-ui.js');
+        css.unshift('http://code.jquery.com/ui/1.9.1/themes/redmond/jquery-ui.css');
 
         //editable
         editable_js = (c === 'inline') ? 'jqueryui-editable-inline.js' : 'jqueryui-editable.js'; 
-        js.push(editable+'jqueryui-editable/js/'+editable_js);
+        editable_js = editable+'jqueryui-editable/js/'+editable_js;
         css.push(editable+'jqueryui-editable/css/jqueryui-editable.css'); 
 
         //style
@@ -45,30 +47,37 @@ function getAssets(f, c, libs) {
 
         //editable  
         editable_js = (c === 'inline') ? 'jquery-editable-inline.js' : 'jquery-editable-poshytip.js'; 
-        js.push(editable+'jquery-editable/js/'+editable_js); 
+        editable_js = editable+'jquery-editable/js/'+editable_js; 
         css.push(editable+'jquery-editable/css/jquery-editable.css');           
 
         //date
         js.push(libs+'jquery-ui-datepicker/js/jquery-ui-1.9.1.custom.js');    
-        css.unshift(jqueryui+'css/redmond/jquery-ui-1.9.1.custom.css');
+        js.push(libs+'jquery-ui-datepicker/js/jquery-ui-1.9.1.custom.js');    
+        css.unshift('http://code.jquery.com/ui/1.9.1/themes/redmond/jquery-ui.css');
+//        css.unshift(jqueryui+'css/redmond/jquery-ui-1.9.1.custom.css');
 
         //style
         css.push(libs+'demo.css');    
     } else {      //bootstrap
         //core
+        /*
         js.unshift(bootstrap+'js/bootstrap.js')
         css.unshift(bootstrap+'css/bootstrap.css');
+        */
+        
+        js.unshift('//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js');
+        css.unshift('//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.min.css');
 
         //editable
         editable_js = (c === 'inline') ? 'bootstrap-editable-inline.js' : 'bootstrap-editable.js'; 
-        js.push(editable+'bootstrap-editable/js/'+editable_js); 
+        editable_js = editable+'bootstrap-editable/js/'+editable_js;         
         css.push(editable+'bootstrap-editable/css/bootstrap-editable.css');            
     }
     
     js.push(libs+'demo-mock.js');
-    js.push(libs+'demo.js');
+   // js.push(libs+'demo.js');
     
-    return {css: css, js: js};
+    return {css: css, js: js, editable_js: editable_js};
 }
 
 

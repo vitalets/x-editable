@@ -1,7 +1,7 @@
 /*! X-editable - v1.0.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
-* https://github.com/vitalets/x-editable
-* Copyright (c) 2012 Vitaliy Potapov; Licensed MIT, GPL */
+* http://github.com/vitalets/x-editable
+* Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
 
 .editableform,
 .editableform div.control-group {
@@ -37,7 +37,7 @@
 
 
 
-/* for inline datepicker do not to inherit from table (bootstrap) */
+/* for inline datepicker do not to inherit from table (bootstrap). Otherwise when editable inside table, datepicker inherits css from table */
 .table-striped .editableform table td, .editableform table th {
     border: none !important;   
 }
@@ -45,6 +45,10 @@
 .table-striped .editableform table tr:nth-child(2n+1) td,
 .table-striped .editableform table tr:nth-child(2n+1) th {
     background-color: transparent;
+}
+
+.table-striped .editableform .datepicker table td.active {
+    background-color: inherit;
 }
 
 .editable-container,
