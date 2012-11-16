@@ -9,11 +9,15 @@ $(function () {
             5: 'Admin',
             6: '',
             '': 'Nothing'
-      }; 
+      };
       
-     window.size = 0;
+    //groups as array  
+    window.groupsArr = [];
+    for(var i in groups) {
+        groupsArr.push({value: i, text: groups[i]}); 
+    }
       
-    for (e in groups) { size++; }
+    window.size = groupsArr.length;
     
     $.mockjax({
         url: 'groups.php',
@@ -86,7 +90,25 @@ $(function () {
         ok(!p.is(':visible'), 'popover was removed');  
     });
     
-    test("load options from native array", function () {
+     test("load options from normal array", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+             pk: 1,
+             source: groupsArr,
+             placement: 'right'
+          });
+
+        e.click()
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        ok(p.find('select').length, 'select exists');
+        equal(p.find('select').find('option').length, groupsArr.length, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');
+        
+        p.find('button[type=button]').click(); 
+        ok(!p.is(':visible'), 'popover was removed');  
+    });    
+    
+    test("load options from simple array", function () {
          var arr = ['q', 'w', 'x'],
              e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
              pk: 1,

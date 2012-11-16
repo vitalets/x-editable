@@ -26,7 +26,7 @@ $(function(){
         this.init('dateui', options, DateUI.defaults);
         
         //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format', 'firstDay']);
+        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format']);
 
         //overriding datepicker config (as by default jQuery extend() is not recursive)
         this.options.datepicker = $.extend({}, DateUI.defaults.datepicker, directOptions, options.datepicker);
