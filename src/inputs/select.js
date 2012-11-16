@@ -52,7 +52,7 @@ $(function(){
         value2html: function (value, element) {
             var deferred = $.Deferred();
             this.onSourceReady(function () {
-                var i, text = null;
+                var i, text = '';
                 if($.isArray(this.sourceData)) {
                     for(i=0; i<this.sourceData.length; i++){
                         /*jshint eqeqeq: false*/
