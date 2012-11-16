@@ -20,8 +20,8 @@
         <!-- mockjax -->
         <script src="assets/mockjax/jquery.mockjax.js"></script>
         
-        <link href="assets/editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
-        <script src="assets/editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+        <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
         
         
         <!-- main css -->  
@@ -73,7 +73,11 @@
     $(function () {
         $('body').scrollspy({
             target: '#subnav',
-            offset: 200
+            offset: 100
+        });
+        
+        $('#subnav a').mousedown(function(){
+             $('body').scrollspy('refresh');
         });
     });
 </script>
@@ -87,7 +91,7 @@
 <ul>
 <li>Bootstrap</li>
 <li>jQuery UI</li>
-<li>jQuery + Poshytip</li>
+<li>only jQuery (+ Poshytip)</li>
 </ul>
 <br>
 <p>Include it on your page. Examples below are for <i>bootstrap</i>:</p> 
