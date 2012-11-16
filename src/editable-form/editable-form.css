@@ -29,15 +29,3 @@
     vertical-align: top; 
     display: inline-block;
 }
-
-
-
-/* for inline datepicker do not to inherit from table (bootstrap) */
-.table-striped .editableform table td, .editableform table th {
-    border: none !important;   
-}
-
-.table-striped .editableform table tr:nth-child(2n+1) td,
-.table-striped .editableform table tr:nth-child(2n+1) th {
-    background-color: transparent;
-}
