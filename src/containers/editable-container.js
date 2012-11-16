@@ -19,8 +19,9 @@ Applied as jQuery method.
         innerCss: null, //tbd in child class
         init: function(element, options) {
             this.$element = $(element);
+            //todo: what is in priority: data or js?
             this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableform.utils.getConfigData(this.$element), options);         
-            this.options.trigger = 'manual';
+            this.splitOptions();
             this.initContainer();
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
@@ -29,13 +30,27 @@ Applied as jQuery method.
             }, this));             
         },
 
+        //split options on containerOptions and formOptions
+        splitOptions: function() {
+            this.containerOptions = {};
+            this.formOptions = {};
+            var cDef = $.fn[this.containerName].defaults;
+            for(var k in this.options) {
+              if(k in cDef) {
+                 this.containerOptions[k] = this.options[k];
+              } else {
+                 this.formOptions[k] = this.options[k];
+              } 
+            }
+        },
+        
         initContainer: function(){
-            this.call(this.options);
+            this.call(this.containerOptions);
         },
 
         initForm: function() {
             this.$form = $('<div>')
-            .editableform(this.options)
+            .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this),
                 cancel: $.proxy(this.cancel, this),
@@ -136,8 +151,19 @@ Applied as jQuery method.
         @param {mixed} value 
         **/         
         option: function(key, value) {
-            this.options[key] = value;
-            this.call('option', key, value); 
+            if(key in this.containerOptions) {
+                this.containerOptions[key] = value;
+                this.setContainerOption(key, value); 
+            } else {
+                this.formOptions[key] = value;
+                if(this.$form) {
+                    this.$form.editableform('option', key, value);  
+                }
+            }
+        },
+        
+        setContainerOption: function(key, value) {
+            this.call('option', key, value);
         },
 
         /**

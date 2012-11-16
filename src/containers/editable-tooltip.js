@@ -15,17 +15,39 @@
         containerName: 'tooltip',
         innerCss: '.ui-tooltip-content', 
         
+        //split options on containerOptions and formOptions
+        splitOptions: function() {
+            this.containerOptions = {};
+            this.formOptions = {};
+            //defaults for tooltip
+            var cDef = $.ui[this.containerName].prototype.options;
+            for(var k in this.options) {
+              if(k in cDef) {
+                 this.containerOptions[k] = this.options[k];
+              } else {
+                 this.formOptions[k] = this.options[k];
+              } 
+            }
+        },        
+        
         initContainer: function(){
             this.handlePlacement();
-            this.options.open = $.proxy(function() {
-                //disable events hiding tooltip by default
-                this.container()._on(this.container().element, {
-                    mouseleave: function(e){ e.stopImmediatePropagation(); },
-                    focusout: function(e){ e.stopImmediatePropagation(); }
-                });  
-            }, this);
-            this.call(this.options);
-            //disable standart event to show tooltip
+            $.extend(this.containerOptions, {
+                items: '*',
+                content: ' ',
+                track:  false,
+                open: $.proxy(function() {
+                        //disable events hiding tooltip by default
+                        this.container()._on(this.container().element, {
+                            mouseleave: function(e){ e.stopImmediatePropagation(); },
+                            focusout: function(e){ e.stopImmediatePropagation(); }
+                        });  
+                    }, this)
+            });
+            
+            this.call(this.containerOptions);
+            
+            //disable standart triggering tooltip event 
             this.container()._off(this.container().element, 'mouseover focusin');
         },         
         
@@ -52,7 +74,7 @@
         setPosition: function() {
             this.tip().position( $.extend({
                 of: this.$element
-            }, this.options.position ) );     
+            }, this.containerOptions.position ) );     
         },
         
         handlePlacement: function() {
@@ -84,19 +106,20 @@
                break;                                             
            }
            
-           this.options.position = $.extend({}, this.options.position, pos);
+           this.containerOptions.position = pos;
         },
         
-       destroy: function() {
-          //jqueryui tooltip destroy itself
-       }                 
+        destroy: function() {
+           //jqueryui tooltip destroys itself
+        }                 
     });
     
     //defaults
+    /*
     $.fn.editableContainer.defaults = $.extend({}, $.fn.tooltip.defaults, $.fn.editableContainer.defaults, {
         items: '*',
         content: ' ',
-        position: {}
     });
+    */
     
 }(window.jQuery));

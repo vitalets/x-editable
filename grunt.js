@@ -244,8 +244,8 @@ module.exports = function(grunt) {
   });
 
   //test task
-  grunt.registerTask('test', 'server qunit:bootstrap');
-  grunt.registerTask('testall', 'server qunit');  
+  grunt.registerTask('test', 'lint server qunit:bootstrap');
+  grunt.registerTask('testall', 'lint server qunit');  
   
   // Default task.
 //  grunt.registerTask('default', 'lint qunit');

@@ -17,6 +17,11 @@
             }         
         },
         
+        splitOptions: function() {
+            this.containerOptions = {};
+            this.formOptions = this.options;
+        },
+        
         tip: function() {
            return this.$form; 
         },
