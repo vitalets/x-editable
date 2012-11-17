@@ -3,7 +3,11 @@ X-editable changelog
                  
 Version 1.0.0 wip
 ----------------------------
-Initial release. Based on bootstrap-editable 1.1.4, but strongly refactored.   
-- support of bootstrap, jqueryui or pure jquery as core library
-- directory structure re-arranged: split on several js files
-- all known bugs of bootstrap-editable closed
+Initial release. Based on bootstrap-editable (1.1.4) with many improvements:
+[enh] support of different core libraries: bootstrap, jqueryui or pure jquery
+[change] 'toggle' option value can be only click|manual (not element id)
+[change] 'validate' option cannot be defined as object anymore
+[change] events 'init', 'update', 'shown', 'hidden' removed. Events 'save', 'cancel' added. Event 'render' remains. 
+[change] directory structure re-arranged: split on several js files
+[bug] all known bugs of bootstrap-editable closed
+

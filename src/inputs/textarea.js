@@ -68,9 +68,9 @@ $(function(){
     Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         @property tpl 
-        @default <textarea rows="8"></textarea>
+        @default <textarea></textarea>
         **/          
-        tpl:'<textarea rows="8"></textarea>',
+        tpl:'<textarea></textarea>',
         /**
         @property inputclass 
         @default span3

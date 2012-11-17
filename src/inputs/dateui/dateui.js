@@ -106,14 +106,14 @@ $(function(){
     DateUI.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         @property tpl 
-        @default <div style="float: left"></div>
+        @default <div></div>
         **/         
-        tpl:'<div style="float: left"></div>',
+        tpl:'<div></div>',
         /**
         @property inputclass 
-        @default ''
+        @default 'editable-date'
         **/         
-        inputclass: '',
+        inputclass: 'editable-date',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Full list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate

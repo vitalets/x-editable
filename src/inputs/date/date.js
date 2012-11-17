@@ -88,14 +88,14 @@ $(function(){
     Date.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         @property tpl 
-        @default <div style="float: left; padding: 0; margin: 0 0 9px 0"></div>
+        @default <div></div>
         **/         
-        tpl:'<div style="float: left; padding: 0; margin: 0 0 9px 0"></div>',
+        tpl:'<div></div>',
         /**
         @property inputclass 
-        @default well
+        @default editable-date well
         **/         
-        inputclass: 'well',
+        inputclass: 'editable-date well',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
