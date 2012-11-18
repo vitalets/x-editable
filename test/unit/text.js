@@ -240,7 +240,33 @@ $(function () {
            start();  
         }, timeout);             
         
-      })              
+      });
+      
+     asyncTest("submit to url defined as function", function () {
+        expect(3);
+        var newText = 'qwe',
+            e = $('<a href="#" data-pk="1" id="a"></a>').appendTo(fx).editable({
+            url: function(params) {
+               ok(params.value, newText, 'new text passed in users function');
+               var d = new $.Deferred;
+               return d.reject('my error');
+            }
+        });
+        
+        e.click();                       
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit();
+        
+        setTimeout(function() {
+           equal(p.find('.editable-error-block').text(), 'my error', 'error shown correctly');                  
+           e.remove();    
+           start();  
+        }, timeout);           
+        
+     });  
      
      asyncTest("should show emptytext if entered text is empty", function () {
             var emptytext = 'blabla',

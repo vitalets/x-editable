@@ -286,6 +286,26 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             this.hide();
             this.setValue(params.newValue);
+            
+            /**        
+            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
+            
+            @event save 
+            @param {Object} event event object
+            @param {Object} params additional params
+            @param {mixed} params.newValue submitted value
+            @param {Object} params.response ajax response
+            @example
+            $('#username').on('save', function(e, params) {
+                //assuming server response: '{success: true}'
+                var pk = $(this).data('editable').options.pk;
+                if(params.response && params.response.success) {
+                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
+                } else {
+                    alert('error!'); 
+                } 
+            });
+            **/              
         },
 
         validate: function () {

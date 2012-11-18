@@ -23,5 +23,6 @@ Here list of differences to help you to upgrade your application:
 [enh] api method 'setValue' to set manually value of editable.
 [change] locales directory is excluded from bootstrap-datepicker input. If you need localization you should jus download corresponding file from github.
 [change] date and dateui specific options can be set only via 'datepicker' option in first level of config (previously it was possible to set some options directly in config, e.g. weekStart).
+[change] if 'url' option defined as function - it is used as submit method instead of ajax (previously it was dynamically return url string and ajax occured anyway)
 
 Also all known bugs of bootstrap-editable were closed.

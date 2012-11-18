@@ -174,7 +174,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                this.$container.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-               this.error(xhr.responseText || xhr.statusText || 'Unknown error!'); 
+               this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
                this.showForm();  
             }, this));
         },
@@ -196,13 +196,16 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     pk: pk 
                 });
 
-                //send ajax to server and return deferred object
-                return $.ajax({
-                    url     : (typeof this.options.url === 'function') ? this.options.url.call(this) : this.options.url,
-                    data    : params,
-                    type    : 'post',
-                    dataType: 'json'
-                });
+                if(typeof this.options.url === 'function') { //user's function
+                    return this.options.url.call(this, params);
+                } else {  //send ajax to server and return deferred object
+                    return $.ajax({
+                        url     : this.options.url,
+                        data    : params,
+                        type    : 'post',
+                        dataType: 'json'
+                    });
+                }
             }
         }, 
         
@@ -268,11 +271,21 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/
         type: 'text',
         /**
-        Url for submit
+        Url for submit, e.g. <code>post.php</code>  
+        If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
 
         @property url 
         @type string|function
         @default null
+        @example
+        url: function(params) {
+           if(params.value === 'abc') {
+               var d = new $.Deferred;
+               return d.reject('field cannot be "abc"'); //returning error via deferred object
+           } else {
+               someModel.set(params.name, params.value); //save data in some js model
+           }
+        }        
         **/        
         url:null,
         /**

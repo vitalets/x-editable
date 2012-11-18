@@ -123,7 +123,7 @@ Applied as jQuery method.
                 this.hide();
             }
             /**        
-            Fired when new value was submitted
+            Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
             @event save 
             @param {Object} event event object
@@ -133,8 +133,9 @@ Applied as jQuery method.
             @example
             $('#username').on('save', function(e, params) {
                 //assuming server response: '{success: true}'
+                var pk = $(this).data('editableContainer').options.pk;
                 if(params.response && params.response.success) {
-                    alert('value ' + params.newValue + ' saved!');
+                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
                 } else {
                     alert('error!'); 
                 } 
@@ -151,6 +152,7 @@ Applied as jQuery method.
         @param {mixed} value 
         **/         
         option: function(key, value) {
+            this.options[key] = value;
             if(key in this.containerOptions) {
                 this.containerOptions[key] = value;
                 this.setContainerOption(key, value); 
