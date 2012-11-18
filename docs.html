@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>X-editable</title>
+        <title>X-editable :: In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</title>
         <!-- jquery -->
         <script src="assets/jquery/jquery-1.8.2.min.js"></script>
 
@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="assets/main.css">     
     </head>
     <body>
-
+    
         <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -39,14 +39,25 @@
                 <li class="active"><a href="docs.html">Docs</a></li>
                 <li><a target="_blank" href="http://github.com/vitalets/x-editable">GitHub</a></li>
             </ul>
-            <!-- twitter -->
-            <form style="margin: 5px 0 0" class="pull-right" action="">
-                <iframe scrolling="no" frameborder="0" allowtransparency="true" src="http://platform.twitter.com/widgets/tweet_button.1352365724.html#_=1352468102378&amp;count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=http%3A%2F%2Fvitalets.github.com%2Fbootstrap-editable%2F%23options&amp;size=l&amp;text=Editable%20for%20Bootstrap%3A%20In-place%20editing%20with%20Bootstrap%20Form%20and%20Popover&amp;url=http%3A%2F%2Fvitalets.github.com%2Fbootstrap-editable%2F%23options&amp;via=vitpotapov" class="twitter-share-button twitter-count-horizontal" style="width: 138px; height: 28px;" title="Twitter Tweet Button" data-twttr-rendered="true"></iframe>
-                <script>!function(d,s,id){
-                        if(window.location.href.substr(0, 16) == 'http://localhost') return;
-                        var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}
-                    }(document,"script","twitter-wjs");</script>
-            </form>              
+            
+            <div style="padding-top: 10px" class="pull-right">
+            <!-- facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div style="vertical-align:top;zoom:1;*display:inline" class="fb-like" data-href="http://vitalets.github.com/x-editable" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+&nbsp;&nbsp;            
+<!-- twitter -->
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vitalets.github.com/x-editable" data-via="vitpotapov">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>            
+           
+            </div>
+            
         </div>  
     </div>
 </div> 
@@ -64,6 +75,7 @@
                 <li><a href="#editableContainer">$().editableContainer</a></li>
                 <li><a href="#inputs">inputs</a></li>
                 <li><a href="#newrecord">creating new record</a></li>
+                <li><a href="#diagram">class diagram</a></li>                
             </ul>
         </div>  
     </div>
@@ -299,8 +311,17 @@ When set to <code>manual</code> you should manually call <code>show/hide</code> 
             <td>url</td>
             <td>string|function</td>
             <td>null</td>
-            <td><p>Url for submit</p>
+            <td><p>Url for submit, e.g. <code>post.php</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
 
+            
+                <pre class="prettyprint linenums">url: function(params) {
+   if(params.value === &#x27;abc&#x27;) {
+       var d = new $.Deferred;
+       return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
+   } else {
+       someModel.set(params.name, params.value); //save data in some js model
+   }
+}</pre>
             
             </td>
         </tr> 
@@ -629,13 +650,14 @@ $('#action').on('render', function(e, editable) {
 </ul>
 
 </td>
-            <td>Fired when new value was submitted
+            <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
             
             <pre class="prettyprint linenums">
 $('#username').on('save', function(e, params) {
     //assuming server response: '{success: true}'
+    var pk = $(this).data('editable').options.pk;
     if(params.response && params.response.success) {
-        alert('value ' + params.newValue + ' saved!');
+        alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
     } else {
         alert('error!'); 
     } 
@@ -755,8 +777,17 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>url</td>
             <td>string|function</td>
             <td>null</td>
-            <td><p>Url for submit</p>
+            <td><p>Url for submit, e.g. <code>post.php</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
 
+            
+                <pre class="prettyprint linenums">url: function(params) {
+   if(params.value === &#x27;abc&#x27;) {
+       var d = new $.Deferred;
+       return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
+   } else {
+       someModel.set(params.name, params.value); //save data in some js model
+   }
+}</pre>
             
             </td>
         </tr> 
@@ -936,13 +967,14 @@ $('#edit').editableContainer({
 </ul>
 
 </td>
-            <td>Fired when new value was submitted
+            <td>Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
             <pre class="prettyprint linenums">
 $('#username').on('save', function(e, params) {
     //assuming server response: '{success: true}'
+    var pk = $(this).data('editableContainer').options.pk;
     if(params.response && params.response.success) {
-        alert('value ' + params.newValue + ' saved!');
+        alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
     } else {
         alert('error!'); 
     } 
@@ -1068,7 +1100,7 @@ $(function(){
         <tr>
             <td>tpl</td>
             <td>string</td>
-            <td>&lt;textarea rows=&quot;8&quot;&gt;&lt;/textarea&gt;</td>
+            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
@@ -1255,7 +1287,7 @@ $(function(){
         <tr>
             <td>tpl</td>
             <td>string</td>
-            <td>&lt;div style=&quot;float: left; padding: 0; margin: 0 0 9px 0&quot;&gt;&lt;/div&gt;</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
@@ -1265,7 +1297,7 @@ $(function(){
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>well</td>
+            <td>editable-date well</td>
             <td><p>CSS class automatically applied to input</p>
 
             
@@ -1365,7 +1397,7 @@ $(function(){
         <tr>
             <td>tpl</td>
             <td>string</td>
-            <td>&lt;div style=&quot;float: left&quot;&gt;&lt;/div&gt;</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
@@ -1375,7 +1407,7 @@ $(function(){
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>&#x27;&#x27;</td>
+            <td>&#x27;editable-date&#x27;</td>
             <td><p>CSS class automatically applied to input</p>
 
             
@@ -1544,8 +1576,21 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
     </li>
 </ul>
         </section>
-        <br><br>
-        <p>If you have questions, ideas or find a bug - you are welcome on <a href="http://github.com/vitalets/x-editable/issues" target="_blank">X-editable github page</a>.</p>
+        <hr>
+        <section id="diagram">
+            <h1>Class diagram</h1>    
+            <p>Here a short description how it works internally helping you to extend library for your needs.<br>
+There are a few classes working together for editable. Base class <b>editableform</b> is form with single input and two buttons. Input can be one of several <b>input types</b> (text, textarea, etc).
+Form <b>markup</b> is performed in plain HTML or can be extended by some library (bootstrap, jquery-ui).
+<b>editableContainer</b> includes editableform and shows it in <b>popup</b> or <b>inline</b> mode. When popup it can use any container for display (popover, tooltip, etc).
+Final class <b>editable</b> binds editableContainer to DOM element storing value and being updated after user submits new value.
+</p>
+<p style="text-align: center">
+<img src="assets/img/diagram.png">
+</p>
+        </section>
+        <br>        
+        <p>If you have questions, ideas or find a bug - please feel free to open issue on <a href="http://github.com/vitalets/x-editable/issues" target="_blank">X-editable github page</a>.</p>
     </div>
 </div>
             
@@ -1554,6 +1599,34 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
                 <p>X-editable &copy; <a href="http://github.com/vitalets">Vitaliy Potapov</a> 2012. Released under the MIT license.</p> 
             </footer>
         </div> <!--/container-->
+        
+        <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter18329314 = new Ya.Metrika({id:18329314,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/18329314" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+        
         <!-- main.js -->
         <script src="assets/main.js"></script>
     </body>
