@@ -1,7 +1,7 @@
 X-editable changelog
 =============================
                  
-Version 1.0.0 wip
+Version 1.0.0 Nov 19, 2012 
 ----------------------------
 Initial release. This library is new life of bootstrap-editable (1.1.4) that was strongly refactored and improved.
 Main features:
