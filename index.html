@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>X-editable :: In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</title>
+        <!-- jquery -->
+        <script src="assets/jquery/jquery-1.8.2.min.js"></script>
+
+        <!-- bootstrap -->
+        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">  
+        <script src="assets/bootstrap/js/bootstrap.js"></script>
+
+        <!-- prettify -->  
+        <link rel="stylesheet" href="assets/prettify/prettify-bootstrap.css">    
+        <script src="assets/prettify/prettify.js"></script> 
+
+        <!-- in docs page include bootstrap-editable for creating new record example -->
+        
+        
+        <!-- main css -->  
+        <link rel="stylesheet" href="assets/main.css">     
+    </head>
+    <body>
+    
+        <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a href="index.html" class="brand">X-editable</a>
+            <ul class="nav">
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a target="_blank" href="demo.html">Demo</a></li>
+                <li><a href="docs.html">Docs</a></li>
+                <li><a target="_blank" href="http://github.com/vitalets/x-editable">GitHub</a></li>
+            </ul>
+            
+            <div style="padding-top: 10px; padding-right: 250px" class="pull-right">
+            <!-- facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div style="vertical-align:top;zoom:1;*display:inline" class="fb-like" data-href="http://vitalets.github.com/x-editable" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+&nbsp;&nbsp;            
+<!-- twitter -->
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vitalets.github.com/x-editable" data-via="vitpotapov">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>            
+           
+            </div>
+            
+        </div>  
+    </div>
+</div> 
+
+
+        <div class="container">
+        
+            <!-- header -->
+
+<div class="hero-unit">
+    <h1>X-editable</h1>
+    <p class="muted" style="font-size: 1.1em">In-place editing with <a href="http://twitter.github.com/bootstrap" target="_blank">Twitter Bootstrap</a>, <a href="http://jqueryui.com" target="_blank">jQuery UI</a> or pure <a href="http://jquery.com" target="_blank">jQuery</a></p>
+    <p>This library allows you to create editable elements on your page. 
+        It can be used with any engine (bootstrap, jquery-ui, jquery only) and includes both <i>popup</i> and <i>inline</i> modes.
+        It's new life of <a href="http://vitalets.github.com/bootstrap-editable" target="_blank">bootstrap-editable plugin</a> that was strongly refactored and improved.<br>
+        Please try out demo to see how it works. 
+    </p>
+    <div style="text-align: center">
+        <p>
+        <a class="btn btn-success btn-large" style="width: 150px" href="demo.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
+        <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
+        </p>                    
+        <small class="muted">Current version 1.0.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
+    </div>
+</div>    
+
+<div class="row">
+    <div class="span4">
+        <h2>Bootstrap</h2>
+        <p>Twitter Bootstrap has awesome <a href="http://twitter.github.com/bootstrap/base-css.html#forms" target="_blank">Form markup</a> and <a href="http://twitter.github.com/bootstrap/javascript.html#popovers" target="_blank">Popover plugin</a> allowing pretty in-place editing.
+        For <i>date</i> input it uses <a target="_blank" href="http://vitalets.github.com/bootstrap-datepicker/">bootstrap-datepicker</a>.
+        </p>
+    </div>
+    <div class="span4">
+        <h2>jQuery UI <small>(1.9+)</small></h2>
+        <p>Starting from jQuery UI 1.9 it has <a href="http://jqueryui.com/tooltip" target="_blank">Tooltip plugin</a>. 
+        In combination with <a href="http://jqueryui.com/button" target="_blank">Button widget</a> it is very suitable for editable form and popup.
+        You can apply any theme of jQuery UI <a href="http://jqueryui.com/themeroller" target="_blank">Themeroller</a>.</p>
+    </div>
+    <div class="span4">
+        <h2>jQuery <small>(+ poshytip plugin)</small></h2>
+        <p>The simplest build of X-editable. For <i>inline mode</i> you need only jquery. For <i>popup mode</i> it uses <a href="http://vadikom.com/demos/poshytip" target="_blank">Poshytip plugin</a>.
+        To show <i>datepicker</i> you should include jQuery UI datepicker. Or surely you can write your own inputs.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span4">
+        <p class="centered"><img src="assets/img/bootstrap.png"></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.0.0.zip"><strong>Download</strong> (bootstrap build)</a></p>
+    </div>
+    <div class="span4">
+        <p class="centered"><img src="assets/img/jqueryui.png"></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.0.0.zip"><strong>Download</strong> (jquery-ui build)</a></p>
+    </div>
+    <div class="span4">
+        <p class="centered"><img src="assets/img/jquery.png"></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.0.0.zip"><strong>Download</strong> (jquery build)</a></p>
+    </div>
+</div>
+
+
+<hr>
+
+<div class="row">
+    <div class="span4">
+        <h2 class="muted">News</h2>
+        <p><i>19/11/2012</i><br>
+    <strong>Version 1.0.0 released!</strong><br>
+    Initial release of X-editable.
+This library is new life of <a href='http://vitalets.github.com/bootstrap-editable' target='_blank'>bootstrap-editable plugin</a> (1.1.4) that was strongly refactored and improved.
+Main reasons caused re-branding and creation of new project are:
+<ul>
+<li>support not only bootstrap but any core library: bootstrap, jquery-ui or pure jquery</li>
+<li>different container classes to show form:<br> popover, tooltip, poshytip</li>
+<li>inline and popup modes</li>
+<li>new directory structure and logic in separate js files allowing easy extending</li>
+</ul>
+Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade instructions.
+ 
+</p>
+        
+              
+    </div>
+    <div class="span4">
+        <h2 class="muted">Why editable?</h2>
+        <ul>
+            <li>fast development, no special FORM markup</li>
+            <li>less number of screens in your application</li>                            
+            <li>easy adding / removing fields</li>
+            <li>simple backend script for data update</li>
+            <li>more convenient for users</li>                            
+        </ul>        
+    </div>
+    <div class="span4">
+        <h2 class="muted">Features</h2>
+        <ul>
+            <li>popup and inline modes</li>
+            <li>supported inputs: <code>text</code>, <code>textarea</code>, <code>select</code>, <code>date</code></li>
+            <li>client-side and server-side validation</li>
+            <li>customizible container placement</li>
+            <li>toggle by click or manually</li>
+            <li>keyboard support (escape/enter)</li>                            
+            <li>unit tested</li>                            
+        </ul>        
+        <!--       
+        <h2 class="muted">Plugins</h2>
+        <ul>
+            <li><a target="_blank" href="http://ybe.demopage.ru">Yii-bootstrap-editable extension</a></li>
+        </ul>
+        <p>If you've created X-editable based plugin please feel free to contact me and share it with community.</p>  
+        -->
+    </div>
+</div>
+
+
+            
+            <footer class="footer">
+            <hr>
+                <p>X-editable &copy; <a href="http://github.com/vitalets">Vitaliy Potapov</a> 2012. Released under the MIT license.</p> 
+            </footer>
+        </div> <!--/container-->
+        
+        <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter18329314 = new Ya.Metrika({id:18329314,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/18329314" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+        
+        <!-- main.js -->
+        <script src="assets/main.js"></script>
+    </body>
+</html>

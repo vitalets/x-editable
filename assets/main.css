@@ -1,0 +1,18 @@
+body {
+/*    padding-top: 60px;*/
+    padding-bottom: 40px;
+}
+
+
+.centered {
+    text-align: center;
+}
+
+.hero-unit {
+    margin-top: 60px;
+    padding: 40px;  
+}
+
+section {
+    padding-top: 85px;
+}
