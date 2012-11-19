@@ -12,10 +12,17 @@
         
         initContainer: function(){
             this.handlePlacement();
-            this.call(this.options);
+            
+            $.extend(this.containerOptions, {
+                showOn: 'none',
+                content: '',
+                alignTo: 'target'
+            });            
+            
+            this.call(this.containerOptions);
             
             var $content = $('<div>')
-              .append($('<label>').text(this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle")))
+              .append($('<label>').text(this.options.title || this.$element.data( "title") || this.$element.data( "originalTitle")))
               .append(this.initForm());            
               
             this.call('update', $content);                         
@@ -24,7 +31,6 @@
         show: function () {
             this.$form.editableform('render');
             this.tip().addClass('editable-container');
-
 
             this.call('show');
             this.$form.data('editableform').input.activate();
@@ -59,20 +65,18 @@
                break;                                             
            }
            
-           this.options.alignX = x;
-           this.options.offsetX = ox;
-           
-           this.options.alignY = y;
-           this.options.offsetY = oy;
+           $.extend(this.containerOptions, {
+               alignX: x,
+               offsetX: ox,
+               alignY: y,
+               offsetY:oy
+           });
         }
     });
     
     //defaults
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.poshytip.defaults, $.fn.editableContainer.defaults, {
-        className: 'tip-yellowsimple',
-        showOn: 'none',
-        content: '',
-        alignTo: 'target'
+    $.fn.editableContainer.defaults = $.extend({}, $.fn.editableContainer.defaults, {
+        className: 'tip-yellowsimple'
     });
     
     

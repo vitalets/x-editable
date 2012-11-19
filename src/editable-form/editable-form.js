@@ -1,21 +1,14 @@
 /**
-* Editable-form plugin
-* Form with single input element, two buttons and automatic loader, shown on init/submit
-* Plugin applied to DIV tag and show form inside
-* Input must be one of following types:
-* - text
-* - textarea
-* - select
-* - date
-* - <your input here>
-* 
-* EVENTS:
-* - render
-* - resize
-* - save
-*/
-(function ($) {
+Form with single input element, two buttons and two states: normal/loading.
+Applied as jQuery method to DIV tag (not to form tag!)
+Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
+@class editableform
+@uses text
+@uses textarea
+**/
+(function ($) {
+    
     var EditableForm = function (element, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
         this.$container = $(element); //div, containing form
@@ -42,13 +35,23 @@
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
         },
+        /**
+        Renders editableform
+
+        @method render
+        **/        
         render: function() {
-            this.$loading = $(this.options.loading);        
+            this.$loading = $($.fn.editableform.loading);        
             this.$container.empty().append(this.$loading);
             this.showLoading();
            
             this.initTemplate(); 
             
+            /**        
+            Fired when rendering starts
+            @event rendering 
+            @param {Object} event event object
+            **/            
             this.$container.triggerHandler('rendering');
             
             //render input
@@ -72,6 +75,11 @@
             }, this));
         },
         cancel: function() {
+            /**        
+            Fired when form was cancelled by user
+            @event cancel 
+            @param {Object} event event object
+            **/              
             this.$container.triggerHandler('cancel');
         },
         showLoading: function() {
@@ -96,7 +104,12 @@
         showForm: function() {
             this.$loading.hide();
             this.$form.show();
-            this.input.activate();         
+            this.input.activate(); 
+            /**        
+            Fired when form is shown
+            @event show 
+            @param {Object} event event object
+            **/                    
             this.$container.triggerHandler('show');
         },
         
@@ -145,10 +158,23 @@
             .done($.proxy(function(response) {
                this.error(false);   
                this.value = newValue;
+               /**        
+               Fired when form is submitted
+               @event save 
+               @param {Object} event event object
+               @param {Object} params additional params
+                    @param {mixed} params.newValue submitted value
+                    @param {Object} params.response ajax response
+                    
+               @example
+                   $('#form-div').on('save'), function(e, params){
+                       if(params.newValue === 'username') {...}
+                   });                    
+               **/                
                this.$container.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-               this.error(xhr.responseText || xhr.statusText || 'Unknown error!'); 
+               this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
                this.showForm();  
             }, this));
         },
@@ -170,13 +196,16 @@
                     pk: pk 
                 });
 
-                //send ajax to server and return deferred object
-                return $.ajax({
-                    url     : (typeof this.options.url === 'function') ? this.options.url.call(this) : this.options.url,
-                    data    : params,
-                    type    : 'post',
-                    dataType: 'json'
-                });
+                if(typeof this.options.url === 'function') { //user's function
+                    return this.options.url.call(this, params);
+                } else {  //send ajax to server and return deferred object
+                    return $.ajax({
+                        url     : this.options.url,
+                        data    : params,
+                        type    : 'post',
+                        dataType: 'json'
+                    });
+                }
             }
         }, 
         
@@ -194,7 +223,22 @@
        }        
     };
 
-    //jquery plugin definition
+    /*
+    Initialize editableform. Applied to jQuery object.
+    
+    @method $().editableform(options)
+    @params {Object} options
+    @example
+        var $form = $('&lt;div&gt;').editableform({
+            type: 'text',
+            name: 'username',
+            url: 'post.php',
+            value: 'vitaliy'
+        });
+        
+        //to display form you should call 'render' method
+        $form.editableform('render');     
+    */
     $.fn.editableform = function (option) {
         var args = arguments;
         return this.each(function () {
@@ -217,14 +261,88 @@
     //defaults
     $.fn.editableform.defaults = {
         /* see also defaults for input */
+        
+        /**
+        Type of input. Can be <code>text|textarea|select|date</code>
+
+        @property type 
+        @type string
+        @default 'text'
+        **/
         type: 'text',
+        /**
+        Url for submit, e.g. <code>post.php</code>  
+        If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
+
+        @property url 
+        @type string|function
+        @default null
+        @example
+        url: function(params) {
+           if(params.value === 'abc') {
+               var d = new $.Deferred;
+               return d.reject('field cannot be "abc"'); //returning error via deferred object
+           } else {
+               someModel.set(params.name, params.value); //save data in some js model
+           }
+        }        
+        **/        
         url:null,
+        /**
+        Additional params for submit
+
+        @property params 
+        @type object
+        @default null
+        **/          
         params:null,
+        /**
+        Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute
+
+        @property name 
+        @type string
+        @default null
+        **/         
         name: null,
+        /**
+        Primary key of editable object (e.g. record id in database). Use Object for composite keys.
+
+        @property pk 
+        @type string|object|function
+        @default null
+        **/         
         pk: null,
-        value: null,  //initial value
-        send: 'auto', //always|auto|never
-        loading: '<div class="editableform-loading"></div>',
+        /**
+        Initial value. If not defined - will be taken from element's content.
+        For __select__ type should be defined (as it is ID of shown text).
+
+        @property value 
+        @type string|object
+        @default null
+        **/        
+        value: null,
+        /**
+        Strategy for sending data on server. Can be <code>auto|always|never</code>.
+        When 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.
+
+        @property send 
+        @type string
+        @default 'auto'
+        **/          
+        send: 'auto', 
+        /**
+        Function for client-side validation. If returns string - means validation not passed and string showed as error.
+
+        @property validate 
+        @type function
+        @default null
+        @example
+        validate: function(value) {
+            if($.trim(value) == '') {
+                return 'This field is required';
+            }
+        }
+        **/         
         validate: null
     };   
 
@@ -237,14 +355,18 @@
     '<div class="editable-error-block"></div>' + 
     '</form>';
       
+      //loading div
+      $.fn.editableform.loading = '<div class="editableform-loading"></div>';
+      
       //error class attahced to control-group
-      $.fn.editableform.errorGroupClass = null;
+      $.fn.editableform.errorGroupClass = null;  
+      
       //error class attahced to editable-error-block
       $.fn.editableform.errorBlockClass = 'editable-error';
 
-        
-    //input types
-    $.fn.editableform.types = {};
-    $.fn.editableform.utils = {};
+      //input types
+      $.fn.editableform.types = {};
+      //utils
+      $.fn.editableform.utils = {};
 
 }(window.jQuery));

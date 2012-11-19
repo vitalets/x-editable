@@ -30,14 +30,12 @@
     display: inline-block;
 }
 
-
-
-/* for inline datepicker do not to inherit from table (bootstrap) */
-.table-striped .editableform table td, .editableform table th {
-    border: none !important;   
+.editableform textarea {
+    height: 150px; /*default height for textarea*/
 }
 
-.table-striped .editableform table tr:nth-child(2n+1) td,
-.table-striped .editableform table tr:nth-child(2n+1) th {
-    background-color: transparent;
+.editableform .editable-date {
+    float: left;
+    padding: 0; 
+    margin: 0 0 9px 0;
 }

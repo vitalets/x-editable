@@ -1,5 +1,5 @@
-/**
-* Editable-form Bootstrap engine
+/*
+Editableform based on Twitter Bootstrap
 */
 (function ($) {
     

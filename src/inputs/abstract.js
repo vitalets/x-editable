@@ -1,16 +1,19 @@
 /**
-* editable abstract type definition
-* Every new type must implement this interface
-* It does not store value or text. It just store settings and input
-*/
+Abstract editable input class.
+To create your own input you should inherit from this class.
+
+@class abstract
+**/
 (function ($) {
 
     var Abstract = function () { };
 
     Abstract.prototype = {
        /**
-        * initialize settings
-        */
+        Iinitializes input
+        
+        @method init() 
+        **/
        init: function(type, options, defaults) {
            this.type = type;
            this.options = $.extend({}, defaults, options); 
@@ -19,9 +22,10 @@
        },
        
        /**
-       * creates DOM element which is ready to be shown
-       * Can return jQuery deferred object
-       */
+        Renders input. Can return jQuery deferred object.
+        
+        @method render() 
+       **/       
        render: function() {
             this.$input = $(this.options.tpl);
             if(this.options.inputclass) {
@@ -34,51 +38,74 @@
        }, 
 
        /**
-       * set element's html by value
-       */
+        Sets element's html by value. 
+        
+        @method value2html(value, element) 
+        @param {mixed} value
+        @param {DOMElement} element
+       **/       
        value2html: function(value, element) {
            var html = $('<div>').text(value).html();
            $(element).html(html);
        },
         
        /**
-       * returns value from element's html
-       */       
+        Converts element's html to value
+        
+        @method html2value(html) 
+        @param {string} html
+        @returns {mixed}
+       **/             
        html2value: function(html) {
            return $('<div>').html(html).text();
        },
         
        /**
-       * convert value to string for submiting on server
-       */
+        Converts value to string (for submiting to server)
+        
+        @method value2str(value) 
+        @param {mixed} value
+        @returns {string}
+       **/       
        value2str: function(value) {
            return value;
        }, 
        
        /**
-       * convert string received from server (data-value or options.value) into value object
-       */
+        Converts string received from server into value.
+        
+        @method str2value(str) 
+        @param {string} str
+        @returns {mixed}
+       **/        
        str2value: function(str) {
            return str;
        }, 
        
        /**
-       * set value to input
-       */
+        Sets value of input.
+        
+        @method value2input(value) 
+        @param {mixed} value
+       **/       
        value2input: function(value) {
            this.$input.val(value);
        },
         
        /**
-       * returns value (object) by input 
-       */
+        Returns value of input. Value can be object (e.g. datepicker)
+        
+        @method input2value() 
+       **/         
        input2value: function() { 
            return this.$input.val();
        }, 
 
        /**
-       * method called to focus input again
-       */
+        Activates input. For text it sets focus.
+        
+        @method activate() 
+       **/        
        activate: function() {
            if(this.$input.is(':visible')) {
                this.$input.focus();
@@ -86,11 +113,31 @@
        } 
     };
         
-    Abstract.defaults = {    
+    Abstract.defaults = {  
+        /**
+        HTML template of input. Normally you should not change it.
+
+        @property tpl 
+        @type string
+        @default ''
+        **/   
         tpl: '',
+        /**
+        CSS class automatically applied to input
+
+        @property inputclass 
+        @type string
+        @default span2
+        **/         
         inputclass: 'span2',
-        name: null,
-        placeholder: false
+        /**
+        Name attribute of input
+
+        @property name 
+        @type string
+        @default null
+        **/         
+        name: null
     };
     
     $.extend($.fn.editableform.types, {abstract: Abstract});

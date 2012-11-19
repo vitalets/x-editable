@@ -1,5 +1,5 @@
-/**
-* Editable-form jQuery UI engine
+/*
+Editableform based on jQuery UI
 */
 (function ($) {
     

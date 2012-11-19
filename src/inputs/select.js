@@ -1,6 +1,24 @@
 /**
-* select
-*/
+Select (dropdown) input
+
+@class select
+@extends abstract
+@example
+<a href="#" id="status" data-type="select" data-pk="1" data-url="post.php" data-original-title="Select status"></a>
+<script>
+$(function(){
+    $('#status').editable({
+        value: 2,    
+        source: [
+              {value: 1, text: 'Active'},
+              {value: 2, text: 'Blocked'},
+              {value: 3, text: 'Deleted'}
+           ]
+        }
+    });
+});
+</script>
+**/
 (function ($) {
 
     var Select = function (options) {
@@ -28,13 +46,13 @@
         },
 
         html2value: function (html) {
-            return null; //it's not good idea to set value by text for SELECT. better set NULL
+            return null; //it's not good idea to set value by text for SELECT. Better set NULL
         },
 
         value2html: function (value, element) {
             var deferred = $.Deferred();
             this.onSourceReady(function () {
-                var i, text = null;
+                var i, text = '';
                 if($.isArray(this.sourceData)) {
                     for(i=0; i<this.sourceData.length; i++){
                         /*jshint eqeqeq: false*/
@@ -213,9 +231,36 @@
     });      
 
     Select.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <select></select>
+        **/         
         tpl:'<select></select>',
-        source:null,  //can be string (url), object or array [{value: 1, text: 'abc'}, {...}]
+        /**
+        Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+        Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
+        For compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.      
+
+        @property source 
+        @type string|array|object
+        @default null
+        **/         
+        source:null, 
+        /**
+        Data automatically prepended to the begining of dropdown list.
+        
+        @property prepend 
+        @type string|array|object
+        @default false
+        **/         
         prepend:false,
+        /**
+        Error message shown when list cannot be loaded (e.g. ajax error)
+        
+        @property sourceError 
+        @type string
+        @default Error when loading options
+        **/          
         sourceError: 'Error when loading options'
     });
 

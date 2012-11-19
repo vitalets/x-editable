@@ -1,6 +1,19 @@
 /**
-* text
-*/
+Text input
+
+@class text
+@extends abstract
+@example
+<a href="#" id="username" data-type="text" data-pk="1">awesome</a>
+<script>
+$(function(){
+    $('#username').editable({
+        url: 'post.php',
+        title: 'Enter username'
+    });
+});
+</script>
+**/
 (function ($) {
     var Text = function (options) {
         this.init('text', options, Text.defaults);
@@ -18,7 +31,19 @@
     });
 
     Text.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        tpl: '<input type="text">' 
+        /**
+        @property tpl 
+        @default <input type="text">
+        **/         
+        tpl: '<input type="text">',
+        /**
+        Placeholder attribute of input. Shown when input is empty.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null
     });
 
     $.fn.editableform.types.text = Text;

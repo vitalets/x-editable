@@ -1,5 +1,5 @@
 /**
-* EditableForm utils
+* EditableForm utilites
 */
 (function ($) {
     $.extend($.fn.editableform, {

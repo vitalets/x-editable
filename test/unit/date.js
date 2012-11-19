@@ -16,8 +16,11 @@ $(function () {
      
     asyncTest("popover should contain datepicker with value and save new entered date", function () {
         expect(9);
+        
+        $.fn.editableform.types.date.defaults.datepicker.weekStart = 1;
+        
         var d = '15.05.1984',
-            e = $('<a href="#" data-type="date" data-pk="1" data-weekstart="1" data-url="post-date.php">'+d+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date.php">'+d+'</a>').appendTo(fx).editable({
                 format: f,
                 datepicker: {
                     
@@ -57,9 +60,12 @@ $(function () {
      });  
      
      asyncTest("viewformat, init by text", function () {
+         
+        $.fn.editableform.types.date.defaults.datepicker.weekStart = 1;
+         
         var dview = '15/05/1984',
             d = '1984-05-15',
-            e = $('<a href="#" data-type="date" data-pk="1" data-weekstart="1" data-url="post-date1.php">'+dview+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date1.php">'+dview+'</a>').appendTo(fx).editable({
                 format: 'yyyy-mm-dd',
                 viewformat: 'dd/mm/yyyy',
                 datepicker: {

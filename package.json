@@ -1,9 +1,9 @@
 {
-  "name": "x-editable",
+  "name": "X-editable",
   "title": "X-editable",
   "description": "In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery",
   "version": "1.0.0",
-  "homepage": "https://github.com/vitalets/x-editable",
+  "homepage": "http://github.com/vitalets/x-editable",
   "author": {
     "name": "Vitaliy Potapov",
     "email": "noginsk@rambler.ru"
@@ -19,10 +19,6 @@
     {
       "type": "MIT",
       "url": "https://github.com/vitalets/x-editable/blob/master/LICENSE-MIT"
-    },
-    {
-      "type": "GPL",
-      "url": "https://github.com/vitalets/x-editable/blob/master/LICENSE-GPL"
     }
   ],
   "dependencies": {
@@ -30,8 +26,7 @@
   },
   "devDependencies": {
     "grunt": "~0.3.11",
-    "grunt-contrib": "0.1.1",
-    "moment": "1.7.0"
+    "grunt-contrib": "0.1.1"
   },  
   "keywords": []
 }

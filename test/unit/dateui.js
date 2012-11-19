@@ -20,7 +20,9 @@ $(function () {
             e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date.php">'+dview+'</a>').appendTo(fx).editable({
                 format: 'dd.mm.yyyy',
                 viewformat: 'dd/mm/yyyy',
-                firstDay: 1
+                datepicker: {
+                   firstDay: 1
+                }
             }),
             nextD = '16.05.1984',
             nextDview = '16/05/1984';

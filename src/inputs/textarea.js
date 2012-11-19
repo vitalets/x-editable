@@ -1,6 +1,19 @@
 /**
-* textarea
-*/
+Textarea input
+
+@class textarea
+@extends abstract
+@example
+<a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
+<script>
+$(function(){
+    $('#comments').editable({
+        url: 'post.php',
+        title: 'Enter comments'
+    });
+});
+</script>
+**/
 (function ($) {
 
     var Textarea = function (options) {
@@ -53,8 +66,24 @@
     });
 
     Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        tpl:'<textarea rows="8"></textarea>',
-        inputclass:'span3'
+        /**
+        @property tpl 
+        @default <textarea></textarea>
+        **/          
+        tpl:'<textarea></textarea>',
+        /**
+        @property inputclass 
+        @default span3
+        **/          
+        inputclass:'span3',
+        /**
+        Placeholder attribute of input. Shown when input is empty.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null        
     });
 
     $.fn.editableform.types.textarea = Textarea;    

@@ -1,9 +1,28 @@
 X-editable changelog
 =============================
                  
-Version 1.0.0 wip
+Version 1.0.0 Nov 19, 2012 
 ----------------------------
-Initial release. Based on bootstrap-editable 1.1.4, but strongly refactored.   
-- support of bootstrap, jqueryui or pure jquery as core library
-- directory structure re-arranged: split on several js files
-- all known bugs of bootstrap-editable closed
+Initial release. This library is new life of bootstrap-editable (1.1.4) that was strongly refactored and improved.
+Main features:
+- support not only bootstrap but any core library: bootstrap, jquery-ui or pure jquery 
+- different container classes to show form: popover, tooltip, poshytip, etc
+- inline and popup versions 
+- new directory structure and logic in separate js files allowing easy contribution
+                                                                
+It is not fully compatible with bootstrap-editable but has mainly the same interface and api.
+Here list of differences to help you to upgrade your application:
+
+[change] 'toggle' option value can be only click|manual (not toggling element id). In case of 'manual' you should write handler calling 'show' method.
+[change] 'validate' option cannot be defined as object anymore.
+[change] events 'init', 'update', 'shown', 'hidden' removed. Events 'save', 'cancel' added. Event 'render' remains. 
+[change] input's optiom 'template' renamed to 'tpl' (to exclude conflict with container's template).
+[change] value can be stored internaly as object (previously was always string). Usefull for date inupt.
+[change] 'error' callback option is removed. 'success' callback remained.
+[enh] 'source' option in select can be array of structure [{value: 1, text: 'abc'}, {...}]. This allows to keep ordering of items in dropdown list. Previous format is supported for compability.
+[enh] api method 'setValue' to set manually value of editable.
+[change] locales directory is excluded from bootstrap-datepicker input. If you need localization you should jus download corresponding file from github.
+[change] date and dateui specific options can be set only via 'datepicker' option in first level of config (previously it was possible to set some options directly in config, e.g. weekStart).
+[change] if 'url' option defined as function - it is used as submit method instead of ajax (previously it was dynamically return url string and ajax occured anyway)
+
+Also all known bugs of bootstrap-editable were closed.

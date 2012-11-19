@@ -3,14 +3,14 @@
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.
 
 ## Description
-X-editable is new life of [bootstrap-editable](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and extended. 
+X-editable is new life of [bootstrap-editable](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
 
 ## Demo & Documentation
 
 **http://vitalets.github.com/x-editable**
 
 ## Contributing
-Please make all pull requests against `dev` branch. Thanks!
+Please make all pull requests against `dev` branch. Thanks for your support!
 
 ### Important notes
 Please don't edit files in the `dist` subdirectory as they are generated via grunt. You'll find source code in the `src` subdirectory!
@@ -40,4 +40,4 @@ Note that the `phantomjs` executable needs to be in the system `PATH` for grunt 
 
 ## License
 Copyright (c) 2012 Vitaliy Potapov  
-Licensed under the MIT, GPL licenses.
+Licensed under the MIT licenses.

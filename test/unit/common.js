@@ -83,6 +83,8 @@
         if(!$.browser.webkit && fc.f !== 'jqueryui') {
             ok(p.offset().top > e.offset().top, 'placement ok');
         }
+        
+        //check title
         ok(p.find(':contains("'+title+'")').length, 'title ok');
         e.remove();
       });   

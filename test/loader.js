@@ -54,7 +54,7 @@ function getAssets(f, c, src, libs) {
         js.push(getContainer('editable-tooltip.js'));
 
         //date
-        js.push(inputs+'dateui.js');
+        js.push(inputs+'dateui/dateui.js');
 
         //style
         css.push('style.css');
@@ -67,9 +67,9 @@ function getAssets(f, c, src, libs) {
         js.push(getContainer('editable-poshytip.js'));
 
         //date
-        js.push(inputs+'dateui.js');
-        js.push(libs+'jquery-ui-datepicker/js/jquery-ui-1.9.1.custom.js');    
-        css.unshift(jqueryui+'css/redmond/jquery-ui-1.9.1.custom.css');
+        js.push(inputs+'dateui/dateui.js');
+        js.push(inputs+'dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom.js');    
+        css.unshift(inputs+'dateui/jquery-ui-datepicker/css/smoothness/jquery-ui-1.9.1.custom.css');
 
         //style
         css.push('style.css');    
@@ -83,9 +83,9 @@ function getAssets(f, c, src, libs) {
         js.push(getContainer('editable-popover.js'));
 
         //date
-        js.push(inputs+'date/bootstrap-datepicker.js');
+        js.push(inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js');
         js.push(inputs+'date/date.js');
-        css.push(inputs+'date/datepicker.css');    
+        css.push(inputs+'date/bootstrap-datepicker/css/datepicker.css');    
     }
 
     function getContainer(container) {
