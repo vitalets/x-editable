@@ -179,7 +179,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                this.$container.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-               this.error(xhr.responseText || xhr.statusText || 'Unknown error!'); 
+               this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
                this.showForm();  
             }, this));
         },
@@ -201,13 +201,16 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     pk: pk 
                 });
 
-                //send ajax to server and return deferred object
-                return $.ajax({
-                    url     : (typeof this.options.url === 'function') ? this.options.url.call(this) : this.options.url,
-                    data    : params,
-                    type    : 'post',
-                    dataType: 'json'
-                });
+                if(typeof this.options.url === 'function') { //user's function
+                    return this.options.url.call(this, params);
+                } else {  //send ajax to server and return deferred object
+                    return $.ajax({
+                        url     : this.options.url,
+                        data    : params,
+                        type    : 'post',
+                        dataType: 'json'
+                    });
+                }
             }
         }, 
         
@@ -273,11 +276,21 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/
         type: 'text',
         /**
-        Url for submit
+        Url for submit, e.g. <code>post.php</code>  
+        If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
 
         @property url 
         @type string|function
         @default null
+        @example
+        url: function(params) {
+           if(params.value === 'abc') {
+               var d = new $.Deferred;
+               return d.reject('field cannot be "abc"'); //returning error via deferred object
+           } else {
+               someModel.set(params.name, params.value); //save data in some js model
+           }
+        }        
         **/        
         url:null,
         /**
@@ -488,8 +501,9 @@ Applied as jQuery method.
         innerCss: null, //tbd in child class
         init: function(element, options) {
             this.$element = $(element);
+            //todo: what is in priority: data or js?
             this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableform.utils.getConfigData(this.$element), options);         
-            this.options.trigger = 'manual';
+            this.splitOptions();
             this.initContainer();
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
@@ -498,13 +512,27 @@ Applied as jQuery method.
             }, this));             
         },
 
+        //split options on containerOptions and formOptions
+        splitOptions: function() {
+            this.containerOptions = {};
+            this.formOptions = {};
+            var cDef = $.fn[this.containerName].defaults;
+            for(var k in this.options) {
+              if(k in cDef) {
+                 this.containerOptions[k] = this.options[k];
+              } else {
+                 this.formOptions[k] = this.options[k];
+              } 
+            }
+        },
+        
         initContainer: function(){
-            this.call(this.options);
+            this.call(this.containerOptions);
         },
 
         initForm: function() {
             this.$form = $('<div>')
-            .editableform(this.options)
+            .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this),
                 cancel: $.proxy(this.cancel, this),
@@ -577,7 +605,7 @@ Applied as jQuery method.
                 this.hide();
             }
             /**        
-            Fired when new value was submitted
+            Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
             @event save 
             @param {Object} event event object
@@ -587,8 +615,9 @@ Applied as jQuery method.
             @example
             $('#username').on('save', function(e, params) {
                 //assuming server response: '{success: true}'
+                var pk = $(this).data('editableContainer').options.pk;
                 if(params.response && params.response.success) {
-                    alert('value ' + params.newValue + ' saved!');
+                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
                 } else {
                     alert('error!'); 
                 } 
@@ -606,7 +635,19 @@ Applied as jQuery method.
         **/         
         option: function(key, value) {
             this.options[key] = value;
-            this.call('option', key, value); 
+            if(key in this.containerOptions) {
+                this.containerOptions[key] = value;
+                this.setContainerOption(key, value); 
+            } else {
+                this.formOptions[key] = value;
+                if(this.$form) {
+                    this.$form.editableform('option', key, value);  
+                }
+            }
+        },
+        
+        setContainerOption: function(key, value) {
+            this.call('option', key, value);
         },
 
         /**
@@ -984,6 +1025,26 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             this.hide();
             this.setValue(params.newValue);
+            
+            /**        
+            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
+            
+            @event save 
+            @param {Object} event event object
+            @param {Object} params additional params
+            @param {mixed} params.newValue submitted value
+            @param {Object} params.response ajax response
+            @example
+            $('#username').on('save', function(e, params) {
+                //assuming server response: '{success: true}'
+                var pk = $(this).data('editable').options.pk;
+                if(params.response && params.response.success) {
+                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
+                } else {
+                    alert('error!'); 
+                } 
+            });
+            **/              
         },
 
         validate: function () {
@@ -1497,9 +1558,9 @@ $(function(){
     Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         @property tpl 
-        @default <textarea rows="8"></textarea>
+        @default <textarea></textarea>
         **/          
-        tpl:'<textarea rows="8"></textarea>',
+        tpl:'<textarea></textarea>',
         /**
         @property inputclass 
         @default span3
@@ -1823,6 +1884,11 @@ Editableform based on Twitter Bootstrap
             }         
         },
         
+        splitOptions: function() {
+            this.containerOptions = {};
+            this.formOptions = this.options;
+        },
+        
         tip: function() {
            return this.$form; 
         },
@@ -1892,7 +1958,7 @@ $(function(){
         this.init('date', options, Date.defaults);
         
         //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format', 'weekStart', 'startView']);
+        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format']);
 
         //overriding datepicker config (as by default jQuery extend() is not recursive)
         this.options.datepicker = $.extend({}, Date.defaults.datepicker, directOptions, options.datepicker);
@@ -1954,14 +2020,14 @@ $(function(){
     Date.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         @property tpl 
-        @default <div style="float: left; padding: 0; margin: 0 0 9px 0"></div>
+        @default <div></div>
         **/         
-        tpl:'<div style="float: left; padding: 0; margin: 0 0 9px 0"></div>',
+        tpl:'<div></div>',
         /**
         @property inputclass 
-        @default well
+        @default editable-date well
         **/         
-        inputclass: 'well',
+        inputclass: 'editable-date well',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
