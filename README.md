@@ -1,11 +1,9 @@
 # X-editable
 
-In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.
+In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
+It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
 
-## Description
-X-editable is new life of [bootstrap-editable](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
-
-## Demo & Documentation
+## Demo + Docs + Download
 
 **http://vitalets.github.com/x-editable**
 
