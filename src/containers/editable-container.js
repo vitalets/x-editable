@@ -85,7 +85,7 @@ Applied as jQuery method.
             this.tip().addClass('editable-container');
 
             this.initForm();
-            this.tip().find(this.innerCss).empty().append(this.$form);      
+            this.tip().find(this.innerCss).empty().append(this.$form);     
             this.$form.editableform('render');            
         },
 
