@@ -5,20 +5,20 @@
   <title>Test X-editable</title>
 
   <!-- jquery -->
-  <script src="../libs/jquery/jquery-1.8.2.js"></script>
+  <script src="libs/jquery/jquery-1.8.2.js"></script>
 
   <!-- qunit -->
-  <link rel="stylesheet" href="../libs/qunit/qunit-1.10.0.css" type="text/css" media="screen" />
-  <script src="../libs/qunit/qunit-1.10.0.js"></script>
+  <link rel="stylesheet" href="libs/qunit/qunit-1.10.0.css" type="text/css" media="screen" />
+  <script src="libs/qunit/qunit-1.10.0.js"></script>
   
   <!-- mockjax -->
-  <script src="../libs/mockjax/jquery.mockjax.js"></script>  
+  <script src="libs/mockjax/jquery.mockjax.js"></script>  
   <script src="mocks.js"></script>
   
   <script src="loader.js"></script>
   <script>
       var fc = getFC(),
-      assets = getAssets(fc.f, fc.c, '../src/', '../libs/');
+      assets = getAssets(fc.f, fc.c, '../src/', 'libs/');
       loadAssets(assets.css, assets.js);
       
       var fx, sfx;  

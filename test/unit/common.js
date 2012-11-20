@@ -3,6 +3,7 @@
    module("common", {
        setup: function() {
            fx = $('#async-fixture');
+           $.support.transition = false;
        }
   });
     
