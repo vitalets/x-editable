@@ -277,8 +277,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                  return;
              }
            
-            //if value was not sent to server and value changed --> mark element with unsaved css
-            if(params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
+            //if url is not user's function and value was not sent to server and value changed --> mark element with unsaved css. 
+            if(typeof this.options.url !== 'function' && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
                 this.$element.addClass('editable-unsaved');
             } else {
                 this.$element.removeClass('editable-unsaved');
