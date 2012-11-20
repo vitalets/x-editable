@@ -20,6 +20,12 @@
       var fc = getFC(),
       assets = getAssets(fc.f, fc.c, '../src/', '../libs/');
       loadAssets(assets.css, assets.js);
+      
+      var fx, sfx;  
+      $(function () {
+          $.fx.off = true;
+          $.support.transition = false;
+      });       
   </script>  
 
 </head>

@@ -69,7 +69,7 @@ function getAssets(f, c, src, libs) {
         //date
         js.push(inputs+'dateui/dateui.js');
         js.push(inputs+'dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom.js');    
-        css.unshift(inputs+'dateui/jquery-ui-datepicker/css/smoothness/jquery-ui-1.9.1.custom.css');
+        css.unshift(inputs+'dateui/jquery-ui-datepicker/css/redmond/jquery-ui-1.9.1.custom.css');
 
         //style
         css.push('style.css');    
@@ -92,7 +92,7 @@ function getAssets(f, c, src, libs) {
         return (c === 'inline') ? containers+'/editable-inline.js' : containers + container;
     }  
 
-    js.push('main.js');
+    //js.push('main.js');
     
     return {css: css, js: js};
 }
@@ -117,10 +117,8 @@ function loadCss(url) {
 }
 
 function loadJs(url) {
-    //console.log(url);
     if(!url) return;
     var script = document.createElement("script");
-//    script.src = url+'?'+Math.random(); //debug doesnot work with random
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
 }
