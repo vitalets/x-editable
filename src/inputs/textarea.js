@@ -8,7 +8,7 @@ Textarea input
 <script>
 $(function(){
     $('#comments').editable({
-        url: 'post.php',
+        url: '/post',
         title: 'Enter comments'
     });
 });

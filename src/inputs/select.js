@@ -4,7 +4,7 @@ Select (dropdown) input
 @class select
 @extends abstract
 @example
-<a href="#" id="status" data-type="select" data-pk="1" data-url="post.php" data-original-title="Select status"></a>
+<a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-original-title="Select status"></a>
 <script>
 $(function(){
     $('#status').editable({

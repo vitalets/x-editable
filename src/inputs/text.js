@@ -8,7 +8,7 @@ Text input
 <script>
 $(function(){
     $('#username').editable({
-        url: 'post.php',
+        url: '/post',
         title: 'Enter username'
     });
 });

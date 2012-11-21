@@ -350,7 +350,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     @example
     $('#username').editable({
         type: 'text',
-        url: 'post.php',
+        url: '/post',
         pk: 1
     });
     **/    

@@ -242,7 +242,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         var $form = $('&lt;div&gt;').editableform({
             type: 'text',
             name: 'username',
-            url: 'post.php',
+            url: '/post',
             value: 'vitaliy'
         });
         
@@ -281,7 +281,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/
         type: 'text',
         /**
-        Url for submit, e.g. <code>post.php</code>  
+        Url for submit, e.g. <code>'/post'</code>  
         If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
 
         @property url 

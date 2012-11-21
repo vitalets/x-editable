@@ -186,7 +186,7 @@ Applied as jQuery method.
     @example
     $('#edit').editableContainer({
         type: 'text',
-        url: 'post.php',
+        url: '/post',
         pk: 1,
         value: 'hello'
     });

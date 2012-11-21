@@ -6,7 +6,7 @@ For localization you can include js file from here: https://github.com/eternicod
 @class date
 @extends abstract
 @example
-<a href="#" id="dob" data-type="date" data-pk="1" data-url="post.php" data-original-title="Select date">15/05/1984</a>
+<a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
 <script>
 $(function(){
     $('#dob').editable({
