@@ -1,5 +1,12 @@
 X-editable changelog
 =============================
+          
+
+Version 1.0.1 wip
+----------------------------          
+[enh #6] do not preventDetault() in click when toggle='manual'. This allows to have clickable links (vitalets)         
+[bug #3] should not mark element with unsave css if url is user's function (vitalets)         
+          
                  
 Version 1.0.0 Nov 19, 2012 
 ----------------------------

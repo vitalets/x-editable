@@ -238,14 +238,14 @@ $(function () {
             disabled: true
         });
         ok(e.hasClass('editable-disabled'), 'has disabled class');
-        ok(!e.hasClass('editable-click'), 'does not have click class');
+        ok(e.hasClass('editable-click'), 'has click class');
         
         e.click();
         ok(!e.data('editableContainer'), 'nothing on click');
         
         e.editable('enable');
         ok(!e.hasClass('editable-disabled'), 'does not have disabled class');
-        ok(e.hasClass('editable-click'), 'has click class');
+
         e.click();
         var p = tip(e);
         ok(p.is(':visible'), 'popover shown on click');
@@ -253,7 +253,6 @@ $(function () {
         e.editable('disable');
         p = tip(e);
         ok(e.hasClass('editable-disabled'), 'has disabled class');
-        ok(!e.hasClass('editable-click'), 'does not have click class');
         ok(!p.is(':visible'), 'popover closed');
         
         e.editable('toggleDisabled');
