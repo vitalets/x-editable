@@ -1,15 +1,20 @@
 # X-editable
 
-In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.
+In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
+It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
 
-## Description
-X-editable is new life of [bootstrap-editable](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
-
-## Demo & Documentation
+## Demo + Docs + Download
 
 **http://vitalets.github.com/x-editable**
 
+## Reporting issues
+When creating issues please provide jsFiddle example. You can just fork [this template](http://jsfiddle.net/xBB5x/1/) as starting point.  
+Your feedback is very appreciated!
+
 ## Contributing
+Several steps to start contributing:
+1. [Fork X-editable](https://github.com/vitalets/x-editable/fork)
+2. 
 Please make all pull requests against `dev` branch. Thanks for your support!
 
 ### Important notes
