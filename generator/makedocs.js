@@ -2,8 +2,8 @@ var _ = require("underscore"),
     fs = require('fs'),
     Handlebars = require('handlebars'), 
    
-   output_dir = 'gh-pages/',
-   tpl_dir = 'gh-pages-tpl/',
+   output_dir = './',
+   tpl_dir = 'generator/templates/',
    pages_dir = tpl_dir + 'pages/',
    layouts_dir = tpl_dir + 'layouts/',
    partials_dir = tpl_dir + 'partials/',
@@ -63,9 +63,9 @@ function loadContext() {
     var context = require('./data/data.json'),
         classes = {}, news_content;
         
-    context.project = require('../lib/package.json');
+    context.project = require('../../lib/package.json');
     //linebreaks in news json shoud be ended with \n to parse correctly
-    context.news = JSON.parse(fs.readFileSync('./news.json').toString().replace(/\\n\s*\r?\n\s*/g, '\\n'));
+    context.news = JSON.parse(fs.readFileSync('./generator/news.json').toString().replace(/\\n\s*\r?\n\s*/g, '\\n'));
     context.lastNews = context.news.shift();
     
     //group properties, methods, events
@@ -119,55 +119,6 @@ function loadContext() {
         classes[k].method.sort(sf); 
         classes[k].event.sort(sf); 
     });
-        
-    /*
-    classes = _.chain(classes)
-               .sortBy(function(item) { return exclude.indexOf(item.name); })
-               .map(function(item) { 
-                   var  c = context.classes[item.name],
-                        uses = c.uses ? c.uses.slice() : [];
-                        
-                   if(c.extends) uses.unshift(c.extends);
-                   
-                   //iterate classes used by current class
-                   _.each(uses, function(usedClass) {
-                      //find used class object by name
-                      var o = _.find(classes, function(item) {return item.name === usedClass;});
-                      //iterate properties of used class
-                      _.each(o.property, function(prop) {
-                          //find property with the same name
-                          var exist = _.find(item.property, function(p) { return p.name === prop.name; });
-                          
-                          //merge property to original class
-                          if(exist) {   
-                             _.extend(exist, _.extend({}, prop, exist));
-                          } else {
-                             item.property.push(prop); 
-                          }
-                      }); 
-                   });
-                   
-                   return item;
-               })
-               .value();
-   */            
-//    console.log(classes);                             
-  //  console.log(classes[5].property);                             
-                         
-                         /*
-    for(var k in classes) {
-        if(exclude.indexOf(k) !== -1) continue;
-        var uses = context.classes[k].uses.slice(),
-            options = classes[k].property.slice();
-            alloptions = [];
-            
-        if(context.classes[k].extends) uses.unshift(context.classes[k].extends);
-        
-        uses.forEach(function(item) {
-            alloptions = alloptions.concat(item.property);
-        });
-    }    
-                           */
     
     context.myClasses = classes;   
     context.inputs = inputs;   

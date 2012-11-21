@@ -119,13 +119,14 @@
 &lt;script src=&quot;path/to/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;</pre>
 </li>
 <li>Download corresponding X-editable build from <a href="index.html">Home</a><br><br></li>
-<li>Include <i>popup</i> or <i>inline</i> version of X-editable:</li>
+<li>Include <i>popup</i> or <i>inline</i> version of X-editable (css equal for both):<br>
 popup
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;bootstrap-editable/js/bootstrap-editable.js&quot;&gt;&lt;/script&gt;</pre>
 inline
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;bootstrap-editable/js/bootstrap-editable-inline.js&quot;&gt;&lt;/script&gt;</pre>
+</li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot; data-type=&quot;text&quot; data-pk=&quot;1&quot; data-url=&quot;post.php&quot; data-original-title=&quot;Enter username&quot;&gt;superuser&lt;/a&gt;</pre>
 </li>
@@ -235,10 +236,14 @@ This allows fully keyboard input.</p>
        
         <tr>
             <td>params</td>
-            <td>object</td>
+            <td>object|function</td>
             <td>null</td>
-            <td><p>Additional params for submit</p>
+            <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
 
+            
+                <pre class="prettyprint linenums">params: function() {
+   return { a: 1 };
+}</pre>
             
             </td>
         </tr> 
@@ -247,7 +252,8 @@ This allows fully keyboard input.</p>
             <td>pk</td>
             <td>string|object|function</td>
             <td>null</td>
-            <td><p>Primary key of editable object (e.g. record id in database). Use Object for composite keys.</p>
+            <td><p>Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: &#39;en&#39;}</code>.
+Can be calculated dinamically via function.</p>
 
             
             </td>
@@ -319,7 +325,7 @@ When set to <code>manual</code> you should manually call <code>show/hide</code> 
             <td>url</td>
             <td>string|function</td>
             <td>null</td>
-            <td><p>Url for submit, e.g. <code>post.php</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
+            <td><p>Url for submit, e.g. <code>&#39;/post&#39;</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
 
             
                 <pre class="prettyprint linenums">url: function(params) {
@@ -392,7 +398,7 @@ When set to <code>manual</code> you should manually call <code>show/hide</code> 
             <pre class="prettyprint linenums">
 $('#username').editable({
     type: 'text',
-    url: 'post.php',
+    url: '/post',
     pk: 1
 });</pre>
             
@@ -732,10 +738,14 @@ Please, see also <a href="#inputs">input dependent options</a>.
        
         <tr>
             <td>params</td>
-            <td>object</td>
+            <td>object|function</td>
             <td>null</td>
-            <td><p>Additional params for submit</p>
+            <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
 
+            
+                <pre class="prettyprint linenums">params: function() {
+   return { a: 1 };
+}</pre>
             
             </td>
         </tr> 
@@ -744,7 +754,8 @@ Please, see also <a href="#inputs">input dependent options</a>.
             <td>pk</td>
             <td>string|object|function</td>
             <td>null</td>
-            <td><p>Primary key of editable object (e.g. record id in database). Use Object for composite keys.</p>
+            <td><p>Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: &#39;en&#39;}</code>.
+Can be calculated dinamically via function.</p>
 
             
             </td>
@@ -785,7 +796,7 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>url</td>
             <td>string|function</td>
             <td>null</td>
-            <td><p>Url for submit, e.g. <code>post.php</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
+            <td><p>Url for submit, e.g. <code>&#39;/post&#39;</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
 
             
                 <pre class="prettyprint linenums">url: function(params) {
@@ -858,7 +869,7 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <pre class="prettyprint linenums">
 $('#edit').editableContainer({
     type: 'text',
-    url: 'post.php',
+    url: '/post',
     pk: 1,
     value: 'hello'
 });</pre>
@@ -1073,7 +1084,7 @@ $('#username').on('save', function(e, params) {
 &lt;script&gt;
 $(function(){
     $(&#x27;#username&#x27;).editable({
-        url: &#x27;post.php&#x27;,
+        url: &#x27;/post&#x27;,
         title: &#x27;Enter username&#x27;
     });
 });
@@ -1153,7 +1164,7 @@ $(function(){
 &lt;script&gt;
 $(function(){
     $(&#x27;#comments&#x27;).editable({
-        url: &#x27;post.php&#x27;,
+        url: &#x27;/post&#x27;,
         title: &#x27;Enter comments&#x27;
     });
 });
@@ -1251,7 +1262,7 @@ For compability it also supports format <code>{value1: text1, value2: text2 ...}
 </table>
     </div>
     <div class="tab-pane" id="select-example">
-     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;status&quot; data-type=&quot;select&quot; data-pk=&quot;1&quot; data-url=&quot;post.php&quot; data-original-title=&quot;Select status&quot;&gt;&lt;/a&gt;
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;status&quot; data-type=&quot;select&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select status&quot;&gt;&lt;/a&gt;
 &lt;script&gt;
 $(function(){
     $(&#x27;#status&#x27;).editable({
@@ -1362,7 +1373,7 @@ Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">
 </table>
     </div>
     <div class="tab-pane" id="date-example">
-     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;dob&quot; data-type=&quot;date&quot; data-pk=&quot;1&quot; data-url=&quot;post.php&quot; data-original-title=&quot;Select date&quot;&gt;15/05/1984&lt;/a&gt;
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;dob&quot; data-type=&quot;date&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select date&quot;&gt;15/05/1984&lt;/a&gt;
 &lt;script&gt;
 $(function(){
     $(&#x27;#dob&#x27;).editable({
@@ -1472,7 +1483,7 @@ Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jq
 </table>
     </div>
     <div class="tab-pane" id="dateui-example">
-     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;dob&quot; data-type=&quot;date&quot; data-pk=&quot;1&quot; data-url=&quot;post.php&quot; data-original-title=&quot;Select date&quot;&gt;15/05/1984&lt;/a&gt;
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;dob&quot; data-type=&quot;date&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select date&quot;&gt;15/05/1984&lt;/a&gt;
 &lt;script&gt;
 $(function(){
     $(&#x27;#dob&#x27;).editable({
