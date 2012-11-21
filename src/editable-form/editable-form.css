@@ -28,6 +28,7 @@
 .editableform textarea {
     vertical-align: top; 
     display: inline-block;
+    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
 }
 
 .editableform textarea {

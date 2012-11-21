@@ -278,7 +278,8 @@ $(function () {
      asyncTest("submit to url defined as function", function () {
         expect(3);
         var newText = 'qwe',
-            e = $('<a href="#" data-pk="1" id="a"></a>').appendTo(fx).editable({
+            //should be called even without pk!
+            e = $('<a href="#" data-pk1="1" id="a"></a>').appendTo(fx).editable({
             url: function(params) {
                ok(params.value, newText, 'new text passed in users function');
                var d = new $.Deferred;

@@ -73,10 +73,12 @@ function getAssets(f, c, src, libs) {
 
         //style
         css.push('style.css');    
-    } else {      //bootstrap
+    /* bootstrap */        
+    } else {      
         //core
         js.unshift(bootstrap+'js/bootstrap.js')
         css.unshift(bootstrap+'css/bootstrap.css');
+        css.unshift(bootstrap+'css/bootstrap-responsive.css');
 
         //editable
         js.push(forms+'editable-form-bootstrap.js');
