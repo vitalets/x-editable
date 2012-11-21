@@ -1,0 +1,16 @@
+[
+ {  "date": "19/11/2012",
+    "header": "Version 1.0.0 released!",
+    "content": "Initial release of X-editable.\n
+        This library is new life of <a href='http://vitalets.github.com/bootstrap-editable' target='_blank'>bootstrap-editable plugin</a> (1.1.4) that was strongly refactored and improved.\n
+        Main reasons caused re-branding and creation of new project are:\n 
+        <ul>\n
+        <li>support not only bootstrap but any core library: bootstrap, jquery-ui or pure jquery</li>\n    
+        <li>different container classes to show form:<br> popover, tooltip, poshytip</li>\n
+        <li>inline and popup modes</li>\n
+        <li>new directory structure and logic in separate js files allowing easy extending</li>\n
+        </ul>\n
+        Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade instructions.\n      
+     "
+ }
+]

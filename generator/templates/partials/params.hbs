@@ -1,0 +1,17 @@
+{{#if this}}
+<ul>
+    {{#each this}}
+    <li><strong>{{name}}</strong> <i>{{type}}</i> {{{description}}}
+        {{#if props}}
+        <ul type="circle" style="margin-left: 20px">
+            {{#props}}
+            <li><strong>{{name}}</strong> <i>{{type}}</i> {{{description}}}
+            {{/props}}
+        </ul>
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>
+{{else}}
+<i>none</i>
+{{/if}}

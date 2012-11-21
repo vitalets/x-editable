@@ -1,0 +1,29 @@
+<p>All options can be defined as <code>data-*</code> attributes.
+{{#if mainClass}}Please, see also <a href="#inputs">input dependent options</a>.{{/if}}
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each property}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{type}}</td>
+            <td>{{default}}</td>
+            <td>{{md description}}
+            {{#if example}}
+                {{#source}}
+                    {{{example}}}
+                {{/source}}
+            {{/if}}
+            </td>
+        </tr> 
+       {{/each}}                             
+    </tbody>
+</table>

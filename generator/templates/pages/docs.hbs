@@ -1,0 +1,48 @@
+
+{{>subnavbar}}
+
+<div class="row">
+    <div class="span12">
+        <section id="gettingstarted">
+            <h1>Getting started</h1>    
+            {{>getstarted}}
+        </section>
+        <hr>
+        <section id="editable">
+            <h1>$().editable(options)</h1>
+            <p>{{{classes.editable.description}}}</p>
+            {{#with myClasses.editable}}
+            {{>classtabs}}
+            {{/with}}
+        </section>
+        <hr>
+        <section id="editableContainer">
+            <h1>$().editableContainer(options)</h1>
+            <p>{{{classes.editableContainer.description}}}</p>
+            {{#with myClasses.editableContainer}}
+            {{>classtabs}}
+            {{/with}}
+        </section>
+        <hr>
+        <section id="inputs">
+            <h1>Inputs</h1>
+            {{#each inputs}}
+                <h2>{{name}}</h2>
+                <p>{{md description}}</p>
+                {{>inputtabs}}
+            {{/each}}            
+        </section>
+        <hr>
+        <section id="newrecord">
+            <h1>Creating new record</h1>
+            {{>newrecord}}
+        </section>
+        <hr>
+        <section id="diagram">
+            <h1>Class diagram</h1>    
+            {{>diagram}}
+        </section>
+        <br>        
+        <p>If you have questions, ideas or find a bug - please feel free to open issue on <a href="{{project.homepage}}/issues" target="_blank">X-editable github page</a>.</p>
+    </div>
+</div>

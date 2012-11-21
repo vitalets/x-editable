@@ -1,0 +1,97 @@
+<p>
+    Creating <strong>new record</strong> is a bit problem for editable interface because primary key (record id) is yet <i>unknown</i> and in-place-editing has no related object on backend.
+    In that case element will store new value inside and will not submit anything to server until you do it manually. This is automatic behavior when <code>pk</code> option is empty and <code>send='auto'</code>.
+    To submit manually several editable fields use <code>submit()</code> method. Try example below to see how it works.
+</p>
+
+<script src="assets/newrecord.js"></script>         
+
+<h4>Live example - creating new user:</h4>
+<div style="width: 40%">
+    <div id="msg" class="alert hide"></div>
+    <table id="user" class="table table-bordered table-striped">
+        <tbody> 
+            <tr>         
+                <td width="40%">Username</td>
+                <td><a href="#" class="myeditable" id="new_username" data-type="text" data-name="username" data-original-title="Enter username"></a></td>
+            </tr>
+            <tr>         
+                <td>First name</td>
+                <td><a href="#" class="myeditable" data-type="text" data-name="firstname" data-original-title="Enter firstname"></a></td>
+            </tr>  
+            <tr>         
+                <td>Group</td>
+                <td><a href="#" class="myeditable" data-type="select" data-name="group" data-source="groups.php" data-original-title="Select group"></a></td>
+            </tr>     
+            <tr>         
+                <td>Date of birth</td>
+                <td><a href="#" class="myeditable" data-type="date" data-name="dob" data-viewformat="dd/mm/yyyy" data-original-title="Select Date of birth"></a></td>
+            </tr>  
+            <tr>         
+                <td>Comments</td>
+                <td><a href="#" class="myeditable" data-type="textarea" data-name="comments" data-original-title="Enter comments"></a></td>
+            </tr> 
+        </tbody>
+    </table>
+    <button id="save-btn" class="btn btn-primary">Save new user!</button>
+</div>  
+
+<br>
+<p>Initialization performed without <code>pk</code> option:</p>
+{{#source}}
+//init editables 
+$('.myeditable').editable({
+    url: 'post.php' //this url will not be used for creating new user, it is only for update
+});
+
+//make username required
+$('#new_username').editable('option', 'validate', function(v) {
+    if(v == '') return 'Required field!';
+});
+{{/source}}
+
+ <p>When you enter data first time - nothing sent to server, but all values are stored.<br>
+ When you click on save button method <code>submit</code> is called. It runs validation for all fields and if no errors - submits to server.<br>
+ If server response is like <code>{id: &lt;new-record-id&gt;}</code> it automatically stores <i>id</i> into <code>pk</code> value of all editables and they start working in regular way.<br>
+ Two callbacks <code>success</code> and <code>error</code> allow to process response.</p>
+{{#source}}
+$('#save-btn').click(function() {
+    $('.myeditable').editable('submit', { //call submit
+        url: 'new.php', //url for creating new user
+        success: function(data) {
+            var msg = 'New user created! Now editables work in regular way.';
+            $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
+            $('#save-btn').hide();
+        },
+        error: function(data) {
+            var msg = '';
+            if(data.errors) { //validation error, no matter server-side or client-side
+                $.each(data.errors, function(k, v) { msg += k+": "+v+"<br>"; });
+            } else if(data.responseText) { //ajax error
+                msg = data.responseText;
+            }
+            $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
+        }
+    });
+});
+{{/source}}    
+<p><code>error(obj)</code> callback is called in one of three possible error scenarios:</p>
+<ul>
+    <li>
+        <strong>client-side validation error</strong><br>
+        Callback parameter <code>obj</code> is hash object containing field names and errors. E.g.
+        {{#source}}
+        { errors: {username: 'Required field!'} }
+        {{/source}}
+    </li>
+    <li>
+        <strong>server-side validation error</strong><br>
+        Server response pattern must <strong>not</strong> be like: <code>{id: &lt;something&gt;}</code>. Good solution is response like <code>{errors: &lt;object with error messages&gt;}</code>
+        to have silimar handling of server-side and client-side validation errors.<br> 
+        Callback parameter <code>obj</code> is hash object containing field names and errors (the same as previous).<br><br>
+    </li>
+    <li>
+        <strong>ajax error, http status != 200</strong><br>
+        Callback parameter <code>obj</code> is xhr object.
+    </li>
+</ul>

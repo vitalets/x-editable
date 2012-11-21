@@ -1,0 +1,27 @@
+<div id="subnav" class="navbar navbar navbar-fixed-top" style="margin-top: 40px">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav">
+                <li><a href="#gettingstarted">getting started</a></li>
+                <li><a href="#editable">$().editable</a></li>
+                <li><a href="#editableContainer">$().editableContainer</a></li>
+                <li><a href="#inputs">inputs</a></li>
+                <li><a href="#newrecord">creating new record</a></li>
+                <li><a href="#diagram">class diagram</a></li>                
+            </ul>
+        </div>  
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('body').scrollspy({
+            target: '#subnav',
+            offset: 100
+        });
+        
+        $('#subnav a').mousedown(function(){
+             $('body').scrollspy('refresh');
+        });
+    });
+</script>

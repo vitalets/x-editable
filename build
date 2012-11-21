@@ -1,0 +1,41 @@
+startdir=$(pwd)
+
+if [ $(expr match $1 ".*data.*") -gt 0 ] 
+then
+  yuidoc -p -o generator/data -x ..\\lib\\src\\inputs\\date\\bootstrap-datepicker\\js\\locales,..\\lib\\src\\inputs\\dateui\\jquery-ui-datepicker  ../lib/src
+fi
+
+if [ $(expr match $1 ".*dist.*") -gt 0 ] 
+then
+  #clear
+  rm -rf assets/x-editable/**
+  
+  #copy dist
+  cp -R ../lib/dist/** assets/x-editable  
+  
+  #create zip
+  version=$(head -1 assets/x-editable/bootstrap-editable/js/bootstrap-editable.js | sed -n 's/^.*v\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p') 
+  mkdir -p assets/zip 
+  cd assets/x-editable
+  files="LICENSE-MIT README.md CHANGELOG.txt"
+  
+  zipfile=../zip/bootstrap-editable-$version.zip
+  rm -f $zipfile
+  zip -rT $zipfile bootstrap-editable $files
+
+  zipfile=../zip/jqueryui-editable-$version.zip
+  rm -f $zipfile
+  zip -rT $zipfile jqueryui-editable $files
+
+  zipfile=../zip/jquery-editable-$version.zip
+  rm -f $zipfile
+  zip -rT $zipfile jquery-editable $files
+  
+  cd $startdir  
+fi
+
+if [ $(expr match $1 ".*docs.*") -gt 0 ] 
+then
+  node generator/makedocs.js
+fi
+

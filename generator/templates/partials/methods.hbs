@@ -1,0 +1,23 @@
+<p>All methods can be called as <code>$().{{name}}('method', params);</code></p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 20%;">Method</th>
+            <th style="width: 20%;">Parameters</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each method}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{#with params}}{{>params}}{{/with}}</td>
+            <td>{{{description}}}
+            {{#if example}}
+            <pre class="prettyprint linenums">{{{example}}}</pre>
+            {{/if}}
+            </td>
+        </tr> 
+       {{/each}}                             
+    </tbody>
+</table>

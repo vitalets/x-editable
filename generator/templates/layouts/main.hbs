@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{project.name}} :: {{project.description}}</title>
+        <!-- jquery -->
+        <script src="assets/jquery/jquery-1.8.2.min.js"></script>
+
+        <!-- bootstrap -->
+        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">  
+        <script src="assets/bootstrap/js/bootstrap.js"></script>
+
+        <!-- prettify -->  
+        <link rel="stylesheet" href="assets/prettify/prettify-bootstrap.css">    
+        <script src="assets/prettify/prettify.js"></script> 
+
+        <!-- in docs page include bootstrap-editable for creating new record example -->
+        {{#if_eq page "docs"}}
+        <!-- mockjax -->
+        <script src="assets/mockjax/jquery.mockjax.js"></script>
+        
+        <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+        {{/if_eq}}
+        
+        <!-- main css -->  
+        <link rel="stylesheet" href="assets/main.css">     
+    </head>
+    <body>
+        
+        {{>navbar}}
+
+        <div class="container">
+        
+            {{>layout_content}}
+            
+            <footer class="footer">
+            <hr>
+                <p>X-editable &copy; <a href="http://github.com/vitalets">Vitaliy Potapov</a> 2012. Released under the MIT license.</p> 
+            </footer>
+        </div> <!--/container-->
+        
+        {{>metrika}}
+        
+        <!-- main.js -->
+        <script src="assets/main.js"></script>
+    </body>
+</html>

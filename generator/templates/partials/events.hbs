@@ -1,0 +1,22 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Event</th>
+            <th style="width: 30%;">Callback parameters</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each event}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{#with params}}{{>params}}{{/with}}</td>
+            <td>{{{description}}}
+            {{#if example}}
+            <pre class="prettyprint linenums">{{{example}}}</pre>
+            {{/if}}
+            </td>
+        </tr> 
+       {{/each}}                             
+    </tbody>
+</table>

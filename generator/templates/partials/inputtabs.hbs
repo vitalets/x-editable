@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs" id="{{name}}-tabs">
+    <li class="active"><a href="#{{name}}-options" data-toggle="tab">Options</a></li>
+    <li><a href="#{{name}}-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="{{name}}-options">
+      {{>options}}
+    </div>
+    <div class="tab-pane" id="{{name}}-example">
+     {{#source}}
+        {{{example}}}
+     {{/source}}
+    </div>
+</div>
