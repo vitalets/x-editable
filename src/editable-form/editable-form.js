@@ -11,7 +11,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     
     var EditableForm = function (element, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
-        this.$div = $(element); //div (usually), containing form
+        this.$element = $(element); //div (usually), containing form. not form tag!
         this.initInput();
     };
 
@@ -42,7 +42,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/        
         render: function() {
             this.$loading = $($.fn.editableform.loading);        
-            this.$div.empty().append(this.$loading);
+            this.$element.empty().append(this.$loading);
             this.showLoading();
            
             this.initTemplate(); 
@@ -52,7 +52,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event rendering 
             @param {Object} event event object
             **/            
-            this.$div.triggerHandler('rendering');
+            this.$element.triggerHandler('rendering');
             
             //render input
             $.when(this.input.render())
@@ -62,7 +62,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 //attach 'cancel' handler
                 this.$form.find('button[type=button]').click($.proxy(this.cancel, this));
                 //append form to container
-                this.$div.append(this.$form);
+                this.$element.append(this.$form);
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('button[type=submit]').attr('disabled', true);
@@ -83,7 +83,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event cancel 
             @param {Object} event event object
             **/              
-            this.$div.triggerHandler('cancel');
+            this.$element.triggerHandler('cancel');
         },
         showLoading: function() {
             var fw, fh, iw, ih;
@@ -113,7 +113,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event show 
             @param {Object} event event object
             **/                    
-            this.$div.triggerHandler('show');
+            this.$element.triggerHandler('show');
         },
         
         error: function(msg) {
@@ -174,7 +174,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                        if(params.newValue === 'username') {...}
                    });                    
                **/                
-               this.$div.triggerHandler('save', {newValue: newValue, response: response});
+               this.$element.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
                this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
