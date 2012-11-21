@@ -4,6 +4,7 @@ $(function () {
        setup: function() {
            fx = $('#async-fixture');
            $.fn.editable.defaults.name = 'name1';
+           $.support.transition = false;
        }
    });
       
@@ -241,6 +242,38 @@ $(function () {
         }, timeout);             
         
       });
+      
+    asyncTest("params as function", function () {
+        var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({
+             name: 'username',
+             params: function(params) {
+                 equal(params.pk, 1, 'params in func already have values (pk)');
+                 return { q: 2, pk: 3 };
+             },
+             success: function(resp) {   
+                 equal(resp.dataType, 'json', 'dataType ok');
+                 equal(resp.data.pk, 3, 'pk ok');
+                 equal(resp.data.name, 'username', 'name ok');
+                 equal(resp.data.value, newText, 'value ok');
+                 equal(resp.data.q, 2, 'additional params ok');
+             } 
+          }),  
+          newText = 'cd<e>;"'
+
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });      
+      
       
      asyncTest("submit to url defined as function", function () {
         expect(3);

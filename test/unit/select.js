@@ -37,6 +37,7 @@ $(function () {
             $.fn.editable.defaults.name = 'name1';
             //clear cache
             $(document).removeData('groups.php-'+$.fn.editable.defaults.name);
+            $.support.transition = false;
         }
     });  
 
