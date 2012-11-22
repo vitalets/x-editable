@@ -220,7 +220,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
                     value: this.value,
-                    autohide: false
+                    autohide: false //element itsef will show/hide container
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
@@ -243,22 +243,22 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Hides container with form
         @method hide()
         **/       
-        hide: function () {
-            if(this.container && this.container.tip().is(':visible')) {
+        hide: function () {   
+            if(this.container) {  
                 this.container.hide();
-                
-                //return focus on element
-                if (this.options.enablefocus && this.options.toggle === 'click') {
-                    this.$element.focus();
-                }                
             }
+                
+            //return focus on element
+            if (this.options.enablefocus && this.options.toggle === 'click') {
+                this.$element.focus();
+            }                
         },
         
         /**
         Toggles container visibility (show / hide)
         @method toggle()
         **/  
-        toggle: function () {
+        toggle: function() {
             if(this.container && this.container.tip().is(':visible')) {
                 this.hide();
             } else {
@@ -270,16 +270,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         * called when form was submitted
         */          
         save: function(e, params) {
-             var error, form;
-             
-             //if sent to server, call success callback. if it return string --> show error
-             if((params.response !== undefined) && (error = this.options.success.call(this, params.response, params.newValue))) {
-                 form = this.container.tip().find('form').parent().data('editableform');
-                 form.error(error);
-                 form.showForm();
-                 return;
-             }
-           
             //if url is not user's function and value was not sent to server and value changed --> mark element with unsaved css. 
             if(typeof this.options.url !== 'function' && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
                 this.$element.addClass('editable-unsaved');
@@ -539,20 +529,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @type mixed
         @default element's text
         **/
-        value: null,
-        /**
-        Success callback. Called when value successfully sent on server and response status = 200.
-        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
-        
-        @property success 
-        @type function
-        @default null
-        @example
-        success: function(response, newValue) {
-            if(!response.success) return response.msg;
-        }
-        **/          
-        success: function(response, newValue) {} 
+        value: null
     };
     
 }(window.jQuery));

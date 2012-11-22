@@ -167,6 +167,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //sending data to server
             $.when(this.save(newValueStr))
             .done($.proxy(function(response) {
+                var error;
+                //call success callback. if it returns string --> show error
+                if(error = this.options.success.call(this, response, newValue)) {
+                    this.error(error);
+                    this.showForm();
+                    return;
+                }                
+                
                //clear error message
                this.error(false);   
                this.value = newValue;
@@ -367,7 +375,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             }
         }
         **/         
-        validate: null
+        validate: null,
+        /**
+        Success callback. Called when value successfully sent on server and response status = 200.
+        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
+        
+        @property success 
+        @type function
+        @default null
+        @example
+        success: function(response, newValue) {
+            if(!response.success) return response.msg;
+        }
+        **/          
+        success: function(response, newValue) {}         
     };   
 
     /*

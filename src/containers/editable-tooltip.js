@@ -63,7 +63,11 @@
         },  
         
         hide: function() {
-            this.call('close');      
+            if(!this.tip() || !this.tip().is(':visible')) {
+                return;
+            }            
+            this.call('close'); 
+            this.$element.triggerHandler('hidden');     
         },
         
         setPosition: function() {

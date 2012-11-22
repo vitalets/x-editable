@@ -107,8 +107,30 @@ Applied as jQuery method.
         Hides container with form
         @method hide()
         **/         
-        hide: function() {
+        hide: function() {  
+            if(!this.tip() || !this.tip().is(':visible')) {
+                return;
+            }
             this.call('hide');
+            /**        
+            Fired when container was hidden. It occurs on both save or cancel.
+
+            @event hidden 
+            @param {Object} event event object
+            **/             
+            this.$element.triggerHandler('hidden');   
+        },
+        
+        /**
+        Toggles container visibility (show / hide)
+        @method toggle()
+        **/          
+        toggle: function() {
+            if(this.tip && this.tip().is(':visible')) {
+                this.hide();
+            } else {
+                this.show();
+            } 
         },
 
         /*
@@ -119,12 +141,12 @@ Applied as jQuery method.
             //tbd in child class
         },
 
-        cancel: function() {
+        cancel: function() {     
             if(this.options.autohide) {
                 this.hide();
             }
             /**        
-            Fired when form was cancelled
+            Fired when form was cancelled by user
             
             @event cancel 
             @param {Object} event event object

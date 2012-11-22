@@ -179,8 +179,8 @@ $(function () {
      });  
               
      
-     asyncTest("events: shown / cancel", function () {
-        expect(2);
+     asyncTest("events: shown / cancel / hidden", function () {
+        expect(3);
         var val = '1',
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
@@ -192,7 +192,12 @@ $(function () {
         e.on('cancel', function(event) {
              var editable = $(this).data('editable');
              ok(true, 'cancel triggered'); 
-        });        
+        });     
+        
+        e.on('hidden', function(event) {
+             var editable = $(this).data('editable');
+             ok(true, 'hidden triggered'); 
+        });            
         
         e.editable({
             source: 'groups.php',
@@ -209,7 +214,38 @@ $(function () {
              }, timeout);
         }, timeout);                                        
         
-     });     
+     });    
+     
+     asyncTest("event: save / hidden", function () {
+        expect(2);
+        var val = '1',
+            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
+        
+        e.on('save', function(event, params) {
+            var editable = $(this).data('editable');
+            equal(params.newValue, 2, 'save triggered, value correct');
+        });
+        
+        e.on('hidden', function(event) {
+             var editable = $(this).data('editable');
+             ok(true, 'hidden triggered'); 
+        });         
+        
+        e.editable({
+            source: 'groups.php',
+        });
+        
+        e.click();
+        var p = tip(e);
+        p.find('select').val(2);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+             p.find('button[type=button]').click(); 
+             e.remove();    
+             start();  
+        }, timeout);                                        
+     });       
   
    
      test("show/hide/toggle methods", function () {
@@ -375,7 +411,7 @@ $(function () {
      }); 
      
      
-     test("setValue", function () {
+     test("setValue method", function () {
         var e = $('<a href="#" data-name="name" data-type="select" data-url="post.php"></a>').appendTo('#qunit-fixture').editable({
             value: 1,
             source: groups

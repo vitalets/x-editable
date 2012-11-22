@@ -186,13 +186,14 @@ $(function () {
         }, timeout);                     
       });       
       
-     asyncTest("should show error if success callback return string", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
-             success: function(data) {
+     asyncTest("should show error if success callback returns string", function () {
+        var newText = 'cd<e>;"',
+            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
+             success: function(response, newValue) {
+                 equal(newValue, newText, 'value in success passed correctly');
                  return 'error';
              } 
-          }),  
-          newText = 'cd<e>;"'
+          });  
 
         e.click()
         var p = tip(e);
@@ -211,7 +212,7 @@ $(function () {
            start();  
         }, timeout);             
         
-      })   
+      });   
    
       asyncTest("should submit all required params", function () {
         var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({

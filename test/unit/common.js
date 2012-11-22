@@ -107,7 +107,7 @@
         ok(!p2.is(':visible'), 'popover2 closed');
       });
       
-     test("click outside popoover should hide it", function () {
+     test("click outside container should hide it", function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable(),
             e1 = $('<div>').appendTo('body');
         

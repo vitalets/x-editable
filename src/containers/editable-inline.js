@@ -41,12 +41,18 @@
         }, 
         
         hide: function () {
+            if(!this.tip() || !this.tip().is(':visible')) {
+                return;
+            }            
             this.$form.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
                 //return focus on element
                 if (this.options.enablefocus) {
                     this.$element.focus();
-                }                
+                }  
+                
+                //trigger event
+                this.$element.triggerHandler('hidden');              
             }, this)); 
         },
         
