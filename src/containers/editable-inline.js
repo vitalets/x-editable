@@ -11,7 +11,7 @@
                  
         initContainer: function(){
             //no init for container
-            //only convert anim to miliseconds
+            //only convert anim to miliseconds (int)
             if(!this.options.anim) {
                 this.options.anim = 0;
             }         

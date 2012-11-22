@@ -54,8 +54,17 @@ Applied as jQuery method.
             .on({
                 save: $.proxy(this.save, this),
                 cancel: $.proxy(this.cancel, this),
-                show: $.proxy(this.setPosition, this),
-                rendering: $.proxy(this.setPosition, this)
+                show: $.proxy(this.setPosition, this), //re-position container every time form is shown (after loading state)
+                rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
+                rendered: $.proxy(function(){
+                    /**        
+                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+                    
+                    @event shown 
+                    @param {Object} event event object
+                    **/                      
+                    this.$element.triggerHandler('shown');
+                }, this) 
             });
             return this.$form;
         },        
@@ -94,7 +103,7 @@ Applied as jQuery method.
         @method hide()
         **/         
         hide: function() {
-            this.call('hide'); 
+            this.call('hide');
         },
 
         /*
@@ -110,7 +119,7 @@ Applied as jQuery method.
                 this.hide();
             }
             /**        
-            Fired when form was cancelled by user
+            Fired when form was cancelled
             
             @event cancel 
             @param {Object} event event object

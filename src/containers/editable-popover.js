@@ -6,11 +6,6 @@
 (function ($) {
 
     //extend methods
-    /**
-    Container based on Bootstrap Popover
-
-    @class editableContainer (popover)
-    **/    
     $.extend($.fn.editableContainer.Constructor.prototype, {
         containerName: 'popover',
         innerCss: '.popover-content p',

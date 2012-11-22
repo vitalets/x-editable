@@ -6,11 +6,6 @@
 (function ($) {
     
     //extend methods
-    /**
-    Container based on jQuery UI Tooltip
-
-    @class editableContainer (tooltip)
-    **/    
     $.extend($.fn.editableContainer.Constructor.prototype, {
         containerName: 'tooltip',
         innerCss: '.ui-tooltip-content', 

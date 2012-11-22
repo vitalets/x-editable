@@ -74,6 +74,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     this.input.value2input(this.value);
                     this.$form.submit($.proxy(this.submit, this));
                 }
+                
+                /**        
+                Fired when form is rendered
+                @event rendered
+                @param {Object} event event object
+                **/            
+                this.$element.triggerHandler('rendered');                
+                
                 this.showForm();
             }, this));
         },

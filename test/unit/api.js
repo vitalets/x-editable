@@ -50,12 +50,6 @@ $(function () {
         //validate again
         var errors = e.editable('validate'); 
         ok($.isEmptyObject(errors), 'validation ok');  
-        
-        /* 
-        equal(e.filter('.editable-unsaved').length, 2, 'editable-unsaved exist');
-        e.editable('markAsSaved');      
-        ok(!e.filter('.editable-unsaved').length, 'editable-unsaved not exist');
-        */
     });
     
     test("getValue with originally empty elements", function () {
@@ -183,23 +177,21 @@ $(function () {
         }, timeout);                                        
         
      });  
+              
      
-     //shown / hidden events are totally depend on container.           
-    /* 
-     asyncTest("'shown' / 'hidden' events", function () {
-        expect(3);
+     asyncTest("events: shown / cancel", function () {
+        expect(2);
         var val = '1',
-            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text1" data-value="'+val+'"></a>').appendTo(fx);
+            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
-        e.on('shown', function(event, editable) {
-             var p = $(this).data('popover').$tip;
-             ok(p.is(':visible'), 'popover shown');  
-             equal(editable.value, val, 'show triggered, value correct');
+        e.on('shown', function(event) {
+             var editable = $(this).data('editable');
+             equal(editable.value, val, 'shown triggered, value correct');
         });
         
-        e.on('hidden', function(event, editable) {
-             var p = $(this).data('popover').$tip;
-             ok(!p.is(':visible'), 'popover hidden'); 
+        e.on('cancel', function(event) {
+             var editable = $(this).data('editable');
+             ok(true, 'cancel triggered'); 
         });        
         
         e.editable({
@@ -211,14 +203,14 @@ $(function () {
         setTimeout(function() {
              var p = tip(e);
              p.find('button[type=button]').click(); 
-             
-             e.remove();    
-             start();  
+             setTimeout(function() {
+                 e.remove();    
+                 start();  
+             }, timeout);
         }, timeout);                                        
         
      });     
-    */ 
-
+  
    
      test("show/hide/toggle methods", function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable();

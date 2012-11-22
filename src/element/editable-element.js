@@ -290,7 +290,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.setValue(params.newValue);
             
             /**        
-            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
+            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
             @event save 
             @param {Object} event event object
@@ -307,7 +307,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     alert('error!'); 
                 } 
             });
-            **/              
+            **/
+            //event itself is triggered by editableContainer. Description here is only for documentation              
         },
 
         validate: function () {
