@@ -62,6 +62,11 @@ Applied as jQuery method.
                     
                     @event shown 
                     @param {Object} event event object
+                    @example
+                    $('#username').on('shown', function() {
+                         var $tip = $(this).data('editableContainer').tip();
+                         $tip.find('input').val('overwriting value of input..');
+                    });                     
                     **/                      
                     this.$element.triggerHandler('shown');
                 }, this) 
