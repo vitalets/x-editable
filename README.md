@@ -5,43 +5,64 @@ It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/boots
 
 ## Demo + Docs + Download
 
-**http://vitalets.github.com/x-editable**
+See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
-When creating issues please provide jsFiddle example. You can just fork [this template](http://jsfiddle.net/xBB5x/1/) as starting point.  
+When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/1/) as starting point.  
 Your feedback is very appreciated!
 
-## Contributing
-Several steps to start contributing:
-1. [Fork X-editable](https://github.com/vitalets/x-editable/fork)
-2. 
-Please make all pull requests against `dev` branch. Thanks for your support!
+## Contribution
+A few steps how to start contributing:  
 
-### Important notes
-Please don't edit files in the `dist` subdirectory as they are generated via grunt. You'll find source code in the `src` subdirectory!
-While grunt can run the included unit tests via PhantomJS, this shouldn't be considered a substitute for the real thing. Please be sure to test the `test/*.html` unit test file(s) in _actual_ browsers.
+1.[Fork X-editable](https://github.com/vitalets/x-editable/fork)  
 
-### Installing grunt
-_This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/) installed already._
+2.Arrange local directory structure. It should be:  
+**x-editable**  
+ | -- **lib** (repo related to <code>dev</code> and <code>master</code> branches)  
+ | -- **gh-pages** (repo related to <code>gh-pages</code> branch for docs & demo)  
+ | -- **playground** (simple node-server and html page for testing, [playground.zip](https://github.com/downloads/vitalets/x-editable/playground.zip))      
 
-1. Test that grunt is installed globally by running `grunt --version` at the command-line.
-1. If grunt isn't installed globally, run `npm install -g grunt` to install the latest version. _You may need to run `sudo npm install -g grunt`._
-1. From the root directory of this project, run `npm install` to install the project's dependencies.
+To make it easy follow this script ( _assuming you have [nodejs](http://nodejs.org) installed_ ).
+Please replace <code>&lt;your-github-name&gt;</code> with your name:
+````
+mkdir x-editable
+cd x-editable
 
-### Installing PhantomJS
+#lib
+git clone https://github.com/<your-github-name>/x-editable.git -b dev lib
+cd lib
+#install gruntjs globally - building tool
+npm install -g grunt 
+#install other dependencies - grunt-contrib
+npm install 
+cd ..
 
-In order for the qunit task to work properly, [PhantomJS](http://www.phantomjs.org/) must be installed and in the system PATH (if you can run "phantomjs" at the command line, this task should work).
+#gh-pages
+git clone https://github.com/<your-github-name>/x-editable.git -b gh-pages gh-pages
+cd gh-pages
+npm install 
+cd ..
 
-Unfortunately, PhantomJS cannot be installed automatically via npm or grunt, so you need to install it yourself. There are a number of ways to install PhantomJS.
+#playground 
+#download playground.zip from https://github.com/downloads/vitalets/x-editable/playground.zip
+unzip playground.zip
+cd playground
+npm install 
+````  
+3.That's it! You can start editing files in **lib/src** directory or create new editable input/container/whatever.  
+To test the result go to **playground**, start server <code>node server.js</code> and open in your browser [http://localhost:3000/playground](http://localhost:3000/playground).
 
-* [PhantomJS and Mac OS X](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
-* [PhantomJS Installation](http://code.google.com/p/phantomjs/wiki/Installation) (PhantomJS wiki)
+4.To run unit tests you can open it directly in browser **lib/test/index.html**.   
+Or use grunt's _qunit_ task <code>grunt test</code>. For that you also need to [install PhantomJS](https://github.com/gruntjs/grunt/blob/master/docs/faq.md#why-does-grunt-complain-that-phantomjs-isnt-installed)
 
-Note that the `phantomjs` executable needs to be in the system `PATH` for grunt to see it.
+5.To build lib + docs:
+* run <code>grunt build</code> in **lib** directory
+* run <code>build data-docs-dist</code> in **gh-pages** directory  
+You will get distributive in **lib/dist** and updated docs in **gh-pages/*.html**.
 
-* [How to set the path and environment variables in Windows](http://www.computerhope.com/issues/ch000549.htm)
-* [Where does $PATH get set in OS X 10.6 Snow Leopard?](http://superuser.com/questions/69130/where-does-path-get-set-in-os-x-10-6-snow-leopard)
-* [How do I change the PATH variable in Linux](https://www.google.com/search?q=How+do+I+change+the+PATH+variable+in+Linux)
+6.Commit changes on <code>dev</code> branch and make pull request as usual.  
+
+Thanks for your support!
 
 ## License
 Copyright (c) 2012 Vitaliy Potapov  
