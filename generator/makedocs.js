@@ -91,10 +91,15 @@ function loadContext() {
     var exclude = ['editableform', 'editableContainer', 'editable'];
     mergeDefaults(classes.editableContainer, classes.editableform);
     mergeDefaults(classes.editable, classes.editableContainer);
+
+    //merge events from container that are not present in editable()
+    _.each(classes.editableContainer.event, function(item){
+        if(!_.find(classes.editable.event, function(item1){ return item1.name == item.name; })) {
+            classes.editable.event.push(item);
+        }
+    });
     
-    //merge 'cancel' event
-    classes.editable.event.push(_.find(classes.editableContainer.event, function(item){ return item.name === 'cancel'; }));
-    
+    //mark editable and container as 'main' classes
     classes.editable.mainClass = true; 
     classes.editableContainer.mainClass = true; 
     

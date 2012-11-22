@@ -1,0 +1,16 @@
+{ 
+    "name": "x-editable-docs",
+    "title": "X-editable docs",
+    "version": "1.0.0",
+       "homepage": "http://vitalets.github.com/x-editable",
+       "author": {
+           "name": "Vitaliy Potapov",
+           "email": "noginsk@rambler.ru"
+        },    
+    "dependencies": { 
+         "handlebars" : ">=1.0.7",
+         "underscore" : ">=1.4.2",
+         "marked" : ">=0.2.5",
+         "yuidocjs" : ">=0.3.33"
+    } 
+}

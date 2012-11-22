@@ -613,6 +613,23 @@ $('#username, #fullname').editable('validate');
         </tr> 
        
         <tr>
+            <td>hidden</td>
+            <td>
+<ul>
+    
+    <li><strong>event</strong> <i>Object</i> event object
+        
+    </li>
+    
+</ul>
+
+</td>
+            <td>Fired when container was hidden. It occurs on both save or cancel.
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>render</td>
             <td>
 <ul>
@@ -664,7 +681,7 @@ $('#action').on('render', function(e, editable) {
 </ul>
 
 </td>
-            <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
+            <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
             <pre class="prettyprint linenums">
 $('#username').on('save', function(e, params) {
@@ -676,6 +693,29 @@ $('#username').on('save', function(e, params) {
         alert('error!'); 
     } 
 });</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>shown</td>
+            <td>
+<ul>
+    
+    <li><strong>event</strong> <i>Object</i> event object
+        
+    </li>
+    
+</ul>
+
+</td>
+            <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+            
+            <pre class="prettyprint linenums">
+$('#username').on('shown', function() {
+     var $tip = $(this).data('editableContainer').tip();
+     $tip.find('input').val('overwriting value of input..');
+});                     </pre>
             
             </td>
         </tr> 
@@ -778,6 +818,21 @@ Can be calculated dinamically via function.</p>
             <td><p>Strategy for sending data on server. Can be <code>auto|always|never</code>.
 When &#39;auto&#39; data will be sent on server only if pk defined, otherwise new value will be stored in element.</p>
 
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>success</td>
+            <td>function</td>
+            <td>null</td>
+            <td><p>Success callback. Called when value successfully sent on server and response status = 200.
+Can be used to process json response. If this function returns string - means error occured and string is shown as error message.</p>
+
+            
+                <pre class="prettyprint linenums">success: function(response, newValue) {
+    if(!response.success) return response.msg;
+}</pre>
             
             </td>
         </tr> 
@@ -930,6 +985,17 @@ $('#edit').editableContainer({
             
             </td>
         </tr> 
+       
+        <tr>
+            <td>toggle()</td>
+            <td>
+<i>none</i>
+
+</td>
+            <td>Toggles container visibility (show / hide)
+            
+            </td>
+        </tr> 
                                     
     </tbody>
 </table>
@@ -958,6 +1024,23 @@ $('#edit').editableContainer({
 
 </td>
             <td>Fired when form was cancelled by user
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>hidden</td>
+            <td>
+<ul>
+    
+    <li><strong>event</strong> <i>Object</i> event object
+        
+    </li>
+    
+</ul>
+
+</td>
+            <td>Fired when container was hidden. It occurs on both save or cancel.
             
             </td>
         </tr> 
@@ -998,6 +1081,29 @@ $('#username').on('save', function(e, params) {
         alert('error!'); 
     } 
 });</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>shown</td>
+            <td>
+<ul>
+    
+    <li><strong>event</strong> <i>Object</i> event object
+        
+    </li>
+    
+</ul>
+
+</td>
+            <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+            
+            <pre class="prettyprint linenums">
+$('#username').on('shown', function() {
+     var $tip = $(this).data('editableContainer').tip();
+     $tip.find('input').val('overwriting value of input..');
+});                     </pre>
             
             </td>
         </tr> 

@@ -1,4 +1,4 @@
-/*! X-editable - v1.0.0 
+/*! X-editable - v1.0.1 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -33,6 +33,7 @@
 .editableform textarea {
     vertical-align: top; 
     display: inline-block;
+    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
 }
 
 .editableform textarea {
@@ -45,13 +46,24 @@
     margin: 0 0 9px 0;
 }
 .editable-container,
-.editable-container .popover-inner {
-    width: auto;
-    max-width: none;
+.editable-container.popover {
+    width: auto; 
+    white-space: nowrap; /* without this rule buttons wrap input in non-static elements */
+    max-width: none; /* without this rule poshytip does not stretch */
 }
-.editable-click, a.editable-click, a.editable-click:hover {
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
     text-decoration: none;
     border-bottom: dashed 1px #0088cc;
+}
+
+.editable-click.editable-disabled, 
+a.editable-click.editable-disabled, 
+a.editable-click.editable-disabled:hover {
+   color: #585858;  
+   cursor: default;
+   border-bottom: none;
 }
 
 .editable-empty, .editable-empty:hover{
@@ -69,8 +81,3 @@
 /*    content: '*'*/
 }
 
-.editable-disabled, a.editable-disabled, a.editable-disabled:hover {
-  color: black;  
-  cursor: default;
-  text-decoration: none;
-}

@@ -1,4 +1,4 @@
-/*! X-editable - v1.0.0 
+/*! X-editable - v1.0.1 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -16,7 +16,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     
     var EditableForm = function (element, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
-        this.$container = $(element); //div, containing form
+        this.$element = $(element); //div (usually), containing form. not form tag!
         this.initInput();
     };
 
@@ -47,7 +47,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/        
         render: function() {
             this.$loading = $($.fn.editableform.loading);        
-            this.$container.empty().append(this.$loading);
+            this.$element.empty().append(this.$loading);
             this.showLoading();
            
             this.initTemplate(); 
@@ -57,14 +57,17 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event rendering 
             @param {Object} event event object
             **/            
-            this.$container.triggerHandler('rendering');
+            this.$element.triggerHandler('rendering');
             
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
+                //place input
                 this.$form.find('div.control-group').prepend(this.input.$input);
+                //attach 'cancel' handler
                 this.$form.find('button[type=button]').click($.proxy(this.cancel, this));
-                this.$container.append(this.$form);
+                //append form to container
+                this.$element.append(this.$form);
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('button[type=submit]').attr('disabled', true);
@@ -76,6 +79,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     this.input.value2input(this.value);
                     this.$form.submit($.proxy(this.submit, this));
                 }
+                
+                /**        
+                Fired when form is rendered
+                @event rendered
+                @param {Object} event event object
+                **/            
+                this.$element.triggerHandler('rendered');                
+                
                 this.showForm();
             }, this));
         },
@@ -85,7 +96,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event cancel 
             @param {Object} event event object
             **/              
-            this.$container.triggerHandler('cancel');
+            this.$element.triggerHandler('cancel');
         },
         showLoading: function() {
             var fw, fh, iw, ih;
@@ -115,7 +126,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event show 
             @param {Object} event event object
             **/                    
-            this.$container.triggerHandler('show');
+            this.$element.triggerHandler('show');
         },
         
         error: function(msg) {
@@ -161,6 +172,15 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //sending data to server
             $.when(this.save(newValueStr))
             .done($.proxy(function(response) {
+                var error;
+                //call success callback. if it returns string --> show error
+                if(error = this.options.success.call(this, response, newValue)) {
+                    this.error(error);
+                    this.showForm();
+                    return;
+                }                
+                
+               //clear error message
                this.error(false);   
                this.value = newValue;
                /**        
@@ -176,7 +196,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                        if(params.newValue === 'username') {...}
                    });                    
                **/                
-               this.$container.triggerHandler('save', {newValue: newValue, response: response});
+               this.$element.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
                this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
@@ -186,20 +206,27 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
         save: function(value) {
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this) : this.options.pk,
-                send = !!((this.options.url !== undefined) && (this.options.url !== null) && ((this.options.send === 'always') || (this.options.send === 'auto' && pk))),
+                send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
                 params;
                 
             if (send) { //send to server
                 this.showLoading();
-                
-                //try parse json in single quotes
-                this.options.params = $.fn.editableform.utils.tryParseJson(this.options.params, true);                
-                
-                params = $.extend({}, this.options.params, {
+
+                //standard params
+                params = {
                     name: this.options.name || '',
                     value: value,
                     pk: pk 
-                });
+                };
+                
+                //additional params
+                if(typeof this.options.params === 'function') {
+                    $.extend(params, this.options.params.call(this, params));  
+                } else {
+                    //try parse json in single quotes (from data-params attribute)
+                    this.options.params = $.fn.editableform.utils.tryParseJson(this.options.params, true);   
+                    $.extend(params, this.options.params);
+                }
 
                 if(typeof this.options.url === 'function') { //user's function
                     return this.options.url.call(this, params);
@@ -237,7 +264,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         var $form = $('&lt;div&gt;').editableform({
             type: 'text',
             name: 'username',
-            url: 'post.php',
+            url: '/post',
             value: 'vitaliy'
         });
         
@@ -276,7 +303,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/
         type: 'text',
         /**
-        Url for submit, e.g. <code>post.php</code>  
+        Url for submit, e.g. <code>'/post'</code>  
         If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
 
         @property url 
@@ -294,10 +321,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/        
         url:null,
         /**
-        Additional params for submit
+        Additional params for submit. Function can be used to calculate params dynamically
+        @example
+        params: function() {
+           return { a: 1 };
+        }
 
         @property params 
-        @type object
+        @type object|function
         @default null
         **/          
         params:null,
@@ -310,7 +341,8 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/         
         name: null,
         /**
-        Primary key of editable object (e.g. record id in database). Use Object for composite keys.
+        Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.
+        Can be calculated dinamically via function.
 
         @property pk 
         @type string|object|function
@@ -348,7 +380,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             }
         }
         **/         
-        validate: null
+        validate: null,
+        /**
+        Success callback. Called when value successfully sent on server and response status = 200.
+        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
+        
+        @property success 
+        @type function
+        @default null
+        @example
+        success: function(response, newValue) {
+            if(!response.success) return response.msg;
+        }
+        **/          
+        success: function(response, newValue) {}         
     };   
 
     /*
@@ -536,8 +581,22 @@ Applied as jQuery method.
             .on({
                 save: $.proxy(this.save, this),
                 cancel: $.proxy(this.cancel, this),
-                show: $.proxy(this.setPosition, this),
-                rendering: $.proxy(this.setPosition, this)
+                show: $.proxy(this.setPosition, this), //re-position container every time form is shown (after loading state)
+                rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
+                rendered: $.proxy(function(){
+                    /**        
+                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+                    
+                    @event shown 
+                    @param {Object} event event object
+                    @example
+                    $('#username').on('shown', function() {
+                         var $tip = $(this).data('editableContainer').tip();
+                         $tip.find('input').val('overwriting value of input..');
+                    });                     
+                    **/                      
+                    this.$element.triggerHandler('shown');
+                }, this) 
             });
             return this.$form;
         },        
@@ -567,7 +626,7 @@ Applied as jQuery method.
             this.tip().addClass('editable-container');
 
             this.initForm();
-            this.tip().find(this.innerCss).empty().append(this.$form);      
+            this.tip().find(this.innerCss).empty().append(this.$form);     
             this.$form.editableform('render');            
         },
 
@@ -575,8 +634,30 @@ Applied as jQuery method.
         Hides container with form
         @method hide()
         **/         
-        hide: function() {
-            this.call('hide'); 
+        hide: function() {  
+            if(!this.tip() || !this.tip().is(':visible')) {
+                return;
+            }
+            this.call('hide');
+            /**        
+            Fired when container was hidden. It occurs on both save or cancel.
+
+            @event hidden 
+            @param {Object} event event object
+            **/             
+            this.$element.triggerHandler('hidden');   
+        },
+        
+        /**
+        Toggles container visibility (show / hide)
+        @method toggle()
+        **/          
+        toggle: function() {
+            if(this.tip && this.tip().is(':visible')) {
+                this.hide();
+            } else {
+                this.show();
+            } 
         },
 
         /*
@@ -587,7 +668,7 @@ Applied as jQuery method.
             //tbd in child class
         },
 
-        cancel: function() {
+        cancel: function() {     
             if(this.options.autohide) {
                 this.hide();
             }
@@ -668,7 +749,7 @@ Applied as jQuery method.
     @example
     $('#edit').editableContainer({
         type: 'text',
-        url: 'post.php',
+        url: '/post',
         pk: 1,
         value: 'hello'
     });
@@ -802,19 +883,25 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             //attach handler to close container when click outside
             $(document).off('click.editable').on('click.editable', function(e) {
-                //if click inside container --> do nothing
                 var $target = $(e.target);
+                //if click inside container --> do nothing
                 if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
                     return;
                 }
+                //close all other containers
                 $('.editable-container').find('button[type=button]').click();
             });
             
             //add 'editable' class
             this.$element.addClass('editable');
             
-            //always attach click handler, but in disabled mode it just prevent default action (useful for links)
-            this.$element.on('click.editable', $.proxy(this.click, this));
+            //attach click handler. In disabled mode it just prevent default action (useful for links)
+            if(this.options.toggle === 'click') {
+                this.$element.addClass('editable-click');
+                this.$element.on('click.editable', $.proxy(this.click, this));
+            } else {
+                this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
+            }
             
             //check conditions for autotext:
             //if value was generated by text or value is empty, no sense to run autotext
@@ -853,8 +940,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.$element.removeClass('editable-disabled');
             this.handleEmpty();
             if(this.options.toggle === 'click') {
-                this.$element.addClass('editable-click');
-                if(this.$element.attr('tabindex') === -1) {
+                if(this.$element.attr('tabindex') === '-1') {    
                     this.$element.removeAttr('tabindex');                                
                 }
             }
@@ -869,10 +955,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.hide();           
             this.$element.addClass('editable-disabled');
             this.handleEmpty();
-            if(this.options.toggle === 'click') {
-                this.$element.removeClass('editable-click');
-                this.$element.attr('tabindex', -1);                
-            }
+            //do not stop focus on this element
+            this.$element.attr('tabindex', -1);                
         },
         
         /**
@@ -935,10 +1019,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         
         click: function (e) {
             e.preventDefault();
-            if(this.options.disabled || this.options.toggle !== 'click') {
+            if(this.options.disabled) {
                 return;
             }
-            //stop propagation bacause document listen any click to hide all containers
+            //stop propagation bacause document listen any click to hide all editableContainers
             e.stopPropagation();
             this.toggle();
         },
@@ -956,7 +1040,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
                     value: this.value,
-                    autohide: false
+                    autohide: false //element itsef will show/hide container
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
@@ -979,22 +1063,22 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Hides container with form
         @method hide()
         **/       
-        hide: function () {
-            if(this.container && this.container.tip().is(':visible')) {
+        hide: function () {   
+            if(this.container) {  
                 this.container.hide();
-                
-                //return focus on element
-                if (this.options.enablefocus && this.options.toggle === 'click') {
-                    this.$element.focus();
-                }                
             }
+                
+            //return focus on element
+            if (this.options.enablefocus && this.options.toggle === 'click') {
+                this.$element.focus();
+            }                
         },
         
         /**
         Toggles container visibility (show / hide)
         @method toggle()
         **/  
-        toggle: function () {
+        toggle: function() {
             if(this.container && this.container.tip().is(':visible')) {
                 this.hide();
             } else {
@@ -1006,18 +1090,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         * called when form was submitted
         */          
         save: function(e, params) {
-             var error, form;
-             
-             //if sent to server, call success callback. if it return string --> show error
-             if((params.response !== undefined) && (error = this.options.success.call(this, params.response, params.newValue))) {
-                 form = this.container.tip().find('form').parent().data('editableform');
-                 form.error(error);
-                 form.showForm();
-                 return;
-             }
-           
-            //if value was not sent to server and value changed --> mark element with unsaved css
-            if(params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
+            //if url is not user's function and value was not sent to server and value changed --> mark element with unsaved css. 
+            if(typeof this.options.url !== 'function' && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
                 this.$element.addClass('editable-unsaved');
             } else {
                 this.$element.removeClass('editable-unsaved');
@@ -1027,7 +1101,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.setValue(params.newValue);
             
             /**        
-            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> inside handler to access to editable instance
+            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
             @event save 
             @param {Object} event event object
@@ -1044,7 +1118,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     alert('error!'); 
                 } 
             });
-            **/              
+            **/
+            //event itself is triggered by editableContainer. Description here is only for documentation              
         },
 
         validate: function () {
@@ -1087,7 +1162,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     @example
     $('#username').editable({
         type: 'text',
-        url: 'post.php',
+        url: '/post',
         pk: 1
     });
     **/    
@@ -1274,20 +1349,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @type mixed
         @default element's text
         **/
-        value: null,
-        /**
-        Success callback. Called when value successfully sent on server and response status = 200.
-        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
-        
-        @property success 
-        @type function
-        @default null
-        @example
-        success: function(response, newValue) {
-            if(!response.success) return response.msg;
-        }
-        **/          
-        success: function(response, newValue) {} 
+        value: null
     };
     
 }(window.jQuery));
@@ -1446,7 +1508,7 @@ Text input
 <script>
 $(function(){
     $('#username').editable({
-        url: 'post.php',
+        url: '/post',
         title: 'Enter username'
     });
 });
@@ -1498,7 +1560,7 @@ Textarea input
 <script>
 $(function(){
     $('#comments').editable({
-        url: 'post.php',
+        url: '/post',
         title: 'Enter comments'
     });
 });
@@ -1585,7 +1647,7 @@ Select (dropdown) input
 @class select
 @extends abstract
 @example
-<a href="#" id="status" data-type="select" data-pk="1" data-url="post.php" data-original-title="Select status"></a>
+<a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-original-title="Select status"></a>
 <script>
 $(function(){
     $('#status').editable({
@@ -1878,7 +1940,7 @@ Editableform based on Twitter Bootstrap
                  
         initContainer: function(){
             //no init for container
-            //only convert anim to miliseconds
+            //only convert anim to miliseconds (int)
             if(!this.options.anim) {
                 this.options.anim = 0;
             }         
@@ -1908,12 +1970,18 @@ Editableform based on Twitter Bootstrap
         }, 
         
         hide: function () {
+            if(!this.tip() || !this.tip().is(':visible')) {
+                return;
+            }            
             this.$form.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
                 //return focus on element
                 if (this.options.enablefocus) {
                     this.$element.focus();
-                }                
+                }  
+                
+                //trigger event
+                this.$element.triggerHandler('hidden');              
             }, this)); 
         },
         
@@ -1938,7 +2006,7 @@ For localization you can include js file from here: https://github.com/eternicod
 @class date
 @extends abstract
 @example
-<a href="#" id="dob" data-type="date" data-pk="1" data-url="post.php" data-original-title="Select date">15/05/1984</a>
+<a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
 <script>
 $(function(){
     $('#dob').editable({
