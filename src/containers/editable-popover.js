@@ -26,6 +26,7 @@
         /**
         * move popover to new position. This function mainly copied from bootstrap-popover.
         */
+        /*jshint laxcomma: true*/
         setPosition: function () { 
          
             (function() {    
@@ -37,7 +38,7 @@
                 , placement
                 , tp;
 
-                placement = typeof this.options.placement == 'function' ?
+                placement = typeof this.options.placement === 'function' ?
                 this.options.placement.call(this, $tip[0], this.$element[0]) :
                 this.options.placement;
 
@@ -58,16 +59,16 @@
                 switch (inside ? placement.split(' ')[1] : placement) {
                     case 'bottom':
                         tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
-                        break
+                        break;
                     case 'top':
                         tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
-                        break
+                        break;
                     case 'left':
                         tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
-                        break
+                        break;
                     case 'right':
                         tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
-                        break
+                        break;
                 }
 
                 $tip
@@ -76,7 +77,7 @@
                 .addClass('in');
                 
             }).call(this.container());
-            
+          /*jshint laxcomma: false*/  
         }            
     });
 

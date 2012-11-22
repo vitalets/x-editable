@@ -132,7 +132,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         disable: function() {
             this.options.disabled = true; 
             this.hide();           
-            this.$element.addClass('editable-disabled')
+            this.$element.addClass('editable-disabled');
             this.handleEmpty();
             //do not stop focus on this element
             this.$element.attr('tabindex', -1);                
