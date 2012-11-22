@@ -4,8 +4,9 @@ X-editable changelog
 
 Version 1.0.1 Nov 22, 2012
 ----------------------------          
-[enh #7] 'shown' event added (vitalets)         
-[enh #1] params can be a function to calc it dynamically (vitalets)         
+[enh] contribution guide in README.md (vitalets)   
+[enh #7] 'shown', 'hidden' events added (vitalets)         
+[enh #1] params can be a function to calculate it dynamically (vitalets)         
 [enh #6] do not preventDetault() in click when toggle='manual'. This allows to have clickable links (vitalets)         
 [bug #3] should not mark element with unsave css if url is user's function (vitalets)         
           
