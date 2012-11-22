@@ -167,6 +167,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //sending data to server
             $.when(this.save(newValueStr))
             .done($.proxy(function(response) {
+               //clear error message
                this.error(false);   
                this.value = newValue;
                /**        
@@ -198,7 +199,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             if (send) { //send to server
                 this.showLoading();
 
-                //standart params
+                //standard params
                 params = {
                     name: this.options.name || '',
                     value: value,

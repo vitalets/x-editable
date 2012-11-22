@@ -63,11 +63,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             //attach handler to close container when click outside
             $(document).off('click.editable').on('click.editable', function(e) {
-                //if click inside container --> do nothing
                 var $target = $(e.target);
+                //if click inside container --> do nothing
                 if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
                     return;
                 }
+                //close all other containers
                 $('.editable-container').find('button[type=button]').click();
             });
             
