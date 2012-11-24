@@ -1,6 +1,4 @@
 (function(){
-//    setTimeout(function() {
-//function runDemo() {
   
     //defaults
 //    $.fn.editable.defaults.url = 'error.php'; 
@@ -78,5 +76,23 @@
         $('#link').editable('toggle');
    });     
 
-   // }, 300);
+  //----------------------------------
+  // editableContainer() 
+  //---------------------------------- 
+  
+  /* 
+   $('#ec').editableContainer();
+  
+   $('#ec-show').click(function(e) {
+       e.stopPropagation();
+       $('#ec').editableContainer('option', 'value', 'abc');
+       $('#ec').editableContainer('show');
+   });
+   
+   $('#ec-hide').click(function(e) {
+       e.stopPropagation();
+       $('#ec').editableContainer('hide');
+   });
+   */
+   
 }());
