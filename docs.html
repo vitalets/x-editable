@@ -97,8 +97,8 @@
                      
                   </ul>
                 </li>
-                <li><a href="#newrecord">creating new record</a></li>
                 <li><a href="#global">global templates</a></li>
+                <li><a href="#newrecord">creating new record</a></li>
                 <li><a href="#diagram">class diagram</a></li>                
             </ul>
         </div>  
@@ -1652,6 +1652,31 @@ $(function(){
                     
 
         <hr>
+        <section id="global">
+            <h1>Global templates</h1>
+            <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
+
+<p>
+<strong>$.fn.editableform.template</strong><br>
+Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:
+
+<pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
+    &lt;div class=&quot;control-group&quot;&gt;
+       &amp;nbsp;&lt;button type=&quot;submit&quot;&gt;Ok&lt;/button&gt;&amp;nbsp;&lt;button type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;</pre>
+</p>
+
+<p>
+<strong>$.fn.editableform.loading</strong><br>
+Loading DIV template. Default value:
+
+<pre class="prettyprint linenums">&lt;div class=&quot;editableform-loading&quot;&gt;&lt;/div&gt;</pre>
+</p>
+        </section>         
+        
+        <hr>
         <section id="newrecord">
             <h1>Creating new record</h1>
             <p>
@@ -1746,30 +1771,7 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
     </li>
 </ul>
         </section>
-        <hr>
-        <section id="global">
-            <h1>Global templates</h1>
-            <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
-
-<p>
-<strong>$.fn.editableform.template</strong><br>
-Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:
-
-<pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
-    &lt;div class=&quot;control-group&quot;&gt;
-       &amp;nbsp;&lt;button type=&quot;submit&quot;&gt;Ok&lt;/button&gt;&amp;nbsp;&lt;button type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
-&lt;/form&gt;</pre>
-</p>
-
-<p>
-<strong>$.fn.editableform.loading</strong><br>
-Loading DIV template. Default value:
-
-<pre class="prettyprint linenums">&lt;div class=&quot;editableform-loading&quot;&gt;&lt;/div&gt;</pre>
-</p>
-        </section>        
+       
         <hr>
         <section id="diagram">
             <h1>Class diagram</h1>    
