@@ -5,7 +5,14 @@
                 <li><a href="#gettingstarted">getting started</a></li>
                 <li><a href="#editable">$().editable</a></li>
                 <li><a href="#editableContainer">$().editableContainer</a></li>
-                <li><a href="#inputs">inputs</a></li>
+                <li class="dropdown">
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                     {{#each inputs}}
+                      <li><a href="#{{name}}">{{name}}</a></li>
+                     {{/each}}
+                  </ul>
+                </li>
                 <li><a href="#newrecord">creating new record</a></li>
                 <li><a href="#diagram">class diagram</a></li>                
             </ul>

@@ -26,12 +26,26 @@
         <hr>
         <section id="inputs">
             <h1>Inputs</h1>
+            <p>There are several <i>input types</i> supported by library. Each type may have additional configuration options.<br>
+            Input options are defined as well as other parameters of <code>$().editable()</code> method.<br>
+            Currently supported:
+            </p>
+            <ul>
             {{#each inputs}}
+            <li>{{name}}</li>
+            {{/each}}       
+            </ul>
+    
+        </section> 
+                   
+            {{#each inputs}}
+             <section id="{{name}}">
                 <h2>{{name}}</h2>
                 <p>{{md description}}</p>
                 {{>inputtabs}}
+                </section>
             {{/each}}            
-        </section>
+
         <hr>
         <section id="newrecord">
             <h1>Creating new record</h1>

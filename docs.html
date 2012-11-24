@@ -81,7 +81,22 @@
                 <li><a href="#gettingstarted">getting started</a></li>
                 <li><a href="#editable">$().editable</a></li>
                 <li><a href="#editableContainer">$().editableContainer</a></li>
-                <li><a href="#inputs">inputs</a></li>
+                <li class="dropdown">
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                     
+                      <li><a href="#text">text</a></li>
+                     
+                      <li><a href="#textarea">textarea</a></li>
+                     
+                      <li><a href="#select">select</a></li>
+                     
+                      <li><a href="#date">date</a></li>
+                     
+                      <li><a href="#dateui">dateui</a></li>
+                     
+                  </ul>
+                </li>
                 <li><a href="#newrecord">creating new record</a></li>
                 <li><a href="#diagram">class diagram</a></li>                
             </ul>
@@ -1117,7 +1132,28 @@ $('#username').on('shown', function() {
         <hr>
         <section id="inputs">
             <h1>Inputs</h1>
+            <p>There are several <i>input types</i> supported by library. Each type may have additional configuration options.<br>
+            Input options are defined as well as other parameters of <code>$().editable()</code> method.<br>
+            Currently supported:
+            </p>
+            <ul>
             
+            <li>text</li>
+            
+            <li>textarea</li>
+            
+            <li>select</li>
+            
+            <li>date</li>
+            
+            <li>dateui</li>
+                   
+            </ul>
+    
+        </section> 
+                   
+            
+             <section id="text">
                 <h2>text</h2>
                 <p><p>Text input</p>
 </p>
@@ -1197,7 +1233,9 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
+                </section>
             
+             <section id="textarea">
                 <h2>textarea</h2>
                 <p><p>Textarea input</p>
 </p>
@@ -1277,7 +1315,9 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
+                </section>
             
+             <section id="select">
                 <h2>select</h2>
                 <p><p>Select (dropdown) input</p>
 </p>
@@ -1384,7 +1424,9 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
+                </section>
             
+             <section id="date">
                 <h2>date</h2>
                 <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a>.<br>For localization you can include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a></p>
 </p>
@@ -1494,7 +1536,9 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
+                </section>
             
+             <section id="dateui">
                 <h2>dateui</h2>
                 <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>Do not use it together with bootstrap-datepicker.</p>
 </p>
@@ -1604,8 +1648,9 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
+                </section>
                         
-        </section>
+
         <hr>
         <section id="newrecord">
             <h1>Creating new record</h1>
@@ -1721,7 +1766,7 @@ Final class <b>editable</b> binds editableContainer to DOM element storing value
             
             <footer class="footer">
             <hr>
-                <p>X-editable &copy; <a href="http://github.com/vitalets">Vitaliy Potapov</a> 2012. Released under the MIT license.</p> 
+                <p><a href="http://vitalets.github.com/x-editable">X-editable</a> &copy; Vitaliy Potapov 2012. Released under the MIT license.</p> 
             </footer>
         </div> <!--/container-->
         
