@@ -99,21 +99,33 @@ function loadContext() {
         }
     });
     
-    //mark editable and container as 'main' classes
+    //mark editable() and editableContainer() as 'main' classes
     classes.editable.mainClass = true; 
     classes.editableContainer.mainClass = true; 
     
+    //inputs
     var inputs = _.chain(classes)
                   .filter(function(item, key) {
-                      return (_.indexOf(exclude, key) === -1) && (key !== 'abstract');
+                      return _.indexOf(exclude, key) === -1;
                   })
+                  .sortBy(function(item) {
+                      if(item.name === 'abstract') return 0;
+                      if(item.name === 'list') return 1;
+                      return 10;
+                  })                  
                   .map(function(item) {
-                      mergeDefaults(item, classes.abstract);
+                      if(item.extends) {
+                          mergeDefaults(item, classes[item.extends]);
+                      }
                       return item;
                   })
+                  .filter(function(item, key) {
+                      return item.final;
+                  })                  
                   .sortBy(function(item) {
                       return -item.name.charCodeAt(0);
                   })
+                  
                //   .object()
                   .value();
     

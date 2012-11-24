@@ -90,6 +90,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\list.js": {
+            "name": "..\\lib\\src\\inputs\\list.js",
+            "modules": {},
+            "classes": {
+                "list": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs\\select.js": {
             "name": "..\\lib\\src\\inputs\\select.js",
             "modules": {},
@@ -182,6 +191,7 @@
             "line": 1,
             "description": "Bootstrap-datepicker.  \nDescription and examples: http://vitalets.github.com/bootstrap-datepicker.  \nFor localization you can include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales",
             "extends": "abstract",
+            "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                weekStart: 1\n           }\n        }\n    });\n});\n</script>"
             ]
@@ -198,6 +208,7 @@
             "line": 1,
             "description": "jQuery UI Datepicker.  \nDescription and examples: http://jqueryui.com/datepicker.  \nDo not use it together with bootstrap-datepicker.",
             "extends": "abstract",
+            "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                firstDay: 1\n           }\n        }\n    });\n});\n</script>"
             ]
@@ -214,6 +225,19 @@
             "line": 1,
             "description": "Abstract editable input class.\nTo create your own input you should inherit from this class."
         },
+        "list": {
+            "name": "list",
+            "shortname": "list",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\list.js",
+            "line": 1,
+            "description": "List - abstract class for inputs that have source option loaded from js array or via ajax",
+            "extends": "abstract"
+        },
         "select": {
             "name": "select",
             "shortname": "select",
@@ -225,7 +249,8 @@
             "file": "..\\lib\\src\\inputs\\select.js",
             "line": 1,
             "description": "Select (dropdown) input",
-            "extends": "abstract",
+            "extends": "list",
+            "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"status\" data-type=\"select\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select status\"></a>\n<script>\n$(function(){\n    $('#status').editable({\n        value: 2,    \n        source: [\n              {value: 1, text: 'Active'},\n              {value: 2, text: 'Blocked'},\n              {value: 3, text: 'Deleted'}\n           ]\n        }\n    });\n});\n</script>"
             ]
@@ -244,6 +269,7 @@
             "line": 1,
             "description": "Text input",
             "extends": "abstract",
+            "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"username\" data-type=\"text\" data-pk=\"1\">awesome</a>\n<script>\n$(function(){\n    $('#username').editable({\n        url: '/post',\n        title: 'Enter username'\n    });\n});\n</script>"
             ]
@@ -262,6 +288,7 @@
             "line": 1,
             "description": "Textarea input",
             "extends": "abstract",
+            "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"comments\" data-type=\"textarea\" data-pk=\"1\">awesome comment!</a>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments'\n    });\n});\n</script>"
             ]
@@ -1042,7 +1069,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 89,
+            "line": 90,
             "itemtype": "property",
             "name": "tpl",
             "default": "<div></div>",
@@ -1050,7 +1077,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 94,
+            "line": 95,
             "itemtype": "property",
             "name": "inputclass",
             "default": "editable-date well",
@@ -1058,7 +1085,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 99,
+            "line": 100,
             "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nPossible tokens are: <code>d, dd, m, mm, yy, yyyy</code>",
             "itemtype": "property",
             "name": "format",
@@ -1068,7 +1095,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 108,
+            "line": 109,
             "description": "Format used for displaying date. Also applied when converting date from element's text on init.   \nIf not specified equals to <code>format</code>",
             "itemtype": "property",
             "name": "viewformat",
@@ -1078,7 +1105,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 117,
+            "line": 118,
             "description": "Configuration of datepicker.\nFull list of options: http://vitalets.github.com/bootstrap-datepicker",
             "itemtype": "property",
             "name": "datepicker",
@@ -1088,7 +1115,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
-            "line": 107,
+            "line": 108,
             "itemtype": "property",
             "name": "tpl",
             "default": "<div></div>",
@@ -1096,7 +1123,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
-            "line": 112,
+            "line": 113,
             "itemtype": "property",
             "name": "inputclass",
             "default": "'editable-date'",
@@ -1104,7 +1131,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
-            "line": 117,
+            "line": 118,
             "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nFull list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate",
             "itemtype": "property",
             "name": "format",
@@ -1114,7 +1141,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
-            "line": 126,
+            "line": 127,
             "description": "Format used for displaying date. Also applied when converting date from element's text on init.    \nIf not specified equals to <code>format</code>",
             "itemtype": "property",
             "name": "viewformat",
@@ -1124,7 +1151,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
-            "line": 136,
+            "line": 137,
             "description": "Configuration of datepicker.\nFull list of options: http://api.jqueryui.com/datepicker",
             "itemtype": "property",
             "name": "datepicker",
@@ -1287,52 +1314,52 @@
             "class": "abstract"
         },
         {
-            "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 191,
+            "file": "..\\lib\\src\\inputs\\list.js",
+            "line": 169,
             "description": "convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",
-            "class": "select"
+            "class": "list"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\list.js",
+            "line": 212,
+            "description": "Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.",
+            "itemtype": "property",
+            "name": "source",
+            "type": "string|array|object",
+            "default": "null",
+            "class": "list"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\list.js",
+            "line": 222,
+            "description": "Data automatically prepended to the begining of dropdown list.",
+            "itemtype": "property",
+            "name": "prepend",
+            "type": "string|array|object",
+            "default": "false",
+            "class": "list"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\list.js",
+            "line": 230,
+            "description": "Error message shown when list cannot be loaded (e.g. ajax error)",
+            "itemtype": "property",
+            "name": "sourceError",
+            "type": "string",
+            "default": "Error when loading list",
+            "class": "list"
         },
         {
             "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 234,
+            "line": 59,
             "itemtype": "property",
             "name": "tpl",
             "default": "<select></select>",
             "class": "select"
         },
         {
-            "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 239,
-            "description": "Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.",
-            "itemtype": "property",
-            "name": "source",
-            "type": "string|array|object",
-            "default": "null",
-            "class": "select"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 249,
-            "description": "Data automatically prepended to the begining of dropdown list.",
-            "itemtype": "property",
-            "name": "prepend",
-            "type": "string|array|object",
-            "default": "false",
-            "class": "select"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 257,
-            "description": "Error message shown when list cannot be loaded (e.g. ajax error)",
-            "itemtype": "property",
-            "name": "sourceError",
-            "type": "string",
-            "default": "Error when loading options",
-            "class": "select"
-        },
-        {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 34,
+            "line": 35,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"text\">",
@@ -1340,7 +1367,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 39,
+            "line": 40,
             "description": "Placeholder attribute of input. Shown when input is empty.",
             "itemtype": "property",
             "name": "placeholder",
@@ -1350,7 +1377,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 69,
+            "line": 70,
             "itemtype": "property",
             "name": "tpl",
             "default": "<textarea></textarea>",
@@ -1358,7 +1385,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 74,
+            "line": 75,
             "itemtype": "property",
             "name": "inputclass",
             "default": "span3",
@@ -1366,7 +1393,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 79,
+            "line": 80,
             "description": "Placeholder attribute of input. Shown when input is empty.",
             "itemtype": "property",
             "name": "placeholder",
@@ -1458,7 +1485,7 @@
         },
         {
             "message": "Missing item type\nconvert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",
-            "line": " ..\\lib\\src\\inputs\\select.js:191"
+            "line": " ..\\lib\\src\\inputs\\list.js:169"
         }
     ]
 }

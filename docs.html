@@ -1377,7 +1377,7 @@ For compability it also supports format <code>{value1: text1, value2: text2 ...}
         <tr>
             <td>sourceError</td>
             <td>string</td>
-            <td>Error when loading options</td>
+            <td>Error when loading list</td>
             <td><p>Error message shown when list cannot be loaded (e.g. ajax error)</p>
 
             
@@ -1656,9 +1656,8 @@ $(function(){
             <h1>Global templates</h1>
             <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
 
-<p>
-<strong>$.fn.editableform.template</strong><br>
-Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:
+<h4>$.fn.editableform.template</h4>
+<p>Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:</p>
 
 <pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
     &lt;div class=&quot;control-group&quot;&gt;
@@ -1666,14 +1665,11 @@ Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> an
     &lt;/div&gt;
     &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
 &lt;/form&gt;</pre>
-</p>
-
-<p>
-<strong>$.fn.editableform.loading</strong><br>
-Loading DIV template. Default value:
-
+      
+<h4>$.fn.editableform.loading</h4>
+<p>Loading DIV template. Default value:</p>
 <pre class="prettyprint linenums">&lt;div class=&quot;editableform-loading&quot;&gt;&lt;/div&gt;</pre>
-</p>
+
         </section>         
         
         <hr>
