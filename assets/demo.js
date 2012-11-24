@@ -64,7 +64,19 @@
         e.stopPropagation();
         e.preventDefault();
         $('#note').editable('toggle');
-   });    
+   });   
+   
+    $('#link').editable({
+        success: function(response, newValue) {
+           $('#link').attr('href', newValue); 
+        }
+    }); 
+    
+    $('#edit-link').click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('#link').editable('toggle');
+   });     
 
    // }, 300);
 }());
