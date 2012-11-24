@@ -35,22 +35,26 @@
             <li>{{name}}</li>
             {{/each}}       
             </ul>
-    
         </section> 
                    
-            {{#each inputs}}
-             <section id="{{name}}">
-                <h2>{{name}}</h2>
-                <p>{{md description}}</p>
-                {{>inputtabs}}
-                </section>
-            {{/each}}            
+        {{#each inputs}}
+         <section id="{{name}}">
+            <h2>{{name}}</h2>
+            <p>{{md description}}</p>
+            {{>inputtabs}}
+            </section>
+        {{/each}}            
 
         <hr>
         <section id="newrecord">
             <h1>Creating new record</h1>
             {{>newrecord}}
         </section>
+        <hr>
+        <section id="global">
+            <h1>Global templates</h1>
+            {{>global}}
+        </section>        
         <hr>
         <section id="diagram">
             <h1>Class diagram</h1>    

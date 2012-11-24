@@ -98,6 +98,7 @@
                   </ul>
                 </li>
                 <li><a href="#newrecord">creating new record</a></li>
+                <li><a href="#global">global templates</a></li>
                 <li><a href="#diagram">class diagram</a></li>                
             </ul>
         </div>  
@@ -1149,15 +1150,14 @@ $('#username').on('shown', function() {
             <li>dateui</li>
                    
             </ul>
-    
         </section> 
                    
-            
-             <section id="text">
-                <h2>text</h2>
-                <p><p>Text input</p>
+        
+         <section id="text">
+            <h2>text</h2>
+            <p><p>Text input</p>
 </p>
-                <ul class="nav nav-tabs" id="text-tabs">
+            <ul class="nav nav-tabs" id="text-tabs">
     <li class="active"><a href="#text-options" data-toggle="tab">Options</a></li>
     <li><a href="#text-example" data-toggle="tab">Example</a></li>
 </ul>
@@ -1233,13 +1233,13 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
-                </section>
-            
-             <section id="textarea">
-                <h2>textarea</h2>
-                <p><p>Textarea input</p>
+            </section>
+        
+         <section id="textarea">
+            <h2>textarea</h2>
+            <p><p>Textarea input</p>
 </p>
-                <ul class="nav nav-tabs" id="textarea-tabs">
+            <ul class="nav nav-tabs" id="textarea-tabs">
     <li class="active"><a href="#textarea-options" data-toggle="tab">Options</a></li>
     <li><a href="#textarea-example" data-toggle="tab">Example</a></li>
 </ul>
@@ -1315,13 +1315,13 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
-                </section>
-            
-             <section id="select">
-                <h2>select</h2>
-                <p><p>Select (dropdown) input</p>
+            </section>
+        
+         <section id="select">
+            <h2>select</h2>
+            <p><p>Select (dropdown) input</p>
 </p>
-                <ul class="nav nav-tabs" id="select-tabs">
+            <ul class="nav nav-tabs" id="select-tabs">
     <li class="active"><a href="#select-options" data-toggle="tab">Options</a></li>
     <li><a href="#select-example" data-toggle="tab">Example</a></li>
 </ul>
@@ -1424,13 +1424,13 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
-                </section>
-            
-             <section id="date">
-                <h2>date</h2>
-                <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a>.<br>For localization you can include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a></p>
+            </section>
+        
+         <section id="date">
+            <h2>date</h2>
+            <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a>.<br>For localization you can include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a></p>
 </p>
-                <ul class="nav nav-tabs" id="date-tabs">
+            <ul class="nav nav-tabs" id="date-tabs">
     <li class="active"><a href="#date-options" data-toggle="tab">Options</a></li>
     <li><a href="#date-example" data-toggle="tab">Example</a></li>
 </ul>
@@ -1536,13 +1536,13 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
-                </section>
-            
-             <section id="dateui">
-                <h2>dateui</h2>
-                <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>Do not use it together with bootstrap-datepicker.</p>
+            </section>
+        
+         <section id="dateui">
+            <h2>dateui</h2>
+            <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>Do not use it together with bootstrap-datepicker.</p>
 </p>
-                <ul class="nav nav-tabs" id="dateui-tabs">
+            <ul class="nav nav-tabs" id="dateui-tabs">
     <li class="active"><a href="#dateui-options" data-toggle="tab">Options</a></li>
     <li><a href="#dateui-example" data-toggle="tab">Example</a></li>
 </ul>
@@ -1648,8 +1648,8 @@ $(function(){
 &lt;/script&gt;</pre>
     </div>
 </div>
-                </section>
-                        
+            </section>
+                    
 
         <hr>
         <section id="newrecord">
@@ -1746,6 +1746,30 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
     </li>
 </ul>
         </section>
+        <hr>
+        <section id="global">
+            <h1>Global templates</h1>
+            <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
+
+<p>
+<strong>$.fn.editableform.template</strong><br>
+Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:
+
+<pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
+    &lt;div class=&quot;control-group&quot;&gt;
+       &amp;nbsp;&lt;button type=&quot;submit&quot;&gt;Ok&lt;/button&gt;&amp;nbsp;&lt;button type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;</pre>
+</p>
+
+<p>
+<strong>$.fn.editableform.loading</strong><br>
+Loading DIV template. Default value:
+
+<pre class="prettyprint linenums">&lt;div class=&quot;editableform-loading&quot;&gt;&lt;/div&gt;</pre>
+</p>
+        </section>        
         <hr>
         <section id="diagram">
             <h1>Class diagram</h1>    
