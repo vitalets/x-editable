@@ -3,6 +3,7 @@ X-editable changelog
        
 Version 1.0.2 wip
 ----------------------------   
+[enh] new input type: checklist (vitalets)      
 [enh] updated docs: inputs dropdown menu, global templates section (vitalets)      
                             
 
