@@ -22,7 +22,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
     EditableForm.prototype = {
         constructor: EditableForm,
-        initInput: function() {
+        initInput: function() {  //called once
             var TypeConstructor, typeOptions;
             
             //create input of specified type
@@ -252,7 +252,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         
        option: function(key, value) {
           this.options[key] = value;
-       }        
+          if(key === 'value') {
+              this.setValue(value);
+          }
+       },
+       
+       setValue: function(value, convertStr) {
+          if(convertStr) {
+              this.value = this.input.str2value(value);
+          } else {
+              this.value = value;
+          }
+       }               
     };
 
     /*
@@ -295,7 +306,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /* see also defaults for input */
         
         /**
-        Type of input. Can be <code>text|textarea|select|date</code>
+        Type of input. Can be <code>text|textarea|select|date|checklist</code>
 
         @property type 
         @type string
@@ -460,7 +471,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
             */
             tryParseJson: function(s, safe) {
-                if (typeof s === 'string' && s.length && s.match(/^\{.*\}$/)) {
+                if (typeof s === 'string' && s.length && s.match(/^[\{\[].*[\}\]]$/)) {
                     if (safe) {
                         try {
                             /*jslint evil: true*/
@@ -1499,186 +1510,28 @@ To create your own input you should inherit from this class.
         
 }(window.jQuery));
 /**
-Text input
+List - abstract class for inputs that have source option loaded from js array or via ajax
 
-@class text
+@class list
 @extends abstract
-@example
-<a href="#" id="username" data-type="text" data-pk="1">awesome</a>
-<script>
-$(function(){
-    $('#username').editable({
-        url: '/post',
-        title: 'Enter username'
-    });
-});
-</script>
-**/
-(function ($) {
-    var Text = function (options) {
-        this.init('text', options, Text.defaults);
-    };
-
-    $.fn.editableform.utils.inherit(Text, $.fn.editableform.types.abstract);
-
-    $.extend(Text.prototype, {
-        activate: function() {
-            if(this.$input.is(':visible')) {
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
-                this.$input.focus();
-            }
-        }  
-    });
-
-    Text.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        /**
-        @property tpl 
-        @default <input type="text">
-        **/         
-        tpl: '<input type="text">',
-        /**
-        Placeholder attribute of input. Shown when input is empty.
-
-        @property placeholder 
-        @type string
-        @default null
-        **/             
-        placeholder: null
-    });
-
-    $.fn.editableform.types.text = Text;
-
-}(window.jQuery));
-
-/**
-Textarea input
-
-@class textarea
-@extends abstract
-@example
-<a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
-<script>
-$(function(){
-    $('#comments').editable({
-        url: '/post',
-        title: 'Enter comments'
-    });
-});
-</script>
 **/
 (function ($) {
 
-    var Textarea = function (options) {
-        this.init('textarea', options, Textarea.defaults);
+    var List = function (options) {
+       
     };
 
-    $.fn.editableform.utils.inherit(Textarea, $.fn.editableform.types.abstract);
+    $.fn.editableform.utils.inherit(List, $.fn.editableform.types.abstract);
 
-    $.extend(Textarea.prototype, {
+    $.extend(List.prototype, {
         render: function () {
-            Textarea.superclass.render.call(this);
-
-            //ctrl + enter
-            this.$input.keydown(function (e) {
-                if (e.ctrlKey && e.which === 13) {
-                    $(this).closest('form').submit();
-                }
-            });
-        },
-
-        value2html: function(value, element) {
-            var html = '', lines;
-            if(value) {
-                lines = value.split("\n");
-                for (var i = 0; i < lines.length; i++) {
-                    lines[i] = $('<div>').text(lines[i]).html();
-                }
-                html = lines.join('<br>');
-            }
-            $(element).html(html);
-        },
-
-        html2value: function(html) {
-            if(!html) {
-                return '';
-            }
-            var lines = html.split(/<br\s*\/?>/i);
-            for (var i = 0; i < lines.length; i++) {
-                lines[i] = $('<div>').html(lines[i]).text();
-            }
-            return lines.join("\n"); 
-        },        
-
-        activate: function() {
-            if(this.$input.is(':visible')) {
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
-                this.$input.focus();
-            }
-        }         
-    });
-
-    Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        /**
-        @property tpl 
-        @default <textarea></textarea>
-        **/          
-        tpl:'<textarea></textarea>',
-        /**
-        @property inputclass 
-        @default span3
-        **/          
-        inputclass:'span3',
-        /**
-        Placeholder attribute of input. Shown when input is empty.
-
-        @property placeholder 
-        @type string
-        @default null
-        **/             
-        placeholder: null        
-    });
-
-    $.fn.editableform.types.textarea = Textarea;    
-
-}(window.jQuery));
-/**
-Select (dropdown) input
-
-@class select
-@extends abstract
-@example
-<a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-original-title="Select status"></a>
-<script>
-$(function(){
-    $('#status').editable({
-        value: 2,    
-        source: [
-              {value: 1, text: 'Active'},
-              {value: 2, text: 'Blocked'},
-              {value: 3, text: 'Deleted'}
-           ]
-        }
-    });
-});
-</script>
-**/
-(function ($) {
-
-    var Select = function (options) {
-        this.init('select', options, Select.defaults);
-    };
-
-    $.fn.editableform.utils.inherit(Select, $.fn.editableform.types.abstract);
-
-    $.extend(Select.prototype, {
-        render: function () {
-            Select.superclass.render.call(this);
+            List.superclass.render.call(this);
             var deferred = $.Deferred();
             this.error = null;
             this.sourceData = null;
             this.prependData = null;
             this.onSourceReady(function () {
-                this.renderOptions();
+                this.renderList();
                 deferred.resolve();
             }, function () {
                 this.error = this.options.sourceError;
@@ -1689,27 +1542,16 @@ $(function(){
         },
 
         html2value: function (html) {
-            return null; //it's not good idea to set value by text for SELECT. Better set NULL
+            return null; //can't set value by text
         },
-
+        
         value2html: function (value, element) {
             var deferred = $.Deferred();
             this.onSourceReady(function () {
-                var i, text = '';
-                if($.isArray(this.sourceData)) {
-                    for(i=0; i<this.sourceData.length; i++){
-                        /*jshint eqeqeq: false*/
-                        if(this.sourceData[i].value == value) {
-                        /*jshint eqeqeq: true*/                            
-                            text = this.sourceData[i].text;
-                            break; 
-                        }
-                    } 
-                }
-                Select.superclass.value2html(text, element);
+                this.value2htmlFinal(value, element);
                 deferred.resolve();
             }, function () {
-                Select.superclass.value2html(this.options.sourceError, element);
+                List.superclass.value2html(this.options.sourceError, element);
                 deferred.resolve();
             });
 
@@ -1821,15 +1663,19 @@ $(function(){
             }
         },
 
-        renderOptions: function() {
-            if(!$.isArray(this.sourceData)) {
-                return;
-            }
-
-            for(var i=0; i<this.sourceData.length; i++) {
-                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
-            }
+        /*
+         renders input list
+        */
+        renderList: function() {
+            // this method should be overwritten in child class
         },
+       
+         /*
+         set element's html by value
+        */
+        value2htmlFinal: function(value, element) {
+            // this method should be overwritten in child class
+        },        
 
         /**
         * convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]
@@ -1869,20 +1715,28 @@ $(function(){
                 });  
             }
             return result;
-        }
+        },
+        
+        //search for item by particular value
+        itemByVal: function(val) {
+            if($.isArray(this.sourceData)) {
+                for(var i=0; i<this.sourceData.length; i++){
+                    /*jshint eqeqeq: false*/
+                    if(this.sourceData[i].value == val) {
+                    /*jshint eqeqeq: true*/                            
+                        return this.sourceData[i];
+                    }
+                }
+            }
+        }        
 
     });      
 
-    Select.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        /**
-        @property tpl 
-        @default <select></select>
-        **/         
-        tpl:'<select></select>',
+    List.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
         Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
-        For compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.      
+        For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
 
         @property source 
         @type string|array|object
@@ -1898,16 +1752,372 @@ $(function(){
         **/         
         prepend:false,
         /**
-        Error message shown when list cannot be loaded (e.g. ajax error)
+        Error message when list cannot be loaded (e.g. ajax error)
         
         @property sourceError 
         @type string
-        @default Error when loading options
+        @default Error when loading list
         **/          
-        sourceError: 'Error when loading options'
+        sourceError: 'Error when loading list'
+    });
+
+    $.fn.editableform.types.list = List;      
+
+}(window.jQuery));
+/**
+Text input
+
+@class text
+@extends abstract
+@final
+@example
+<a href="#" id="username" data-type="text" data-pk="1">awesome</a>
+<script>
+$(function(){
+    $('#username').editable({
+        url: '/post',
+        title: 'Enter username'
+    });
+});
+</script>
+**/
+(function ($) {
+    var Text = function (options) {
+        this.init('text', options, Text.defaults);
+    };
+
+    $.fn.editableform.utils.inherit(Text, $.fn.editableform.types.abstract);
+
+    $.extend(Text.prototype, {
+        activate: function() {
+            if(this.$input.is(':visible')) {
+                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                this.$input.focus();
+            }
+        }  
+    });
+
+    Text.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <input type="text">
+        **/         
+        tpl: '<input type="text">',
+        /**
+        Placeholder attribute of input. Shown when input is empty.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null
+    });
+
+    $.fn.editableform.types.text = Text;
+
+}(window.jQuery));
+
+/**
+Textarea input
+
+@class textarea
+@extends abstract
+@final
+@example
+<a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
+<script>
+$(function(){
+    $('#comments').editable({
+        url: '/post',
+        title: 'Enter comments'
+    });
+});
+</script>
+**/
+(function ($) {
+
+    var Textarea = function (options) {
+        this.init('textarea', options, Textarea.defaults);
+    };
+
+    $.fn.editableform.utils.inherit(Textarea, $.fn.editableform.types.abstract);
+
+    $.extend(Textarea.prototype, {
+        render: function () {
+            Textarea.superclass.render.call(this);
+
+            //ctrl + enter
+            this.$input.keydown(function (e) {
+                if (e.ctrlKey && e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });
+        },
+
+        value2html: function(value, element) {
+            var html = '', lines;
+            if(value) {
+                lines = value.split("\n");
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i] = $('<div>').text(lines[i]).html();
+                }
+                html = lines.join('<br>');
+            }
+            $(element).html(html);
+        },
+
+        html2value: function(html) {
+            if(!html) {
+                return '';
+            }
+            var lines = html.split(/<br\s*\/?>/i);
+            for (var i = 0; i < lines.length; i++) {
+                lines[i] = $('<div>').html(lines[i]).text();
+            }
+            return lines.join("\n"); 
+        },        
+
+        activate: function() {
+            if(this.$input.is(':visible')) {
+                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                this.$input.focus();
+            }
+        }         
+    });
+
+    Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+        /**
+        @property tpl 
+        @default <textarea></textarea>
+        **/          
+        tpl:'<textarea></textarea>',
+        /**
+        @property inputclass 
+        @default span3
+        **/          
+        inputclass:'span3',
+        /**
+        Placeholder attribute of input. Shown when input is empty.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null        
+    });
+
+    $.fn.editableform.types.textarea = Textarea;    
+
+}(window.jQuery));
+/**
+Select (dropdown) input
+
+@class select
+@extends list
+@final
+@example
+<a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-original-title="Select status"></a>
+<script>
+$(function(){
+    $('#status').editable({
+        value: 2,    
+        source: [
+              {value: 1, text: 'Active'},
+              {value: 2, text: 'Blocked'},
+              {value: 3, text: 'Deleted'}
+           ]
+        }
+    });
+});
+</script>
+**/
+(function ($) {
+
+    var Select = function (options) {
+        this.init('select', options, Select.defaults);
+    };
+
+    $.fn.editableform.utils.inherit(Select, $.fn.editableform.types.list);
+
+    $.extend(Select.prototype, {
+        renderList: function() {
+            if(!$.isArray(this.sourceData)) {
+                return;
+            }
+
+            for(var i=0; i<this.sourceData.length; i++) {
+                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
+            }
+        },
+       
+        value2htmlFinal: function(value, element) {
+            var text = '', item = this.itemByVal(value);
+            if(item) {
+                text = item.text;
+            }
+            Select.superclass.constructor.superclass.value2html(text, element);   
+        }        
+    });      
+
+    Select.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+        /**
+        @property tpl 
+        @default <select></select>
+        **/         
+        tpl:'<select></select>'
     });
 
     $.fn.editableform.types.select = Select;      
+
+}(window.jQuery));
+/**
+List of checkboxes. Internally value stored as javascript array of values.
+
+@class checklist
+@extends list
+@final
+@example
+<a href="#" id="options" data-type="checklist" data-pk="1" data-url="/post" data-original-title="Select options"></a>
+<script>
+$(function(){
+    $('#options').editable({
+        value: [2, 3],    
+        source: [
+              {value: 1, text: 'Active'},
+              {value: 2, text: 'Blocked'},
+              {value: 3, text: 'Deleted'}
+           ]
+        }
+    });
+});
+</script>
+**/
+(function ($) {
+
+    var Checklist = function (options) {
+        this.init('checklist', options, Checklist.defaults);
+    };
+
+    $.fn.editableform.utils.inherit(Checklist, $.fn.editableform.types.list);
+
+    $.extend(Checklist.prototype, {
+        renderList: function() {
+            var $label, $div;
+            if(!$.isArray(this.sourceData)) {
+                return;
+            }
+
+            for(var i=0; i<this.sourceData.length; i++) {
+                $label = $('<label>').text(' '+this.sourceData[i].text)
+                                     .prepend($('<input>', {
+                                           type: 'checkbox',
+                                           value: this.sourceData[i].value, 
+                                           name: this.options.name
+                                     }));
+                
+                $('<div>').append($label).appendTo(this.$input);
+            }
+        },
+       
+       value2str: function(value) {
+           return $.isArray(value) ? value.join($.trim(this.options.separator)) : '';
+       },        
+       
+       //parse separated string
+        str2value: function(str) {
+           var reg, value = null;
+           if(typeof str === 'string' && str.length) {
+               reg = new RegExp('\\s*'+$.trim(this.options.separator)+'\\s*');
+               value = str.split(reg);
+           } else if($.isArray(str)) {
+               value = str; 
+           }
+           return value;
+        },       
+       
+       //set checked on required checkboxes
+       value2input: function(value) {
+            var $checks = this.$input.find('input[type="checkbox"]');
+            $checks.removeAttr('checked');
+            if($.isArray(value) && value.length) {
+                $checks.each(function(i, el) {
+                    if($.inArray($(el).val(), value) !== -1) {
+                        $(el).attr('checked', 'checked');
+                    }
+                }); 
+            }  
+        },  
+        
+       input2value: function() { 
+           var checked = [];
+           this.$input.find('input:checked').each(function(i, el) {
+               checked.push($(el).val());
+           });
+           return checked;
+       },            
+          
+       //collect text of checked boxes
+        value2htmlFinal: function(value, element) {
+           var selected = [], item, i, html = '';
+           if($.isArray(value) && value.length <= this.options.limit) {    
+               for(i=0; i<value.length; i++){
+                   item = this.itemByVal(value[i]);
+                   if(item) {
+                       selected.push($('<div>').text(item.text).html());
+                   }
+               }
+               html = selected.join(this.options.viewseparator);
+           } else {  
+               html = this.options.limitText.replace('{checked}', $.isArray(value) ? value.length : 0).replace('{count}', this.sourceData.length); 
+           }
+           $(element).html(html);
+        }
+    });      
+
+    Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+        /**
+        @property tpl 
+        @default <div></div>
+        **/         
+        tpl:'<div></div>',
+        
+        /**
+        Separator of values in string when sending to server
+
+        @property separator 
+        @type string
+        @default ', '
+        **/         
+        separator: ',',
+        /**
+        Separator of text when display as element content.
+
+        @property viewseparator 
+        @type string
+        @default '<br>'
+        **/         
+        viewseparator: '<br>',
+        /**
+        Maximum number of items shown as element content. 
+        If checked more items - <code>limitText</code> will be shown.
+
+        @property limit 
+        @type integer
+        @default 4
+        **/         
+        limit: 4,
+        /**
+        Text shown when count of checked items is greater than <code>limit</code> parameter.
+        You can use <code>{checked}</code> and <code>count</code> placeholders.
+
+        @property limitText 
+        @type string
+        @default 'Selected {checked} of {count}'
+        **/         
+        limitText: 'Selected {checked} of {count}'        
+    });
+
+    $.fn.editableform.types.checklist = Checklist;      
 
 }(window.jQuery));
 
@@ -2016,11 +2226,12 @@ Editableform based on jQuery UI
 }(window.jQuery));
 /**
 jQuery UI Datepicker.  
-Description and examples: http://jqueryui.com/datepicker.  
-Do not use it together with bootstrap-datepicker.
+Description and examples: http://jqueryui.com/datepicker.   
+This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
 
 @class dateui
 @extends abstract
+@final
 @example
 <a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
 <script>

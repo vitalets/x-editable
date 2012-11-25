@@ -95,6 +95,8 @@
                      
                       <li><a href="#dateui">dateui</a></li>
                      
+                      <li><a href="#checklist">checklist</a></li>
+                     
                   </ul>
                 </li>
                 <li><a href="#global">global templates</a></li>
@@ -857,7 +859,7 @@ Can be used to process json response. If this function returns string - means er
             <td>type</td>
             <td>string</td>
             <td>&#x27;text&#x27;</td>
-            <td><p>Type of input. Can be <code>text|textarea|select|date</code></p>
+            <td><p>Type of input. Can be <code>text|textarea|select|date|checklist</code></p>
 
             
             </td>
@@ -1148,6 +1150,8 @@ $('#username').on('shown', function() {
             <li>date</li>
             
             <li>dateui</li>
+            
+            <li>checklist</li>
                    
             </ul>
         </section> 
@@ -1358,7 +1362,7 @@ $(function(){
             <td>null</td>
             <td><p>Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
 Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
-For compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.</p>
+For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
 
             
             </td>
@@ -1378,7 +1382,7 @@ For compability it also supports format <code>{value1: text1, value2: text2 ...}
             <td>sourceError</td>
             <td>string</td>
             <td>Error when loading list</td>
-            <td><p>Error message shown when list cannot be loaded (e.g. ajax error)</p>
+            <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
 
             
             </td>
@@ -1540,7 +1544,7 @@ $(function(){
         
          <section id="dateui">
             <h2>dateui</h2>
-            <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>Do not use it together with bootstrap-datepicker.</p>
+            <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>This input is also accessible as <strong>date</strong> type. Do not use it together with <strong>bootstrap-datepicker</strong> as both apply <code>$().datepicker()</code> method.</p>
 </p>
             <ul class="nav nav-tabs" id="dateui-tabs">
     <li class="active"><a href="#dateui-options" data-toggle="tab">Options</a></li>
@@ -1642,6 +1646,157 @@ $(function(){
         datepicker: {
                 firstDay: 1
            }
+        }
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
+         <section id="checklist">
+            <h2>checklist</h2>
+            <p><p>List of checkboxes. Internally value stored as javascript array of values.</p>
+</p>
+            <ul class="nav nav-tabs" id="checklist-tabs">
+    <li class="active"><a href="#checklist-options" data-toggle="tab">Options</a></li>
+    <li><a href="#checklist-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="checklist-options">
+      <p>All options can be defined as <code>data-*</code> attributes.
+
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl</td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>separator</td>
+            <td>string</td>
+            <td>&#x27;, &#x27;</td>
+            <td><p>Separator of values in string when sending to server</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewseparator</td>
+            <td>string</td>
+            <td>&#x27;&lt;br&gt;&#x27;</td>
+            <td><p>Separator of text when display as element content.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>4</td>
+            <td><p>Maximum number of items shown as element content. 
+If checked more items - <code>limitText</code> will be shown.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>limitText</td>
+            <td>string</td>
+            <td>&#x27;Selected {checked} of {count}&#x27;</td>
+            <td><p>Text shown when count of checked items is greater than <code>limit</code> parameter.
+You can use <code>{checked}</code> and <code>count</code> placeholders.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>source</td>
+            <td>string|array|object</td>
+            <td>null</td>
+            <td><p>Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
+For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>prepend</td>
+            <td>string|array|object</td>
+            <td>false</td>
+            <td><p>Data automatically prepended to the begining of dropdown list.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>sourceError</td>
+            <td>string</td>
+            <td>Error when loading list</td>
+            <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>span2</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Name attribute of input</p>
+
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="checklist-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;options&quot; data-type=&quot;checklist&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select options&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#options&#x27;).editable({
+        value: [2, 3],    
+        source: [
+              {value: 1, text: &#x27;Active&#x27;},
+              {value: 2, text: &#x27;Blocked&#x27;},
+              {value: 3, text: &#x27;Deleted&#x27;}
+           ]
         }
     });
 });

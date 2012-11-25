@@ -4,7 +4,6 @@ In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.
 It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
 
 ## Demo + Docs + Download
-
 See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues

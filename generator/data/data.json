@@ -90,6 +90,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\checklist.js": {
+            "name": "..\\lib\\src\\inputs\\checklist.js",
+            "modules": {},
+            "classes": {
+                "checklist": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs\\list.js": {
             "name": "..\\lib\\src\\inputs\\list.js",
             "modules": {},
@@ -206,7 +215,7 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",
             "line": 1,
-            "description": "jQuery UI Datepicker.  \nDescription and examples: http://jqueryui.com/datepicker.  \nDo not use it together with bootstrap-datepicker.",
+            "description": "jQuery UI Datepicker.  \nDescription and examples: http://jqueryui.com/datepicker.   \nThis input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.",
             "extends": "abstract",
             "final": 1,
             "example": [
@@ -224,6 +233,23 @@
             "file": "..\\lib\\src\\inputs\\abstract.js",
             "line": 1,
             "description": "Abstract editable input class.\nTo create your own input you should inherit from this class."
+        },
+        "checklist": {
+            "name": "checklist",
+            "shortname": "checklist",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 1,
+            "description": "List of checkboxes. Internally value stored as javascript array of values.",
+            "extends": "list",
+            "final": 1,
+            "example": [
+                "\n<a href=\"#\" id=\"options\" data-type=\"checklist\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select options\"></a>\n<script>\n$(function(){\n    $('#options').editable({\n        value: [2, 3],    \n        source: [\n              {value: 1, text: 'Active'},\n              {value: 2, text: 'Blocked'},\n              {value: 3, text: 'Deleted'}\n           ]\n        }\n    });\n});\n</script>"
+            ]
         },
         "list": {
             "name": "list",
@@ -659,8 +685,8 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 292,
-            "description": "Type of input. Can be <code>text|textarea|select|date</code>",
+            "line": 303,
+            "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
             "type": "string",
@@ -669,7 +695,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 300,
+            "line": 311,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
@@ -682,7 +708,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 318,
+            "line": 329,
             "description": "Additional params for submit. Function can be used to calculate params dynamically",
             "example": [
                 "\nparams: function() {\n   return { a: 1 };\n}"
@@ -695,7 +721,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 330,
+            "line": 341,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -705,7 +731,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 338,
+            "line": 349,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dinamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -715,7 +741,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 347,
+            "line": 358,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -725,7 +751,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 356,
+            "line": 367,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -735,7 +761,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 365,
+            "line": 376,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -748,7 +774,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 379,
+            "line": 390,
             "description": "Success callback. Called when value successfully sent on server and response status = 200.\nCan be used to process json response. If this function returns string - means error occured and string is shown as error message.",
             "itemtype": "property",
             "name": "success",
@@ -1314,6 +1340,54 @@
             "class": "abstract"
         },
         {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 106,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<div></div>",
+            "class": "checklist"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 112,
+            "description": "Separator of values in string when sending to server",
+            "itemtype": "property",
+            "name": "separator",
+            "type": "string",
+            "default": "', '",
+            "class": "checklist"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 120,
+            "description": "Separator of text when display as element content.",
+            "itemtype": "property",
+            "name": "viewseparator",
+            "type": "string",
+            "default": "'<br>'",
+            "class": "checklist"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 128,
+            "description": "Maximum number of items shown as element content. \nIf checked more items - <code>limitText</code> will be shown.",
+            "itemtype": "property",
+            "name": "limit",
+            "type": "integer",
+            "default": "4",
+            "class": "checklist"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 137,
+            "description": "Text shown when count of checked items is greater than <code>limit</code> parameter.\nYou can use <code>{checked}</code> and <code>count</code> placeholders.",
+            "itemtype": "property",
+            "name": "limitText",
+            "type": "string",
+            "default": "'Selected {checked} of {count}'",
+            "class": "checklist"
+        },
+        {
             "file": "..\\lib\\src\\inputs\\list.js",
             "line": 169,
             "description": "convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",
@@ -1321,8 +1395,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 212,
-            "description": "Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: text1, value2: text2 ...}</code> but it does not guarantee elements order.",
+            "line": 225,
+            "description": "Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: \"text1\", value2: \"text2\" ...}</code> but it does not guarantee elements order.",
             "itemtype": "property",
             "name": "source",
             "type": "string|array|object",
@@ -1331,7 +1405,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 222,
+            "line": 235,
             "description": "Data automatically prepended to the begining of dropdown list.",
             "itemtype": "property",
             "name": "prepend",
@@ -1341,8 +1415,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 230,
-            "description": "Error message shown when list cannot be loaded (e.g. ajax error)",
+            "line": 243,
+            "description": "Error message when list cannot be loaded (e.g. ajax error)",
             "itemtype": "property",
             "name": "sourceError",
             "type": "string",
@@ -1351,7 +1425,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 59,
+            "line": 52,
             "itemtype": "property",
             "name": "tpl",
             "default": "<select></select>",

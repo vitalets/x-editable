@@ -74,7 +74,19 @@
         e.stopPropagation();
         e.preventDefault();
         $('#link').editable('toggle');
-   });     
+   }); 
+   
+    $('#fruits').editable({
+       pk: 1,
+       limit: 3,
+       source: [
+        {value: 1, text: 'banana'},
+        {value: 2, text: 'peach'},
+        {value: 3, text: 'apple'},
+        {value: 4, text: 'watermelon'},
+        {value: 5, text: 'orange'}
+       ]
+    });        
 
   //----------------------------------
   // editableContainer() 
