@@ -209,7 +209,7 @@ List - abstract class for inputs that have source option loaded from js array or
         //search for item by particular value
         itemByVal: function(val) {
             if($.isArray(this.sourceData)) {
-                for(i=0; i<this.sourceData.length; i++){
+                for(var i=0; i<this.sourceData.length; i++){
                     /*jshint eqeqeq: false*/
                     if(this.sourceData[i].value == val) {
                     /*jshint eqeqeq: true*/                            

@@ -55,7 +55,7 @@ $(function(){
         str2value: function(str) {
            var reg, value = null;
            if(typeof str === 'string' && str.length) {
-               reg = new RegExp('\s*'+$.trim(this.options.separator)+'\s*');
+               reg = new RegExp('\\s*'+$.trim(this.options.separator)+'\\s*');
                value = str.split(reg);
            } else if($.isArray(str)) {
                value = str; 
@@ -86,9 +86,9 @@ $(function(){
           
        //collect text of checked boxes
         value2htmlFinal: function(value, element) {
-           var selected = [], html = '';
-           if($.isArray(value) && value.length <= this.options.limit) {
-               for(var i=0; i<value.length; i++){
+           var selected = [], item, i, html = '';
+           if($.isArray(value) && value.length <= this.options.limit) {    
+               for(i=0; i<value.length; i++){
                    item = this.itemByVal(value[i]);
                    if(item) {
                        selected.push($('<div>').text(item.text).html());
@@ -140,9 +140,9 @@ $(function(){
 
         @property limitText 
         @type string
-        @default 'Checked {checked} options of {count}'
+        @default 'Selected {checked} of {count}'
         **/         
-        limitText: 'Checked {checked} options of {count}'        
+        limitText: 'Selected {checked} of {count}'        
     });
 
     $.fn.editableform.types.checklist = Checklist;      
