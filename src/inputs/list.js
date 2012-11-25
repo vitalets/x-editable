@@ -195,7 +195,7 @@ List - abstract class for inputs that have source option loaded from js array or
                             //data contains incorrect objects
                         }
                     } else {
-                        result.push({value: i, text: data[i]}); 
+                        result.push({value: data[i], text: data[i]}); 
                     }
                 }
             } else {  //object
