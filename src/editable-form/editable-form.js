@@ -301,7 +301,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /* see also defaults for input */
         
         /**
-        Type of input. Can be <code>text|textarea|select|date</code>
+        Type of input. Can be <code>text|textarea|select|date|checklist</code>
 
         @property type 
         @type string

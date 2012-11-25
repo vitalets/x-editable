@@ -1,7 +1,7 @@
 /**
 jQuery UI Datepicker.  
-Description and examples: http://jqueryui.com/datepicker.  
-Do not use it together with bootstrap-datepicker.
+Description and examples: http://jqueryui.com/datepicker.   
+This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
 
 @class dateui
 @extends abstract

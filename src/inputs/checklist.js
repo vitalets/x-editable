@@ -1,11 +1,11 @@
 /**
-Checklist input. Internally value stored as array.
+List of checkboxes. Internally value stored as javascript array.
 
 @class checklist
 @extends list
 @final
 @example
-<a href="#" id="status" data-type="checklist" data-pk="1" data-url="/post" data-original-title="Select options"></a>
+<a href="#" id="options" data-type="checklist" data-pk="1" data-url="/post" data-original-title="Select options"></a>
 <script>
 $(function(){
     $('#options').editable({
@@ -122,7 +122,7 @@ $(function(){
 
         @property viewseparator 
         @type string
-        @default ', '
+        @default '<br>'
         **/         
         viewseparator: '<br>',
         /**
