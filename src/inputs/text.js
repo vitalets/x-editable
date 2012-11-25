@@ -3,6 +3,7 @@ Text input
 
 @class text
 @extends abstract
+@final
 @example
 <a href="#" id="username" data-type="text" data-pk="1">awesome</a>
 <script>

@@ -1,6 +1,10 @@
 X-editable changelog
 =============================
-          
+       
+Version 1.0.2 wip
+----------------------------   
+[enh] updated docs: inputs dropdown menu, global templates section (vitalets)      
+                            
 
 Version 1.0.1 Nov 22, 2012
 ----------------------------          

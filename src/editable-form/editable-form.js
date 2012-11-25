@@ -17,7 +17,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
     EditableForm.prototype = {
         constructor: EditableForm,
-        initInput: function() {
+        initInput: function() {  //called once
             var TypeConstructor, typeOptions;
             
             //create input of specified type
@@ -247,7 +247,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         
        option: function(key, value) {
           this.options[key] = value;
-       }        
+          if(key === 'value') {
+              this.setValue(value);
+          }
+       },
+       
+       setValue: function(value, convertStr) {
+          if(convertStr) {
+              this.value = this.input.str2value(value);
+          } else {
+              this.value = value;
+          }
+       }               
     };
 
     /*

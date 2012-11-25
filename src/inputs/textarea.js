@@ -3,6 +3,7 @@ Textarea input
 
 @class textarea
 @extends abstract
+@final
 @example
 <a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
 <script>
