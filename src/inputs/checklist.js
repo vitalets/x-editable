@@ -1,5 +1,5 @@
 /**
-List of checkboxes. Internally value stored as javascript array.
+List of checkboxes. Internally value stored as javascript array of values.
 
 @class checklist
 @extends list

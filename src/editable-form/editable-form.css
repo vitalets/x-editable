@@ -23,12 +23,11 @@
    color: red;  
 }
 
-.editableform input, 
-.editableform select, 
-.editableform textarea {
+.editableform .editable-input {
     vertical-align: top; 
     display: inline-block;
     width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
+    float: left;
 }
 
 .editableform textarea {
@@ -36,7 +35,6 @@
 }
 
 .editableform .editable-date {
-    float: left;
     padding: 0; 
     margin: 0 0 9px 0;
 }
