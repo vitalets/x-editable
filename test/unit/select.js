@@ -81,7 +81,7 @@ $(function () {
     
     test("load options from simple array", function () {
          var arr = ['q', 'w', 'x'],
-             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+             e = $('<a href="#" data-type="select" data-value="x" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
              pk: 1,
              autotext: true,
              source: arr
@@ -92,7 +92,7 @@ $(function () {
         ok(p.is(':visible'), 'popover visible')
         ok(p.find('select').length, 'select exists')
         equal(p.find('select').find('option').length, arr.length, 'options loaded')
-        equal(p.find('select').val(), 2, 'selected value correct') 
+        equal(p.find('select').val(), 'x', 'selected value correct') 
         p.find('button[type=button]').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     }) 
