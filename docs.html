@@ -1512,6 +1512,17 @@ Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">
         </tr> 
        
         <tr>
+            <td>clear</td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>name</td>
             <td>string</td>
             <td>null</td>
@@ -1618,6 +1629,17 @@ Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">h
 }</td>
             <td><p>Configuration of datepicker.
 Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jqueryui.com/datepicker</a></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>clear</td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
 
             
             </td>
@@ -1793,9 +1815,9 @@ $(function(){
     $(&#x27;#options&#x27;).editable({
         value: [2, 3],    
         source: [
-              {value: 1, text: &#x27;Active&#x27;},
-              {value: 2, text: &#x27;Blocked&#x27;},
-              {value: 3, text: &#x27;Deleted&#x27;}
+              {value: 1, text: &#x27;option1&#x27;},
+              {value: 2, text: &#x27;option2&#x27;},
+              {value: 3, text: &#x27;option3&#x27;}
            ]
         }
     });
@@ -1812,14 +1834,20 @@ $(function(){
             <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
 
 <h4>$.fn.editableform.template</h4>
-<p>Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:</p>
+<p>Form template. Must contain <code>FORM</code> tag and classes <code>.control-group</code>, <code>.editable-input</code>, <code>.editable-buttons</code>, <code>.editable-error-block</code>.<br>
+Default value:</p>
 
 <pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
     &lt;div class=&quot;control-group&quot;&gt;
-       &amp;nbsp;&lt;button type=&quot;submit&quot;&gt;Ok&lt;/button&gt;&amp;nbsp;&lt;button type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
+         &lt;div class=&quot;editable-input&quot;&gt;&lt;/div&gt;&lt;div class=&quot;editable-buttons&quot;&gt;&lt;/div&gt;
+         &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt; 
 &lt;/form&gt;</pre>
+
+<h4>$.fn.editableform.buttons</h4>
+<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. This template is overwritten in <i>bootstrap</i> and <i>jquery-ui</i> builds.<br>
+Default value:</p>
+<pre class="prettyprint linenums">&lt;button type=&quot;submit&quot;&gt;ok&lt;/button&gt;&lt;button type=&quot;button&quot;&gt;cancel&lt;/button&gt;</pre>
       
 <h4>$.fn.editableform.loading</h4>
 <p>Loading DIV template. Default value:</p>

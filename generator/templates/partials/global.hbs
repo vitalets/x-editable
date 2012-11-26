@@ -1,15 +1,22 @@
 <p>Some templates are defined globally and affect all editable inputs. You can overwrite it for your needs.</p>
 
 <h4>$.fn.editableform.template</h4>
-<p>Form template. Must contain <code>FORM</code>, <code>DIV.control-group</code> and two buttons. Default value:</p>
+<p>Form template. Must contain <code>FORM</code> tag and classes <code>.control-group</code>, <code>.editable-input</code>, <code>.editable-buttons</code>, <code>.editable-error-block</code>.<br>
+Default value:</p>
 
 {{#source}}
 <form class="form-inline editableform">
     <div class="control-group">
-       &nbsp;<button type="submit">Ok</button>&nbsp;<button type="button">Cancel</button>
-    </div>
-    <div class="editable-error-block"></div>
+         <div class="editable-input"></div><div class="editable-buttons"></div>
+         <div class="editable-error-block"></div>
+    </div> 
 </form>
+{{/source}}
+
+<h4>$.fn.editableform.buttons</h4>
+<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. Default value:</p>
+{{#source}}
+<button type="submit">ok</button><button type="button">cancel</button>
 {{/source}}
       
 <h4>$.fn.editableform.loading</h4>
