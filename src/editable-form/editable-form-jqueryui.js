@@ -7,8 +7,9 @@ Editableform based on jQuery UI
          initTemplate: function() {
               this.$form = $($.fn.editableform.template);
               
-             //init buttons
-             this.$form.find('button[type=submit]').button({
+              //buttons
+              this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);                
+              this.$form.find('button[type=submit]').button({
                  icons: { primary: "ui-icon-check" },
                  text: false
              });
@@ -16,14 +17,12 @@ Editableform based on jQuery UI
                  icons: { primary: "ui-icon-cancel" },
                  text: false
              });
+ 
          }
     });
     
-    //form template
-    $.fn.editableform.template = '<form class="editableform"><div class="control-group">' + 
-    '&nbsp;<button type="submit" style="height: 24px">submit</button>&nbsp;<button type="button" style="height: 24px">cancel</button></div>' + 
-    '<div class="editable-error-block"></div>' + 
-    '</form>'; 
+    //buttons
+    $.fn.editableform.buttons = '<button type="submit" style="height: 24px">submit</button><button type="button" style="height: 24px">cancel</button>';
     
     //error classes
     $.fn.editableform.errorGroupClass = null;

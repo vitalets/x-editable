@@ -1,6 +1,15 @@
 .editableform,
 .editableform div.control-group {
-    margin-bottom: 0; 
+    margin-bottom: 0;
+    overflow: auto; 
+}
+
+.editable-buttons {
+   float: left;  
+}
+
+.editable-buttons button {
+   margin-left: 7px; 
 }
 
 .editableform-loading {
@@ -14,8 +23,7 @@
 
  .editable-error-block {
     max-width: 300px;
-    margin-top: 3px;
-    margin-bottom: 0;
+    margin: 0;
     clear: both; 
 }
 
@@ -23,11 +31,12 @@
    color: red;  
 }
 
-.editableform .editable-input {
+.editable-input {
     vertical-align: top; 
     display: inline-block;
     width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
     float: left;
+    padding-bottom: 9px;
 }
 
 .editableform textarea {
@@ -36,5 +45,5 @@
 
 .editableform .editable-date {
     padding: 0; 
-    margin: 0 0 9px 0;
+    margin: 0;
 }

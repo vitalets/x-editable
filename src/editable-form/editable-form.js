@@ -34,6 +34,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         },
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
+            
+            //buttons
+            this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);              
         },
         /**
         Renders editableform
@@ -57,8 +60,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //place input
-                this.$form.find('div.control-group').prepend(this.input.$input);
+                //input
+                this.$form.find('div.editable-input').append(this.input.$input);
+                
+                //clear link
+                if(this.input.$clear) {
+                    this.$form.find('div.editable-input').append(this.input.$clear);  
+                }                
+                
                 //attach 'cancel' handler
                 this.$form.find('button[type=button]').click($.proxy(this.cancel, this));
                 //append form to container
@@ -94,19 +103,11 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             this.$element.triggerHandler('cancel');
         },
         showLoading: function() {
-            var fw, fh, iw, ih;
+            var fw, fh, iw, bh;
             //set loading size equal to form
             if(this.$form) {
-                fh = this.$form.outerHeight() || 0;
-                fw = this.$form.outerWidth() || 0;
-                ih = (this.input && this.input.$input.outerHeight()) || 0;
-                iw = (this.input && this.input.$input.outerWidth()) || 0;
-                if(fh || ih) {
-                    this.$loading.height(fh > ih ? fh : ih);
-                }
-                if(fw || iw) {
-                    this.$loading.width(fw > iw ? fw : iw);
-                }
+                this.$loading.width(this.$form.outerWidth());
+                this.$loading.height(this.$form.outerHeight());
                 this.$form.hide();
             }
             this.$loading.show(); 
@@ -406,13 +407,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
       Note: following params could redefined in engine: bootstrap or jqueryui:
       Classes 'control-group' and 'editable-error-block' must always present!
     */      
-      $.fn.editableform.template = '<form class="form-inline editableform"><div class="control-group">' + 
-    '&nbsp;<button type="submit">Ok</button>&nbsp;<button type="button">Cancel</button></div>' + 
-    '<div class="editable-error-block"></div>' + 
-    '</form>';
+      $.fn.editableform.template = '<form class="form-inline editableform">'+
+       '<div class="control-group">' + 
+           '<div class="editable-input"></div><div class="editable-buttons"></div>'+
+       '</div>' + 
+       '<div class="editable-error-block"></div>' + 
+       '</form>';
       
       //loading div
       $.fn.editableform.loading = '<div class="editableform-loading"></div>';
+      
+      //buttons
+      $.fn.editableform.buttons = '<button type="submit">Ok</button><button type="button">Cancel</button>';      
       
       //error class attahced to control-group
       $.fn.editableform.errorGroupClass = null;  
