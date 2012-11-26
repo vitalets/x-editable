@@ -5,7 +5,6 @@ $(function () {
    module("dateui", {
         setup: function(){
             fx = $('#async-fixture');
-            $.fn.editable.defaults.name = 'name1';
         }
     });
     

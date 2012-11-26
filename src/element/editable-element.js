@@ -29,12 +29,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }    
                 
-            //name must be defined
+            //name
             this.options.name = this.options.name || this.$element.attr('id');
-            if (!this.options.name) {
-                $.error('You must define name (or id) for Editable element');
-                return;
-            } 
              
             //create input of specified type. Input will be used for converting value, not in form
             if(typeof $.fn.editableform.types[this.options.type] === 'function') {

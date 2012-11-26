@@ -4,9 +4,6 @@ $(function () {
         setup: function(){
             sfx = $('#qunit-fixture'),
             fx = $('#async-fixture');               
-            $.fn.editable.defaults.name = 'name2';
-            //clear cache
-            $(document).removeData('groups.php-'+$.fn.editable.defaults.name);
             $.support.transition = false;
         }
     });  
@@ -58,7 +55,7 @@ $(function () {
          }, timeout);                              
     });                  
    
-     asyncTest("test limit", function () {
+     asyncTest("limit option", function () {
          var e = $('<a href="#" data-type="checklist" data-value="2,3" data-url="post.php"></a>').appendTo(fx).editable({
              pk: 1,
              source: groupsArr,

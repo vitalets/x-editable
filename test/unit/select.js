@@ -4,9 +4,6 @@ $(function () {
         setup: function(){
             sfx = $('#qunit-fixture'),
             fx = $('#async-fixture');               
-            $.fn.editable.defaults.name = 'name1';
-            //clear cache
-            $(document).removeData('groups.php-'+$.fn.editable.defaults.name);
             $.support.transition = false;
         }
     });  
@@ -167,7 +164,7 @@ $(function () {
         }, timeout);                     
     })           
    
-    asyncTest("popover should save new selected value", function () {
+    asyncTest("should save new selected value", function () {
          var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo(fx).editable({
              pk: 1,
              source: groups
@@ -192,8 +189,8 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);                              
-    });                  
-   
+    });    
+    
      asyncTest("if new text is empty --> show emptytext on save", function () {
         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo(fx).editable({
              pk: 1,
@@ -248,8 +245,11 @@ $(function () {
      });
      
      asyncTest("cache request for same selects", function () {
-         var e = $('<a href="#" data-type="select" data-pk="1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
-             e1 = $('<a href="#" data-type="select" data-pk="1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
+        //clear cache
+        $(document).removeData('groups.php-name1');         
+                                 
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
+             e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
              req = 0;
 
         $.mockjax({
@@ -293,6 +293,10 @@ $(function () {
      
     asyncTest("cache simultaneous requests", function () {
         expect(4);
+        
+        //clear cache
+        $(document).removeData('groups.php-name1');          
+        
         var req = 0;
         $.mockjax({
                 url: 'groups-cache-sim.php',
@@ -303,9 +307,9 @@ $(function () {
                 }
          });  
 
-         var e = $('<a href="#" data-type="select" data-pk="1" data-value="1" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable(),
-             e1 = $('<a href="#" data-type="select" data-pk="1" data-value="2" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable(),
-             e2 = $('<a href="#" data-type="select" data-pk="1" data-value="3" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable();
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable(),
+             e1 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable(),
+             e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable();
            
           setTimeout(function() {
 
@@ -324,6 +328,10 @@ $(function () {
      
     asyncTest("cache simultaneous requests (loading error)", function () {
         expect(4);
+        
+        //clear cache
+        $(document).removeData('groups.php-name1');           
+        
         var req = 0;
         $.mockjax({
                 url: 'groups-cache-sim-err.php',
@@ -334,9 +342,9 @@ $(function () {
                 }
          });  
 
-         var e = $('<a href="#" data-type="select" data-pk="1" data-value="1" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
-             e1 = $('<a href="#" data-type="select" data-pk="1" data-value="2" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
-             e2 = $('<a href="#" data-type="select" data-pk="1" data-value="3" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">6456</a>').appendTo(fx).editable(),
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
+             e1 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
+             e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">6456</a>').appendTo(fx).editable(),
              errText = $.fn.editableform.types.select.defaults.sourceError;
            
           setTimeout(function() {

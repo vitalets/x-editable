@@ -5,8 +5,8 @@ $(function () {
     
    module("textarea", {
         setup: function(){
-            fx = $('#async-fixture'),
-            $.fn.editable.defaults.name = 'name1';
+            fx = $('#async-fixture');
+            $.support.transition = false;
         }
     });
       

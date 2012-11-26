@@ -3,6 +3,7 @@ X-editable changelog
        
 Version 1.1.0 wip
 ----------------------------   
+[enh #9] 'name' or 'id' is not required anymore (vitalets)      
 [enh] 'clear' button added in date and dateui (vitalets)      
 [enh] form template changed: added DIV.editable-input, DIV.editable.buttons and $.fn.editableform buttons (vitalets)      
 [enh] new input type: checklist (vitalets)      

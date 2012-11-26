@@ -93,17 +93,16 @@ List - abstract class for inputs that have source option loaded from js array or
                     cache.callbacks = [];
                     cache.err_callbacks = [];
                 }
-
+                
                 //loading sourceData from server
                 $.ajax({
                     url: this.options.source,
                     type: 'get',
                     cache: false,
-                    data: {name: this.options.name},
+                    data: this.options.name ? {name: this.options.name} : {},
                     dataType: 'json',
                     success: $.proxy(function (data) {
                         cache.loading = false;
-                        // this.options.source = data;
                         this.sourceData = this.makeArray(data);
                         if($.isArray(this.sourceData)) {
                             this.doPrepend();
