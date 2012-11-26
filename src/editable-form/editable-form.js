@@ -418,8 +418,8 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
       $.fn.editableform.loading = '<div class="editableform-loading"></div>';
       
       //buttons
-      $.fn.editableform.buttons = '<button type="submit">Ok</button>'+
-                                  '<button type="button">Cancel</button>';      
+      $.fn.editableform.buttons = '<button type="submit">ok</button>'+
+                                  '<button type="button">cancel</button>';      
       
       //error class attahced to control-group
       $.fn.editableform.errorGroupClass = null;  

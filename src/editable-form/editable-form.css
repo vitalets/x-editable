@@ -52,3 +52,8 @@
     padding: 0; 
     margin: 0;
 }
+
+.editable-clear {
+   float: right; 
+   font-size: 0.9em;
+}

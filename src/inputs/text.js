@@ -25,8 +25,8 @@ $(function(){
     $.extend(Text.prototype, {
         activate: function() {
             if(this.$input.is(':visible')) {
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
                 this.$input.focus();
+                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
             }
         }  
     });

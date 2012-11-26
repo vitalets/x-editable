@@ -18,6 +18,7 @@ To create your own input you should inherit from this class.
            this.type = type;
            this.options = $.extend({}, defaults, options); 
            this.$input = null;
+           this.$clear = null;
            this.error = null;
        },
        
@@ -28,14 +29,13 @@ To create your own input you should inherit from this class.
        **/       
        render: function() {
             this.$input = $(this.options.tpl);
-            this.$input.addClass('editable-input');
             if(this.options.inputclass) {
                 this.$input.addClass(this.options.inputclass); 
             }
             
             if (this.options.placeholder) {
                 this.$input.attr('placeholder', this.options.placeholder);
-            }            
+            }   
        }, 
 
        /**
@@ -111,6 +111,15 @@ To create your own input you should inherit from this class.
            if(this.$input.is(':visible')) {
                this.$input.focus();
            }
+       },
+       
+       /**
+        Creares input. 
+        
+        @method clear() 
+       **/        
+       clear:  function() {
+           this.$input.val(null);
        } 
     };
         

@@ -54,6 +54,14 @@ $(function(){
         render: function () {
             Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
+                        
+            if(this.options.clear) {
+                this.$clear = $('<a href="#">').addClass('editable-clear').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+            }
         },
 
         value2html: function(value, element) {
@@ -82,7 +90,12 @@ $(function(){
        },       
        
        activate: function() {
-       }        
+       },
+       
+       clear:  function() {
+          this.$input.data('datepicker').date = null;
+          this.$input.find('.active').removeClass('active');
+       }                
 
     });
     
@@ -131,7 +144,16 @@ $(function(){
             weekStart: 0,
             startView: 0,
             autoclose: false
-        }
+        },
+        /**
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+        
+        @property clear 
+        @type boolean|string
+        @default 'x clear'         
+        **/
+        clear: '&times; clear'
     });   
 
     $.fn.editableform.types.date = Date;
