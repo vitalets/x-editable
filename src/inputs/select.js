@@ -1,5 +1,5 @@
 /**
-Select (dropdown) input
+Select (dropdown)
 
 @class select
 @extends list
