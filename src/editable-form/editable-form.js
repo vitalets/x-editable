@@ -23,7 +23,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //create input of specified type
             if(typeof $.fn.editableform.types[this.options.type] === 'function') {
                 TypeConstructor = $.fn.editableform.types[this.options.type];
-                typeOptions = $.fn.editableform.utils.sliceObj(this.options, Object.keys(TypeConstructor.defaults));
+                typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);

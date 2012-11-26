@@ -1,11 +1,20 @@
-.editableform,
-.editableform div.control-group {
-    margin-bottom: 0;
-    overflow: auto; 
+.editableform {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+}
+
+.editableform .control-group {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+    white-space: nowrap; /* prevent wrapping buttons on new line */
 }
 
 .editable-buttons {
-   float: left;  
+   display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+}
+
+.editable-input {
+    vertical-align: top; 
+    display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
 }
 
 .editable-buttons button {
@@ -28,20 +37,13 @@
 
  .editable-error-block {
     max-width: 300px;
+    padding-top: 3px;
     margin: 0;
     clear: both; 
 }
 
 .editable-error {
    color: red;  
-}
-
-.editable-input {
-    vertical-align: top; 
-    display: inline-block;
-    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
-    float: left;
-    padding-bottom: 9px;
 }
 
 .editableform textarea {
@@ -51,9 +53,11 @@
 .editableform .editable-date {
     padding: 0; 
     margin: 0;
+    float: left;
 }
 
 .editable-clear {
+    clear: both;
    float: right; 
    font-size: 0.9em;
    text-decoration: none;
