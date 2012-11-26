@@ -13,7 +13,7 @@ Editableform based on jQuery UI
                  text: false
              });
              this.$form.find('button[type=button]').button({
-                 icons: { primary: "ui-icon-cancel" },
+                 icons: { primary: "ui-icon-closethick" },
                  text: false
              });
          }
