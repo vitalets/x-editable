@@ -52,6 +52,14 @@ $(function(){
         render: function () {
             DateUI.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
+            
+            if(this.options.clear) {
+                this.$clear = $('<a href="#">').addClass('editable-clear').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+            }            
         },
 
         value2html: function(value, element) {
@@ -100,7 +108,11 @@ $(function(){
        },       
        
        activate: function() {
-       }        
+       },
+       
+       clear:  function() {
+           this.$input.datepicker('setDate', null);
+       }   
 
     });
     
@@ -150,7 +162,16 @@ $(function(){
             firstDay: 0,
             changeYear: true,
             changeMonth: true
-        }
+        },
+        /**
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+        
+        @property clear 
+        @type boolean|string
+        @default 'x clear'         
+        **/
+        clear: '&times; clear'        
     });   
 
     $.fn.editableform.types.dateui = DateUI;
