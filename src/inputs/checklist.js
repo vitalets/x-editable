@@ -143,7 +143,7 @@ $(function(){
         limit: 4,
         /**
         Text shown when count of checked items is greater than <code>limit</code> parameter.
-        You can use <code>{checked}</code> and <code>count</code> placeholders.
+        You can use <code>{checked}</code> and <code>{count}</code> placeholders.
 
         @property limitText 
         @type string

@@ -222,7 +222,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
     List.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
-        Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+        Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
         For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
 
