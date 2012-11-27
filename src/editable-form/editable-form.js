@@ -198,7 +198,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
                 @example
                 $('#form-div').on('save'), function(e, params){
-                if(params.newValue === 'username') {...}
+                    if(params.newValue === 'username') {...}
                 });                    
                 **/                
                 this.$element.triggerHandler('save', {newValue: newValue, response: response});
@@ -278,10 +278,10 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     @params {Object} options
     @example
     var $form = $('&lt;div&gt;').editableform({
-    type: 'text',
-    name: 'username',
-    url: '/post',
-    value: 'vitaliy'
+        type: 'text',
+        name: 'username',
+        url: '/post',
+        value: 'vitaliy'
     });
 
     //to display form you should call 'render' method
@@ -327,20 +327,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @default null
         @example
         url: function(params) {
-        if(params.value === 'abc') {
-        var d = new $.Deferred;
-        return d.reject('field cannot be "abc"'); //returning error via deferred object
-        } else {
-        someModel.set(params.name, params.value); //save data in some js model
-        }
-        }        
+            if(params.value === 'abc') {
+                var d = new $.Deferred;
+                return d.reject('field cannot be "abc"'); //returning error via deferred object
+            } else {
+                someModel.set(params.name, params.value); //save data in some js model
+            }
+        } 
         **/        
         url:null,
         /**
         Additional params for submit. Function can be used to calculate params dynamically
         @example
         params: function() {
-        return { a: 1 };
+            return { a: 1 };
         }
 
         @property params 
@@ -391,9 +391,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @default null
         @example
         validate: function(value) {
-        if($.trim(value) == '') {
-        return 'This field is required';
-        }
+            if($.trim(value) == '') {
+                return 'This field is required';
+            }
         }
         **/         
         validate: null,
@@ -406,7 +406,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @default null
         @example
         success: function(response, newValue) {
-        if(!response.success) return response.msg;
+            if(!response.success) return response.msg;
         }
         **/          
         success: function(response, newValue) {}         
