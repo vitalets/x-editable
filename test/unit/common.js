@@ -122,7 +122,17 @@
         ok(!p.is(':visible'), 'popover closed');
      });        
       
-      
+     test("should not wrap buttons when parent has position:absolute", function () {
+        var  d = $('<div style="position: absolute; top: 200px">').appendTo(fx),
+             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(d).editable();
+            
+        e.click();
+        var p = tip(e);
+        ok(p.find('button').offset().top < p.find('.editable-input').offset().top + p.find('.editable-input').height(), 'buttons top ok');
+        ok(p.find('button').offset().left > p.find('.editable-input').offset().left + p.find('.editable-input').width(), 'buttons left ok');
+       
+        d.remove();
+     });       
       
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.
       /*

@@ -153,7 +153,7 @@ $(function () {
         equal(frmt(e.data('editable').value, f), d, 'day set correct');
         equal(p.find('td.day.active').text(), 15, 'day shown correct');
 
-        var clear = p.find('.editable-clear');
+        var clear = p.find('.editable-clear a');
         equal(clear.text(), 'abc', 'clear link shown');
 
         //click clear

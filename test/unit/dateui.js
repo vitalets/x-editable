@@ -105,7 +105,7 @@ $(function () {
         equal(frmt(e.data('editable').value, f), d, 'day set correct');
         equal(p.find('a.ui-state-active').text(), 15, 'day shown correct');
 
-        var clear = p.find('.editable-clear');
+        var clear = p.find('.editable-clear a');
         equal(clear.text(), 'abc', 'clear link shown');
 
         //click clear
@@ -118,7 +118,7 @@ $(function () {
            equal(e.text(), e.data('editable').options.emptytext, 'empty text shown');
            e.remove();    
            start();  
-        }, timeout); 
+        }, 500); 
         
      });                     
     
