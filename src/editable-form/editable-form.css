@@ -9,15 +9,24 @@
 
 .editable-buttons {
    display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+   vertical-align: top;
+   margin-left: 7px;
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;
 }
 
 .editable-input {
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
     width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
+    white-space: normal; /* reset white-space decalred in parent*/
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;   
 }
 
-.editable-buttons button {
+.editable-buttons .editable-cancel {
    margin-left: 7px; 
 }
 
@@ -28,7 +37,8 @@
 
 .editableform-loading {
     background: url('img/loading.gif') center center no-repeat;  
-    height: 25px;  
+    height: 25px;
+    width: auto;  
 }
 
 .editable-inline .editableform-loading {
@@ -39,7 +49,7 @@
     max-width: 300px;
     padding-top: 3px;
     margin: 0;
-    clear: both; 
+    width: auto;
 }
 
 .editable-error {
@@ -57,8 +67,8 @@
 }
 
 .editable-clear {
-    clear: both;
-   float: right; 
+   clear: both;
    font-size: 0.9em;
    text-decoration: none;
+   text-align: right;
 }

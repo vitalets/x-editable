@@ -8,12 +8,12 @@ Editableform based on jQuery UI
             this.$form = $($.fn.editableform.template);
 
             //buttons
-            this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);                
-            this.$form.find('button[type=submit]').button({
+            this.$form.find('.editable-buttons').append($.fn.editableform.buttons);                
+            this.$form.find('.editable-submit').button({
                 icons: { primary: "ui-icon-check" },
                 text: false
             }).removeAttr('title');
-            this.$form.find('button[type=button]').button({
+            this.$form.find('.editable-cancel').button({
                 icons: { primary: "ui-icon-cancel" },
                 text: false
             }).removeAttr('title');

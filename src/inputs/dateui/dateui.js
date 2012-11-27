@@ -54,7 +54,7 @@ $(function(){
             this.$input.datepicker(this.options.datepicker);
             
             if(this.options.clear) {
-                this.$clear = $('<a href="#">').addClass('editable-clear').html(this.options.clear).click($.proxy(function(e){
+                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
                     e.preventDefault();
                     e.stopPropagation();
                     this.clear();

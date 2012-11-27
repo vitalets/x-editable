@@ -35,7 +35,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //create input of specified type. Input will be used for converting value, not in form
             if(typeof $.fn.editableform.types[this.options.type] === 'function') {
                 TypeConstructor = $.fn.editableform.types[this.options.type];
-                this.typeOptions = $.fn.editableform.utils.sliceObj(this.options, Object.keys(TypeConstructor.defaults));
+                this.typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(this.typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -53,7 +53,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //attach handler to close any container on escape
             $(document).off('keyup.editable').on('keyup.editable', function (e) {
                 if (e.which === 27) {
-                    $('.editable-container').find('button[type=button]').click();
+                    $('.editable-container').find('.editable-cancel').click();
                 }
             }); 
             
@@ -65,7 +65,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     return;
                 }
                 //close all other containers
-                $('.editable-container').find('button[type=button]').click();
+                $('.editable-container').find('.editable-cancel').click();
             });
             
             //add 'editable' class
@@ -229,7 +229,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }      
                                          
             //hide all other editable containers. Required to work correctly with toggle = manual
-            $('.editable-container').find('button[type=button]').click();
+            $('.editable-container').find('.editable-cancel').click();
             
             //show container
             this.container.show();
