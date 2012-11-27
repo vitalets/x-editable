@@ -64,19 +64,7 @@
         $('#note').editable('toggle');
    });   
    
-    $('#link').editable({
-        success: function(response, newValue) {
-           $('#link').attr('href', newValue); 
-        }
-    }); 
-    
-    $('#edit-link').click(function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $('#link').editable('toggle');
-   }); 
-   
-    $('#fruits').editable({
+   $('#fruits').editable({
        pk: 1,
        limit: 3,
        source: [

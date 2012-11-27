@@ -1,4 +1,18 @@
 [
+ {  "date": "27/11/2012",
+    "header": "Version 1.1.0 released!",
+    "content": "Major improvements of new version:\n
+        <ul>\n
+        <li>Added new input type <b>checklist</b>. Try it in <a href='demo.html' target='_blank'>demo</a></li>\n    
+        <li>In <b>date</b> widgets appeared 'clear' button to reset date</li>\n
+        <li>CSS was refactored to ensure IE7+ support</li>\n
+        <li>Form template was a bit changed. If you use overwritten template in your projects please refer to <a href='docs.html#global'>global templates</a> section before update</li>\n        
+        </ul>\n
+        Many thanks to community for support!<br>\n
+        Full list of changes <a href='assets/x-editable/CHANGELOG.txt'>here</a>.\n      
+     "
+ }, 
+
  {  "date": "19/11/2012",
     "header": "Version 1.0.0 released!",
     "content": "Initial release of X-editable.\n
@@ -13,4 +27,5 @@
         Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade instructions.\n      
      "
  }
+
 ]

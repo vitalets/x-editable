@@ -260,7 +260,7 @@ This allows fully keyboard input.</p>
 
             
                 <pre class="prettyprint linenums">params: function() {
-   return { a: 1 };
+    return { a: 1 };
 }</pre>
             
             </td>
@@ -347,12 +347,12 @@ When set to <code>manual</code> you should manually call <code>show/hide</code> 
 
             
                 <pre class="prettyprint linenums">url: function(params) {
-   if(params.value === &#x27;abc&#x27;) {
-       var d = new $.Deferred;
-       return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
-   } else {
-       someModel.set(params.name, params.value); //save data in some js model
-   }
+    if(params.value === &#x27;abc&#x27;) {
+        var d = new $.Deferred;
+        return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
+    } else {
+        someModel.set(params.name, params.value); //save data in some js model
+    }
 }</pre>
             
             </td>
@@ -802,7 +802,7 @@ Please, see also <a href="#inputs">input dependent options</a>.
 
             
                 <pre class="prettyprint linenums">params: function() {
-   return { a: 1 };
+    return { a: 1 };
 }</pre>
             
             </td>
@@ -873,12 +873,12 @@ Can be used to process json response. If this function returns string - means er
 
             
                 <pre class="prettyprint linenums">url: function(params) {
-   if(params.value === &#x27;abc&#x27;) {
-       var d = new $.Deferred;
-       return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
-   } else {
-       someModel.set(params.name, params.value); //save data in some js model
-   }
+    if(params.value === &#x27;abc&#x27;) {
+        var d = new $.Deferred;
+        return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
+    } else {
+        someModel.set(params.name, params.value); //save data in some js model
+    }
 }</pre>
             
             </td>
@@ -1323,7 +1323,7 @@ $(function(){
         
          <section id="select">
             <h2>select</h2>
-            <p><p>Select (dropdown) input</p>
+            <p><p>Select (dropdown)</p>
 </p>
             <ul class="nav nav-tabs" id="select-tabs">
     <li class="active"><a href="#select-options" data-toggle="tab">Options</a></li>
@@ -1360,7 +1360,7 @@ $(function(){
             <td>source</td>
             <td>string|array|object</td>
             <td>null</td>
-            <td><p>Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+            <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
 Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
 For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
 
@@ -1712,6 +1712,16 @@ $(function(){
         </tr> 
        
         <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>span2 editable-checklist</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>separator</td>
             <td>string</td>
             <td>&#x27;, &#x27;</td>
@@ -1747,7 +1757,7 @@ If checked more items - <code>limitText</code> will be shown.</p>
             <td>string</td>
             <td>&#x27;Selected {checked} of {count}&#x27;</td>
             <td><p>Text shown when count of checked items is greater than <code>limit</code> parameter.
-You can use <code>{checked}</code> and <code>count</code> placeholders.</p>
+You can use <code>{checked}</code> and <code>{count}</code> placeholders.</p>
 
             
             </td>
@@ -1757,7 +1767,7 @@ You can use <code>{checked}</code> and <code>count</code> placeholders.</p>
             <td>source</td>
             <td>string|array|object</td>
             <td>null</td>
-            <td><p>Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+            <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
 Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
 For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
 
@@ -1780,16 +1790,6 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td>string</td>
             <td>Error when loading list</td>
             <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass</td>
-            <td>string</td>
-            <td>span2</td>
-            <td><p>CSS class automatically applied to input</p>
 
             
             </td>
@@ -1839,15 +1839,16 @@ Default value:</p>
 
 <pre class="prettyprint linenums">&lt;form class=&quot;form-inline editableform&quot;&gt;
     &lt;div class=&quot;control-group&quot;&gt;
-         &lt;div class=&quot;editable-input&quot;&gt;&lt;/div&gt;&lt;div class=&quot;editable-buttons&quot;&gt;&lt;/div&gt;
+         &lt;div&gt;&lt;div class=&quot;editable-input&quot;&gt;&lt;/div&gt;&lt;div class=&quot;editable-buttons&quot;&gt;&lt;/div&gt;&lt;/div&gt;
          &lt;div class=&quot;editable-error-block&quot;&gt;&lt;/div&gt;
     &lt;/div&gt; 
 &lt;/form&gt;</pre>
 
 <h4>$.fn.editableform.buttons</h4>
-<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. This template is overwritten in <i>bootstrap</i> and <i>jquery-ui</i> builds.<br>
+<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. Must contain classes <code>.editable-submit</code> and <code>.editable-cancel</code>.<br>
 Default value:</p>
-<pre class="prettyprint linenums">&lt;button type=&quot;submit&quot;&gt;ok&lt;/button&gt;&lt;button type=&quot;button&quot;&gt;cancel&lt;/button&gt;</pre>
+<pre class="prettyprint linenums">&lt;button type=&quot;submit&quot; class=&quot;editable-submit&quot;&gt;ok&lt;/button&gt;
+&lt;button type=&quot;button&quot; class=&quot;editable-cancel&quot;&gt;cancel&lt;/button&gt;</pre>
       
 <h4>$.fn.editableform.loading</h4>
 <p>Loading DIV template. Default value:</p>

@@ -274,7 +274,7 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\select.js",
             "line": 1,
-            "description": "Select (dropdown) input",
+            "description": "Select (dropdown)",
             "extends": "list",
             "final": 1,
             "example": [
@@ -552,31 +552,31 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 7,
+            "line": 6,
             "description": "classic JS inheritance function",
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 18,
+            "line": 17,
             "description": "set caret position in input\nsee http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area",
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 34,
+            "line": 33,
             "description": "function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)\nThat allows such code as: <a data-source=\"{'a': 'b', 'c': 'd'}\">\nsafe = true --> means no exception will be thrown\nfor details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery",
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 59,
+            "line": 58,
             "description": "slice object by specified keys",
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 91,
+            "line": 90,
             "description": "exclude complex objects from $.data() before pass to config",
             "class": "editableform"
         },
@@ -605,7 +605,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 87,
+            "line": 90,
             "description": "Fired when form is rendered",
             "itemtype": "event",
             "name": "rendered",
@@ -620,7 +620,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 98,
+            "line": 101,
             "description": "Fired when form was cancelled by user",
             "itemtype": "event",
             "name": "cancel",
@@ -635,7 +635,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 120,
+            "line": 129,
             "description": "Fired when form is shown",
             "itemtype": "event",
             "name": "show",
@@ -650,7 +650,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 182,
+            "line": 191,
             "description": "Fired when form is submitted",
             "itemtype": "event",
             "name": "save",
@@ -679,13 +679,13 @@
                 }
             ],
             "example": [
-                "\n    $('#form-div').on('save'), function(e, params){\n        if(params.newValue === 'username') {...}\n    });                    "
+                "\n$('#form-div').on('save'), function(e, params){\n    if(params.newValue === 'username') {...}\n});                    "
             ],
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 304,
+            "line": 313,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
@@ -695,23 +695,23 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 312,
+            "line": 321,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
             "type": "string|function",
             "default": "null",
             "example": [
-                "\nurl: function(params) {\n   if(params.value === 'abc') {\n       var d = new $.Deferred;\n       return d.reject('field cannot be \"abc\"'); //returning error via deferred object\n   } else {\n       someModel.set(params.name, params.value); //save data in some js model\n   }\n}        "
+                "\nurl: function(params) {\n    if(params.value === 'abc') {\n        var d = new $.Deferred;\n        return d.reject('field cannot be \"abc\"'); //returning error via deferred object\n    } else {\n        someModel.set(params.name, params.value); //save data in some js model\n    }\n} "
             ],
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 330,
+            "line": 339,
             "description": "Additional params for submit. Function can be used to calculate params dynamically",
             "example": [
-                "\nparams: function() {\n   return { a: 1 };\n}"
+                "\nparams: function() {\n    return { a: 1 };\n}"
             ],
             "itemtype": "property",
             "name": "params",
@@ -721,7 +721,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 342,
+            "line": 351,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -731,7 +731,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 350,
+            "line": 359,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dinamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -741,7 +741,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 359,
+            "line": 368,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -751,7 +751,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 368,
+            "line": 377,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -761,7 +761,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 377,
+            "line": 386,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -774,7 +774,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 391,
+            "line": 400,
             "description": "Success callback. Called when value successfully sent on server and response status = 200.\nCan be used to process json response. If this function returns string - means error occured and string is shown as error message.",
             "itemtype": "property",
             "name": "success",
@@ -1378,6 +1378,15 @@
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
             "line": 112,
+            "itemtype": "property",
+            "name": "inputclass",
+            "type": "string",
+            "default": "span2 editable-checklist",
+            "class": "checklist"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\checklist.js",
+            "line": 119,
             "description": "Separator of values in string when sending to server",
             "itemtype": "property",
             "name": "separator",
@@ -1387,7 +1396,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 120,
+            "line": 127,
             "description": "Separator of text when display as element content.",
             "itemtype": "property",
             "name": "viewseparator",
@@ -1397,7 +1406,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 128,
+            "line": 135,
             "description": "Maximum number of items shown as element content. \nIf checked more items - <code>limitText</code> will be shown.",
             "itemtype": "property",
             "name": "limit",
@@ -1407,8 +1416,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 137,
-            "description": "Text shown when count of checked items is greater than <code>limit</code> parameter.\nYou can use <code>{checked}</code> and <code>count</code> placeholders.",
+            "line": 144,
+            "description": "Text shown when count of checked items is greater than <code>limit</code> parameter.\nYou can use <code>{checked}</code> and <code>{count}</code> placeholders.",
             "itemtype": "property",
             "name": "limitText",
             "type": "string",
@@ -1424,7 +1433,7 @@
         {
             "file": "..\\lib\\src\\inputs\\list.js",
             "line": 224,
-            "description": "Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: \"text1\", value2: \"text2\" ...}</code> but it does not guarantee elements order.",
+            "description": "Source data for list. If string - considered ajax url to load items. Otherwise should be an array.\nArray format is: <code>[{value: 1, text: \"text\"}, {...}]</code><br>\nFor compability it also supports format <code>{value1: \"text1\", value2: \"text2\" ...}</code> but it does not guarantee elements order.",
             "itemtype": "property",
             "name": "source",
             "type": "string|array|object",
@@ -1567,23 +1576,23 @@
         },
         {
             "message": "Missing item type\nclassic JS inheritance function",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:7"
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:6"
         },
         {
             "message": "Missing item type\nset caret position in input\nsee http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:18"
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:17"
         },
         {
             "message": "Missing item type\nfunction to parse JSON in *single* quotes. (jquery automatically parse only double quotes)\nThat allows such code as: <a data-source=\"{'a': 'b', 'c': 'd'}\">\nsafe = true --> means no exception will be thrown\nfor details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:34"
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:33"
         },
         {
             "message": "Missing item type\nslice object by specified keys",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:59"
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:58"
         },
         {
             "message": "Missing item type\nexclude complex objects from $.data() before pass to config",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:91"
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:90"
         },
         {
             "message": "Missing item type\nconvert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",

@@ -82,7 +82,7 @@
         <a class="btn btn-success btn-large" style="width: 150px" href="demo.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
         <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
         </p>                    
-        <small class="muted">Current version 1.0.1 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
+        <small class="muted">Current version 1.1.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
     </div>
 </div>    
 
@@ -110,15 +110,15 @@
 <div class="row">
     <div class="span4">
         <p class="centered"><img src="assets/img/bootstrap.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.0.1.zip"><strong>Download</strong> (bootstrap build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.1.0.zip"><strong>Download</strong> (bootstrap build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jqueryui.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.0.1.zip"><strong>Download</strong> (jquery-ui build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.1.0.zip"><strong>Download</strong> (jquery-ui build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jquery.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.0.1.zip"><strong>Download</strong> (jquery build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.1.0.zip"><strong>Download</strong> (jquery build)</a></p>
     </div>
 </div>
 
@@ -128,7 +128,25 @@
 <div class="row">
     <div class="span4">
         <h2 class="muted">News</h2>
-        <p><i>19/11/2012</i><br>
+        <p><i>27/11/2012</i><br>
+    <strong>Version 1.1.0 released!</strong><br>
+    Major improvements of new version:
+<ul>
+<li>Added new input type <b>checklist</b>. Try it in <a href='demo.html' target='_blank'>demo</a></li>
+<li>In <b>date</b> widgets appeared 'clear' button to reset date</li>
+<li>CSS was refactored to ensure IE7+ support</li>
+<li>Form template was a bit changed. If you use overwritten template in your projects please refer to <a href='docs.html#global'>global templates</a> section before update</li>
+</ul>
+Many thanks to community for support!<br>
+Full list of changes <a href='assets/x-editable/CHANGELOG.txt'>here</a>.
+ 
+</p>
+        
+        
+        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
+        <div style="display: none" id="news"> 
+             
+          <p><i>19/11/2012</i><br>
     <strong>Version 1.0.0 released!</strong><br>
     Initial release of X-editable.
 This library is new life of <a href='http://vitalets.github.com/bootstrap-editable' target='_blank'>bootstrap-editable plugin</a> (1.1.4) that was strongly refactored and improved.
@@ -141,8 +159,9 @@ Main reasons caused re-branding and creation of new project are:
 </ul>
 Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade instructions.
  
-</p>
-        
+</p>             
+          
+        </div>        
               
     </div>
     <div class="span4">
@@ -152,7 +171,7 @@ Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade i
             <li>less number of screens in your application</li>                            
             <li>easy adding / removing fields</li>
             <li>simple backend script for data update</li>
-            <li>more convenient for users</li>                            
+            <li>more convenient on small forms</li>                            
         </ul>        
     </div>
     <div class="span4">
@@ -178,7 +197,8 @@ Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade i
             <li>client-side and server-side validation</li>
             <li>customizible container placement</li>
             <li>toggle by click or manually</li>
-            <li>keyboard support (escape/enter)</li>                            
+            <li>keyboard support (escape/enter/tab)</li>                            
+            <li>works in IE7+ and all modern browsers</li>                            
             <li>unit tested</li>                            
         </ul>        
         <!--       

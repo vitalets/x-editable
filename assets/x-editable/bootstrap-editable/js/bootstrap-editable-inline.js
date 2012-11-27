@@ -1,4 +1,4 @@
-/*! X-editable - v1.0.1 
+/*! X-editable - v1.1.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -13,7 +13,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 @uses textarea
 **/
 (function ($) {
-    
+
     var EditableForm = function (element, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
         this.$element = $(element); //div (usually), containing form. not form tag!
@@ -24,11 +24,11 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         constructor: EditableForm,
         initInput: function() {  //called once
             var TypeConstructor, typeOptions;
-            
+
             //create input of specified type
             if(typeof $.fn.editableform.types[this.options.type] === 'function') {
                 TypeConstructor = $.fn.editableform.types[this.options.type];
-                typeOptions = $.fn.editableform.utils.sliceObj(this.options, Object.keys(TypeConstructor.defaults));
+                typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -39,6 +39,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         },
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
+
+            //buttons
+            this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);              
         },
         /**
         Renders editableform
@@ -49,48 +52,57 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             this.$loading = $($.fn.editableform.loading);        
             this.$element.empty().append(this.$loading);
             this.showLoading();
-           
+
             this.initTemplate(); 
-            
+
             /**        
             Fired when rendering starts
             @event rendering 
             @param {Object} event event object
             **/            
             this.$element.triggerHandler('rendering');
-            
+
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //place input
-                this.$form.find('div.control-group').prepend(this.input.$input);
-                //attach 'cancel' handler
-                this.$form.find('button[type=button]').click($.proxy(this.cancel, this));
+                //input
+                this.$form.find('div.editable-input').append(this.input.$input);
+
+                //"clear" link
+                if(this.input.$clear) {
+                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
+                }                
+
                 //append form to container
                 this.$element.append(this.$form);
+
+                //attach 'cancel' handler
+                this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
+                //                this.$form.find('.editable-buttons button').eq(1).click($.proxy(this.cancel, this));
+
                 if(this.input.error) {
                     this.error(this.input.error);
-                    this.$form.find('button[type=submit]').attr('disabled', true);
+                    this.$form.find('.editable-submit').attr('disabled', true);
                     this.input.$input.attr('disabled', true);
                 } else {
                     this.error(false);
                     this.input.$input.removeAttr('disabled');
-                    this.$form.find('button[type=submit]').removeAttr('disabled');
+                    this.$form.find('.editable-submit').removeAttr('disabled');
                     this.input.value2input(this.value);
                     this.$form.submit($.proxy(this.submit, this));
                 }
-                
+
                 /**        
                 Fired when form is rendered
                 @event rendered
                 @param {Object} event event object
                 **/            
                 this.$element.triggerHandler('rendered');                
-                
+
                 this.showForm();
             }, this));
         },
-        cancel: function() {
+        cancel: function() {   
             /**        
             Fired when form was cancelled by user
             @event cancel 
@@ -99,20 +111,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             this.$element.triggerHandler('cancel');
         },
         showLoading: function() {
-            var fw, fh, iw, ih;
-            //set loading size equal to form
+            var w;
             if(this.$form) {
-                fh = this.$form.outerHeight() || 0;
-                fw = this.$form.outerWidth() || 0;
-                ih = (this.input && this.input.$input.outerHeight()) || 0;
-                iw = (this.input && this.input.$input.outerWidth()) || 0;
-                if(fh || ih) {
-                    this.$loading.height(fh > ih ? fh : ih);
-                }
-                if(fw || iw) {
-                    this.$loading.width(fw > iw ? fw : iw);
-                }
+                //set loading size equal to form 
+                this.$loading.width(this.$form.outerWidth());
+                this.$loading.height(this.$form.outerHeight());
                 this.$form.hide();
+            } else {
+                //stretch loading to fill container width
+                w = this.$loading.parent().width();
+                if(w) {
+                    this.$loading.width(w);
+                }
             }
             this.$loading.show(); 
         },
@@ -128,11 +138,11 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             **/                    
             this.$element.triggerHandler('show');
         },
-        
+
         error: function(msg) {
             var $group = this.$form.find('.control-group'),
-                $block = this.$form.find('.editable-error-block');
-                
+            $block = this.$form.find('.editable-error-block');
+
             if(msg === false) {
                 $group.removeClass($.fn.editableform.errorGroupClass);
                 $block.removeClass($.fn.editableform.errorBlockClass).empty().hide(); 
@@ -141,15 +151,15 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 $block.addClass($.fn.editableform.errorBlockClass).text(msg).show();
             }
         },
-               
+
         submit: function(e) {
             e.stopPropagation();
             e.preventDefault();
 
             var error,
-                //get value from input
-                newValue = this.input.input2value(),
-                newValueStr;
+            //get value from input
+            newValue = this.input.input2value(),
+            newValueStr;
 
             //validation
             if (error = this.validate(newValue)) {
@@ -157,14 +167,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 this.showForm();
                 return;
             } 
-            
+
             //value as string
             newValueStr = this.input.value2str(newValue);
-            
+
             //if value not changed --> cancel
             /*jslint eqeq: true*/
             if (newValueStr == this.input.value2str(this.value)) {
-            /*jslint eqeq: false*/                
+                /*jslint eqeq: false*/                
                 this.cancel();
                 return;
             } 
@@ -179,36 +189,36 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     this.showForm();
                     return;
                 }                
-                
-               //clear error message
-               this.error(false);   
-               this.value = newValue;
-               /**        
-               Fired when form is submitted
-               @event save 
-               @param {Object} event event object
-               @param {Object} params additional params
-                    @param {mixed} params.newValue submitted value
-                    @param {Object} params.response ajax response
-                    
-               @example
-                   $('#form-div').on('save'), function(e, params){
-                       if(params.newValue === 'username') {...}
-                   });                    
-               **/                
-               this.$element.triggerHandler('save', {newValue: newValue, response: response});
+
+                //clear error message
+                this.error(false);   
+                this.value = newValue;
+                /**        
+                Fired when form is submitted
+                @event save 
+                @param {Object} event event object
+                @param {Object} params additional params
+                @param {mixed} params.newValue submitted value
+                @param {Object} params.response ajax response
+
+                @example
+                $('#form-div').on('save'), function(e, params){
+                    if(params.newValue === 'username') {...}
+                });                    
+                **/                
+                this.$element.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-               this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
-               this.showForm();  
+                this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
+                this.showForm();  
             }, this));
         },
 
         save: function(value) {
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this) : this.options.pk,
-                send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
-                params;
-                
+            send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
+            params;
+
             if (send) { //send to server
                 this.showLoading();
 
@@ -218,7 +228,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     value: value,
                     pk: pk 
                 };
-                
+
                 //additional params
                 if(typeof this.options.params === 'function') {
                     $.extend(params, this.options.params.call(this, params));  
@@ -240,7 +250,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 }
             }
         }, 
-        
+
         validate: function (value) {
             if (value === undefined) {
                 value = this.value;
@@ -249,38 +259,38 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 return this.options.validate.call(this, value);
             }
         },
-        
-       option: function(key, value) {
-          this.options[key] = value;
-          if(key === 'value') {
-              this.setValue(value);
-          }
-       },
-       
-       setValue: function(value, convertStr) {
-          if(convertStr) {
-              this.value = this.input.str2value(value);
-          } else {
-              this.value = value;
-          }
-       }               
+
+        option: function(key, value) {
+            this.options[key] = value;
+            if(key === 'value') {
+                this.setValue(value);
+            }
+        },
+
+        setValue: function(value, convertStr) {
+            if(convertStr) {
+                this.value = this.input.str2value(value);
+            } else {
+                this.value = value;
+            }
+        }               
     };
 
     /*
     Initialize editableform. Applied to jQuery object.
-    
+
     @method $().editableform(options)
     @params {Object} options
     @example
-        var $form = $('&lt;div&gt;').editableform({
-            type: 'text',
-            name: 'username',
-            url: '/post',
-            value: 'vitaliy'
-        });
-        
-        //to display form you should call 'render' method
-        $form.editableform('render');     
+    var $form = $('&lt;div&gt;').editableform({
+        type: 'text',
+        name: 'username',
+        url: '/post',
+        value: 'vitaliy'
+    });
+
+    //to display form you should call 'render' method
+    $form.editableform('render');     
     */
     $.fn.editableform = function (option) {
         var args = arguments;
@@ -291,20 +301,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             if (!data) {
                 $this.data('editableform', (data = new EditableForm(this, options)));
             }
-            
+
             if (typeof option === 'string') { //call method 
                 data[option].apply(data, Array.prototype.slice.call(args, 1));
             } 
         });
     };
-    
+
     //keep link to constructor to allow inheritance
     $.fn.editableform.Constructor = EditableForm;    
 
     //defaults
     $.fn.editableform.defaults = {
         /* see also defaults for input */
-        
+
         /**
         Type of input. Can be <code>text|textarea|select|date|checklist</code>
 
@@ -322,20 +332,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @default null
         @example
         url: function(params) {
-           if(params.value === 'abc') {
-               var d = new $.Deferred;
-               return d.reject('field cannot be "abc"'); //returning error via deferred object
-           } else {
-               someModel.set(params.name, params.value); //save data in some js model
-           }
-        }        
+            if(params.value === 'abc') {
+                var d = new $.Deferred;
+                return d.reject('field cannot be "abc"'); //returning error via deferred object
+            } else {
+                someModel.set(params.name, params.value); //save data in some js model
+            }
+        } 
         **/        
         url:null,
         /**
         Additional params for submit. Function can be used to calculate params dynamically
         @example
         params: function() {
-           return { a: 1 };
+            return { a: 1 };
         }
 
         @property params 
@@ -395,7 +405,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /**
         Success callback. Called when value successfully sent on server and response status = 200.
         Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
-        
+
         @property success 
         @type function
         @default null
@@ -408,133 +418,155 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     };   
 
     /*
-      Note: following params could redefined in engine: bootstrap or jqueryui:
-      Classes 'control-group' and 'editable-error-block' must always present!
+    Note: following params could redefined in engine: bootstrap or jqueryui:
+    Classes 'control-group' and 'editable-error-block' must always present!
     */      
-      $.fn.editableform.template = '<form class="form-inline editableform"><div class="control-group">' + 
-    '&nbsp;<button type="submit">Ok</button>&nbsp;<button type="button">Cancel</button></div>' + 
+    $.fn.editableform.template = '<form class="form-inline editableform">'+
+    '<div class="control-group">' + 
+    '<div><div class="editable-input"></div><div class="editable-buttons"></div></div>'+
     '<div class="editable-error-block"></div>' + 
+    '</div>' + 
     '</form>';
-      
-      //loading div
-      $.fn.editableform.loading = '<div class="editableform-loading"></div>';
-      
-      //error class attahced to control-group
-      $.fn.editableform.errorGroupClass = null;  
-      
-      //error class attahced to editable-error-block
-      $.fn.editableform.errorBlockClass = 'editable-error';
 
-      //input types
-      $.fn.editableform.types = {};
-      //utils
-      $.fn.editableform.utils = {};
+    //loading div
+    $.fn.editableform.loading = '<div class="editableform-loading"></div>';
+
+    //buttons
+    $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button>'+
+    '<button type="button" class="editable-cancel">cancel</button>';      
+
+    //error class attahced to control-group
+    $.fn.editableform.errorGroupClass = null;  
+
+    //error class attahced to editable-error-block
+    $.fn.editableform.errorBlockClass = 'editable-error';
+
+    //input types
+    $.fn.editableform.types = {};
+    //utils
+    $.fn.editableform.utils = {};
 
 }(window.jQuery));
 /**
 * EditableForm utilites
 */
 (function ($) {
-    $.extend($.fn.editableform, {
-        utils: {
-            /**
-            * classic JS inheritance function
-            */
-            inherit: function (Child, Parent) {
-                var F = function() { };
-                F.prototype = Parent.prototype;
-                Child.prototype = new F();
-                Child.prototype.constructor = Child;
-                Child.superclass = Parent.prototype;
-            },
+    $.fn.editableform.utils = {
+        /**
+        * classic JS inheritance function
+        */
+        inherit: function (Child, Parent) {
+            var F = function() { };
+            F.prototype = Parent.prototype;
+            Child.prototype = new F();
+            Child.prototype.constructor = Child;
+            Child.superclass = Parent.prototype;
+        },
 
-            /**
-            * set caret position in input
-            * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-            */        
-            setCursorPosition: function(elem, pos) {
-                if (elem.setSelectionRange) {
-                    elem.setSelectionRange(pos, pos);
-                } else if (elem.createTextRange) {
-                    var range = elem.createTextRange();
-                    range.collapse(true);
-                    range.moveEnd('character', pos);
-                    range.moveStart('character', pos);
-                    range.select();
-                }
-            },
+        /**
+        * set caret position in input
+        * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+        */        
+        setCursorPosition: function(elem, pos) {
+            if (elem.setSelectionRange) {
+                elem.setSelectionRange(pos, pos);
+            } else if (elem.createTextRange) {
+                var range = elem.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+        },
 
-            /**
-            * function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)
-            * That allows such code as: <a data-source="{'a': 'b', 'c': 'd'}">
-            * safe = true --> means no exception will be thrown
-            * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
-            */
-            tryParseJson: function(s, safe) {
-                if (typeof s === 'string' && s.length && s.match(/^[\{\[].*[\}\]]$/)) {
-                    if (safe) {
-                        try {
-                            /*jslint evil: true*/
-                            s = (new Function('return ' + s))();
-                            /*jslint evil: false*/
-                        } catch (e) {} finally {
-                            return s;
-                        }
-                    } else {
+        /**
+        * function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)
+        * That allows such code as: <a data-source="{'a': 'b', 'c': 'd'}">
+        * safe = true --> means no exception will be thrown
+        * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
+        */
+        tryParseJson: function(s, safe) {
+            if (typeof s === 'string' && s.length && s.match(/^[\{\[].*[\}\]]$/)) {
+                if (safe) {
+                    try {
                         /*jslint evil: true*/
                         s = (new Function('return ' + s))();
                         /*jslint evil: false*/
+                    } catch (e) {} finally {
+                        return s;
                     }
+                } else {
+                    /*jslint evil: true*/
+                    s = (new Function('return ' + s))();
+                    /*jslint evil: false*/
                 }
-                return s;
-            },
+            }
+            return s;
+        },
 
-            /**
-            * slice object by specified keys
-            */
-            sliceObj: function(obj, keys, caseSensitive /* default: false */) {
-                var key, keyLower, newObj = {};
+        /**
+        * slice object by specified keys
+        */
+        sliceObj: function(obj, keys, caseSensitive /* default: false */) {
+            var key, keyLower, newObj = {};
 
-                if (!$.isArray(keys) || !keys.length) {
-                    return newObj;
-                }
-
-                for (var i = 0; i < keys.length; i++) {
-                    key = keys[i];
-                    if (obj.hasOwnProperty(key)) {
-                        newObj[key] = obj[key];
-                    }
-
-                    if(caseSensitive === true) {
-                        continue;
-                    }
-
-                    //when getting data-* attributes via $.data() it's converted to lowercase.
-                    //details: http://stackoverflow.com/questions/7602565/using-data-attributes-with-jquery
-                    //workaround is code below.
-                    keyLower = key.toLowerCase();
-                    if (obj.hasOwnProperty(keyLower)) {
-                        newObj[key] = obj[keyLower];
-                    }
-                }
-
+            if (!$.isArray(keys) || !keys.length) {
                 return newObj;
-            },
-            
-            /**
-            * exclude complex objects from $.data() before pass to config
-            */
-            getConfigData: function($element) {
-                var data = {};
-                $.each($element.data(), function(k, v) {
-                   if(typeof v !== 'object' || (v && typeof v === 'object' && v.constructor === Object)) {
-                      data[k] = v;
-                   }
-                });
-                return data;
-            }            
-        }
-    });      
+            }
+
+            for (var i = 0; i < keys.length; i++) {
+                key = keys[i];
+                if (obj.hasOwnProperty(key)) {
+                    newObj[key] = obj[key];
+                }
+
+                if(caseSensitive === true) {
+                    continue;
+                }
+
+                //when getting data-* attributes via $.data() it's converted to lowercase.
+                //details: http://stackoverflow.com/questions/7602565/using-data-attributes-with-jquery
+                //workaround is code below.
+                keyLower = key.toLowerCase();
+                if (obj.hasOwnProperty(keyLower)) {
+                    newObj[key] = obj[keyLower];
+                }
+            }
+
+            return newObj;
+        },
+
+        /**
+        * exclude complex objects from $.data() before pass to config
+        */
+        getConfigData: function($element) {
+            var data = {};
+            $.each($element.data(), function(k, v) {
+                if(typeof v !== 'object' || (v && typeof v === 'object' && v.constructor === Object)) {
+                    data[k] = v;
+                }
+            });
+            return data;
+        },
+
+        objectKeys: function(o) {
+            if (Object.keys) {
+                return Object.keys(o);  
+            } else {
+                if (o !== Object(o)) {
+                    throw new TypeError('Object.keys called on a non-object');
+                }
+                var k=[], p;
+                for (p in o) {
+                    if (Object.prototype.hasOwnProperty.call(o,p)) {
+                        k.push(p);
+                    }
+                }
+                return k;
+            }
+
+        }   
+    };      
 }(window.jQuery));
 /**
 Attaches stand-alone container with editable-form to HTML element. Element is used only for positioning, value is not stored anywhere.<br>
@@ -860,17 +892,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }    
                 
-            //name must be defined
+            //name
             this.options.name = this.options.name || this.$element.attr('id');
-            if (!this.options.name) {
-                $.error('You must define name (or id) for Editable element');
-                return;
-            } 
              
             //create input of specified type. Input will be used for converting value, not in form
             if(typeof $.fn.editableform.types[this.options.type] === 'function') {
                 TypeConstructor = $.fn.editableform.types[this.options.type];
-                this.typeOptions = $.fn.editableform.utils.sliceObj(this.options, Object.keys(TypeConstructor.defaults));
+                this.typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(this.typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -888,7 +916,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //attach handler to close any container on escape
             $(document).off('keyup.editable').on('keyup.editable', function (e) {
                 if (e.which === 27) {
-                    $('.editable-container').find('button[type=button]').click();
+                    $('.editable-container').find('.editable-cancel').click();
                 }
             }); 
             
@@ -900,7 +928,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     return;
                 }
                 //close all other containers
-                $('.editable-container').find('button[type=button]').click();
+                $('.editable-container').find('.editable-cancel').click();
             });
             
             //add 'editable' class
@@ -1064,7 +1092,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }      
                                          
             //hide all other editable containers. Required to work correctly with toggle = manual
-            $('.editable-container').find('button[type=button]').click();
+            $('.editable-container').find('.editable-cancel').click();
             
             //show container
             this.container.show();
@@ -1384,6 +1412,7 @@ To create your own input you should inherit from this class.
            this.type = type;
            this.options = $.extend({}, defaults, options); 
            this.$input = null;
+           this.$clear = null;
            this.error = null;
        },
        
@@ -1400,7 +1429,7 @@ To create your own input you should inherit from this class.
             
             if (this.options.placeholder) {
                 this.$input.attr('placeholder', this.options.placeholder);
-            }            
+            }   
        }, 
 
        /**
@@ -1476,6 +1505,15 @@ To create your own input you should inherit from this class.
            if(this.$input.is(':visible')) {
                this.$input.focus();
            }
+       },
+       
+       /**
+        Creares input. 
+        
+        @method clear() 
+       **/        
+       clear:  function() {
+           this.$input.val(null);
        } 
     };
         
@@ -1604,17 +1642,16 @@ List - abstract class for inputs that have source option loaded from js array or
                     cache.callbacks = [];
                     cache.err_callbacks = [];
                 }
-
+                
                 //loading sourceData from server
                 $.ajax({
                     url: this.options.source,
                     type: 'get',
                     cache: false,
-                    data: {name: this.options.name},
+                    data: this.options.name ? {name: this.options.name} : {},
                     dataType: 'json',
                     success: $.proxy(function (data) {
                         cache.loading = false;
-                        // this.options.source = data;
                         this.sourceData = this.makeArray(data);
                         if($.isArray(this.sourceData)) {
                             this.doPrepend();
@@ -1706,7 +1743,7 @@ List - abstract class for inputs that have source option loaded from js array or
                             //data contains incorrect objects
                         }
                     } else {
-                        result.push({value: i, text: data[i]}); 
+                        result.push({value: data[i], text: data[i]}); 
                     }
                 }
             } else {  //object
@@ -1734,7 +1771,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
     List.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
         /**
-        Source data for dropdown list. If string - considered ajax url to load items. Otherwise should be an array.
+        Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
         For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
 
@@ -1791,8 +1828,8 @@ $(function(){
     $.extend(Text.prototype, {
         activate: function() {
             if(this.$input.is(':visible')) {
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
                 this.$input.focus();
+                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
             }
         }  
     });
@@ -1910,7 +1947,7 @@ $(function(){
 
 }(window.jQuery));
 /**
-Select (dropdown) input
+Select (dropdown)
 
 @class select
 @extends list
@@ -1983,9 +2020,9 @@ $(function(){
     $('#options').editable({
         value: [2, 3],    
         source: [
-              {value: 1, text: 'Active'},
-              {value: 2, text: 'Blocked'},
-              {value: 3, text: 'Deleted'}
+              {value: 1, text: 'option1'},
+              {value: 2, text: 'option2'},
+              {value: 3, text: 'option3'}
            ]
         }
     });
@@ -2008,12 +2045,12 @@ $(function(){
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                $label = $('<label>').text(' '+this.sourceData[i].text)
-                                     .prepend($('<input>', {
+                $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
                                            value: this.sourceData[i].value, 
                                            name: this.options.name
-                                     }));
+                                     }))
+                                     .append($('<span>').text(' '+this.sourceData[i].text));
                 
                 $('<div>').append($label).appendTo(this.$input);
             }
@@ -2082,6 +2119,13 @@ $(function(){
         tpl:'<div></div>',
         
         /**
+        @property inputclass 
+        @type string
+        @default span2 editable-checklist
+        **/         
+        inputclass: 'span2 editable-checklist',        
+        
+        /**
         Separator of values in string when sending to server
 
         @property separator 
@@ -2108,7 +2152,7 @@ $(function(){
         limit: 4,
         /**
         Text shown when count of checked items is greater than <code>limit</code> parameter.
-        You can use <code>{checked}</code> and <code>count</code> placeholders.
+        You can use <code>{checked}</code> and <code>{count}</code> placeholders.
 
         @property limitText 
         @type string
@@ -2126,11 +2170,19 @@ Editableform based on Twitter Bootstrap
 */
 (function ($) {
     
-    //form template
-    $.fn.editableform.template = '<form class="form-inline editableform"><div class="control-group">' + 
-    '&nbsp;<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i></button>&nbsp;<button type="button" class="btn clearfix"><i class="icon-ban-circle"></i></button>' + 
-    '<div style="clear:both"><span class="help-block editable-error-block"></span></div>' + 
-    '</div></form>'; 
+      $.extend($.fn.editableform.Constructor.prototype, {
+         initTemplate: function() {
+              this.$form = $($.fn.editableform.template);
+              this.$form.find('.editable-error-block').addClass('help-block');
+              
+              //buttons
+              this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);                
+         }
+    });    
+    
+    //buttons
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary editable-submit"><i class="icon-ok icon-white"></i></button>'+
+                                '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';         
     
     //error classes
     $.fn.editableform.errorGroupClass = 'error';
@@ -2264,6 +2316,14 @@ $(function(){
         render: function () {
             Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
+                        
+            if(this.options.clear) {
+                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+            }
         },
 
         value2html: function(value, element) {
@@ -2292,7 +2352,12 @@ $(function(){
        },       
        
        activate: function() {
-       }        
+       },
+       
+       clear:  function() {
+          this.$input.data('datepicker').date = null;
+          this.$input.find('.active').removeClass('active');
+       }                
 
     });
     
@@ -2341,7 +2406,16 @@ $(function(){
             weekStart: 0,
             startView: 0,
             autoclose: false
-        }
+        },
+        /**
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+        
+        @property clear 
+        @type boolean|string
+        @default 'x clear'         
+        **/
+        clear: '&times; clear'
     });   
 
     $.fn.editableform.types.date = Date;

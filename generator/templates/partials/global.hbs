@@ -7,16 +7,18 @@ Default value:</p>
 {{#source}}
 <form class="form-inline editableform">
     <div class="control-group">
-         <div class="editable-input"></div><div class="editable-buttons"></div>
+         <div><div class="editable-input"></div><div class="editable-buttons"></div></div>
          <div class="editable-error-block"></div>
     </div> 
 </form>
 {{/source}}
 
 <h4>$.fn.editableform.buttons</h4>
-<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. Default value:</p>
+<p>Buttons template. Automatically inserted into <code>.editable-buttons</code>. Must contain classes <code>.editable-submit</code> and <code>.editable-cancel</code>.<br>
+Default value:</p>
 {{#source}}
-<button type="submit">ok</button><button type="button">cancel</button>
+<button type="submit" class="editable-submit">ok</button>
+<button type="button" class="editable-cancel">cancel</button>
 {{/source}}
       
 <h4>$.fn.editableform.loading</h4>

@@ -1,16 +1,49 @@
-/*! X-editable - v1.0.1 
+/*! X-editable - v1.1.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
 
-.editableform,
-.editableform div.control-group {
-    margin-bottom: 0; 
+.editableform {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+}
+
+.editableform .control-group {
+    margin-bottom: 0; /* overwrites bootstrap margin */
+    white-space: nowrap; /* prevent wrapping buttons on new line */
+}
+
+.editable-buttons {
+   display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+   vertical-align: top;
+   margin-left: 7px;
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;
+}
+
+.editable-input {
+    vertical-align: top; 
+    display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
+    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
+    white-space: normal; /* reset white-space decalred in parent*/
+   /* display-inline emulation for IE7*/
+   zoom: 1; 
+   *display: inline;   
+}
+
+.editable-buttons .editable-cancel {
+   margin-left: 7px; 
+}
+
+/*for jquery-ui buttons need set height to look more pretty*/
+.editable-buttons button.ui-button {
+   height: 24px; 
 }
 
 .editableform-loading {
     background: url('img/loading.gif') center center no-repeat;  
-    height: 25px;  
+    height: 25px;
+    width: auto;  
 }
 
 .editable-inline .editableform-loading {
@@ -19,21 +52,17 @@
 
  .editable-error-block {
     max-width: 300px;
-    margin-top: 3px;
-    margin-bottom: 0;
-    clear: both; 
+    margin: 5px 0 0 0;
+    width: auto;
 }
+
+/*add padding for jquery ui*/
+.editable-error-block.ui-state-error {
+    padding: 3px;  
+}  
 
 .editable-error {
    color: red;  
-}
-
-.editableform input, 
-.editableform select, 
-.editableform textarea {
-    vertical-align: top; 
-    display: inline-block;
-    width: auto; /* bootstrap-responsive has width: 100% that breakes layout */
 }
 
 .editableform textarea {
@@ -41,15 +70,32 @@
 }
 
 .editableform .editable-date {
-    float: left;
     padding: 0; 
-    margin: 0 0 9px 0;
+    margin: 0;
+    float: left;
 }
-.editable-container,
-.editable-container.popover {
-    width: auto; 
-    white-space: nowrap; /* without this rule buttons wrap input in non-static elements */
+
+
+/* checklist vertical alignment */
+.editable-checklist label input[type="checkbox"], 
+.editable-checklist label span {
+    vertical-align: middle;
+    margin: 0;
+}
+
+.editable-clear {
+   clear: both;
+   font-size: 0.9em;
+   text-decoration: none;
+   text-align: right;
+}
+.editable-container {
     max-width: none; /* without this rule poshytip does not stretch */
+}  
+
+.editable-container.popover {
+/*   width: 300px;*/  /* debug */
+    width: auto; /* without this rule popover does not stretch */
 }
 .editable-click, 
 a.editable-click, 
