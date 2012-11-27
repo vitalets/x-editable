@@ -47,10 +47,14 @@
 
  .editable-error-block {
     max-width: 300px;
-    padding-top: 3px;
-    margin: 0;
+    margin: 5px 0 0 0;
     width: auto;
 }
+
+/*add padding for jquery ui*/
+.editable-error-block.ui-state-error {
+    padding: 3px;  
+}  
 
 .editable-error {
    color: red;  

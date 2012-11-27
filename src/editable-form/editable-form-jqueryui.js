@@ -14,7 +14,7 @@ Editableform based on jQuery UI
                 text: false
             }).removeAttr('title');
             this.$form.find('.editable-cancel').button({
-                icons: { primary: "ui-icon-cancel" },
+                icons: { primary: "ui-icon-closethick" },
                 text: false
             }).removeAttr('title');
 

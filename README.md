@@ -13,7 +13,7 @@ Your feedback is very appreciated!
 ## Contribution
 A few steps how to start contributing:  
 
-1.[Fork X-editable](https://github.com/vitalets/x-editable/fork)  
+1.[Fork X-editable](https://github.com/vitalets/x-editable/fork) and pull the latest changes from <code>dev</code> branch
 
 2.Arrange local directory structure. It should be:  
 **x-editable**  
