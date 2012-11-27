@@ -66,6 +66,14 @@
     float: left;
 }
 
+
+/* checklist vertical alignment */
+.editable-checklist label input[type="checkbox"], 
+.editable-checklist label span {
+    vertical-align: middle;
+    margin: 0;
+}
+
 .editable-clear {
    clear: both;
    font-size: 0.9em;

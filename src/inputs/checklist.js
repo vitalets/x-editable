@@ -36,12 +36,12 @@ $(function(){
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                $label = $('<label>').text(' '+this.sourceData[i].text)
-                                     .prepend($('<input>', {
+                $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
                                            value: this.sourceData[i].value, 
                                            name: this.options.name
-                                     }));
+                                     }))
+                                     .append($('<span>').text(' '+this.sourceData[i].text));
                 
                 $('<div>').append($label).appendTo(this.$input);
             }
@@ -108,6 +108,13 @@ $(function(){
         @default <div></div>
         **/         
         tpl:'<div></div>',
+        
+        /**
+        @property inputclass 
+        @type string
+        @default span2 editable-checklist
+        **/         
+        inputclass: 'span2 editable-checklist',        
         
         /**
         Separator of values in string when sending to server
