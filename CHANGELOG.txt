@@ -1,6 +1,17 @@
 X-editable changelog
 =============================
-          
+       
+       
+Version 1.1.0 Nov 27, 2012
+----------------------------   
+[enh #11] icon cancel changed to 'cross' (tarciozemel)  
+[enh] added support for IE7+ (vitalets)  
+[enh #9] 'name' or 'id' is not required anymore (vitalets)      
+[enh] 'clear' button added in date and dateui (vitalets)      
+[enh] form template changed: added DIV.editable-input, DIV.editable.buttons and $.fn.editableform.buttons (vitalets)      
+[enh] new input type: checklist (vitalets)      
+[enh] updated docs: inputs dropdown menu, global templates section (vitalets)      
+                            
 
 Version 1.0.1 Nov 22, 2012
 ----------------------------          

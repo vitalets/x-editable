@@ -3,11 +3,19 @@ Editableform based on Twitter Bootstrap
 */
 (function ($) {
     
-    //form template
-    $.fn.editableform.template = '<form class="form-inline editableform"><div class="control-group">' + 
-    '&nbsp;<button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i></button>&nbsp;<button type="button" class="btn clearfix"><i class="icon-ban-circle"></i></button>' + 
-    '<div style="clear:both"><span class="help-block editable-error-block"></span></div>' + 
-    '</div></form>'; 
+      $.extend($.fn.editableform.Constructor.prototype, {
+         initTemplate: function() {
+              this.$form = $($.fn.editableform.template);
+              this.$form.find('.editable-error-block').addClass('help-block');
+              
+              //buttons
+              this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);                
+         }
+    });    
+    
+    //buttons
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary editable-submit"><i class="icon-ok icon-white"></i></button>'+
+                                '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';         
     
     //error classes
     $.fn.editableform.errorGroupClass = 'error';

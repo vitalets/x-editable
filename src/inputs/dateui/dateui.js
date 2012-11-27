@@ -1,10 +1,11 @@
 /**
 jQuery UI Datepicker.  
-Description and examples: http://jqueryui.com/datepicker.  
-Do not use it together with bootstrap-datepicker.
+Description and examples: http://jqueryui.com/datepicker.   
+This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
 
 @class dateui
 @extends abstract
+@final
 @example
 <a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
 <script>
@@ -51,6 +52,14 @@ $(function(){
         render: function () {
             DateUI.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
+            
+            if(this.options.clear) {
+                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+            }            
         },
 
         value2html: function(value, element) {
@@ -99,7 +108,11 @@ $(function(){
        },       
        
        activate: function() {
-       }        
+       },
+       
+       clear:  function() {
+           this.$input.datepicker('setDate', null);
+       }   
 
     });
     
@@ -149,7 +162,16 @@ $(function(){
             firstDay: 0,
             changeYear: true,
             changeMonth: true
-        }
+        },
+        /**
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+        
+        @property clear 
+        @type boolean|string
+        @default 'x clear'         
+        **/
+        clear: '&times; clear'        
     });   
 
     $.fn.editableform.types.dateui = DateUI;

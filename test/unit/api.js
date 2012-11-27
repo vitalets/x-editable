@@ -3,7 +3,6 @@ $(function () {
    module("api", {
         setup: function(){
             fx = $('#async-fixture');
-            delete $.fn.editable.defaults.name;
             $.support.transition = false;
         }
     });

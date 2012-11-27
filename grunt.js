@@ -38,9 +38,11 @@ function getFiles() {
     containers+'editable-container.js', 
     lib+'element/editable-element.js',
     inputs+'abstract.js',
+    inputs+'list.js',
     inputs+'text.js',
     inputs+'textarea.js',
-    inputs+'select.js'    
+    inputs+'select.js',    
+    inputs+'checklist.js'
     ]; 
 
     //common css files
