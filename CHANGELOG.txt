@@ -1,5 +1,10 @@
 X-editable changelog
 =============================
+
+
+Version 1.1.1 wip
+----------------------------   
+[enh] success callback can return object to overwrite submitted value (vitalets)  
        
        
 Version 1.1.0 Nov 27, 2012

@@ -177,13 +177,20 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             //sending data to server
             $.when(this.save(newValueStr))
             .done($.proxy(function(response) {
-                var error;
-                //call success callback. if it returns string --> show error
-                if(error = this.options.success.call(this, response, newValue)) {
-                    this.error(error);
+                //run success callback
+                var res = typeof this.options.success === 'function' ? this.options.success.call(this, response, newValue) : null;
+                
+                //if it returns string --> show error
+                if(res && typeof res === 'string') {
+                    this.error(res);
                     this.showForm();
                     return;
-                }                
+                }     
+                
+                //if it returns object like {newValue: <something>} --> use that value
+                if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
+                    newValue = res.newValue;
+                }                            
 
                 //clear error message
                 this.error(false);   
@@ -398,9 +405,13 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/         
         validate: null,
         /**
-        Success callback. Called when value successfully sent on server and response status = 200.
-        Can be used to process json response. If this function returns string - means error occured and string is shown as error message.
-
+        Success callback. Called when value successfully sent on server and **response status = 200**.  
+        Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
+        or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
+        If it returns **string** - means error occured and string is shown as error message.  
+        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
+        Otherwise newValue simply rendered into element.
+        
         @property success 
         @type function
         @default null

@@ -211,7 +211,38 @@ $(function () {
            start();  
         }, timeout);             
         
-      });   
+      });  
+      
+     asyncTest("should show new value if success callback returns object", function () {
+        var newText = 'cd<e>;"',
+            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
+             success: function(response, newValue) {
+                 equal(newValue, newText, 'value in success passed correctly');
+                 return {newValue: 'xyz'};
+             } 
+          });  
+
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');  
+           equal(p.find('.editable-error-block').text(), '', 'no error msg');   
+           equal(e.data('editable').value, 'xyz', 'value ok');   
+           equal(e.text(), 'xyz', 'text ok');   
+           
+           p.find('button[type=button]').click(); 
+           ok(!p.is(':visible'), 'popover was removed');
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });      
+       
    
       asyncTest("should submit all required params", function () {
         var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({

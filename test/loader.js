@@ -80,8 +80,7 @@ function getAssets(f, c, src, libs) {
         //core
         js.unshift(bootstrap+'js/bootstrap.js')
         css.unshift(bootstrap+'css/bootstrap.css');
-//        css.push(bootstrap+'css/bootstrap.css');
-        //css.unshift(bootstrap+'css/bootstrap-responsive.css');
+        css.unshift(bootstrap+'css/bootstrap-responsive.css');
 
         //editable
         js.push(forms+'editable-form-bootstrap.js');
