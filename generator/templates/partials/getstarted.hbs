@@ -1,9 +1,9 @@
 <ol>
 <li>Decide which core library you want to use: 
 <ul>
-<li>Bootstrap</li>
-<li>jQuery UI</li>
-<li>only jQuery (+ Poshytip)</li>
+<li><strong>Bootstrap</strong></li>
+<li><strong>jQuery UI</strong></li>
+<li><strong>only jQuery (+ Poshytip)</strong></li>
 </ul>
 <br>
 <p>Include it on your page. Examples below are for <i>bootstrap</i>:</p> 
@@ -12,8 +12,8 @@
 <script src="path/to/bootstrap/js/bootstrap.js"></script>           
 {{/source}}
 </li>
-<li>Download corresponding X-editable build from <a href="index.html">Home</a><br><br></li>
-<li>Include <i>popup</i> or <i>inline</i> version of X-editable (css equal for both):<br>
+<li>Download corresponding X-editable build<br><br></li>
+<li>Include <strong>popup</strong> or <strong>inline</strong> version of X-editable (css equal for both):<br>
 popup
 {{#source}}
 <link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
@@ -27,7 +27,7 @@ inline
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 {{#source}}                                                                                                            
-<a href="#" id="username" data-type="text" data-pk="1" data-url="post.php" data-original-title="Enter username">superuser</a>
+<a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-original-title="Enter username">superuser</a>
 {{/source}}
 </li>
 <li>Apply <strong>editable()</strong> method to elements
@@ -42,23 +42,27 @@ Alternatively, you can set all options via javascript
 $('#username').editable({
     type: 'text',
     pk: 1,
-    url: 'post.php',
+    url: '/post',
     title: 'Enter username'
 });
 {{/source}}                                                          
 </li>
-<li>That's it! Open your page and click on element. You will see form that can send ajax request with new value on <code>post.php</code>.<br>
-Request will be something like:
+<li>That's it!<br>
+Open your page and click on element. You will see form that will submit ajax request on <code>/post</code>.<br>
+<strong>Request</strong> contains <code>name</code>, <code>value</code> and <code>pk</code> of record:<br><br>
 {{#source}}
-POST post.php
+POST /post
 {
     name:  'username',  //name of field (column in db)
     pk:    1            //primary key (record id)
     value: 'superuser!' //new value
 }
 {{/source}}
+If server <strong>response</strong> status is <code>200 OK</code> - element will be updated in with new value. No response body required.<br>
+Any other status means error, form stays open and responseText is shown as error message.<br>
+You can use <code>success</code> callback option for more complex iteraction (e.g. to process <code>json</code> response).<br><br>
 </li>
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
-Container is attached to element only for positioning. You can show/hide it manually, set value via options and subscribe to events (save/cancel).
+Container is attached to element only for <strong>positioning</strong>. You can show/hide it manually, set value via options and subscribe to events (save/cancel).
 </li>
 </ol>

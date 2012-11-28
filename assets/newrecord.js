@@ -1,7 +1,7 @@
 $(function(){
     
     $.mockjax({
-        url: 'post.php',
+        url: '/post',
         responseTime: 500,
         responseText: {
             success: true
@@ -9,7 +9,7 @@ $(function(){
     });  
     
     $.mockjax({
-        url: 'groups.php',
+        url: '/groups',
         responseText: {
             0: 'Guest',
             1: 'Service',
@@ -21,7 +21,7 @@ $(function(){
     }); 
     
     $.mockjax({
-        url: 'new.php',
+        url: '/newuser',
         responseTime: 300,
         responseText: {
             id: 1
@@ -30,7 +30,7 @@ $(function(){
     
    //init editables 
    $('.myeditable').editable({
-      url: 'post.php'
+      url: '/post'
    });
    
    //make username required
@@ -41,7 +41,7 @@ $(function(){
    //create new user
    $('#save-btn').click(function() {
        $('.myeditable').editable('submit', { 
-           url: 'new.php', 
+           url: '/newuser', 
            success: function(data) {
                var msg = 'New user created! Now editables work in regular way.';
                $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
@@ -58,26 +58,4 @@ $(function(){
            }
        });
    });   
-   
-   /*
-   $('#save-btn').click(function() {
-       var  $btn = $(this),
-            errors = $('.myeditable').editable('validate');
-       if($.isEmptyObject(errors)) {
-           var data = $('.myeditable').editable('getValue');
-           $.post('new.php', data, function(response) {
-              $('#user_id').text(response.id); 
-              $btn.hide();
-              $btn.parent().find('.alert-error').hide();
-              $btn.parent().find('.alert-success').show();
-              $('.myeditable').editable('markAsSaved');
-          }); 
-       } else {
-          var msg = '<strong>Validation errors!</strong><br>';
-          $.each(errors, function(k, v) { msg += v+'<br>'; });
-          $btn.parent().find('.alert-error').html(msg).show(); 
-       }
-   });
-   */  
-   
 });

@@ -21,7 +21,7 @@
             </tr>  
             <tr>         
                 <td>Group</td>
-                <td><a href="#" class="myeditable" data-type="select" data-name="group" data-source="groups.php" data-original-title="Select group"></a></td>
+                <td><a href="#" class="myeditable" data-type="select" data-name="group" data-source="/groups" data-original-title="Select group"></a></td>
             </tr>     
             <tr>         
                 <td>Date of birth</td>
@@ -41,7 +41,7 @@
 {{#source}}
 //init editables 
 $('.myeditable').editable({
-    url: 'post.php' //this url will not be used for creating new user, it is only for update
+    url: '/post' //this url will not be used for creating new user, it is only for update
 });
 
 //make username required
@@ -57,7 +57,7 @@ $('#new_username').editable('option', 'validate', function(v) {
 {{#source}}
 $('#save-btn').click(function() {
     $('.myeditable').editable('submit', { //call submit
-        url: 'new.php', //url for creating new user
+        url: '/newuser', //url for creating new user
         success: function(data) {
             var msg = 'New user created! Now editables work in regular way.';
             $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
