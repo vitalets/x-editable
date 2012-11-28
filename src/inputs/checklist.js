@@ -99,7 +99,11 @@ $(function(){
                html = this.options.limitText.replace('{checked}', $.isArray(value) ? value.length : 0).replace('{count}', this.sourceData.length); 
            }
            $(element).html(html);
-        }
+        },
+        
+       activate: function() {
+           this.$input.find('input[type="checkbox"]').first().focus();
+       }        
     });      
 
     Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
