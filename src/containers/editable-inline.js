@@ -26,7 +26,7 @@
            return this.$form; 
         },
         
-        show: function () {
+        innerShow: function () {
             this.$element.hide();
             
             if(this.$form) {
@@ -40,19 +40,13 @@
             this.$form.editableform('render');
         }, 
         
-        hide: function () {
-            if(!this.tip() || !this.tip().is(':visible')) {
-                return;
-            }            
+        innerHide: function () {
             this.$form.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
                 //return focus on element
                 if (this.options.enablefocus) {
                     this.$element.focus();
                 }  
-                
-                //trigger event
-                this.$element.triggerHandler('hidden');              
             }, this)); 
         },
         

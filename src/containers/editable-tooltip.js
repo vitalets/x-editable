@@ -50,7 +50,7 @@
             return this.container()._find(this.container().element);
         },
         
-        show: function() {
+        innerShow: function() {
             this.call('open');
             this.tip().addClass('editable-container');
             
@@ -62,12 +62,8 @@
             this.$form.editableform('render');             
         },  
         
-        hide: function() {
-            if(!this.tip() || !this.tip().is(':visible')) {
-                return;
-            }            
+        innerHide: function() {
             this.call('close'); 
-            this.$element.triggerHandler('hidden');     
         },
         
         setPosition: function() {

@@ -27,7 +27,73 @@ Applied as jQuery method.
             //bind 'destroyed' listener to destroy container when element is removed from dom
             this.$element.on('destroyed', $.proxy(function(){
                 this.destroy();
-            }, this));             
+            }, this)); 
+            
+            //attach document handlers (once)
+            if(!$(document).data('editable-handlers-attached')) {
+                //close all on escape
+                $(document).on('keyup.editable', function (e) {
+                    if (e.which === 27) {
+                        $('.editable-open').editableContainer('hide');
+                        //todo: return focus on element 
+                    }
+                });
+
+                //close containers when click outside
+                $(document).on('click.editable', function(e) {
+                    var element = e.target, 
+                        $target = $(e.target),
+                        $clickedContainer = $target.is('.editable-container') ? $target : $target.closest('.editable-container');
+                    
+                    //if click inside some editableContainer --> find corresponding element                  
+                    if($clickedContainer.length) {
+                         $('.editable-open').each(function(i, el){
+                            if($(el).data('editableContainer').tip()[0] === $clickedContainer[0]) {
+                                element = el;
+                                return false; 
+                            }
+                         }); 
+                    }
+                    
+                    //close all open containers (except one)
+                    EditableContainer.prototype.closeOthers(element);
+                    
+                   /* $('.editable-open').each(function(){
+                        //if click target is editable element --> do nothing with el
+                        if(this === e.target) {
+                            return;
+                        }
+                        
+                        var $el = $(this),
+                            ec = $el.data('editableContainer');
+                        
+                        //if click in some editableContainer and current el is it's owner --> do nothing with el
+                        if($clickedContainer.length && ec.tip()[0] === $clickedContainer[0]) {
+                            return;
+                        }
+                        
+                        //otherwise cancel or submit el's container  
+                        if(ec.options.onblur === 'cancel') {
+                            $el.data('editableContainer').hide();
+                        } else if(ec.options.onblur === 'submit') {
+                            $el.data('editableContainer').tip().find('form').submit();
+                        }
+                    });     */
+                    
+                    //if click inside container --> do nothing
+                   // if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
+                   /*
+                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
+                        return;
+                    }
+                    
+                    //close all other containers
+                    $('.editable-container').find('.editable-cancel').click();
+                    */
+                });
+                
+                $(document).data('editable-handlers-attached', true);
+            }                        
         },
 
         //split options on containerOptions and formOptions
@@ -93,11 +159,22 @@ Applied as jQuery method.
         /**
         Shows container with form
         @method show()
+        @param {boolean} multi if true - other editable containers will not be closed. Default false.
         **/          
-        show: function () {
+        show: function (multi) {
+            this.$element.addClass('editable-open');
+            if(!multi) {
+                //close all open containers (except one)
+                this.closeOthers(this.$element[0]);  
+            }
+            
+            this.innerShow();
+        },
+        
+        /* internal show method. To be overwritten in child classes */
+        innerShow: function () {
             this.call('show');                
             this.tip().addClass('editable-container');
-
             this.initForm();
             this.tip().find(this.innerCss).empty().append(this.$form);     
             this.$form.editableform('render');            
@@ -108,10 +185,11 @@ Applied as jQuery method.
         @method hide()
         **/         
         hide: function() {  
-            if(!this.tip() || !this.tip().is(':visible')) {
+            if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
                 return;
             }
-            this.call('hide');
+            this.$element.removeClass('editable-open');   
+            this.innerHide();
             /**        
             Fired when container was hidden. It occurs on both save or cancel.
 
@@ -120,6 +198,11 @@ Applied as jQuery method.
             **/             
             this.$element.triggerHandler('hidden');   
         },
+        
+        /* internal hide method. To be overwritten in child classes */
+        innerHide: function () {
+            this.call('hide');       
+        },        
         
         /**
         Toggles container visibility (show / hide)
@@ -210,6 +293,34 @@ Applied as jQuery method.
         **/        
         destroy: function() {
             this.call('destroy');
+        },
+        
+        /*
+        Closes other containers except one related to passed element. 
+        Other containers can be cancelled or submitted (depends on onblur option)
+        */
+        closeOthers: function(element) {
+            $('.editable-open').each(function(i, el){
+                //do nothing with passed element
+                if(el === element) {
+                    return;
+                }
+
+                //otherwise cancel or submit all open containers 
+                var $el = $(el),
+                ec = $el.data('editableContainer');
+
+                if(!ec) {
+                    return;  
+                }
+                
+                if(ec.options.onblur === 'cancel') {
+                    $el.data('editableContainer').hide();
+                } else if(ec.options.onblur === 'submit') {
+                    $el.data('editableContainer').tip().find('form').submit();
+                }
+            });
+
         } 
 
     };
@@ -248,7 +359,7 @@ Applied as jQuery method.
     //store constructor
     $.fn.editableContainer.Constructor = EditableContainer;
 
-    //defaults - must be redefined!
+    //defaults
     $.fn.editableContainer.defaults = {
         /**
         Initial value of form input
@@ -275,7 +386,15 @@ Applied as jQuery method.
         @default true
         @private 
         **/        
-        autohide: true
+        autohide: true,
+        /**
+        Action when click outside container. Can be <code>cancel|submit|ignore</code>
+
+        @property onblur 
+        @type string
+        @default cancel
+        **/        
+        onblur: 'cancel'
     };
 
     /* 

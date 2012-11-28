@@ -28,11 +28,10 @@
             this.call('update', $content);                         
         },        
         
-        show: function () {
+        innerShow: function () {
             this.$form.editableform('render');
-            this.tip().addClass('editable-container');
-
             this.call('show');
+            this.tip().addClass('editable-container');
             this.$form.data('editableform').input.activate();
         },        
          

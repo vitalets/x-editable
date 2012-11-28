@@ -50,24 +50,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.value = this.input.str2value($.trim(this.options.value));
             }
             
-            //attach handler to close any container on escape
-            $(document).off('keyup.editable').on('keyup.editable', function (e) {
-                if (e.which === 27) {
-                    $('.editable-container').find('.editable-cancel').click();
-                }
-            }); 
-            
-            //attach handler to close container when click outside
-            $(document).off('click.editable').on('click.editable', function(e) {
-                var $target = $(e.target);
-                //if click inside container --> do nothing
-                if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
-                    return;
-                }
-                //close all other containers
-                $('.editable-container').find('.editable-cancel').click();
-            });
-            
             //add 'editable' class
             this.$element.addClass('editable');
             
@@ -199,15 +181,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
             //stop propagation bacause document listen any click to hide all editableContainers
-            e.stopPropagation();
+            //e.stopPropagation();
             this.toggle();
         },
         
         /**
         Shows container with form
         @method show()
+        @param {boolean} multi if true - other editable containers will not be closed. Default false.
         **/  
-        show: function () {
+        show: function (multi) {
             if(this.options.disabled) {
                 return;
             }
@@ -216,7 +199,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
                     value: this.value,
-                    autohide: false //element itsef will show/hide container
+                    autohide: false //element will take care to show/hide container
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
@@ -229,10 +212,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }      
                                          
             //hide all other editable containers. Required to work correctly with toggle = manual
-            $('.editable-container').find('.editable-cancel').click();
+            //temp
+            //$('.editable-container').find('.editable-cancel').click();
             
             //show container
-            this.container.show();
+            this.container.show(multi);
         },
         
         /**
@@ -247,7 +231,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //return focus on element
             if (this.options.enablefocus && this.options.toggle === 'click') {
                 this.$element.focus();
-            }                
+            }   
         },
         
         /**
