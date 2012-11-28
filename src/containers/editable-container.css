@@ -6,3 +6,8 @@
 /*   width: 300px;*/  /* debug */
     width: auto; /* without this rule popover does not stretch */
 }
+
+.editable-container.editable-inline {
+    display: inline; 
+    vertical-align: middle;
+} 
