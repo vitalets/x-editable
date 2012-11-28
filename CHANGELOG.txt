@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.1.1 wip
 ----------------------------   
+[enh] 'ajaxOptions' parameter for advanced ajax configuration (vitalets)  
 [enh] success callback can return object to overwrite submitted value (vitalets)  
        
        

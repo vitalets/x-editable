@@ -7,7 +7,7 @@ It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/boots
 See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
-When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/1/) as starting point.  
+When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/5/) as starting point.  
 Your feedback is very appreciated!
 
 ## Contribution
