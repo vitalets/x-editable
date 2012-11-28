@@ -287,6 +287,9 @@ $(function () {
                  equal(resp.data.name, 'username', 'name ok');
                  equal(resp.data.value, newText, 'value ok');
                  equal(resp.data.q, 2, 'additional params ok');
+             },
+             ajaxOptions: {
+                 headers: {"myHeader": "123"}
              } 
           }),  
           newText = 'cd<e>;"'
@@ -303,8 +306,38 @@ $(function () {
            start();  
         }, timeout);             
         
-      });      
-      
+      });    
+              
+     asyncTest("ajaxOptions", function () {
+        var e = $('<a href="#" data-pk="1" data-url="post-options.php">abc</a>').appendTo(fx).editable({
+             name: 'username',
+             ajaxOptions: {
+                 dataType: 'html'
+             } 
+          }),  
+          newText = 'cd<e>;"'
+
+          $.mockjax({
+              url: 'post-options.php',
+              response: function(settings) {
+                 equal(settings.dataType, 'html', 'dataType key ok');
+              }
+          });          
+          
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });            
+                   
       
      asyncTest("submit to url defined as function", function () {
         expect(3);

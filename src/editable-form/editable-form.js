@@ -219,7 +219,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         save: function(value) {
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this) : this.options.pk,
             send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
-            params;
+            params, ajaxOptions;
 
             if (send) { //send to server
                 this.showLoading();
@@ -243,12 +243,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 if(typeof this.options.url === 'function') { //user's function
                     return this.options.url.call(this, params);
                 } else {  //send ajax to server and return deferred object
-                    return $.ajax({
+                    ajaxOptions = $.extend({
                         url     : this.options.url,
                         data    : params,
                         type    : 'post',
                         dataType: 'json'
-                    });
+                    }, this.options.ajaxOptions);
+
+                    return $.ajax(ajaxOptions);
                 }
             }
         }, 
@@ -420,7 +422,16 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             if(!response.success) return response.msg;
         }
         **/          
-        success: function(response, newValue) {}         
+        success: function(response, newValue) {},
+        /**
+        Additional options for ajax request.
+        List of values: http://api.jquery.com/jQuery.ajax
+
+        @property ajaxOptions 
+        @type object
+        @default null
+        **/        
+        ajaxOptions: null         
     };   
 
     /*
