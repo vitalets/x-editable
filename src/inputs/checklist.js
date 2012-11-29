@@ -71,11 +71,17 @@ $(function(){
             var $checks = this.$input.find('input[type="checkbox"]');
             $checks.removeAttr('checked');
             if($.isArray(value) && value.length) {
-                $checks.each(function(i, el) {
-                    if($.inArray($(el).val(), value) !== -1) {
-                        $(el).attr('checked', 'checked');
-                    }
-                }); 
+               $checks.each(function(i, el) {
+                   var $el = $(el);
+                   // cannot use $.inArray as it performs strict comparison
+                   $.each(value, function(j, val){
+                       /*jslint eqeq: true*/
+                       if($el.val() == val) {
+                       /*jslint eqeq: false*/                           
+                           $el.attr('checked', 'checked');
+                       }
+                   });
+               }); 
             }  
         },  
         
