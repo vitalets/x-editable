@@ -37,7 +37,7 @@ $(function(){
         
         
         value2html: function(value, element) {
-            var html = value.city + ', st. ' + value.street + ', bld. ' + value.building;
+            var html = value.city + ', ' + value.street + ' st., bld. ' + value.building;
             $(element).text(html); 
         },
         
@@ -99,7 +99,7 @@ $(function(){
              '<div><label><span>Street: </span><input type="text" name="street" class="span2"></label></div>'+
              '<div><label><span>Building: </span><input type="text" name="building" class="span1"></label></div>',
              
-        inputclass: 'editable-address'     
+        inputclass: 'editable-address'
     });
 
     $.fn.editableform.types.address = Address;
