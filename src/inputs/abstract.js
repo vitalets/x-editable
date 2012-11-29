@@ -123,7 +123,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-       method to escape html
+        method to escape html.
        **/
        escape: function(str) {
            return $('<div>').text(str).html();
