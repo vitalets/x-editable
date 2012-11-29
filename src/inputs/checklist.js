@@ -1,5 +1,6 @@
 /**
-List of checkboxes. Internally value stored as javascript array of values.
+List of checkboxes. 
+Internally value stored as javascript array of values.
 
 @class checklist
 @extends list
@@ -49,6 +50,8 @@ $(function(){
        
        value2str: function(value) {
            return $.isArray(value) ? value.join($.trim(this.options.separator)) : '';
+           //it is also possible to sent as array
+           //return value;
        },        
        
        //parse separated string

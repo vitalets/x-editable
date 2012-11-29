@@ -46,7 +46,7 @@ To create your own input you should inherit from this class.
         @param {DOMElement} element
        **/       
        value2html: function(value, element) {
-           var html = $('<div>').text(value).html();
+           var html = this.escape(value);
            $(element).html(html);
        },
         
@@ -120,6 +120,13 @@ To create your own input you should inherit from this class.
        **/        
        clear:  function() {
            this.$input.val(null);
+       },
+       
+       /**
+       method to escape html
+       **/
+       escape: function(str) {
+           return $('<div>').text(str).html();
        } 
     };
         
