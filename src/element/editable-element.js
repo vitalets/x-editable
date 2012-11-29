@@ -47,7 +47,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.value = this.input.html2value($.trim(this.$element.html()));
                 isValueByText = true;
             } else {
-                this.value = this.input.str2value($.trim(this.options.value));
+                if(typeof this.options.value === 'string') {
+                   this.options.value = $.trim(this.options.value);
+                }
+                this.value = this.input.str2value(this.options.value);
             }
             
             //add 'editable' class
