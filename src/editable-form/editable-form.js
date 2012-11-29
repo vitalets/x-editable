@@ -348,7 +348,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /**
         Additional params for submit. Function can be used to calculate params dynamically
         @example
-        params: function() {
+        params: function(params) {
             return { a: 1 };
         }
 
