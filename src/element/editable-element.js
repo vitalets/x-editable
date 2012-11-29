@@ -57,9 +57,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.$element.addClass('editable');
             
             //attach click handler. In disabled mode it just prevent default action (useful for links)
-            if(this.options.toggle === 'click') {
+            if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');
-                this.$element.on('click.editable', $.proxy(this.click, this));
+                this.$element.on(this.options.toggle + '.editable', $.proxy(this.activate, this));
             } else {
                 this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
             }
@@ -100,7 +100,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.options.disabled = false;
             this.$element.removeClass('editable-disabled');
             this.handleEmpty();
-            if(this.options.toggle === 'click') {
+            if(this.options.toggle !== 'manual') {
                 if(this.$element.attr('tabindex') === '-1') {    
                     this.$element.removeAttr('tabindex');                                
                 }
@@ -178,22 +178,34 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }
         },        
         
-        click: function (e) {
+        activate: function (e) {
             e.preventDefault();
             if(this.options.disabled) {
                 return;
             }
-            //stop propagation bacause document listen any click to hide all editableContainers
+            /*
+            stop propagation not required anymore because in document click handler it checks event target
+            */
             //e.stopPropagation();
-            this.toggle();
+            
+            if(this.options.toggle === 'mouseenter') {
+                //for hover only show container
+                this.show(); 
+            } else {
+                /*
+                if toggle = click we should not close all other containers as they will be closed automatically in document click listener
+                */
+                var closeAll = (this.options.toggle !== 'click');
+                this.toggle(closeAll);
+            }
         },
         
         /**
         Shows container with form
         @method show()
-        @param {boolean} multi if true - other editable containers will not be closed. Default false.
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/  
-        show: function (multi) {
+        show: function (closeAll) {
             if(this.options.disabled) {
                 return;
             }
@@ -213,13 +225,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             } else if(this.container.tip().is(':visible')) {
                 return;
             }      
-                                         
-            //hide all other editable containers. Required to work correctly with toggle = manual
-            //temp
-            //$('.editable-container').find('.editable-cancel').click();
             
             //show container
-            this.container.show(multi);
+            this.container.show(closeAll);
         },
         
         /**
@@ -240,12 +248,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         Toggles container visibility (show / hide)
         @method toggle()
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/  
-        toggle: function() {
+        toggle: function(closeAll) {
             if(this.container && this.container.tip().is(':visible')) {
                 this.hide();
             } else {
-                this.show();
+                this.show(closeAll);
             }
         },
         
@@ -462,9 +471,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         disabled: false,
         /**
-        How to toggle editable. Can be <code>click|manual</code>. 
+        How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>. 
         When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.  
-        Note: if you are calling <code>show</code> on **click** event you need to apply <code>e.stopPropagation()</code> because container has behavior to hide on any click outside.
+        **Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, 
+        you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.
         
         @example
         $('#edit-button').click(function(e) {
@@ -477,6 +487,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default 'click'
         **/          
         toggle: 'click',
+
         /**
         Text shown when element is empty.
 

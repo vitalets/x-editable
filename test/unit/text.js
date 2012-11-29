@@ -39,18 +39,6 @@ $(function () {
         p.find('button[type=button]').click(); 
         ok(!p.is(':visible'), 'popover was removed');
       });           
-      
-     test("option 'toggle' = manual", function () {
-        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
-            toggle: 'manual'
-        });
-        
-        e.click();                       
-        ok(!e.data().editableContainer, 'popover not visible after click');
-        e.editable('show'); 
-        var p = tip(e);
-        ok(p.is(':visible'), 'shown manually');
-     });    
      
      asyncTest("should load correct value and save new entered text (and value)", function () {
         var  v = 'ab<b>"',

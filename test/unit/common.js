@@ -89,39 +89,6 @@
         ok(p.find(':contains("'+title+'")').length, 'title ok');
         e.remove();
       });   
-     /* 
-      test("should close all other containers on click on editable", function () {
-        var e1 = $('<a href="#" data-pk="1" data-url="post.php" id="a">abc</a>').appendTo('#qunit-fixture').editable(),  
-            e2 = $('<a href="#" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();  
-                                                                      
-        e1.click()
-        var p1 = tip(e1);
-        ok(p1.is(':visible'), 'popover1 visible');
-        
-        e2.click()
-        var p2 = tip(e2);
-        ok(p2.is(':visible'), 'popover2 visible');
-        ok(!p1.is(':visible'), 'popover1 closed');
-        
-        p2.find('button[type=button]').click();
-        ok(!p2.is(':visible'), 'popover2 closed');
-      });
-      
-     test("click outside container should hide it", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable(),
-            e1 = $('<div>').appendTo('body');
-        
-        e.click();
-        var p = tip(e);
-        ok(p.is(':visible'), 'popover shown');
-        
-        p.click();
-        ok(p.is(':visible'), 'popover still shown');
-        
-        e1.click();
-        ok(!p.is(':visible'), 'popover closed');
-     });        
-      */
       
       test("onblur: cancel", function () {
         var oldValue = 'abc',
@@ -160,7 +127,7 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed');    
         
-        //call show method of another editable (multi = false)                                                              
+        //call show method of another editable, closeAll = true (default)                                                              
         e.click();
         p = tip(e);
         ok(p.is(':visible'), 'popover1 visible');
@@ -173,12 +140,12 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed');         
         
-        //call show method of another editable (multi = true)                                                              
+        //call show method of another editable, closeAll = false
         e.click();
         p = tip(e);
         ok(p.is(':visible'), 'popover1 visible');
         p.find('input').val(newValue);
-        e2.editable('show', true);
+        e2.editable('show', false);
         p2 = tip(e2);
         ok(p.is(':visible'), 'popover1 visible');
         ok(p2.is(':visible'), 'popover2 visible');
@@ -226,7 +193,7 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed');    
         
-        //call show method of another editable (multi = false)                                                              
+        //call show method of another editable, closeAll = true (default)                                                              
         e.click();
         p = tip(e);
         ok(p.is(':visible'), 'popover1 visible');
@@ -239,12 +206,12 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed');         
         
-        //call show method of another editable (multi = true)                                                              
+        //call show method of another editable, closeAll = false
         e.click();
         p = tip(e);
         ok(p.is(':visible'), 'popover1 visible');
         p.find('input').val(oldValue);
-        e2.editable('show', true);
+        e2.editable('show', false);
         p2 = tip(e2);
         ok(p.is(':visible'), 'popover1 visible');
         ok(p2.is(':visible'), 'popover2 visible');
@@ -286,7 +253,7 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed');    
         
-        //call show method of another editable (multi = false)                                                              
+        //call show method of another editable, closeAll = true (default)
         e2.editable('show');
         p2 = tip(e2);
         ok(p.is(':visible'), 'popover1 still visible'); 
@@ -294,8 +261,8 @@
         e2.editable('hide');
         ok(!p2.is(':visible'), 'popover2 closed'); 
         
-        //call show method of another editable (multi = true)                                                              
-        e2.editable('show', true);
+        //call show method of another editable, closeAll = false                                                              
+        e2.editable('show', false);
         p2 = tip(e2);
         ok(p.is(':visible'), 'popover1 still visible'); 
         ok(p2.is(':visible'), 'popover2 visible');
@@ -317,7 +284,68 @@
         ok(p.find('button').offset().left > p.find('.editable-input').offset().left + p.find('.editable-input').width(), 'buttons left ok');
        
         d.remove();
-     });       
+     });   
+     
+      test("toggle: manual", function () {
+        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+            toggle: 'manual'
+        });
+        
+        e.click();                       
+        ok(!e.data('editableContainer'), 'popover not visible after click');
+        e.editable('show'); 
+        var p = tip(e);
+        ok(p.is(':visible'), 'shown manually');
+     });    
+     
+      test("toggle: dblclick", function () {
+        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+            toggle: 'dblclick'
+        }),
+        p, p2,
+        e2 = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();
+        
+        e.click();
+        ok(!e.data('editableContainer'), 'popover not visible after click');
+
+        e2.click();
+        p2 = tip(e2);                     
+        ok(p2.is(':visible'), 'popover2 visible');         
+        
+        e.dblclick();
+        p = tip(e);                     
+        ok(p.is(':visible'), 'popover1 visible');         
+        ok(!p2.is(':visible'), 'popover2 closed');         
+     });    
+     
+      test("toggle: mouseenter", function () {
+        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+            toggle: 'mouseenter'
+        }),
+        p, p2,
+        e2 = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();
+        
+        e.click();
+        ok(!e.data('editableContainer'), 'popover not visible after click');
+        
+        e.dblclick();
+        ok(!e.data('editableContainer'), 'popover not visible after dblclick');
+
+        e2.click();   
+        p2 = tip(e2);                     
+        ok(p2.is(':visible'), 'popover2 visible');         
+        
+        e.mouseenter();
+        ok(e.data('editableContainer'), 'container defined');
+        p = tip(e);                     
+        ok(p.is(':visible'), 'popover1 visible');         
+        ok(!p2.is(':visible'), 'popover2 closed'); 
+        
+        //hover once again --> container should stay open
+        e.hover();
+        p = tip(e);
+        ok(p.is(':visible'), 'popover1 visible after second hover');                                      
+     });        
       
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.
       /*

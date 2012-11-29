@@ -159,12 +159,12 @@ Applied as jQuery method.
         /**
         Shows container with form
         @method show()
-        @param {boolean} multi if true - other editable containers will not be closed. Default false.
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/          
-        show: function (multi) {
+        show: function (closeAll) {
             this.$element.addClass('editable-open');
-            if(!multi) {
-                //close all open containers (except one)
+            if(closeAll !== false) {
+                //close all open containers (except this)
                 this.closeOthers(this.$element[0]);  
             }
             
@@ -207,12 +207,13 @@ Applied as jQuery method.
         /**
         Toggles container visibility (show / hide)
         @method toggle()
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/          
-        toggle: function() {
+        toggle: function(closeAll) {
             if(this.tip && this.tip().is(':visible')) {
                 this.hide();
             } else {
-                this.show();
+                this.show(closeAll);
             } 
         },
 
