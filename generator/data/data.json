@@ -244,7 +244,7 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\checklist.js",
             "line": 1,
-            "description": "List of checkboxes. Internally value stored as javascript array of values.",
+            "description": "List of checkboxes. \nInternally value stored as javascript array of values.",
             "extends": "list",
             "final": 1,
             "example": [
@@ -323,7 +323,7 @@
     "classitems": [
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 60,
+            "line": 126,
             "description": "Fired when container is shown and form is rendered (for select will wait for loading dropdown options)",
             "itemtype": "event",
             "name": "shown",
@@ -341,15 +341,22 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 93,
+            "line": 159,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
+            "params": [
+                {
+                    "name": "multi",
+                    "description": "if true - other editable containers will not be closed. Default false.",
+                    "type": "Boolean"
+                }
+            ],
             "class": "editableContainer"
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 106,
+            "line": 183,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -357,7 +364,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 115,
+            "line": 193,
             "description": "Fired when container was hidden. It occurs on both save or cancel.",
             "itemtype": "event",
             "name": "hidden",
@@ -372,7 +379,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 124,
+            "line": 207,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -380,7 +387,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 148,
+            "line": 231,
             "description": "Fired when form was cancelled by user",
             "itemtype": "event",
             "name": "cancel",
@@ -395,7 +402,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 161,
+            "line": 244,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance",
             "itemtype": "event",
             "name": "save",
@@ -430,7 +437,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 183,
+            "line": 266,
             "description": "Sets new option",
             "itemtype": "method",
             "name": "option(key, value)",
@@ -450,7 +457,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 207,
+            "line": 290,
             "description": "Destroys the container instance",
             "itemtype": "method",
             "name": "destroy()",
@@ -458,7 +465,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 217,
+            "line": 328,
             "description": "jQuery method to initialize editableContainer.",
             "itemtype": "method",
             "name": "$().editableContainer(options)",
@@ -476,7 +483,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 253,
+            "line": 364,
             "description": "Initial value of form input",
             "itemtype": "property",
             "name": "value",
@@ -488,7 +495,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 262,
+            "line": 373,
             "description": "Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.",
             "itemtype": "property",
             "name": "placement",
@@ -498,7 +505,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 270,
+            "line": 381,
             "description": "Wether to hide container on save/cancel.",
             "itemtype": "property",
             "name": "autohide",
@@ -506,6 +513,16 @@
             "default": "true",
             "access": "private",
             "tagname": "",
+            "class": "editableContainer"
+        },
+        {
+            "file": "..\\lib\\src\\containers\\editable-container.js",
+            "line": 390,
+            "description": "Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>\nSetting <code>ignore</code> ignore allows to have several containers open.",
+            "itemtype": "property",
+            "name": "onblur",
+            "type": "string",
+            "default": "cancel",
             "class": "editableContainer"
         },
         {
@@ -534,7 +551,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-poshytip.js",
-            "line": 83,
+            "line": 82,
             "description": "Poshytip fix: disable incorrect table display\nsee https://github.com/vadikom/poshytip/issues/7",
             "class": "editableform"
         },
@@ -685,7 +702,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 320,
+            "line": 322,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
@@ -695,7 +712,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 328,
+            "line": 330,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
@@ -708,10 +725,10 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 346,
+            "line": 348,
             "description": "Additional params for submit. Function can be used to calculate params dynamically",
             "example": [
-                "\nparams: function() {\n    return { a: 1 };\n}"
+                "\nparams: function(params) {\n    return { a: 1 };\n}"
             ],
             "itemtype": "property",
             "name": "params",
@@ -721,7 +738,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 358,
+            "line": 360,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -731,7 +748,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 366,
+            "line": 368,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dinamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -741,7 +758,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 375,
+            "line": 377,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -751,7 +768,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 384,
+            "line": 386,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -761,7 +778,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 393,
+            "line": 395,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -774,7 +791,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 407,
+            "line": 409,
             "description": "Success callback. Called when value successfully sent on server and **response status = 200**.  \nUsefull to work with json response. For example, if your backend response can be <code>{success: true}</code>\nor <code>{success: false, msg: \"server error\"}</code> you can check it inside this callback.  \nIf it returns **string** - means error occured and string is shown as error message.  \nIf it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  \nOtherwise newValue simply rendered into element.",
             "itemtype": "property",
             "name": "success",
@@ -786,8 +803,18 @@
             "class": "editableform"
         },
         {
+            "file": "..\\lib\\src\\editable-form\\editable-form.js",
+            "line": 426,
+            "description": "Additional options for ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
+            "itemtype": "property",
+            "name": "ajaxOptions",
+            "type": "object",
+            "default": "null",
+            "class": "editableform"
+        },
+        {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 92,
+            "line": 77,
             "description": "Fired each time when element's text is rendered. Occurs on initialization and on each update of value.\nCan be used for display customization.",
             "itemtype": "event",
             "name": "render",
@@ -810,7 +837,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 110,
+            "line": 95,
             "description": "Enables editable",
             "itemtype": "method",
             "name": "enable()",
@@ -818,7 +845,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 125,
+            "line": 110,
             "description": "Disables editable",
             "itemtype": "method",
             "name": "disable()",
@@ -826,7 +853,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 138,
+            "line": 123,
             "description": "Toggles enabled / disabled state of editable element",
             "itemtype": "method",
             "name": "toggleDisabled()",
@@ -834,7 +861,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 150,
+            "line": 135,
             "description": "Sets new option",
             "itemtype": "method",
             "name": "option(key, value)",
@@ -854,15 +881,22 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 206,
+            "line": 191,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
+            "params": [
+                {
+                    "name": "multi",
+                    "description": "if true - other editable containers will not be closed. Default false.",
+                    "type": "Boolean"
+                }
+            ],
             "class": "editable"
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 238,
+            "line": 225,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -870,7 +904,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 253,
+            "line": 240,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -878,7 +912,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 279,
+            "line": 266,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance",
             "itemtype": "event",
             "name": "save",
@@ -913,7 +947,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 307,
+            "line": 294,
             "description": "Sets new value of editable",
             "itemtype": "method",
             "name": "setValue(value, convertStr)",
@@ -933,7 +967,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 333,
+            "line": 320,
             "description": "jQuery method to initialize editable element.",
             "itemtype": "method",
             "name": "$().editable(options)",
@@ -951,7 +985,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 349,
+            "line": 336,
             "description": "Runs client-side validation for all matched editables",
             "itemtype": "method",
             "name": "validate()",
@@ -966,7 +1000,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 371,
+            "line": 358,
             "description": "Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned",
             "itemtype": "method",
             "name": "getValue()",
@@ -981,7 +1015,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 392,
+            "line": 379,
             "description": "This method collects values from several editable elements and submit them all to server. \nIt is designed mainly for <a href=\"#newrecord\">creating new records</a>.",
             "itemtype": "method",
             "name": "submit(options)",
@@ -1022,7 +1056,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 461,
+            "line": 448,
             "description": "Type of input. Can be <code>text|textarea|select|date</code>",
             "itemtype": "property",
             "name": "type",
@@ -1032,7 +1066,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 469,
+            "line": 456,
             "description": "Sets disabled state of editable",
             "itemtype": "property",
             "name": "disabled",
@@ -1042,7 +1076,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 477,
+            "line": 464,
             "description": "How to toggle editable. Can be <code>click|manual</code>. \nWhen set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.  \nNote: if you are calling <code>show</code> on **click** event you need to apply <code>e.stopPropagation()</code> because container has behavior to hide on any click outside.",
             "example": [
                 "\n$('#edit-button').click(function(e) {\n    e.stopPropagation();\n    $('#username').editable('toggle');\n});"
@@ -1055,7 +1089,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 493,
+            "line": 480,
             "description": "Text shown when element is empty.",
             "itemtype": "property",
             "name": "emptytext",
@@ -1065,7 +1099,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 501,
+            "line": 488,
             "description": "Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Usefull for select and date.\nFor example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  \n<code>auto</code> - text will be automatically set only if element is empty.  \n<code>always|never</code> - always(never) try to set element's text.",
             "itemtype": "property",
             "name": "autotext",
@@ -1075,7 +1109,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 512,
+            "line": 499,
             "description": "Wether to return focus on element after form is closed. \nThis allows fully keyboard input.",
             "itemtype": "property",
             "name": "enablefocus",
@@ -1085,7 +1119,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 521,
+            "line": 508,
             "description": "Initial value of input",
             "itemtype": "property",
             "name": "value",
@@ -1339,7 +1373,13 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 127,
+            "line": 125,
+            "description": "method to escape html.",
+            "class": "abstract"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\abstract.js",
+            "line": 134,
             "description": "HTML template of input. Normally you should not change it.",
             "itemtype": "property",
             "name": "tpl",
@@ -1349,7 +1389,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 135,
+            "line": 142,
             "description": "CSS class automatically applied to input",
             "itemtype": "property",
             "name": "inputclass",
@@ -1359,7 +1399,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 143,
+            "line": 150,
             "description": "Name attribute of input",
             "itemtype": "property",
             "name": "name",
@@ -1369,7 +1409,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 106,
+            "line": 113,
             "itemtype": "property",
             "name": "tpl",
             "default": "<div></div>",
@@ -1377,7 +1417,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 112,
+            "line": 119,
             "itemtype": "property",
             "name": "inputclass",
             "type": "string",
@@ -1386,7 +1426,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 119,
+            "line": 126,
             "description": "Separator of values in string when sending to server",
             "itemtype": "property",
             "name": "separator",
@@ -1396,7 +1436,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 127,
+            "line": 134,
             "description": "Separator of text when display as element content.",
             "itemtype": "property",
             "name": "viewseparator",
@@ -1406,7 +1446,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 135,
+            "line": 142,
             "description": "Maximum number of items shown as element content. \nIf checked more items - <code>limitText</code> will be shown.",
             "itemtype": "property",
             "name": "limit",
@@ -1416,7 +1456,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 144,
+            "line": 151,
             "description": "Text shown when count of checked items is greater than <code>limit</code> parameter.\nYou can use <code>{checked}</code> and <code>{count}</code> placeholders.",
             "itemtype": "property",
             "name": "limitText",
@@ -1516,23 +1556,23 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\containers\\editable-container.js:217"
+            "line": " ..\\lib\\src\\containers\\editable-container.js:328"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\element\\editable-element.js:333"
+            "line": " ..\\lib\\src\\element\\editable-element.js:320"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:349"
+            "line": " ..\\lib\\src\\element\\editable-element.js:336"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:371"
+            "line": " ..\\lib\\src\\element\\editable-element.js:358"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:392"
+            "line": " ..\\lib\\src\\element\\editable-element.js:379"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1564,7 +1604,7 @@
         },
         {
             "message": "Missing item type\nPoshytip fix: disable incorrect table display\nsee https://github.com/vadikom/poshytip/issues/7",
-            "line": " ..\\lib\\src\\containers\\editable-poshytip.js:83"
+            "line": " ..\\lib\\src\\containers\\editable-poshytip.js:82"
         },
         {
             "message": "Missing item type\nEditable jQuery UI Tooltip \n---------------------\nrequires jquery ui 1.9.x",
@@ -1593,6 +1633,10 @@
         {
             "message": "Missing item type\nexclude complex objects from $.data() before pass to config",
             "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:90"
+        },
+        {
+            "message": "Missing item type\nmethod to escape html.",
+            "line": " ..\\lib\\src\\inputs\\abstract.js:125"
         },
         {
             "message": "Missing item type\nconvert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",

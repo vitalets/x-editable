@@ -1,8 +1,8 @@
 (function(){
   
     //defaults
-//    $.fn.editable.defaults.url = 'error.php'; 
-    $.fn.editable.defaults.url = 'post.php'; 
+//    $.fn.editable.defaults.url = '/error'; 
+    $.fn.editable.defaults.url = '/post'; 
 
     //enable / disable
    $('#enable').click(function() {
@@ -11,7 +11,7 @@
     
     //editables 
     $('#username').editable({
-                           url: 'post.php',
+                           url: '/post',
                            type: 'text',
                            pk: 1,
                            name: 'username',
@@ -25,35 +25,31 @@
     });
     
     $('#lastname').editable();
-    
-    $('#sex').editable({
-        source: [
-            {value: 0, text: 'Male'},
-            {value: 1, text: 'Female'}
-        ]   
-    });    
-    
-    $('#action').on('render', function(e, editable) {
-        var colors = {0: "gray", 1: "green", 2: "blue", 3: "red"};
+
+    $('#sex').on('render', function(e, editable) {
+        var colors = {"": "gray", 1: "green", 2: "blue"};
         $(this).css("color", colors[editable.value]);  
     });
     
-    $('#status, #action').editable({
- 
-    });   
+    $('#sex').editable({
+        prepend: "not selected",
+        source: [
+            {value: 1, text: 'Male'},
+            {value: 2, text: 'Female'}
+        ]   
+    });    
     
-    $('#group').editable({
-      //  source: 'groups.php'
-    });   
+    $('#status').editable();   
+    
+    $('#group').editable();   
 
-    $('#dob').editable({
-       // format: 'dd.mm.yyyy'
-    });      
+    $('#dob').editable();      
     
+/* 
     $('#weight').editable({
-        url: 'error.php'  
+        url: '/error'  
     });     
-    
+*/    
     $('#comments').editable(); 
     
     $('#note').editable(); 
@@ -74,7 +70,19 @@
         {value: 4, text: 'watermelon'},
         {value: 5, text: 'orange'}
        ]
-    });        
+    }); 
+    
+    $('#address').editable({
+        url: '/post',
+        value: {
+            city: "Moscow", 
+            street: "Lenina", 
+            building: "12"
+        },
+        validate: function(value) {
+            if(value.city == '') return 'city is required!'; 
+        }
+    });              
 
   //----------------------------------
   // editableContainer() 

@@ -3,14 +3,14 @@ $(function(){
     $.mockjaxSettings.responseTime = 500; 
     
     $.mockjax({
-        url: 'post.php',
+        url: '/post',
         response: function(settings) {
             log(settings, this);
         }
     });
 
     $.mockjax({
-        url: 'error.php',
+        url: '/error',
         status: 400,
         statusText: 'Bad Request',
         response: function(settings) {
@@ -20,7 +20,7 @@ $(function(){
     });
     
     $.mockjax({
-        url: 'status.php',
+        url: '/status',
         status: 500,
         response: function(settings) {
             this.responseText = 'Internal Server Error';
@@ -29,7 +29,7 @@ $(function(){
     });
   
     $.mockjax({
-        url: 'groups.php',
+        url: '/groups',
         response: function(settings) {
             this.responseText = [ 
              {value: 0, text: 'Guest'},
@@ -43,29 +43,18 @@ $(function(){
         }        
     });
     
-    /*
-    //groups as object
-    $.mockjax({
-        url: 'groups1.php',
-        response: function(settings) {
-            log(settings);
-            this.responseText = { 
-             0: 'Guest',
-             1: 'Service',
-             2: 'Customer',
-             3: 'Operator',
-             4: 'Support',
-             5: 'Admin'
-            };
-        }        
-    });
-    */
-    
     function log(settings, response) {
-            var s = [];
+            var s = [], str;
             s.push(settings.type.toUpperCase() + ' url = "' + settings.url + '"');
             for(var a in settings.data) {
-                s.push(a + ' = "' + settings.data[a] + '"');
+                if(settings.data[a] && typeof settings.data[a] === 'object') {
+                    str = [];
+                    for(var j in settings.data[a]) {str.push(j+': "'+settings.data[a][j]+'"');}
+                    str = '{ '+str.join(', ')+' }';
+                } else {
+                    str = '"'+settings.data[a]+'"';
+                }
+                s.push(a + ' = ' + str);
             }
             s.push('RESPONSE: status = ' + response.status);
             console.log(response);

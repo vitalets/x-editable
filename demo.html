@@ -33,7 +33,10 @@
             $(function(){
                setTimeout(function() { 
                    $.getScript(assets.editable_js, function(){
-                      $.getScript('assets/demo.js');
+                      loadCss('assets/x-editable/inputs-ext/address/address.css');                        
+                      $.getScript('assets/x-editable/inputs-ext/address/address.js', function() {
+                           $.getScript('assets/demo.js');  
+                      }); 
                    }); 
                }, 300);
             });
@@ -101,22 +104,22 @@
                     </tr>  
                     <tr>         
                         <td>Sex</td>
-                        <td><a href="#" id="sex" data-type="select" data-name="sex" data-pk="1" data-value="" data-prepend="not selected" data-original-title="Select sex"></a></td>
-                        <td><span class="muted">Select, loaded from js array</span></td>
+                        <td><a href="#" id="sex" data-type="select" data-name="sex" data-pk="1" data-value="" data-original-title="Select sex"></a></td>
+                        <td><span class="muted">Select, loaded from js array. Custom render</span></td>
                     </tr>
-                    <tr>         
+<!--                    <tr>         
                         <td>Action</td>
                         <td><a href="#" id="action" data-type="select" data-name="action" data-pk="1" data-value="1" data-source='{"0": "None", "1":"Insert", "2": "Update", "3": "Delete"}' data-original-title="Select action">Insert</a></td>
                         <td><span class="muted">Select, loaded from inline HTML. Custom render.</span></td>
-                    </tr>                                     
+                    </tr> -->                                    
                     <tr>         
                         <td>Group</td>
-                        <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="groups.php" data-original-title="Select group">Admin</a></td>
+                        <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="/groups" data-original-title="Select group">Admin</a></td>
                         <td><span class="muted">Select, loaded from server</span></td>
                     </tr> 
                     <tr>         
                         <td>Status</td>
-                        <td><a href="#" id="status" data-type="select" data-name="status" data-pk="1" data-value="0" data-source="status.php" data-original-title="Select status">Active</a></td>
+                        <td><a href="#" id="status" data-type="select" data-name="status" data-pk="1" data-value="0" data-source="/status" data-original-title="Select status">Active</a></td>
                         <td><span class="muted">Select, loaded from server (error)</span></td>
                     </tr>       
                     <tr>         
@@ -129,21 +132,29 @@
                         <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-name="comments" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
                         <td><span class="muted">Textarea. Submit by ctrl+enter</span></td>
                     </tr>                                     
-                    <tr>         
+<!--                    <tr>         
                         <td>Weight, kg</td>
                         <td><a href="#" id="weight" data-type="text" data-pk="1" data-name="weight" data-inputclass="span1" data-original-title="Weight">65</a></td>
                         <td><span class="muted">Server-side validation error</span></td>
-                    </tr>                                     
+                    </tr> --> 
+                    <tr>         
+                        <td>Fresh fruits <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="fruits" data-type="checklist" data-value="2,3" data-original-title="Select fruits"></a></td>
+                        <td><span class="muted">Checklist. Try to select more that 3.</span></td>
+                    </tr>  
+                    
+                    <tr>         
+                        <td>Address <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="address" data-type="address" data-pk="1" data-original-title="Please, fill address"></a></td>
+                        <td><span class="muted">Your custom input, several fields</span></td>
+                    </tr>                      
+                                                                           
                     <tr>         
                         <td>Note</td>
                         <td><span id="note" data-pk="1" data-toggle="manual" data-original-title="Enter note">pretty note..</span></td>
                         <td><a href="#" id="pencil"><i class="icon-pencil"></i> [edit]</a> <span class="muted">Toggle by another element</span></td>
                     </tr>                                                                                            
-                    <tr>         
-                        <td>Fresh fruits <sup><span class="label label-success">new</span></sup></td>
-                        <td><a href="#" id="fruits" data-type="checklist" data-value="2,3" data-original-title="Select fruits"></a></td>
-                        <td><span class="muted">Checklist. Try to select more that 3.</span></td>
-                    </tr>                      
+                    
                 </tbody>
             </table>
             <br>

@@ -205,6 +205,17 @@ Please, see also <a href="#inputs">input dependent options</a>.
     <tbody>
       
         <tr>
+            <td>ajaxOptions</td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Additional options for ajax request.
+List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.com/jQuery.ajax</a></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>autotext</td>
             <td>string</td>
             <td>&#x27;auto&#x27;</td>
@@ -257,13 +268,24 @@ This allows fully keyboard input.</p>
         </tr> 
        
         <tr>
+            <td>onblur</td>
+            <td>string</td>
+            <td>cancel</td>
+            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>
+Setting <code>ignore</code> ignore allows to have several containers open.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>params</td>
             <td>object|function</td>
             <td>null</td>
             <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
 
             
-                <pre class="prettyprint linenums">params: function() {
+                <pre class="prettyprint linenums">params: function(params) {
     return { a: 1 };
 }</pre>
             
@@ -524,7 +546,13 @@ fullname: "John"
         <tr>
             <td>show()</td>
             <td>
-<i>none</i>
+<ul>
+    
+    <li><strong>multi</strong> <i>Boolean</i> if true - other editable containers will not be closed. Default false.
+        
+    </li>
+    
+</ul>
 
 </td>
             <td>Shows container with form
@@ -779,6 +807,17 @@ Please, see also <a href="#inputs">input dependent options</a>.
     <tbody>
       
         <tr>
+            <td>ajaxOptions</td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Additional options for ajax request.
+List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.com/jQuery.ajax</a></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>autohide</td>
             <td>boolean</td>
             <td>true</td>
@@ -799,13 +838,24 @@ Please, see also <a href="#inputs">input dependent options</a>.
         </tr> 
        
         <tr>
+            <td>onblur</td>
+            <td>string</td>
+            <td>cancel</td>
+            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>
+Setting <code>ignore</code> ignore allows to have several containers open.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>params</td>
             <td>object|function</td>
             <td>null</td>
             <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
 
             
-                <pre class="prettyprint linenums">params: function() {
+                <pre class="prettyprint linenums">params: function(params) {
     return { a: 1 };
 }</pre>
             
@@ -1000,7 +1050,13 @@ $('#edit').editableContainer({
         <tr>
             <td>show()</td>
             <td>
-<i>none</i>
+<ul>
+    
+    <li><strong>multi</strong> <i>Boolean</i> if true - other editable containers will not be closed. Default false.
+        
+    </li>
+    
+</ul>
 
 </td>
             <td>Shows container with form
@@ -1682,7 +1738,8 @@ $(function(){
         
          <section id="checklist">
             <h2>checklist</h2>
-            <p><p>List of checkboxes. Internally value stored as javascript array of values.</p>
+            <p><p>List of checkboxes. 
+Internally value stored as javascript array of values.</p>
 </p>
             <ul class="nav nav-tabs" id="checklist-tabs">
     <li class="active"><a href="#checklist-options" data-toggle="tab">Options</a></li>

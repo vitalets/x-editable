@@ -13,11 +13,16 @@ then
   #copy dist
   cp -R ../lib/dist/** assets/x-editable  
   
+  echo ok
+fi
+
+if [ $(expr match $1 ".*zip.*") -gt 0 ] 
+then
   #create zip
   version=$(head -1 assets/x-editable/bootstrap-editable/js/bootstrap-editable.js | sed -n 's/^.*v\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p') 
   mkdir -p assets/zip 
   cd assets/x-editable
-  files="LICENSE-MIT README.md CHANGELOG.txt"
+  files="LICENSE-MIT README.md CHANGELOG.txt inputs-ext"
   
   zipfile=../zip/bootstrap-editable-$version.zip
   rm -f $zipfile
@@ -31,7 +36,7 @@ then
   rm -f $zipfile
   zip -rT $zipfile jquery-editable $files
   
-  cd $startdir  
+  cd $startdir 
 fi
 
 if [ $(expr match $1 ".*docs.*") -gt 0 ] 
