@@ -56,7 +56,7 @@ Or use grunt's _qunit_ task <code>grunt test</code>. For that you also need to [
 
 5.To build lib + docs:
 * run <code>grunt build</code> in **lib** directory
-* run <code>build data-docs-dist</code> in **gh-pages** directory  
+* run <code>build data-docs-dist-zip</code> in **gh-pages** directory  
 You will get distributive in **lib/dist** and updated docs in **gh-pages/*.html**.  
 Do not edit **index.html** and **docs.html** directly! Instead look at [Handlebars](https://github.com/wycats/handlebars.js) templates in **generator/templates**.
 
