@@ -84,7 +84,11 @@
 
             <h2>Example</h2>   
             <p>Click on fields to edit</p>
-            <p style="text-align: left"><button id="enable" class="btn">enable / disable</button></p>
+            <p style="text-align: right">
+            <button id="enable" class="btn">enable / disable</button>
+<!--            &nbsp;&nbsp;
+            <button id="turn" class="btn" style1="display: none">turn into classic form</button>   -->
+            </p>
             <table id="user" class="table table-bordered table-striped">
                 <tbody> 
                     <tr>         
@@ -115,7 +119,7 @@
                     <tr>         
                         <td>Group</td>
                         <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="/groups" data-original-title="Select group">Admin</a></td>
-                        <td><span class="muted">Select, loaded from server</span></td>
+                        <td><span class="muted">Select, loaded from server. <i>No buttons</i> mode</span></td>
                     </tr> 
                     <tr>         
                         <td>Status</td>
@@ -130,7 +134,7 @@
                     <tr>         
                         <td>Comments</td>
                         <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-name="comments" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
-                        <td><span class="muted">Textarea. Submit by ctrl+enter</span></td>
+                        <td><span class="muted">Textarea. <i>No buttons</i> mode. Submit by ctrl+enter</span></td>
                     </tr>                                     
 <!--                    <tr>         
                         <td>Weight, kg</td>

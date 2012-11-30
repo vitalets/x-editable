@@ -13,7 +13,7 @@ then
   #copy dist
   cp -R ../lib/dist/** assets/x-editable  
   
-  echo ok
+  echo dist copied!
 fi
 
 if [ $(expr match $1 ".*zip.*") -gt 0 ] 
