@@ -56,10 +56,23 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //add 'editable' class
             this.$element.addClass('editable');
             
-            //attach click handler. In disabled mode it just prevent default action (useful for links)
+            //attach handler activating editable. In disabled mode it just prevent default action (useful for links)
             if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');
-                this.$element.on(this.options.toggle + '.editable', $.proxy(this.activate, this));
+                this.$element.on(this.options.toggle + '.editable', $.proxy(function(e){
+                    e.preventDefault();
+                    //stop propagation not required anymore because in document click handler it checks event target
+                    //e.stopPropagation();
+                    
+                    if(this.options.toggle === 'mouseenter') {
+                        //for hover only show container
+                        this.show(); 
+                    } else {
+                        //when toggle='click' we should not close all other containers as they will be closed automatically in document click listener
+                        var closeAll = (this.options.toggle !== 'click');
+                        this.toggle(closeAll);
+                    }                    
+                }, this));
             } else {
                 this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
             }
@@ -194,30 +207,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
             }
         },        
-        /*
-         show / hide editable container when element triggers event defined by toggle option 
-        */
-        activate: function (e) {
-            e.preventDefault();
-            if(this.options.disabled) {
-                return;
-            }
-            /*
-            stop propagation not required anymore because in document click handler it checks event target
-            */
-            //e.stopPropagation();
-            
-            if(this.options.toggle === 'mouseenter') {
-                //for hover only show container
-                this.show(); 
-            } else {
-                /*
-                if toggle = click we should not close all other containers as they will be closed automatically in document click listener
-                */
-                var closeAll = (this.options.toggle !== 'click');
-                this.toggle(closeAll);
-            }
-        },
         
         /**
         Shows container with form
@@ -339,7 +328,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.handleEmpty();
                 this.$element.triggerHandler('render', this);                        
             }, this));
-        }        
+        },
+        
+        /**
+        Activates input of visible container (e.g. set focus)
+        @method activate()
+        **/         
+        activate: function() {
+            if(this.container) {
+               this.container.activate(); 
+            }
+        }                 
     };
 
     /* EDITABLE PLUGIN DEFINITION

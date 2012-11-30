@@ -322,6 +322,16 @@ Applied as jQuery method.
                 }
             });
 
+        },
+        
+        /**
+        Activates input of visible container (e.g. set focus)
+        @method activate()
+        **/         
+        activate: function() {
+            if(this.tip && this.tip().is(':visible') && this.$form) {
+               this.$form.data('editableform').input.activate(); 
+            }
         } 
 
     };
