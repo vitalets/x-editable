@@ -359,12 +359,12 @@ Applied as jQuery method.
         **/        
         autohide: true,
         /**
-        Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>
-        Setting <code>ignore</code> ignore allows to have several containers open. 
+        Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  
+        Setting <code>ignore</code> allows to have several containers open. 
 
         @property onblur 
         @type string
-        @default cancel
+        @default 'cancel'
         **/        
         onblur: 'cancel'
     };

@@ -473,7 +473,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
     $.fn.editable.defaults = {
         /**
-        Type of input. Can be <code>text|textarea|select|date</code>
+        Type of input. Can be <code>text|textarea|select|date|checklist</code> and more
 
         @property type 
         @type string
@@ -489,8 +489,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         disabled: false,
         /**
-        How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>. 
-        When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.  
+        How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   
+        When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    
         **Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, 
         you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.
         
@@ -535,7 +535,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         enablefocus: false,
         /**
-        Initial value of input
+        Initial value of input. Taken from <code>data-value</code> or element's text.
 
         @property value 
         @type mixed
