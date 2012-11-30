@@ -47,34 +47,32 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.value = this.input.html2value($.trim(this.$element.html()));
                 isValueByText = true;
             } else {
-                this.value = this.input.str2value($.trim(this.options.value));
+                if(typeof this.options.value === 'string') {
+                   this.options.value = $.trim(this.options.value);
+                }
+                this.value = this.input.str2value(this.options.value);
             }
-            
-            //attach handler to close any container on escape
-            $(document).off('keyup.editable').on('keyup.editable', function (e) {
-                if (e.which === 27) {
-                    $('.editable-container').find('.editable-cancel').click();
-                }
-            }); 
-            
-            //attach handler to close container when click outside
-            $(document).off('click.editable').on('click.editable', function(e) {
-                var $target = $(e.target);
-                //if click inside container --> do nothing
-                if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
-                    return;
-                }
-                //close all other containers
-                $('.editable-container').find('.editable-cancel').click();
-            });
             
             //add 'editable' class
             this.$element.addClass('editable');
             
-            //attach click handler. In disabled mode it just prevent default action (useful for links)
-            if(this.options.toggle === 'click') {
+            //attach handler activating editable. In disabled mode it just prevent default action (useful for links)
+            if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');
-                this.$element.on('click.editable', $.proxy(this.click, this));
+                this.$element.on(this.options.toggle + '.editable', $.proxy(function(e){
+                    e.preventDefault();
+                    //stop propagation not required anymore because in document click handler it checks event target
+                    //e.stopPropagation();
+                    
+                    if(this.options.toggle === 'mouseenter') {
+                        //for hover only show container
+                        this.show(); 
+                    } else {
+                        //when toggle='click' we should not close all other containers as they will be closed automatically in document click listener
+                        var closeAll = (this.options.toggle !== 'click');
+                        this.toggle(closeAll);
+                    }                    
+                }, this));
             } else {
                 this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
             }
@@ -115,7 +113,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.options.disabled = false;
             this.$element.removeClass('editable-disabled');
             this.handleEmpty();
-            if(this.options.toggle === 'click') {
+            if(this.options.toggle !== 'manual') {
                 if(this.$element.attr('tabindex') === '-1') {    
                     this.$element.removeAttr('tabindex');                                
                 }
@@ -151,10 +149,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Sets new option
         
         @method option(key, value)
-        @param {string} key 
-        @param {mixed} value 
+        @param {string|object} key option name or object with several options
+        @param {mixed} value option new value
+        @example
+        $('.editable').editable('option', 'pk', 2);
         **/          
         option: function(key, value) {
+            //set option(s) by object
+            if(key && typeof key === 'object') {
+               $.each(key, $.proxy(function(k, v){
+                  this.option($.trim(k), v); 
+               }, this)); 
+               return;
+            }
+
+            //set option by string             
+            this.options[key] = value;                          
+            
+            //disabled
             if(key === 'disabled') {
                 if(value) {
                     this.disable();
@@ -163,12 +175,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
                 return;
             } 
-                       
-            this.options[key] = value;
+            
+            //value
+            if(key === 'value') {
+                this.setValue(value);
+            }
             
             //transfer new option to container! 
             if(this.container) {
-              this.container.option(key, value);  
+                this.container.option(key, value);  
             }
         },              
         
@@ -193,21 +208,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }
         },        
         
-        click: function (e) {
-            e.preventDefault();
-            if(this.options.disabled) {
-                return;
-            }
-            //stop propagation bacause document listen any click to hide all editableContainers
-            e.stopPropagation();
-            this.toggle();
-        },
-        
         /**
         Shows container with form
         @method show()
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/  
-        show: function () {
+        show: function (closeAll) {
             if(this.options.disabled) {
                 return;
             }
@@ -216,7 +222,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
                     value: this.value,
-                    autohide: false //element itsef will show/hide container
+                    autohide: false //element will take care to show/hide container
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
@@ -227,12 +233,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             } else if(this.container.tip().is(':visible')) {
                 return;
             }      
-                                         
-            //hide all other editable containers. Required to work correctly with toggle = manual
-            $('.editable-container').find('.editable-cancel').click();
             
             //show container
-            this.container.show();
+            this.container.show(closeAll);
         },
         
         /**
@@ -247,18 +250,19 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //return focus on element
             if (this.options.enablefocus && this.options.toggle === 'click') {
                 this.$element.focus();
-            }                
+            }   
         },
         
         /**
         Toggles container visibility (show / hide)
         @method toggle()
+        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
         **/  
-        toggle: function() {
+        toggle: function(closeAll) {
             if(this.container && this.container.tip().is(':visible')) {
                 this.hide();
             } else {
-                this.show();
+                this.show(closeAll);
             }
         },
         
@@ -324,7 +328,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.handleEmpty();
                 this.$element.triggerHandler('render', this);                        
             }, this));
-        }        
+        },
+        
+        /**
+        Activates input of visible container (e.g. set focus)
+        @method activate()
+        **/         
+        activate: function() {
+            if(this.container) {
+               this.container.activate(); 
+            }
+        }                 
     };
 
     /* EDITABLE PLUGIN DEFINITION
@@ -459,7 +473,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
     $.fn.editable.defaults = {
         /**
-        Type of input. Can be <code>text|textarea|select|date</code>
+        Type of input. Can be <code>text|textarea|select|date|checklist</code> and more
 
         @property type 
         @type string
@@ -475,9 +489,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         disabled: false,
         /**
-        How to toggle editable. Can be <code>click|manual</code>. 
-        When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.  
-        Note: if you are calling <code>show</code> on **click** event you need to apply <code>e.stopPropagation()</code> because container has behavior to hide on any click outside.
+        How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   
+        When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    
+        **Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, 
+        you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.
         
         @example
         $('#edit-button').click(function(e) {
@@ -490,6 +505,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default 'click'
         **/          
         toggle: 'click',
+
         /**
         Text shown when element is empty.
 
@@ -519,7 +535,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         enablefocus: false,
         /**
-        Initial value of input
+        Initial value of input. Taken from <code>data-value</code> or element's text.
 
         @property value 
         @type mixed

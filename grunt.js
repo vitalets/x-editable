@@ -151,7 +151,8 @@ module.exports = function(grunt) {
               'src/element/*.js', 
               'src/inputs/*.js', 
               'src/inputs/date/date.js',
-              'src/inputs/dateui/dateui.js'
+              'src/inputs/dateui/dateui.js',
+              'src/inputs-ext/**/*.js'
               ]
     },
     /*
@@ -192,29 +193,20 @@ module.exports = function(grunt) {
                flatten: true
             }
         },
+        inputs_ext: {
+            files: {
+                '<%= dist %>/inputs-ext/': 'src/inputs-ext/**'
+            },
+            options: {
+               basePath: 'inputs-ext'
+            }            
+        },
         ui_datepicker: {
          files: {
              //copy jquery ui datepicker
              '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**' 
          }
-        } 
-    },
-    yuidoc: {
-      compile: {
-        name: '<%= pkg.title || pkg.name %>',
-        description: '<%= pkg.description %>',
-        version: '<%= pkg.version %>',
-        url: "<%= pkg.homepage %>",
-      //  logo: 'src/editable-form/img/loading.gif',
-        options: {
-          paths: "src/",
-          ignorePaths: ['src/inputs/date/locales'],
-          outdir: "../docs/",
-//          theme: "simple",
-          themedir: "../yuidoc-theme"
-          //themedir: "../yuidoc-bootstrap-theme-master"
-        }
-      }
+       } 
     },
     
     //compress does not work properly for MAC OS (see https://github.com/vitalets/bootstrap-editable/issues/19)

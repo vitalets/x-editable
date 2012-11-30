@@ -450,5 +450,30 @@ $(function () {
             start();   
          }, timeout);                              
     });                       
+    
+     asyncTest("autosubmit when showbuttons=false", function () {
+         expect(4);
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo(fx).editable({
+             pk: 1,
+             source: groups,
+             showbuttons: false
+        }),
+        selected = 3;
+
+        e.click();
+        var p = tip(e);
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct'); 
+
+        p.find('select').val(selected);
+        p.find('select').trigger('change');
+         
+         setTimeout(function() {
+               ok(!p.is(':visible'), 'popover closed');
+               equal(e.data('editable').value, selected, 'new value saved')
+               equal(e.text(), groups[selected], 'text shown correctly') 
+               e.remove();    
+               start();  
+         }, timeout);   
+     });    
      
 });

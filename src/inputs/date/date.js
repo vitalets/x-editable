@@ -95,7 +95,16 @@ $(function(){
        clear:  function() {
           this.$input.data('datepicker').date = null;
           this.$input.find('.active').removeClass('active');
-       }                
+       },
+       
+       autosubmit: function() {
+           this.$input.on('changeDate', function(e){
+               var $form = $(this).closest('form');
+               setTimeout(function() {
+                   $form.submit();
+               }, 200);
+           });
+       }
 
     });
     

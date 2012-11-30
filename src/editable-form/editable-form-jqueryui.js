@@ -4,10 +4,7 @@ Editableform based on jQuery UI
 (function ($) {
     
     $.extend($.fn.editableform.Constructor.prototype, {
-        initTemplate: function() {
-            this.$form = $($.fn.editableform.template);
-
-            //buttons
+        initButtons: function() {
             this.$form.find('.editable-buttons').append($.fn.editableform.buttons);                
             this.$form.find('.editable-submit').button({
                 icons: { primary: "ui-icon-check" },
@@ -17,7 +14,6 @@ Editableform based on jQuery UI
                 icons: { primary: "ui-icon-closethick" },
                 text: false
             }).removeAttr('title');
-
         }
     });
     

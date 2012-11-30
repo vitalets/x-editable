@@ -38,7 +38,8 @@
 .editableform-loading {
     background: url('img/loading.gif') center center no-repeat;  
     height: 25px;
-    width: auto;  
+    width: auto; 
+    min-width: 25px; 
 }
 
 .editable-inline .editableform-loading {

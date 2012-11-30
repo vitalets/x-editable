@@ -1,5 +1,6 @@
 /**
-List of checkboxes. Internally value stored as javascript array of values.
+List of checkboxes. 
+Internally value stored as javascript array of values.
 
 @class checklist
 @extends list
@@ -49,6 +50,8 @@ $(function(){
        
        value2str: function(value) {
            return $.isArray(value) ? value.join($.trim(this.options.separator)) : '';
+           //it is also possible to sent as array
+           //return value;
        },        
        
        //parse separated string
@@ -68,11 +71,17 @@ $(function(){
             var $checks = this.$input.find('input[type="checkbox"]');
             $checks.removeAttr('checked');
             if($.isArray(value) && value.length) {
-                $checks.each(function(i, el) {
-                    if($.inArray($(el).val(), value) !== -1) {
-                        $(el).attr('checked', 'checked');
-                    }
-                }); 
+               $checks.each(function(i, el) {
+                   var $el = $(el);
+                   // cannot use $.inArray as it performs strict comparison
+                   $.each(value, function(j, val){
+                       /*jslint eqeq: true*/
+                       if($el.val() == val) {
+                       /*jslint eqeq: false*/                           
+                           $el.attr('checked', 'checked');
+                       }
+                   });
+               }); 
             }  
         },  
         
@@ -99,7 +108,19 @@ $(function(){
                html = this.options.limitText.replace('{checked}', $.isArray(value) ? value.length : 0).replace('{count}', this.sourceData.length); 
            }
            $(element).html(html);
-        }
+        },
+        
+       activate: function() {
+           this.$input.find('input[type="checkbox"]').first().focus();
+       },
+       
+       autosubmit: function() {
+           this.$input.find('input[type="checkbox"]').on('keydown', function(e){
+               if (e.which === 13) {
+                   $(this).closest('form').submit();
+               }
+           });
+       }
     });      
 
     Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {

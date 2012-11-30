@@ -7,7 +7,7 @@ It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/boots
 See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
-When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/1/) as starting point.  
+When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/5/) as starting point.  
 Your feedback is very appreciated!
 
 ## Contribution
@@ -60,7 +60,7 @@ Or use grunt's _qunit_ task <code>grunt test</code>. For that you also need to [
 You will get distributive in **lib/dist** and updated docs in **gh-pages/*.html**.  
 Do not edit **index.html** and **docs.html** directly! Instead look at [Handlebars](https://github.com/wycats/handlebars.js) templates in **generator/templates**.
 
-6.Commit changes on <code>dev</code> branch and make pull request as usual.  
+6.Commit changes on <code>dev</code> / <code>gh-pages-dev</code> branch and make pull request as usual.  
 
 Thanks for your support!
 

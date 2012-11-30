@@ -1,5 +1,16 @@
 X-editable changelog
 =============================
+
+
+Version 1.1.1 Nov 30, 2012
+----------------------------   
+[enh] 'showbuttons' option to hide buttons in form (vitalets)  
+[enh] object can be passed in 'option' method to set several options at once (vitalets)  
+[enh #20] toggle editable by 'dblclick' and 'mouseenter' (vitalets)  
+[enh] added 'inputs-ext' directory with sample input 'address'. They will not be concatenated to main files (vitalets)  
+[enh #13] 'onblur' option: to cancel, submit or ignore when user clicks outside the form (vitalets)  
+[enh] 'ajaxOptions' parameter for advanced ajax configuration (vitalets)  
+[enh] 'success' callback can return object to overwrite submitted value (vitalets)  
        
        
 Version 1.1.0 Nov 27, 2012
