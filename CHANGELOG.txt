@@ -2,7 +2,7 @@ X-editable changelog
 =============================
 
 
-Version 1.1.1 wip
+Version 1.1.1 Nov 30, 2012
 ----------------------------   
 [enh] 'showbuttons' option to hide buttons in form (vitalets)  
 [enh] object can be passed in 'option' method to set several options at once (vitalets)  
