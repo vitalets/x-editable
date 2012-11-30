@@ -41,7 +41,9 @@
     
     $('#status').editable();   
     
-    $('#group').editable();   
+    $('#group').editable({
+       showbuttons: false 
+    });   
 
     $('#dob').editable();      
     
@@ -50,7 +52,9 @@
         url: '/error'  
     });     
 */    
-    $('#comments').editable(); 
+    $('#comments').editable({
+        showbuttons: false
+    }); 
     
     $('#note').editable(); 
     

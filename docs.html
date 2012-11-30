@@ -277,9 +277,8 @@ This allows fully keyboard input.</p>
         <tr>
             <td>onblur</td>
             <td>string</td>
-            <td>cancel</td>
-            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>
-Setting <code>ignore</code> ignore allows to have several containers open.</p>
+            <td>&#x27;cancel&#x27;</td>
+            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.<br>Setting <code>ignore</code> allows to have several containers open.</p>
 
             
             </td>
@@ -332,6 +331,16 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
         </tr> 
        
         <tr>
+            <td>showbuttons</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Wether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>success</td>
             <td>function</td>
             <td>null</td>
@@ -350,8 +359,7 @@ or <code>{success: false, msg: &quot;server error&quot;}</code> you can check it
             <td>toggle</td>
             <td>string</td>
             <td>&#x27;click&#x27;</td>
-            <td><p>How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>. 
-When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.<br><strong>Note</strong>: if you call <code>show</code> or <code>toggle</code> inside <strong>click</strong> handler of some DOM element, 
+            <td><p>How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.<br>When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.<br><strong>Note</strong>: if you call <code>show</code> or <code>toggle</code> inside <strong>click</strong> handler of some DOM element, 
 you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.</p>
 
             
@@ -367,7 +375,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>type</td>
             <td>string</td>
             <td>&#x27;text&#x27;</td>
-            <td><p>Type of input. Can be <code>text|textarea|select|date</code></p>
+            <td><p>Type of input. Can be <code>text|textarea|select|date|checklist</code> and more</p>
 
             
             </td>
@@ -412,7 +420,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>value</td>
             <td>mixed</td>
             <td>element&#x27;s text</td>
-            <td><p>Initial value of input</p>
+            <td><p>Initial value of input. Taken from <code>data-value</code> or element&#39;s text.</p>
 
             
             </td>
@@ -453,6 +461,17 @@ $('#username').editable({
     url: '/post',
     pk: 1
 });</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>activate()</td>
+            <td>
+<i>none</i>
+
+</td>
+            <td>Activates input of visible container (e.g. set focus)
             
             </td>
         </tr> 
@@ -857,9 +876,8 @@ List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.co
         <tr>
             <td>onblur</td>
             <td>string</td>
-            <td>cancel</td>
-            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>
-Setting <code>ignore</code> ignore allows to have several containers open.</p>
+            <td>&#x27;cancel&#x27;</td>
+            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.<br>Setting <code>ignore</code> allows to have several containers open.</p>
 
             
             </td>
@@ -906,6 +924,16 @@ Can be calculated dinamically via function.</p>
             <td>&#x27;auto&#x27;</td>
             <td><p>Strategy for sending data on server. Can be <code>auto|always|never</code>.
 When &#39;auto&#39; data will be sent on server only if pk defined, otherwise new value will be stored in element.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>showbuttons</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Wether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
 
             
             </td>
@@ -1017,6 +1045,17 @@ $('#edit').editableContainer({
     pk: 1,
     value: 'hello'
 });</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>activate()</td>
+            <td>
+<i>none</i>
+
+</td>
+            <td>Activates input of visible container (e.g. set focus)
             
             </td>
         </tr> 
