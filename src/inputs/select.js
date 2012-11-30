@@ -45,7 +45,13 @@ $(function(){
                 text = item.text;
             }
             Select.superclass.constructor.superclass.value2html(text, element);   
-        }        
+        },
+        
+        autosubmit: function() {
+            this.$input.on('change', function(){
+                $(this).closest('form').submit();
+            });
+        }
     });      
 
     Select.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {

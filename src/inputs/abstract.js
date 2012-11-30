@@ -127,7 +127,14 @@ To create your own input you should inherit from this class.
        **/
        escape: function(str) {
            return $('<div>').text(str).html();
-       } 
+       },
+       
+       /**
+        attach handler to automatically submit form when value changed (usefull when buttons not shown)
+       **/       
+       autosubmit: function() {
+        
+       }
     };
         
     Abstract.defaults = {  

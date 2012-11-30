@@ -112,7 +112,15 @@ $(function(){
         
        activate: function() {
            this.$input.find('input[type="checkbox"]').first().focus();
-       }        
+       },
+       
+       autosubmit: function() {
+           this.$input.find('input[type="checkbox"]').on('keydown', function(e){
+               if (e.which === 13) {
+                   $(this).closest('form').submit();
+               }
+           });
+       }
     });      
 
     Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {

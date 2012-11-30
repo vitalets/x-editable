@@ -11,7 +11,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
     var EditableForm = function (element, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
-        this.$element = $(element); //div, containing form. Not form tag!
+        this.$element = $(element); //div, containing form. Not form tag! Not editable-element.
         this.initInput();
     };
 
@@ -69,6 +69,11 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 //input
                 this.$form.find('div.editable-input').append(this.input.$input);
 
+                //automatically submit inputs when no buttons shown
+                if(!this.options.showbuttons) {
+                    this.input.autosubmit(); 
+                }
+                
                 //"clear" link
                 if(this.input.$clear) {
                     this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
@@ -156,11 +161,10 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         submit: function(e) {
             e.stopPropagation();
             e.preventDefault();
-
+            
             var error,
-            //get value from input
-            newValue = this.input.input2value(),
-            newValueStr;
+                newValue = this.input.input2value(), //get new value from input
+                newValueStr;
 
             //validation
             if (error = this.validate(newValue)) {
@@ -168,14 +172,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 this.showForm();
                 return;
             } 
-
+            
             //value as string
             newValueStr = this.input.value2str(newValue);
 
             //if value not changed --> cancel
             /*jslint eqeq: true*/
             if (newValueStr == this.input.value2str(this.value)) {
-                /*jslint eqeq: false*/                
+            /*jslint eqeq: false*/                
                 this.cancel();
                 return;
             } 
@@ -186,14 +190,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this, response, newValue) : null;
                 
-                //if it returns string --> show error
+                //if success callback returns string --> show error
                 if(res && typeof res === 'string') {
                     this.error(res);
                     this.showForm();
                     return;
                 }     
                 
-                //if it returns object like {newValue: <something>} --> use that value
+                //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
                 if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
                     newValue = res.newValue;
                 }                            
@@ -446,17 +450,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @type boolean
         @default true
         **/         
-        showbuttons: true,
-        /**
+        showbuttons: false
+        
+        /*todo: 
         Submit strategy. Can be <code>normal|never</code>
-        <code>submit='never'</code> usefull for turning into classic form several inputs and submitting them together manually.
+        <code>submitmode='never'</code> usefull for turning into classic form several inputs and submitting them together manually.
         Works pretty with <code>showbuttons=false</code>
 
-        @property submit 
+        @property submitmode 
         @type string
         @default normal
-        **/         
-        submit: 'normal' 
+        */         
+//        submitmode: 'normal' 
     };   
 
     /*

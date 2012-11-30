@@ -112,7 +112,16 @@ $(function(){
        
        clear:  function() {
            this.$input.datepicker('setDate', null);
-       }   
+       },
+       
+       autosubmit: function() {
+           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', function(e){
+               var $form = $(this).closest('form');
+               setTimeout(function() {
+                   $form.submit();
+               }, 200);
+           });
+       }
 
     });
     
