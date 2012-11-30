@@ -345,7 +345,20 @@
         e.hover();
         p = tip(e);
         ok(p.is(':visible'), 'popover1 visible after second hover');                                      
-     });        
+     }); 
+     
+      test("showbuttons: false", function () {
+        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+            showbuttons: false
+        });
+        
+        e.click();                       
+        var p = tip(e);                     
+        ok(p.is(':visible'), 'popover visible');   
+        ok(!p.find('.editable-submit').length, 'submit not rendered');   
+        ok(!p.find('.editable-cancel').length, 'cancel not rendered');   
+        ok(!p.find('.editable-buttons').length, '.editable-buttons block not rendered');   
+     });            
       
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.
       /*

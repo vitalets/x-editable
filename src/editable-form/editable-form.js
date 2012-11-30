@@ -34,9 +34,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         },
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
-
-            //buttons
-            this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);              
+        },
+        initButtons: function() {
+            this.$form.find('.editable-buttons').append($.fn.editableform.buttons);
         },
         /**
         Renders editableform
@@ -47,8 +47,14 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             this.$loading = $($.fn.editableform.loading);        
             this.$element.empty().append(this.$loading);
             this.showLoading();
-
+            
+            //init form template and buttons
             this.initTemplate(); 
+            if(this.options.showbuttons) {
+                this.initButtons();
+            } else {
+                this.$form.find('.editable-buttons').remove();
+            }
 
             /**        
             Fired when rendering starts
@@ -431,7 +437,26 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @type object
         @default null
         **/        
-        ajaxOptions: null         
+        ajaxOptions: null,
+        /**
+        Wether to show buttons or not.
+        Form without buttons can be submitted by Enter (depends on input), by onblur = 'submit' or manually (via submit api method)
+
+        @property showbuttons 
+        @type boolean
+        @default true
+        **/         
+        showbuttons: true,
+        /**
+        Submit strategy. Can be <code>normal|never</code>
+        <code>submit='never'</code> usefull for turning into classic form several inputs and submitting them together manually.
+        Works pretty with <code>showbuttons=false</code>
+
+        @property submit 
+        @type string
+        @default normal
+        **/         
+        submit: 'normal' 
     };   
 
     /*

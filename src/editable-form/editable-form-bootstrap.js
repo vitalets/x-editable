@@ -5,11 +5,8 @@ Editableform based on Twitter Bootstrap
     
       $.extend($.fn.editableform.Constructor.prototype, {
          initTemplate: function() {
-              this.$form = $($.fn.editableform.template);
-              this.$form.find('.editable-error-block').addClass('help-block');
-              
-              //buttons
-              this.$form.find('div.editable-buttons').append($.fn.editableform.buttons);                
+            this.$form = $($.fn.editableform.template); 
+            this.$form.find('.editable-error-block').addClass('help-block');
          }
     });    
     
