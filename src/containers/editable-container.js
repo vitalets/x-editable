@@ -41,55 +41,15 @@ Applied as jQuery method.
 
                 //close containers when click outside
                 $(document).on('click.editable', function(e) {
-                    var element = e.target, 
-                        $target = $(e.target),
-                        $clickedContainer = $target.is('.editable-container') ? $target : $target.closest('.editable-container');
+                    var $target = $(e.target);
                     
-                    //if click inside some editableContainer --> find corresponding element                  
-                    if($clickedContainer.length) {
-                         $('.editable-open').each(function(i, el){
-                            if($(el).data('editableContainer').tip()[0] === $clickedContainer[0]) {
-                                element = el;
-                                return false; 
-                            }
-                         }); 
-                    }
-                    
-                    //close all open containers (except one)
-                    EditableContainer.prototype.closeOthers(element);
-                    
-                   /* $('.editable-open').each(function(){
-                        //if click target is editable element --> do nothing with el
-                        if(this === e.target) {
-                            return;
-                        }
-                        
-                        var $el = $(this),
-                            ec = $el.data('editableContainer');
-                        
-                        //if click in some editableContainer and current el is it's owner --> do nothing with el
-                        if($clickedContainer.length && ec.tip()[0] === $clickedContainer[0]) {
-                            return;
-                        }
-                        
-                        //otherwise cancel or submit el's container  
-                        if(ec.options.onblur === 'cancel') {
-                            $el.data('editableContainer').hide();
-                        } else if(ec.options.onblur === 'submit') {
-                            $el.data('editableContainer').tip().find('form').submit();
-                        }
-                    });     */
-                    
-                    //if click inside container --> do nothing
-                   // if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
-                   /*
-                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {
+                    //if click inside some editableContainer --> no nothing  
+                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {                
                         return;
+                    } else {
+                        //close all open containers (except one)
+                        EditableContainer.prototype.closeOthers(e.target);
                     }
-                    
-                    //close all other containers
-                    $('.editable-container').find('.editable-cancel').click();
-                    */
                 });
                 
                 $(document).data('editable-handlers-attached', true);

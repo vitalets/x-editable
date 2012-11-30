@@ -276,7 +276,9 @@
       
      test("should not wrap buttons when parent has position:absolute", function () {
         var  d = $('<div style="position: absolute; top: 200px">').appendTo(fx),
-             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(d).editable();
+             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(d).editable({
+                 showbuttons: true
+             });
             
         e.click();
         var p = tip(e);
@@ -348,7 +350,7 @@
      }); 
      
       test("showbuttons: false", function () {
-        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+        var e = $('<a href="#" id="a" data-type="text"></a>').appendTo('#qunit-fixture').editable({
             showbuttons: false
         });
         
@@ -357,7 +359,7 @@
         ok(p.is(':visible'), 'popover visible');   
         ok(!p.find('.editable-submit').length, 'submit not rendered');   
         ok(!p.find('.editable-cancel').length, 'cancel not rendered');   
-        ok(!p.find('.editable-buttons').length, '.editable-buttons block not rendered');   
+        ok(!p.find('.editable-buttons').length, '.editable-buttons block not rendered'); 
      });            
       
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.

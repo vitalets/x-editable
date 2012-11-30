@@ -450,7 +450,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @type boolean
         @default true
         **/         
-        showbuttons: false
+        showbuttons: true
         
         /*todo: 
         Submit strategy. Can be <code>normal|never</code>
