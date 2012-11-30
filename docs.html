@@ -42,7 +42,7 @@
            
             <div style="padding-top: 10px;">
             <!-- twitter -->
-<div class="pull-right" style="width: 300px;">
+<div class="pull-right" style="width: 320px;">
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vitalets.github.com/x-editable" data-via="vitpotapov">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>            
 </div>
@@ -60,10 +60,17 @@
 <div style="vertical-align:top;zoom:1;*display:inline" class="fb-like" data-href="http://vitalets.github.com/x-editable" data-send="false" data-layout="button_count" data-width1="450" data-show-faces="false"></div>
 </div>
 
-
-
-
-   
+<!-- google+ -->
+<div class="pull-right" style="width: 80px">
+<div class="g-plusone" data-size="medium" data-href="http://vitalets.github.com/x-editable"></div>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+</div>   
             </div>
  
         </div>  
@@ -343,8 +350,9 @@ or <code>{success: false, msg: &quot;server error&quot;}</code> you can check it
             <td>toggle</td>
             <td>string</td>
             <td>&#x27;click&#x27;</td>
-            <td><p>How to toggle editable. Can be <code>click|manual</code>. 
-When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.<br>Note: if you are calling <code>show</code> on <strong>click</strong> event you need to apply <code>e.stopPropagation()</code> because container has behavior to hide on any click outside.</p>
+            <td><p>How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>. 
+When set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.<br><strong>Note</strong>: if you call <code>show</code> or <code>toggle</code> inside <strong>click</strong> handler of some DOM element, 
+you need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.</p>
 
             
                 <pre class="prettyprint linenums">$(&#x27;#edit-button&#x27;).click(function(e) {
@@ -506,11 +514,11 @@ fullname: "John"
             <td>
 <ul>
     
-    <li><strong>key</strong> <i>String</i> 
+    <li><strong>key</strong> <i>String|object</i> option name or object with several options
         
     </li>
     
-    <li><strong>value</strong> <i>Mixed</i> 
+    <li><strong>value</strong> <i>Mixed</i> option new value
         
     </li>
     
@@ -518,6 +526,9 @@ fullname: "John"
 
 </td>
             <td>Sets new option
+            
+            <pre class="prettyprint linenums">
+$('.editable').editable('option', 'pk', 2);</pre>
             
             </td>
         </tr> 
@@ -548,7 +559,7 @@ fullname: "John"
             <td>
 <ul>
     
-    <li><strong>multi</strong> <i>Boolean</i> if true - other editable containers will not be closed. Default false.
+    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
         
     </li>
     
@@ -593,7 +604,13 @@ It is designed mainly for <a href="#newrecord">creating new records</a>.
         <tr>
             <td>toggle()</td>
             <td>
-<i>none</i>
+<ul>
+    
+    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
+        
+    </li>
+    
+</ul>
 
 </td>
             <td>Toggles container visibility (show / hide)
@@ -1052,7 +1069,7 @@ $('#edit').editableContainer({
             <td>
 <ul>
     
-    <li><strong>multi</strong> <i>Boolean</i> if true - other editable containers will not be closed. Default false.
+    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
         
     </li>
     
@@ -1067,7 +1084,13 @@ $('#edit').editableContainer({
         <tr>
             <td>toggle()</td>
             <td>
-<i>none</i>
+<ul>
+    
+    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
+        
+    </li>
+    
+</ul>
 
 </td>
             <td>Toggles container visibility (show / hide)
