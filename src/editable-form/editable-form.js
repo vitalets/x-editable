@@ -445,6 +445,11 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         /**
         Wether to show buttons or not.  
         Form without buttons can be auto-submitted by input or by onblur = 'submit'.
+        @example 
+        ajaxOptions: {
+            method: 'PUT',
+            dataType: 'xml'
+        }
 
         @property showbuttons 
         @type boolean
