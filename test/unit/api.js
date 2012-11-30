@@ -287,7 +287,7 @@ $(function () {
      });          
     
     
-     test("option method", function () {
+     test("option method (string and object)", function () {
         var e = $('<a href="#" data-url="post.php" data-name="text">abc</a>').appendTo('#qunit-fixture').editable(),
             e1 = $('<a href="#" data-pk="1" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable(),
             url = 'abc';
@@ -296,6 +296,12 @@ $(function () {
             
         equal(e.data('editable').options.pk, 2, 'pk set correctly');
         equal(e1.data('editable').options.pk, 2, 'pk2 set correctly');
+        
+        $('#qunit-fixture a').editable('option', {pk: 3, value: 'abcd'});
+            
+        equal(e.data('editable').options.pk, 3, 'pk set correctly (by object)');
+        equal(e.data('editable').value, 'abcd', 'value set correctly (by object)');        
+        equal(e.text(), 'abcd', 'text set correctly (by object)');        
      });    
      
       asyncTest("'submit' method: client and server validation", function () {

@@ -136,10 +136,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Sets new option
         
         @method option(key, value)
-        @param {string} key 
-        @param {mixed} value 
+        @param {string|object} key option name or object with several options
+        @param {mixed} value option new value
+        @example
+        $('.editable').editable('option', 'pk', 2);
         **/          
         option: function(key, value) {
+            //set option(s) by object
+            if(key && typeof key === 'object') {
+               $.each(key, $.proxy(function(k, v){
+                  this.option($.trim(k), v); 
+               }, this)); 
+               return;
+            }
+
+            //set option by string             
+            this.options[key] = value;                          
+            
+            //disabled
             if(key === 'disabled') {
                 if(value) {
                     this.disable();
@@ -148,12 +162,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
                 return;
             } 
-                       
-            this.options[key] = value;
+            
+            //value
+            if(key === 'value') {
+                this.setValue(value);
+            }
             
             //transfer new option to container! 
             if(this.container) {
-              this.container.option(key, value);  
+                this.container.option(key, value);  
             }
         },              
         
@@ -177,7 +194,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
             }
         },        
-        
+        /*
+         show / hide editable container when element triggers event defined by toggle option 
+        */
         activate: function (e) {
             e.preventDefault();
             if(this.options.disabled) {
