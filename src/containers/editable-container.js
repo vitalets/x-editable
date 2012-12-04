@@ -119,7 +119,7 @@ Applied as jQuery method.
         /**
         Shows container with form
         @method show()
-        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
+        @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/          
         show: function (closeAll) {
             this.$element.addClass('editable-open');
@@ -167,7 +167,7 @@ Applied as jQuery method.
         /**
         Toggles container visibility (show / hide)
         @method toggle()
-        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
+        @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/          
         toggle: function(closeAll) {
             if(this.tip && this.tip().is(':visible')) {
@@ -350,7 +350,7 @@ Applied as jQuery method.
         **/        
         placement: 'top',
         /**
-        Wether to hide container on save/cancel.
+        Whether to hide container on save/cancel.
 
         @property autohide 
         @type boolean
