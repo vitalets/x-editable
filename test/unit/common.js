@@ -64,7 +64,7 @@
       
       test("should take container's title from json options", function () {
         //do not test inline  
-        if(fc.c === 'inline') {
+        if($.fn.editableContainer.Constructor.prototype.containerName === 'editableform') {
             expect(0);
             return;
         }
@@ -81,7 +81,7 @@
         ok(p.is(':visible'), 'popover shown');   
 
         //todo: for jqueryui phantomjs calcs wrong position. Need investigation
-        if(!$.browser.webkit && fc.f !== 'jqueryui') {
+        if(!$.browser.webkit && $.fn.editableContainer.Constructor.prototype.containerName !== 'tooltip') {
             ok(p.offset().top > e.offset().top, 'placement ok');
         }
         

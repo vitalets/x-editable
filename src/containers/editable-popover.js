@@ -14,7 +14,7 @@
             $.extend(this.containerOptions, {
                 trigger: 'manual',
                 selector: false,
-                content: 'dfgh'
+                content: ' '
             });
             this.call(this.containerOptions);
         },        

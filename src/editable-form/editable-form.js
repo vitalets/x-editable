@@ -21,9 +21,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             var TypeConstructor, typeOptions;
 
             //create input of specified type
-            if(typeof $.fn.editableform.types[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editableform.types[this.options.type];
-                typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
+            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
+                TypeConstructor = $.fn.editabletypes[this.options.type];
+                typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -246,7 +246,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     $.extend(params, this.options.params.call(this, params));  
                 } else {
                     //try parse json in single quotes (from data-params attribute)
-                    this.options.params = $.fn.editableform.utils.tryParseJson(this.options.params, true);   
+                    this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
                     $.extend(params, this.options.params);
                 }
 
@@ -456,7 +456,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @default true
         **/         
         showbuttons: true
-        
+                                 
         /*todo: 
         Submit strategy. Can be <code>normal|never</code>
         <code>submitmode='never'</code> usefull for turning into classic form several inputs and submitting them together manually.
@@ -492,10 +492,5 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 
     //error class attahced to editable-error-block
     $.fn.editableform.errorBlockClass = 'editable-error';
-
-    //input types
-    $.fn.editableform.types = {};
-    //utils
-    $.fn.editableform.utils = {};
 
 }(window.jQuery));

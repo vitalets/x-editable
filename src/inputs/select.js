@@ -26,7 +26,7 @@ $(function(){
         this.init('select', options, Select.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Select, $.fn.editableform.types.list);
+    $.fn.editableutils.inherit(Select, $.fn.editabletypes.list);
 
     $.extend(Select.prototype, {
         renderList: function() {
@@ -54,7 +54,7 @@ $(function(){
         }
     });      
 
-    Select.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+    Select.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
         /**
         @property tpl 
         @default <select></select>
@@ -62,6 +62,6 @@ $(function(){
         tpl:'<select></select>'
     });
 
-    $.fn.editableform.types.select = Select;      
+    $.fn.editabletypes.select = Select;      
 
 }(window.jQuery));

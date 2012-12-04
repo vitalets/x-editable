@@ -6,6 +6,9 @@ To create your own input you should inherit from this class.
 **/
 (function ($) {
 
+    //types
+    $.fn.editabletypes = {};
+    
     var Abstract = function () { };
 
     Abstract.prototype = {
@@ -164,6 +167,6 @@ To create your own input you should inherit from this class.
         name: null
     };
     
-    $.extend($.fn.editableform.types, {abstract: Abstract});
+    $.extend($.fn.editabletypes, {abstract: Abstract});
         
 }(window.jQuery));

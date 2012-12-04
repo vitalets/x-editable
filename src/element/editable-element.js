@@ -8,7 +8,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
     var Editable = function (element, options) {
         this.$element = $(element);
-        this.options = $.extend({}, $.fn.editable.defaults, $.fn.editableform.utils.getConfigData(this.$element), options);  
+        this.options = $.extend({}, $.fn.editable.defaults, $.fn.editableutils.getConfigData(this.$element), options);  
         this.init();
     };
 
@@ -33,9 +33,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.options.name = this.options.name || this.$element.attr('id');
              
             //create input of specified type. Input will be used for converting value, not in form
-            if(typeof $.fn.editableform.types[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editableform.types[this.options.type];
-                this.typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
+            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
+                TypeConstructor = $.fn.editabletypes[this.options.type];
+                this.typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(this.typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -89,7 +89,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
                /**        
                Fired each time when element's text is rendered. Occurs on initialization and on each update of value.
-               Can be used for display customization.
+               Can be used to customize display of value.
                               
                @event render 
                @param {Object} event event object

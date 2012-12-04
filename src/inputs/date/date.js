@@ -27,7 +27,7 @@ $(function(){
         this.init('date', options, Date.defaults);
         
         //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format']);
+        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
 
         //overriding datepicker config (as by default jQuery extend() is not recursive)
         this.options.datepicker = $.extend({}, Date.defaults.datepicker, directOptions, options.datepicker);
@@ -48,7 +48,7 @@ $(function(){
         this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);
     };
 
-    $.fn.editableform.utils.inherit(Date, $.fn.editableform.types.abstract);    
+    $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstract);    
     
     $.extend(Date.prototype, {
         render: function () {
@@ -108,7 +108,7 @@ $(function(){
 
     });
     
-    Date.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    Date.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         /**
         @property tpl 
         @default <div></div>
@@ -165,6 +165,6 @@ $(function(){
         clear: '&times; clear'
     });   
 
-    $.fn.editableform.types.date = Date;
+    $.fn.editabletypes.date = Date;
 
 }(window.jQuery));

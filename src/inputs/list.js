@@ -10,7 +10,7 @@ List - abstract class for inputs that have source option loaded from js array or
        
     };
 
-    $.fn.editableform.utils.inherit(List, $.fn.editableform.types.abstract);
+    $.fn.editableutils.inherit(List, $.fn.editabletypes.abstract);
 
     $.extend(List.prototype, {
         render: function () {
@@ -58,7 +58,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
             // try parse json in single quotes (for double quotes jquery does automatically)
             try {
-                this.options.source = $.fn.editableform.utils.tryParseJson(this.options.source, false);
+                this.options.source = $.fn.editableutils.tryParseJson(this.options.source, false);
             } catch (e) {
                 error.call(this);
                 return;
@@ -139,7 +139,7 @@ List - abstract class for inputs that have source option loaded from js array or
             
             if(!$.isArray(this.prependData)) {
                 //try parse json in single quotes
-                this.options.prepend = $.fn.editableform.utils.tryParseJson(this.options.prepend, true);
+                this.options.prepend = $.fn.editableutils.tryParseJson(this.options.prepend, true);
                 if (typeof this.options.prepend === 'string') {
                     this.options.prepend = {'': this.options.prepend};
                 }              
@@ -220,7 +220,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
     });      
 
-    List.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    List.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         /**
         Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
@@ -249,6 +249,6 @@ List - abstract class for inputs that have source option loaded from js array or
         sourceError: 'Error when loading list'
     });
 
-    $.fn.editableform.types.list = List;      
+    $.fn.editabletypes.list = List;      
 
 }(window.jQuery));

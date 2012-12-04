@@ -2,6 +2,12 @@ X-editable changelog
 =============================
 
 
+Version 1.1.2 wip
+----------------------------   
+[enh] playground and tests now use requrejs (vitalets)  
+[bug #27] 'today' button bug in bootstrap-datepicker (vitalets)  
+
+
 Version 1.1.1 Nov 30, 2012
 ----------------------------   
 [enh] 'showbuttons' option to hide buttons in form (vitalets)  

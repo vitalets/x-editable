@@ -20,7 +20,7 @@ Applied as jQuery method.
         init: function(element, options) {
             this.$element = $(element);
             //todo: what is in priority: data or js?
-            this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableform.utils.getConfigData(this.$element), options);         
+            this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableutils.getConfigData(this.$element), options);         
             this.splitOptions();
             this.initContainer();
 

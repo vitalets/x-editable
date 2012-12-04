@@ -231,16 +231,15 @@ $(function () {
         });         
         
         e.editable({
-            source: 'groups.php',
+            source: groups,
         });
         
         e.click();
         var p = tip(e);
         p.find('select').val(2);
         p.find('form').submit(); 
-        
+
         setTimeout(function() {
-             p.find('button[type=button]').click(); 
              e.remove();    
              start();  
         }, timeout);                                        

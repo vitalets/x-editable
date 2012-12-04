@@ -27,7 +27,7 @@ $(function(){
         this.init('checklist', options, Checklist.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Checklist, $.fn.editableform.types.list);
+    $.fn.editableutils.inherit(Checklist, $.fn.editabletypes.list);
 
     $.extend(Checklist.prototype, {
         renderList: function() {
@@ -123,7 +123,7 @@ $(function(){
        }
     });      
 
-    Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+    Checklist.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
         /**
         @property tpl 
         @default <div></div>
@@ -173,6 +173,6 @@ $(function(){
         limitText: 'Selected {checked} of {count}'        
     });
 
-    $.fn.editableform.types.checklist = Checklist;      
+    $.fn.editabletypes.checklist = Checklist;      
 
 }(window.jQuery));

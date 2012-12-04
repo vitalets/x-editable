@@ -2,10 +2,11 @@
 * EditableForm utilites
 */
 (function ($) {
-    $.fn.editableform.utils = {
+    //utils
+    $.fn.editableutils = {
         /**
         * classic JS inheritance function
-        */
+        */  
         inherit: function (Child, Parent) {
             var F = function() { };
             F.prototype = Parent.prototype;

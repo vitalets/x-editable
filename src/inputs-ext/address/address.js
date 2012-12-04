@@ -26,7 +26,7 @@ $(function(){
         this.init('address', options, Address.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Address, $.fn.editableform.types.abstract);
+    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstract);
 
     $.extend(Address.prototype, {
          render: function() {
@@ -94,7 +94,7 @@ $(function(){
        }  
     });
 
-    Address.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    Address.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         tpl: '<div><label><span>City: </span><input type="text" name="city" class="span2"></label></div>'+
              '<div><label><span>Street: </span><input type="text" name="street" class="span2"></label></div>'+
              '<div><label><span>Building: </span><input type="text" name="building" class="span1"></label></div>',
@@ -102,6 +102,6 @@ $(function(){
         inputclass: 'editable-address'
     });
 
-    $.fn.editableform.types.address = Address;
+    $.fn.editabletypes.address = Address;
 
 }(window.jQuery));
