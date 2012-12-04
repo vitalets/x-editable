@@ -227,6 +227,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         },
 
         save: function(value) {
+            //try parse composite pk defined as json string in data-pk 
+            this.options.pk = $.fn.editableutils.tryParseJson(this.options.pk, true); 
+            
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this) : this.options.pk,
             send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
             params, ajaxOptions;

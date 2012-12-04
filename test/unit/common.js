@@ -362,6 +362,35 @@
         ok(!p.find('.editable-buttons').length, '.editable-buttons block not rendered'); 
      });            
       
+      asyncTest("composite pk defined as json in data-pk attribute", function () {
+        var e = $('<a href="#" data-pk="{a: 1, b: 2}" data-url="post-pk.php">abc</a>').appendTo(fx).editable({
+             name: 'username'
+          }),  
+          newText = 'cd<e>;"'
+
+          $.mockjax({
+              url: 'post-pk.php',
+              response: function(settings) {
+                 equal(settings.data.pk.a, 1, 'first part ok');
+                 equal(settings.data.pk.b, 2, 'second part ok');
+              }
+          });          
+          
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+    });        
+      
+      
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.
       /*
        test("enablefocus option", function () {
