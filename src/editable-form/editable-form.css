@@ -82,6 +82,10 @@
     margin: 0;
 }
 
+.editable-checklist label {
+    white-space: nowrap; 
+}
+
 .editable-clear {
    clear: both;
    font-size: 0.9em;

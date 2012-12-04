@@ -151,12 +151,12 @@ To create your own input you should inherit from this class.
         tpl: '',
         /**
         CSS class automatically applied to input
-
+        
         @property inputclass 
         @type string
-        @default span2
+        @default input-medium
         **/         
-        inputclass: 'span2',
+        inputclass: 'input-medium',
         /**
         Name attribute of input
 

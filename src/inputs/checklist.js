@@ -133,9 +133,9 @@ $(function(){
         /**
         @property inputclass 
         @type string
-        @default span2 editable-checklist
+        @default editable-checklist
         **/         
-        inputclass: 'span2 editable-checklist',        
+        inputclass: 'editable-checklist',        
         
         /**
         Separator of values in string when sending to server

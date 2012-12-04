@@ -19,7 +19,7 @@ A few steps how to start contributing:
 **x-editable**  
  | -- **lib** (repo related to <code>dev</code> and <code>master</code> branches)  
  | -- **gh-pages** (repo related to <code>gh-pages</code> branch for docs & demo)  
- | -- **playground** (simple node-server and html page for testing, [playground.zip](https://github.com/downloads/vitalets/x-editable/playground.zip))      
+ | -- **playground** (simple node-server and html page for testing, [playground.zip](https://github.com/downloads/vitalets/x-editable/playground.zip), **updated in 1.1.2!**)      
 
 To make it easy follow this script ( _assuming you have [nodejs](http://nodejs.org) installed_ ).
 Please replace <code>&lt;your-github-name&gt;</code> with your name:

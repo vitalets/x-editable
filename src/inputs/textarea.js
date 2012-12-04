@@ -74,9 +74,9 @@ $(function(){
         tpl:'<textarea></textarea>',
         /**
         @property inputclass 
-        @default span3
+        @default input-large
         **/          
-        inputclass:'span3',
+        inputclass: 'input-large',
         /**
         Placeholder attribute of input. Shown when input is empty.
 

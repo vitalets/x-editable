@@ -95,9 +95,9 @@ $(function(){
     });
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
-        tpl: '<div><label><span>City: </span><input type="text" name="city" class="span2"></label></div>'+
-             '<div><label><span>Street: </span><input type="text" name="street" class="span2"></label></div>'+
-             '<div><label><span>Building: </span><input type="text" name="building" class="span1"></label></div>',
+        tpl: '<div><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
+             '<div><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
+             '<div><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
              
         inputclass: 'editable-address'
     });
