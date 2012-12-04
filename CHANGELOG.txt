@@ -4,8 +4,10 @@ X-editable changelog
 
 Version 1.1.2 wip
 ----------------------------   
-[enh] playground and tests now use requrejs (vitalets)  
-[bug #27] 'today' button bug in bootstrap-datepicker (vitalets)  
+[enh] utils now added to $.fn.editableutils instead of $.fn.editableform.utils (vitalets)
+[enh] input types now added to $.fn.editabletypes instead of $.fn.editableform.types (vitalets)
+[enh] playground and tests now use requirejs (vitalets)  
+[bug #27] 'today' button toggle bug in bootstrap-datepicker (vitalets)  
 
 
 Version 1.1.1 Nov 30, 2012
