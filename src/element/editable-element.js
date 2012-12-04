@@ -211,7 +211,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         Shows container with form
         @method show()
-        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
+        @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/  
         show: function (closeAll) {
             if(this.options.disabled) {
@@ -256,7 +256,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         Toggles container visibility (show / hide)
         @method toggle()
-        @param {boolean} closeAll Wether to close all other editable containers when showing this one. Default true.
+        @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/  
         toggle: function(closeAll) {
             if(this.container && this.container.tip().is(':visible')) {
@@ -312,7 +312,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Sets new value of editable
         @method setValue(value, convertStr)
         @param {mixed} value new value 
-        @param {boolean} convertStr wether to convert value from string to internal format        
+        @param {boolean} convertStr whether to convert value from string to internal format
         **/         
         setValue: function(value, convertStr) {
             if(convertStr) {
@@ -369,7 +369,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             $('#username, #fullname').editable('validate');
             // possible result:
             {
-              username: "username is requied",
+              username: "username is required",
               fullname: "fullname should be minimum 3 letters length"
             }
             **/             
@@ -515,7 +515,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         emptytext: 'Empty',
         /**
-        Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Usefull for select and date.
+        Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Useful for select and date.
         For example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  
         <code>auto</code> - text will be automatically set only if element is empty.  
         <code>always|never</code> - always(never) try to set element's text.
@@ -526,7 +526,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         autotext: 'auto', 
         /**
-        Wether to return focus on element after form is closed. 
+        Whether to return focus on element after form is closed.
         This allows fully keyboard input.
 
         @property enablefocus 

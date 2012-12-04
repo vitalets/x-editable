@@ -232,7 +232,7 @@ List - abstract class for inputs that have source option loaded from js array or
         **/         
         source:null, 
         /**
-        Data automatically prepended to the begining of dropdown list.
+        Data automatically prepended to the beginning of dropdown list.
         
         @property prepend 
         @type string|array|object
