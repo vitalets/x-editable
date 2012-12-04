@@ -66,32 +66,35 @@ List - abstract class for inputs that have source option loaded from js array or
 
             //loading from url
             if (typeof this.options.source === 'string') {
-                var cacheID = this.options.source + (this.options.name ? '-' + this.options.name : ''),
-                cache;
+                //try to get from cache
+                if(this.options.sourceCache) {
+                    var cacheID = this.options.source + (this.options.name ? '-' + this.options.name : ''),
+                    cache;
 
-                if (!$(document).data(cacheID)) {
-                    $(document).data(cacheID, {});
-                }
-                cache = $(document).data(cacheID);
+                    if (!$(document).data(cacheID)) {
+                        $(document).data(cacheID, {});
+                    }
+                    cache = $(document).data(cacheID);
 
-                //check for cached data
-                if (cache.loading === false && cache.sourceData) { //take source from cache
-                    this.sourceData = cache.sourceData;
-                    success.call(this);
-                    return;
-                } else if (cache.loading === true) { //cache is loading, put callback in stack to be called later
-                    cache.callbacks.push($.proxy(function () {
+                    //check for cached data
+                    if (cache.loading === false && cache.sourceData) { //take source from cache
                         this.sourceData = cache.sourceData;
                         success.call(this);
-                    }, this));
+                        return;
+                    } else if (cache.loading === true) { //cache is loading, put callback in stack to be called later
+                        cache.callbacks.push($.proxy(function () {
+                            this.sourceData = cache.sourceData;
+                            success.call(this);
+                        }, this));
 
-                    //also collecting error callbacks
-                    cache.err_callbacks.push($.proxy(error, this));
-                    return;
-                } else { //no cache yet, activate it
-                    cache.loading = true;
-                    cache.callbacks = [];
-                    cache.err_callbacks = [];
+                        //also collecting error callbacks
+                        cache.err_callbacks.push($.proxy(error, this));
+                        return;
+                    } else { //no cache yet, activate it
+                        cache.loading = true;
+                        cache.callbacks = [];
+                        cache.err_callbacks = [];
+                    }
                 }
                 
                 //loading sourceData from server
@@ -102,23 +105,32 @@ List - abstract class for inputs that have source option loaded from js array or
                     data: this.options.name ? {name: this.options.name} : {},
                     dataType: 'json',
                     success: $.proxy(function (data) {
-                        cache.loading = false;
+                        if(cache) {
+                            cache.loading = false;
+                        }
                         this.sourceData = this.makeArray(data);
                         if($.isArray(this.sourceData)) {
                             this.doPrepend();
-                            //store result in cache
-                            cache.sourceData = this.sourceData;
                             success.call(this);
-                            $.each(cache.callbacks, function () { this.call(); }); //run success callbacks for other fields
+                            if(cache) {
+                                //store result in cache
+                                cache.sourceData = this.sourceData;
+                                $.each(cache.callbacks, function () { this.call(); }); //run success callbacks for other fields
+                            }
                         } else {
                             error.call(this);
-                            $.each(cache.err_callbacks, function () { this.call(); }); //run error callbacks for other fields
+                            if(cache) {
+                                $.each(cache.err_callbacks, function () { this.call(); }); //run error callbacks for other fields
+                            }
                         }
                     }, this),
                     error: $.proxy(function () {
-                        cache.loading = false;
                         error.call(this);
-                        $.each(cache.err_callbacks, function () { this.call(); }); //run error callbacks for other fields
+                        if(cache) {
+                             cache.loading = false;
+                             //run error callbacks for other fields
+                             $.each(cache.err_callbacks, function () { this.call(); }); 
+                        }
                     }, this)
                 });
             } else { //options as json/array
@@ -225,7 +237,8 @@ List - abstract class for inputs that have source option loaded from js array or
         Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
         For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
-
+        If source is **string**, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
+        
         @property source 
         @type string|array|object
         @default null
@@ -246,7 +259,16 @@ List - abstract class for inputs that have source option loaded from js array or
         @type string
         @default Error when loading list
         **/          
-        sourceError: 'Error when loading list'
+        sourceError: 'Error when loading list',
+        /**
+        if <code>true</code> and source is **string url** - results will be cached for fields with the same source and name.  
+        Usefull for editable grids.
+        
+        @property sourceCache 
+        @type boolean
+        @default true
+        **/        
+        sourceCache: true
     });
 
     $.fn.editabletypes.list = List;      

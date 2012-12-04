@@ -363,6 +363,55 @@ $(function () {
      });     
      
      
+    asyncTest("sourceCache: false", function () {
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
+              sourceCache: false
+         }),
+            e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
+              sourceCache: false                 
+          }),
+          req = 0;
+
+        $.mockjax({
+                url: 'groups-cache-false.php',
+                response: function() {
+                    req++;
+                    this.responseText = groups;
+                }
+         });           
+           
+        //click first
+        e.click();
+        var p = tip(e);
+        
+        setTimeout(function() {
+            ok(p.is(':visible'), 'popover visible');
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(req, 1, 'one request performed');
+            
+            p.find('button[type=button]').click(); 
+            ok(!p.is(':visible'), 'popover was removed');  
+            
+            //click second
+            e1.click();
+            p = tip(e1);
+            
+            setTimeout(function() {
+                ok(p.is(':visible'), 'popover2 visible');
+                equal(p.find('select').find('option').length, size, 'options loaded');
+                equal(req, 2, 'second request performed');
+                
+                p.find('button[type=button]').click(); 
+                ok(!p.is(':visible'), 'popover was removed');                  
+                
+                e.remove();    
+                e1.remove();    
+                start();  
+            }, timeout);
+        }, timeout);  
+        
+     });       
+     
      
      asyncTest("autotext: auto", function () {
          expect(3);
