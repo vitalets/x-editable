@@ -389,6 +389,64 @@
         }, timeout);             
         
     });        
+     
+      asyncTest("cancelnochange: true", function () {
+        var v = 'abc',
+            e = $('<a href="#" data-type="text" data-pk="1" data-url="post-no.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
+            cancelnochange: true
+        }),
+            req = 0;
+
+         $.mockjax({
+                url: 'post-no.php',
+                response: function() {
+                    req++;
+                }
+         });          
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        p.find('input[type="text"]').val(v); 
+        p.find('form').submit(); 
+                
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(req, 0, 'request was not performed');
+           e.remove();    
+           start();  
+        }, timeout);                     
+      });    
+      
+      asyncTest("cancelnochange: false", function () {
+        var v = 'abc',
+            e = $('<a href="#" data-type="text" data-pk="1" data-url="post-yes.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
+            cancelnochange: false
+        }),
+            req = 0;
+
+         $.mockjax({
+                url: 'post-yes.php',
+                response: function() {
+                    req++;
+                }
+         });          
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        p.find('input[type="text"]').val(v); 
+        p.find('form').submit(); 
+                
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(req, 1, 'request was performed');
+           e.remove();    
+           start();  
+        }, timeout);                     
+      });        
+      
+         
       
       
       //unfortunatly, testing this feature does not always work in browsers. Tested manually.

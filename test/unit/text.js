@@ -149,30 +149,6 @@ $(function () {
      });        
       */
       
-      asyncTest("should not perform request if value not changed", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post-no.php" data-name="text1">abc</a>').appendTo(fx).editable(),
-            req = 0;
-
-         $.mockjax({
-                url: 'post-no.php',
-                response: function() {
-                    req++;
-                }
-         });          
-        
-        e.click();
-        var p = tip(e);
-        ok(p.is(':visible'), 'popover visible');
-        p.find('button[type=submit]').click(); 
-                
-        setTimeout(function() {
-           ok(!p.is(':visible'), 'popover closed');
-           equal(req, 0, 'request was not performed');
-           e.remove();    
-           start();  
-        }, timeout);                     
-      });       
-      
      asyncTest("should show error if success callback returns string", function () {
         var newText = 'cd<e>;"',
             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({

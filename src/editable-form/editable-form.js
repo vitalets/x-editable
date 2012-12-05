@@ -181,7 +181,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
             //if value not changed --> cancel
             /*jslint eqeq: true*/
-            if (newValueStr == this.input.value2str(this.value)) {
+            if (this.options.cancelnochange && newValueStr == this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
                 this.cancel();
                 return;
@@ -472,7 +472,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @default null
         @since 1.1.2
         **/            
-        scope: null                         
+        scope: null,
+        /**
+        Whether to cancel or submit value when it was not changed.
+
+        @property cancelnochange 
+        @type boolean
+        @default true
+        @since 1.1.2
+        **/
+        cancelnochange: true         
     };   
 
     /*
