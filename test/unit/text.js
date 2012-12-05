@@ -43,16 +43,16 @@ $(function () {
      asyncTest("should load correct value and save new entered text (and value)", function () {
         var  v = 'ab<b>"',
              esc_v = $('<div>').text(v).html(),
-             e = $('<a href="#" data-pk="1" data-name="text1" data-url="post-text.php" data-params="{\'q\': \'w\'}">'+esc_v+'</a>').appendTo(fx).editable({
-             success: function(data) {
-                 return false;
+             e = $('<a href="#" data-pk="1" data-name="text1" data-url="post-text-main.php" data-params="{\'q\': \'w\'}">'+esc_v+'</a>').appendTo(fx).editable({
+             success: function(response, newValue) {
+                  equal(newValue, newText, 'new value in success correct');
              } 
           }),  
           data,
-          newText = 'cd<e>;"';
+          newText = 'cd&gt;e>;"';
         
           $.mockjax({
-              url: 'post-text.php',
+              url: 'post-text-main.php',
               response: function(settings) {
                   data = settings.data;
               }
@@ -61,13 +61,13 @@ $(function () {
 
         e.click()
         var p = tip(e);
-        ok(p.is(':visible'), 'popover visible')
-        ok(p.find('.editableform-loading').length, 'loading class exists')
-        ok(!p.find('.editableform-loading').is(':visible'), 'loading class is hidden')
-        ok(p.find('input[type=text]').length, 'input exists')
-        equal(p.find('input[type=text]').val(), v, 'input contain correct value')
+        ok(p.is(':visible'), 'popover visible');
+        ok(p.find('.editableform-loading').length, 'loading class exists');
+        ok(!p.find('.editableform-loading').is(':visible'), 'loading class is hidden');
+        ok(p.find('input[type=text]').length, 'input exists');
+        equal(p.find('input[type=text]').val(), v, 'input contain correct value');
         p.find('input').val(newText);
-        p.find('button[type=submit]').click(); 
+        p.find('form').submit(); 
         ok(p.find('.editableform-loading').is(':visible'), 'loading class is visible');
         
         setTimeout(function() {
@@ -88,7 +88,10 @@ $(function () {
      asyncTest("should show error on server validation", function () {
         var msg = 'required',
            e = $('<a href="#" data-name="text1">abc</a>').appendTo(fx).editable({
-              validate: function(value) { if(value == '') return msg; }
+              validate: function(value) { 
+                  ok(this === e[0], 'scope is ok');
+                  if(value == '') return msg; 
+              }
           }),
           newText = '';
 
@@ -153,6 +156,7 @@ $(function () {
         var newText = 'cd<e>;"',
             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
              success: function(response, newValue) {
+                 ok(this === e[0], 'scope is ok');
                  equal(newValue, newText, 'value in success passed correctly');
                  return 'error';
              } 
@@ -242,6 +246,7 @@ $(function () {
         var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({
              name: 'username',
              params: function(params) {
+                 ok(this === e[0], 'scope is ok');
                  equal(params.pk, 1, 'params in func already have values (pk)');
                  return { q: 2, pk: 3 };
              },
@@ -304,11 +309,12 @@ $(function () {
                    
       
      asyncTest("submit to url defined as function", function () {
-        expect(3);
+        expect(4);
         var newText = 'qwe',
             //should be called even without pk!
             e = $('<a href="#" data-pk1="1" id="a"></a>').appendTo(fx).editable({
             url: function(params) {
+               ok(this === e[0], 'scope is ok');
                ok(params.value, newText, 'new text passed in users function');
                var d = new $.Deferred;
                return d.reject('my error');

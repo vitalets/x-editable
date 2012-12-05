@@ -222,12 +222,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
                     value: this.value,
-                    autohide: false //element will take care to show/hide container
+                    autohide: false, //element will take care to show/hide container. Otherwise hide() will be called twice
+                    scope: this.$element[0] //set scope to element
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
                     save: $.proxy(this.save, this),
-                    cancel: $.proxy(this.hide, this)
+                    cancel: $.proxy(function(){
+                            this.hide();
+                    }, this)
                 });
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
@@ -338,7 +341,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.activate(); 
             }
-        }                 
+        }
     };
 
     /* EDITABLE PLUGIN DEFINITION
@@ -526,7 +529,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         autotext: 'auto', 
         /**
-        Wether to return focus on element after form is closed. 
+        Whether to return focus on element after form is closed. 
         This allows fully keyboard input.
 
         @property enablefocus 

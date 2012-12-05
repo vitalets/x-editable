@@ -4,6 +4,8 @@ X-editable changelog
 
 Version 1.1.2 wip
 ----------------------------   
+[enh] all callbacks scope changed to element (vitalets) 
+[enh] new option 'cancelnochange' to cancel or submit value when it was not changed in form (vitalets) 
 [enh] composite pk can be defined as JSON in data-pk attribute (vitalets) 
 [enh #30] new option 'sourceCache' true|false to disable cache for select (vitalets) 
 [bug #34] inputclass span* broken with fluid bootstrap layout. Classes changed to 'input-*'. (vitalets) 
