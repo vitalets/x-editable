@@ -392,7 +392,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         name: null,
         /**
         Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.
-        Can be calculated dinamically via function.
+        Can be calculated dynamically via function.
 
         @property pk 
         @type string|object|function
@@ -433,7 +433,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         validate: null,
         /**
         Success callback. Called when value successfully sent on server and **response status = 200**.  
-        Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
+        Useful to work with json response. For example, if your backend response can be <code>{success: true}</code>
         or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
         If it returns **string** - means error occured and string is shown as error message.  
         If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
@@ -511,10 +511,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button>'+
     '<button type="button" class="editable-cancel">cancel</button>';      
 
-    //error class attahced to control-group
+    //error class attached to control-group
     $.fn.editableform.errorGroupClass = null;  
 
-    //error class attahced to editable-error-block
+    //error class attached to editable-error-block
     $.fn.editableform.errorBlockClass = 'editable-error';
 
 }(window.jQuery));

@@ -13,7 +13,7 @@ To create your own input you should inherit from this class.
 
     Abstract.prototype = {
        /**
-        Iinitializes input
+        Initializes input
         
         @method init() 
         **/
@@ -65,7 +65,7 @@ To create your own input you should inherit from this class.
        },
         
        /**
-        Converts value to string (for submiting to server)
+        Converts value to string (for submitting to server)
         
         @method value2str(value) 
         @param {mixed} value
@@ -117,7 +117,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        Creares input. 
+        Creates input.
         
         @method clear() 
        **/        
@@ -133,7 +133,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        attach handler to automatically submit form when value changed (usefull when buttons not shown)
+        attach handler to automatically submit form when value changed (useful when buttons not shown)
        **/       
        autosubmit: function() {
         
