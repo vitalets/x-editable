@@ -2,8 +2,9 @@ X-editable changelog
 =============================
 
 
-Version 1.1.2 wip
+Version 1.2.0 wip
 ----------------------------   
+[bug] fix typos (atrophic) 
 [enh] all callbacks scope changed to element (vitalets) 
 [enh] new option 'cancelnochange' to cancel or submit value when it was not changed in form (vitalets) 
 [enh] composite pk can be defined as JSON in data-pk attribute (vitalets) 

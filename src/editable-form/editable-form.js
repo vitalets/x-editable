@@ -479,7 +479,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @property scope 
         @type DOMElement|object
         @default null
-        @since 1.1.2
+        @since 1.2.0
         **/            
         scope: null,
         /**
@@ -488,7 +488,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @property cancelnochange 
         @type boolean
         @default true
-        @since 1.1.2
+        @since 1.2.0
         **/
         cancelnochange: true         
     };   
