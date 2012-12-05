@@ -3,10 +3,13 @@ X-editable changelog
 
 
 Version 1.2.0 wip
-----------------------------   
+----------------------------  
+[enh] 'checklist' submit value as array, not comma separated string (vitalets)  
+[enh] 'checklist' was refactored: options 'viewseparator', 'limit', 'limitText' are supressed by 'display' callback (vitalets)  
+[enh] new option: 'display' callback. Makes far more flexible rendering value into element's text. (vitalets)  
 [bug] fix typos (atrophic) 
 [enh] all callbacks scope changed to element (vitalets) 
-[enh] new option 'cancelnochange' to cancel or submit value when it was not changed in form (vitalets) 
+[enh] new option: 'cancelnochange' to cancel or submit value when it was not changed in form (vitalets) 
 [enh] composite pk can be defined as JSON in data-pk attribute (vitalets) 
 [enh #30] new option 'sourceCache' true|false to disable cache for select (vitalets) 
 [bug #34] inputclass span* broken with fluid bootstrap layout. Classes changed to 'input-*'. (vitalets) 

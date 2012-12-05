@@ -168,8 +168,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             e.preventDefault();
             
             var error,
-                newValue = this.input.input2value(), //get new value from input
-                newValueStr;
+                newValue = this.input.input2value(); //get new value from input
 
             //validation
             if (error = this.validate(newValue)) {
@@ -178,19 +177,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 return;
             } 
             
-            //value as string
-            newValueStr = this.input.value2str(newValue);
-
             //if value not changed --> cancel
             /*jslint eqeq: true*/
-            if (this.options.cancelnochange && newValueStr == this.input.value2str(this.value)) {
+            if (this.options.cancelnochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
                 this.cancel();
                 return;
             } 
 
             //sending data to server
-            $.when(this.save(newValueStr))
+            $.when(this.save(newValue))
             .done($.proxy(function(response) {
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
@@ -238,13 +234,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             }, this));
         },
 
-        save: function(value) {
+        save: function(newValue) {
+            //convert value for submitting to server
+            var submitValue = this.input.value2submit(newValue);
+            
             //try parse composite pk defined as json string in data-pk 
             this.options.pk = $.fn.editableutils.tryParseJson(this.options.pk, true); 
             
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this.options.scope) : this.options.pk,
             send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
-            params, ajaxOptions;
+            params;
 
             if (send) { //send to server
                 this.showLoading();
@@ -252,7 +251,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 //standard params
                 params = {
                     name: this.options.name || '',
-                    value: value,
+                    value: submitValue,
                     pk: pk 
                 };
 
@@ -267,15 +266,14 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 if(typeof this.options.url === 'function') { //user's function
                     return this.options.url.call(this.options.scope, params);
-                } else {  //send ajax to server and return deferred object
-                    ajaxOptions = $.extend({
+                } else {  
+                    //send ajax to server and return deferred object
+                    return $.ajax($.extend({
                         url     : this.options.url,
                         data    : params,
                         type    : 'post',
                         dataType: 'json'
-                    }, this.options.ajaxOptions);
-
-                    return $.ajax(ajaxOptions);
+                    }, this.options.ajaxOptions));
                 }
             }
         }, 
@@ -455,6 +453,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @property ajaxOptions 
         @type object
         @default null
+        @since 1.1.1        
         **/        
         ajaxOptions: null,
         /**

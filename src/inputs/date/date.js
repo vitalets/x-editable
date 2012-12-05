@@ -79,7 +79,11 @@ $(function(){
        
        str2value: function(str) {
            return str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datepicker.language) : null;
-       },             
+       }, 
+       
+       value2submit: function(value) {
+           return this.value2str(value);
+       },                    
 
        value2input: function(value) {
            this.$input.datepicker('update', value);

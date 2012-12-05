@@ -49,8 +49,7 @@ To create your own input you should inherit from this class.
         @param {DOMElement} element
        **/       
        value2html: function(value, element) {
-           var html = this.escape(value);
-           $(element).html(html);
+           $(element).text(value);
        },
         
        /**
@@ -65,7 +64,7 @@ To create your own input you should inherit from this class.
        },
         
        /**
-        Converts value to string (for submitting to server)
+        Converts value to string (for comparering)
         
         @method value2str(value) 
         @param {mixed} value
@@ -85,6 +84,17 @@ To create your own input you should inherit from this class.
        str2value: function(str) {
            return str;
        }, 
+       
+       /**
+        Converts value for submitting to server
+        
+        @method value2submit(value) 
+        @param {mixed} value
+        @returns {mixed}
+       **/       
+       value2submit: function(value) {
+           return value;
+       },         
        
        /**
         Sets value of input.
@@ -121,7 +131,7 @@ To create your own input you should inherit from this class.
         
         @method clear() 
        **/        
-       clear:  function() {
+       clear: function() {
            this.$input.val(null);
        },
        

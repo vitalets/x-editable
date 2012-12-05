@@ -523,6 +523,34 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);   
-     });    
+     });   
+     
+     asyncTest("'display' callback", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             pk: 1,
+             source: groups,
+             display: function(value, sourceData) {
+                var els = $.grep(sourceData, function(o) {return o.value == value;});  
+                $(this).text('qq' + els[0].text);
+             }
+        }),
+        selected = 3;
+
+        equal(e.text(), 'qq'+groups[2], 'autotext display ok'); 
+        
+        e.click();
+        var p = tip(e);
+
+        p.find('select').val(selected);
+        p.find('form').submit();
+         
+         setTimeout(function() {
+               ok(!p.is(':visible'), 'popover closed');
+               equal(e.data('editable').value, selected, 'new value saved')
+               equal(e.text(), 'qq'+groups[selected], 'text shown correctly') 
+               e.remove();    
+               start();  
+         }, timeout);   
+     });        
      
 });

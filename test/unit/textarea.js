@@ -34,8 +34,8 @@ $(function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php">'+v1+'</a>').appendTo(fx).editable({
              type: 'textarea',
              send: 'ifpk',
-             success: function(data) {
-                 return false;
+             success: function(response, newvalue) {
+                 equal(newvalue, v2, 'value in success ok');         
              } 
           });
 

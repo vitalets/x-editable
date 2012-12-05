@@ -97,7 +97,11 @@ $(function(){
            } catch(e) {}
            
            return d;
-       },             
+       }, 
+       
+       value2submit: function(value) {
+           return this.value2str(value);
+       },                     
 
        value2input: function(value) {
            this.$input.datepicker('setDate', value);

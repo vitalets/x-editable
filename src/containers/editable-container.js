@@ -75,6 +75,7 @@ Applied as jQuery method.
         },
 
         initForm: function() {
+            this.formOptions.scope = this.$element[0]; //set scope of form callbacks to element
             this.$form = $('<div>')
             .editableform(this.formOptions)
             .on({
@@ -263,7 +264,7 @@ Applied as jQuery method.
         closeOthers: function(element) {
             $('.editable-open').each(function(i, el){
                 //do nothing with passed element
-                if(el === element) {
+                if(el === element || $(el).find(element).length) {
                     return;
                 }
 

@@ -454,6 +454,31 @@ $(function () {
             delete $.fn.editable.defaults.name;
             var e = $('<a href="#" id="cde">abc</a>').appendTo('#qunit-fixture').editable();
             equal(e.data('editable').options.name, 'cde', 'name is taken from id');
-      });      
+      });   
+      
+     asyncTest("'display' callback", function () {
+        var newText = 'cd<e>;"',
+            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
+             display: function(value) {
+                 ok(this === e[0], 'scope is ok');
+                 $(this).text('qq'+value);
+             } 
+          });  
+
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover was removed');
+           equal(e.text(), 'qq'+newText, 'custom display ok');
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });           
          
 });    

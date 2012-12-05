@@ -117,6 +117,13 @@
                 return k;
             }
 
-        }   
+        },
+        
+       /**
+        method to escape html.
+       **/
+       escape: function(str) {
+           return $('<div>').text(str).html();
+       }           
     };      
 }(window.jQuery));
