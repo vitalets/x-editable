@@ -136,10 +136,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$loading.show(); 
         },
 
-        showForm: function() {
+        showForm: function(activate) {
             this.$loading.hide();
             this.$form.show();
-            this.input.activate(); 
+            if(activate !== false) {
+                this.input.activate(); 
+            }
             /**        
             Fired when form is shown
             @event show 
@@ -193,8 +195,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
                 
-                //if success callback returns false --> keep form open, if string --> show error
-                if(res === false || typeof res === 'string') {
+                //if success callback returns false --> keep form open and do not activate input
+                if(res === false) {
+                    this.error(false);
+                    this.showForm(false);
+                    return;
+                }     
+                
+                //if success callback returns string -->  keep form open, show error and activate input               
+                if(typeof res === 'string') {
                     this.error(res);
                     this.showForm();
                     return;
