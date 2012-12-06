@@ -551,6 +551,32 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);   
-     });        
+     });   
+     
+     asyncTest("submit by enter", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             pk: 1,
+             source: groups
+        }),
+        selected = 3;
+             
+        e.click();
+        var p = tip(e);
+        p.find('select').val(selected);
+        
+        event = jQuery.Event("keydown");
+        event.which = 13;
+
+        p.find('select').trigger(event);
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(e.data('editable').value, selected, 'new value saved')
+           equal(e.text(), groups[selected], 'text shown correctly') 
+           e.remove();    
+           start(); 
+        }, timeout);           
+    })       
+          
      
 });

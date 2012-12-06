@@ -37,6 +37,13 @@ $(function(){
             for(var i=0; i<this.sourceData.length; i++) {
                 this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
+            
+            //enter submit
+            this.$input.on('keydown.editable', function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });            
         },
        
         value2htmlFinal: function(value, element) {
@@ -48,7 +55,7 @@ $(function(){
         },
         
         autosubmit: function() {
-            this.$input.on('change', function(){
+            this.$input.off('keydown.editable').on('change.editable', function(){
                 $(this).closest('form').submit();
             });
         }
