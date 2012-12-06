@@ -31,14 +31,16 @@ $(function(){
     $.extend(Address.prototype, {
          render: function() {
              Address.superclass.render.call(this);
-             
-            // this.$input.
          },
         
-        
+        //standard way to show value in element. Used only if display option not defined.
         value2html: function(value, element) {
-            var html = value.city + ', ' + value.street + ' st., bld. ' + value.building;
-            $(element).text(html); 
+            if(!value) {
+                $(element).empty();
+                return; 
+            }
+            var html = $('<div>').text(value.city).html() + ', ' + $('<div>').text(value.street).html() + ' st., bld. ' + $('<div>').text(value.building).html();
+            $(element).html(html); 
         },
         
         html2value: function(html) {        
