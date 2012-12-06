@@ -109,16 +109,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @method render()
         */          
         render: function() {
-           //if it is input with source, we pass callback in third param to be called when source is loaded
-           if(this.input.options.hasOwnProperty('source')) {
-               return this.input.value2html(this.value, this.$element[0], this.options.display); 
-           //if display method defined --> use it    
-           } else if(typeof this.options.display === 'function') {
-               return this.options.display.call(this.$element[0], this.value);
-           //else use input's original value2html() method    
-           } else {
-               return this.input.value2html(this.value, this.$element[0]); 
-           }
+            //do not display anything
+            if(this.options.display === false) {
+                return;
+            }
+            //if it is input with source, we pass callback in third param to be called when source is loaded
+            if(this.input.options.hasOwnProperty('source')) {
+                return this.input.value2html(this.value, this.$element[0], this.options.display); 
+            //if display method defined --> use it    
+            } else if(typeof this.options.display === 'function') {
+                return this.options.display.call(this.$element[0], this.value);
+            //else use input's original value2html() method    
+            } else {
+                return this.input.value2html(this.value, this.$element[0]); 
+            }
         },
         
         /**
@@ -207,6 +211,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         * set emptytext if element is empty (reverse: remove emptytext if needed)
         */
         handleEmpty: function () {
+            //do not handle empty if we do not display anything
+            if(this.options.display === false) {
+                return;
+            }
+            
             var emptyClass = 'editable-empty';
             //emptytext shown only for enabled
             if(!this.options.disabled) {
@@ -547,12 +556,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         value: null,
         /**
         Callback to perform custom displaying of value in element's text.
-        If not defined, default input's value2html() will be called.
+        If <code>null</code>, default input's value2html() will be called.
+        If <code>false</code>, no displaying methods will be called, element's text will no change.
         Runs under element's scope.
         Second parameter __sourceData__ is passed for inputs with source (select, checklist).
         
         @property display 
-        @type function
+        @type function|boolean
         @default null
         @since 1.2.0
         @example

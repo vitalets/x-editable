@@ -479,6 +479,30 @@ $(function () {
            start();  
         }, timeout);             
         
-      });           
+      });
+      
+     asyncTest("display: false", function () {
+        var newText = 'cd<e>;"',
+            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1" data-value="abc"></a>').appendTo(fx).editable({
+              display: false
+          });  
+
+        ok(!e.text().length, 'element still empty, autotext did not display value');          
+          
+        e.click()
+        var p = tip(e);
+
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover was removed');
+           ok(!e.text().length, 'element still empty, new value was not displayed');  
+           equal(e.data('editable').value, newText, 'new text saved to value');
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });                   
          
 });    
