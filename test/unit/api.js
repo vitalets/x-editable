@@ -68,43 +68,7 @@ $(function () {
         ok(!('dob' in values), 'date value not present') ;
      });    
      
-    /* 
-    //deprecated in 2.0
-      asyncTest("'update' event", function () {
-        expect(2);
-        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable(),
-            e_nopk = $('<a href="#" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable(),
-            newVal = 'xyt';
-        
-        e.on('update', function() {
-             equal($(this).data('editable').value, newVal, 'triggered update after submit');
-        });
-
-        e_nopk.on('update', function() {
-             equal($(this).data('editable').value, newVal, 'triggered update after no-submit');
-        });
-
-        e_nopk.click();
-        var p = e_nopk.data('popover').$tip;
-        p.find('input').val(newVal);
-        p.find('form').submit();        
-                              
-        e.click();
-        p = tip(e);
-        p.find('input').val(newVal);
-        p.find('form').submit();
-                
-        setTimeout(function() {
-           e.remove();    
-           e_nopk.remove();    
-           start();  
-        }, timeout);                     
-      });     
-     */
-     
-     /* 
-     //deprecated in 2.0
-     test("'init' event", function () {
+    test("'init' event", function () {
         expect(1);
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture');
         
@@ -113,74 +77,11 @@ $(function () {
         });
 
         e.editable();
-      });      
-     */
-      
-     asyncTest("'render' event for text", function () {
-        expect(4);
-        var val = 'afas',
-            e = $('<a href="#" data-pk="1" data-type="text" data-url="post.php" data-name="text1">'+val+'</a>').appendTo(fx),
-            isInit = true;
-        
-        e.on('render', function(e, editable) {
-             equal(editable.isInit, isInit, 'isInit flag correct');
-             equal(editable.value, val, 'value correct');
-        });
-
-        e.editable();   
-        
-        isInit = false;
-        val = '123';
-        
-        e.click();
-        var p = tip(e);
-        p.find('input[type=text]').val(val);
-        p.find('form').submit(); 
-        
-        setTimeout(function() {
-           e.remove();    
-           start();  
-        }, timeout);                     
-        
-     });    
-     
-    asyncTest("'render' event for select", function () {
-        expect(4);
-        var val = '1',
-            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text1" data-value="'+val+'"></a>').appendTo(fx),
-            isInit = true;
-        
-        e.on('render', function(e, editable) {
-             equal(editable.isInit, isInit, 'isInit flag correct');
-             equal(editable.value, val, 'init triggered, value correct');
-        });
-
-        e.editable({
-            source: 'groups.php',
-            autotext: 'always'
-        });
-        
-        setTimeout(function() {
-            isInit = false;
-            val = '3';
-            
-            e.click();
-            var p = tip(e);
-            p.find('select').val(val);
-            p.find('form').submit(); 
-            
-            setTimeout(function() {
-               e.remove();    
-               start();  
-            }, timeout);  
-        }, timeout);                                        
-        
-     });  
-              
-     
-     asyncTest("events: shown / cancel / hidden", function () {
-        expect(3);
-        var val = '1',
+    });      
+  
+     asyncTest("events: shown / hidden (reason: cancel, onblur, manual)", function () {
+        expect(11);
+        var val = '1', test_reason, 
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('shown', function(event) {
@@ -188,14 +89,8 @@ $(function () {
              equal(editable.value, val, 'shown triggered, value correct');
         });
         
-        e.on('cancel', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'cancel triggered'); 
-        });     
-        
-        e.on('hidden', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'hidden triggered'); 
+        e.on('hidden', function(event, reason) {
+             ok((reason === test_reason) || (test_reason === 'manual' && reason === undefined), 'hidden triggered, reason ok'); 
         });            
         
         e.editable({
@@ -206,41 +101,54 @@ $(function () {
         
         setTimeout(function() {
              var p = tip(e);
-             p.find('button[type=button]').click(); 
-             setTimeout(function() {
-                 e.remove();    
-                 start();  
-             }, timeout);
+             
+             test_reason = 'cancel'
+             p.find('button[type=button]').click();  //cancel
+             ok(!p.is(':visible'), 'popover closed');
+
+             test_reason = 'onblur'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             e.parent().click();
+             ok(!p.is(':visible'), 'popover closed');
+             
+             test_reason = 'manual'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             e.editable('hide');
+             ok(!p.is(':visible'), 'popover closed');             
+             
+             e.remove();    
+             start();  
         }, timeout);                                        
         
      });    
      
-     asyncTest("event: save / hidden", function () {
+     asyncTest("event: save / hidden (reason: save)", function () {
         expect(2);
         var val = '1',
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('save', function(event, params) {
-            var editable = $(this).data('editable');
             equal(params.newValue, 2, 'save triggered, value correct');
         });
         
-        e.on('hidden', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'hidden triggered'); 
+        e.on('hidden', function(event, reason) {
+            equal(reason, 'save', 'hidden triggered, reason ok'); 
         });         
         
         e.editable({
-            source: 'groups.php',
+            source: groups,
         });
         
         e.click();
         var p = tip(e);
         p.find('select').val(2);
         p.find('form').submit(); 
-        
+
         setTimeout(function() {
-             p.find('button[type=button]').click(); 
              e.remove();    
              start();  
         }, timeout);                                        
@@ -305,7 +213,6 @@ $(function () {
      });    
      
       asyncTest("'submit' method: client and server validation", function () {
-        expect(6);  
         var ev1 = 'ev1',
             ev2 = 'ev2',
             e1v = 'e1v',
@@ -322,6 +229,7 @@ $(function () {
                 equal(settings.data.text, ev2, 'first value ok');
                 equal(settings.data.text1, e1v, 'second value ok');
                 equal(settings.data.a, 123, 'custom data ok');
+                equal(settings.type, 'PUT', 'ajaxOptions ok');
                 this.responseText = {errors: {
                     text1: 'server-invalid'
                   }
@@ -348,11 +256,13 @@ $(function () {
             data: {a: 123},
             error: function(data) {
                 equal(data.errors.text1, 'server-invalid', 'server validation error ok');
-                
                 e.remove();
                 e1.remove();
                 start(); 
-            }            
+            },
+            ajaxOptions: {
+                type: 'PUT'
+            }
         });       
        
      });                  

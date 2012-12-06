@@ -26,7 +26,7 @@ $(function(){
         this.init('select', options, Select.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Select, $.fn.editableform.types.list);
+    $.fn.editableutils.inherit(Select, $.fn.editabletypes.list);
 
     $.extend(Select.prototype, {
         renderList: function() {
@@ -37,6 +37,13 @@ $(function(){
             for(var i=0; i<this.sourceData.length; i++) {
                 this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
+            
+            //enter submit
+            this.$input.on('keydown.editable', function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+            });            
         },
        
         value2htmlFinal: function(value, element) {
@@ -48,13 +55,13 @@ $(function(){
         },
         
         autosubmit: function() {
-            this.$input.on('change', function(){
+            this.$input.off('keydown.editable').on('change.editable', function(){
                 $(this).closest('form').submit();
             });
         }
     });      
 
-    Select.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+    Select.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
         /**
         @property tpl 
         @default <select></select>
@@ -62,6 +69,6 @@ $(function(){
         tpl:'<select></select>'
     });
 
-    $.fn.editableform.types.select = Select;      
+    $.fn.editabletypes.select = Select;      
 
 }(window.jQuery));

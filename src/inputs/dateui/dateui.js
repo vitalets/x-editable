@@ -27,7 +27,7 @@ $(function(){
         this.init('dateui', options, DateUI.defaults);
         
         //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableform.utils.sliceObj(this.options, ['format']);
+        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
 
         //overriding datepicker config (as by default jQuery extend() is not recursive)
         this.options.datepicker = $.extend({}, DateUI.defaults.datepicker, directOptions, options.datepicker);
@@ -46,7 +46,7 @@ $(function(){
         this.options.datepicker.dateFormat = this.options.datepicker.format;        
     };
 
-    $.fn.editableform.utils.inherit(DateUI, $.fn.editableform.types.abstract);    
+    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstract);    
     
     $.extend(DateUI.prototype, {
         render: function () {
@@ -97,7 +97,11 @@ $(function(){
            } catch(e) {}
            
            return d;
-       },             
+       }, 
+       
+       value2submit: function(value) {
+           return this.value2str(value);
+       },                     
 
        value2input: function(value) {
            this.$input.datepicker('setDate', value);
@@ -125,7 +129,7 @@ $(function(){
 
     });
     
-    DateUI.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         /**
         @property tpl 
         @default <div></div>
@@ -183,7 +187,7 @@ $(function(){
         clear: '&times; clear'        
     });   
 
-    $.fn.editableform.types.dateui = DateUI;
-    $.fn.editableform.types.date = DateUI;
+    $.fn.editabletypes.dateui = DateUI;
+    $.fn.editabletypes.date = DateUI;
 
 }(window.jQuery));

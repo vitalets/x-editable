@@ -6,11 +6,14 @@ To create your own input you should inherit from this class.
 **/
 (function ($) {
 
+    //types
+    $.fn.editabletypes = {};
+    
     var Abstract = function () { };
 
     Abstract.prototype = {
        /**
-        Iinitializes input
+        Initializes input
         
         @method init() 
         **/
@@ -46,8 +49,7 @@ To create your own input you should inherit from this class.
         @param {DOMElement} element
        **/       
        value2html: function(value, element) {
-           var html = this.escape(value);
-           $(element).html(html);
+           $(element).text(value);
        },
         
        /**
@@ -62,7 +64,7 @@ To create your own input you should inherit from this class.
        },
         
        /**
-        Converts value to string (for submiting to server)
+        Converts value to string (for comparering)
         
         @method value2str(value) 
         @param {mixed} value
@@ -82,6 +84,17 @@ To create your own input you should inherit from this class.
        str2value: function(str) {
            return str;
        }, 
+       
+       /**
+        Converts value for submitting to server
+        
+        @method value2submit(value) 
+        @param {mixed} value
+        @returns {mixed}
+       **/       
+       value2submit: function(value) {
+           return value;
+       },         
        
        /**
         Sets value of input.
@@ -114,11 +127,11 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        Creares input. 
+        Creates input.
         
         @method clear() 
        **/        
-       clear:  function() {
+       clear: function() {
            this.$input.val(null);
        },
        
@@ -130,7 +143,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        attach handler to automatically submit form when value changed (usefull when buttons not shown)
+        attach handler to automatically submit form when value changed (useful when buttons not shown)
        **/       
        autosubmit: function() {
         
@@ -148,12 +161,12 @@ To create your own input you should inherit from this class.
         tpl: '',
         /**
         CSS class automatically applied to input
-
+        
         @property inputclass 
         @type string
-        @default span2
+        @default input-medium
         **/         
-        inputclass: 'span2',
+        inputclass: 'input-medium',
         /**
         Name attribute of input
 
@@ -164,6 +177,6 @@ To create your own input you should inherit from this class.
         name: null
     };
     
-    $.extend($.fn.editableform.types, {abstract: Abstract});
+    $.extend($.fn.editabletypes, {abstract: Abstract});
         
 }(window.jQuery));

@@ -27,7 +27,7 @@ $(function(){
         this.init('checklist', options, Checklist.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Checklist, $.fn.editableform.types.list);
+    $.fn.editableutils.inherit(Checklist, $.fn.editabletypes.list);
 
     $.extend(Checklist.prototype, {
         renderList: function() {
@@ -49,10 +49,8 @@ $(function(){
         },
        
        value2str: function(value) {
-           return $.isArray(value) ? value.join($.trim(this.options.separator)) : '';
-           //it is also possible to sent as array
-           //return value;
-       },        
+           return $.isArray(value) ? value.sort().join($.trim(this.options.separator)) : '';
+       },  
        
        //parse separated string
         str2value: function(str) {
@@ -95,19 +93,18 @@ $(function(){
           
        //collect text of checked boxes
         value2htmlFinal: function(value, element) {
-           var selected = [], item, i, html = '';
-           if($.isArray(value) && value.length <= this.options.limit) {    
-               for(i=0; i<value.length; i++){
-                   item = this.itemByVal(value[i]);
-                   if(item) {
-                       selected.push($('<div>').text(item.text).html());
-                   }
-               }
-               html = selected.join(this.options.viewseparator);
-           } else {  
-               html = this.options.limitText.replace('{checked}', $.isArray(value) ? value.length : 0).replace('{count}', this.sourceData.length); 
+           var html = [],
+               /*jslint eqeq: true*/
+               checked = $.grep(this.sourceData, function(o){
+                   return $.grep(value, function(v){ return v == o.value; }).length;
+               });
+               /*jslint eqeq: false*/
+           if(checked.length) {
+               $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+               $(element).html(html.join('<br>'));
+           } else {
+               $(element).empty(); 
            }
-           $(element).html(html);
         },
         
        activate: function() {
@@ -123,7 +120,7 @@ $(function(){
        }
     });      
 
-    Checklist.defaults = $.extend({}, $.fn.editableform.types.list.defaults, {
+    Checklist.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
         /**
         @property tpl 
         @default <div></div>
@@ -133,46 +130,20 @@ $(function(){
         /**
         @property inputclass 
         @type string
-        @default span2 editable-checklist
+        @default editable-checklist
         **/         
-        inputclass: 'span2 editable-checklist',        
+        inputclass: 'editable-checklist',        
         
         /**
-        Separator of values in string when sending to server
+        Separator of values when reading from 'data-value' string
 
         @property separator 
         @type string
         @default ', '
         **/         
-        separator: ',',
-        /**
-        Separator of text when display as element content.
-
-        @property viewseparator 
-        @type string
-        @default '<br>'
-        **/         
-        viewseparator: '<br>',
-        /**
-        Maximum number of items shown as element content. 
-        If checked more items - <code>limitText</code> will be shown.
-
-        @property limit 
-        @type integer
-        @default 4
-        **/         
-        limit: 4,
-        /**
-        Text shown when count of checked items is greater than <code>limit</code> parameter.
-        You can use <code>{checked}</code> and <code>{count}</code> placeholders.
-
-        @property limitText 
-        @type string
-        @default 'Selected {checked} of {count}'
-        **/         
-        limitText: 'Selected {checked} of {count}'        
+        separator: ','
     });
 
-    $.fn.editableform.types.checklist = Checklist;      
+    $.fn.editabletypes.checklist = Checklist;      
 
 }(window.jQuery));

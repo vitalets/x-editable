@@ -1,5 +1,5 @@
 .editable-container {
-    max-width: none; /* without this rule poshytip does not stretch */
+    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
 }  
 
 .editable-container.popover {
@@ -10,4 +10,8 @@
 .editable-container.editable-inline {
     display: inline; 
     vertical-align: middle;
+}
+
+.editable-container.ui-widget {
+   font-size: inherit;  /* jqueryui widget font 1.1em too big, overwrite it */
 }

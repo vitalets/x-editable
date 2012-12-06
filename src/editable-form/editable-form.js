@@ -1,7 +1,7 @@
 /**
 Form with single input element, two buttons and two states: normal/loading.
-Applied as jQuery method to DIV tag (not to form tag!)
-Editableform is linked with one of input types, e.g. 'text' or 'select'.
+Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
+Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
 @class editableform
 @uses text
@@ -9,9 +9,12 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
 **/
 (function ($) {
 
-    var EditableForm = function (element, options) {
+    var EditableForm = function (div, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
-        this.$element = $(element); //div, containing form. Not form tag! Not editable-element.
+        this.$div = $(div); //div, containing form. Not form tag! Not editable-element.
+        if(!this.options.scope) {
+            this.options.scope = this;
+        }
         this.initInput();
     };
 
@@ -21,9 +24,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             var TypeConstructor, typeOptions;
 
             //create input of specified type
-            if(typeof $.fn.editableform.types[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editableform.types[this.options.type];
-                typeOptions = $.fn.editableform.utils.sliceObj(this.options, $.fn.editableform.utils.objectKeys(TypeConstructor.defaults));
+            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
+                TypeConstructor = $.fn.editabletypes[this.options.type];
+                typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
                 this.input = new TypeConstructor(typeOptions);
             } else {
                 $.error('Unknown type: '+ this.options.type);
@@ -45,7 +48,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         **/        
         render: function() {
             this.$loading = $($.fn.editableform.loading);        
-            this.$element.empty().append(this.$loading);
+            this.$div.empty().append(this.$loading);
             this.showLoading();
             
             //init form template and buttons
@@ -61,7 +64,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event rendering 
             @param {Object} event event object
             **/            
-            this.$element.triggerHandler('rendering');
+            this.$div.triggerHandler('rendering');
 
             //render input
             $.when(this.input.render())
@@ -80,21 +83,23 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 }                
 
                 //append form to container
-                this.$element.append(this.$form);
-
+                this.$div.append(this.$form);
+                 
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-                //                this.$form.find('.editable-buttons button').eq(1).click($.proxy(this.cancel, this));
 
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);
                     this.input.$input.attr('disabled', true);
+                    //prevent form from submitting
+                    this.$form.submit(function(e){ e.preventDefault(); });
                 } else {
                     this.error(false);
                     this.input.$input.removeAttr('disabled');
                     this.$form.find('.editable-submit').removeAttr('disabled');
                     this.input.value2input(this.value);
+                    //attach submit handler
                     this.$form.submit($.proxy(this.submit, this));
                 }
 
@@ -103,7 +108,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 @event rendered
                 @param {Object} event event object
                 **/            
-                this.$element.triggerHandler('rendered');                
+                this.$div.triggerHandler('rendered');                
 
                 this.showForm();
             }, this));
@@ -114,7 +119,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             @event cancel 
             @param {Object} event event object
             **/              
-            this.$element.triggerHandler('cancel');
+            this.$div.triggerHandler('cancel');
         },
         showLoading: function() {
             var w;
@@ -133,16 +138,18 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             this.$loading.show(); 
         },
 
-        showForm: function() {
+        showForm: function(activate) {
             this.$loading.hide();
             this.$form.show();
-            this.input.activate(); 
+            if(activate !== false) {
+                this.input.activate(); 
+            }
             /**        
             Fired when form is shown
             @event show 
             @param {Object} event event object
             **/                    
-            this.$element.triggerHandler('show');
+            this.$div.triggerHandler('show');
         },
 
         error: function(msg) {
@@ -163,8 +170,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             e.preventDefault();
             
             var error,
-                newValue = this.input.input2value(), //get new value from input
-                newValueStr;
+                newValue = this.input.input2value(); //get new value from input
 
             //validation
             if (error = this.validate(newValue)) {
@@ -173,25 +179,29 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 return;
             } 
             
-            //value as string
-            newValueStr = this.input.value2str(newValue);
-
             //if value not changed --> cancel
             /*jslint eqeq: true*/
-            if (newValueStr == this.input.value2str(this.value)) {
+            if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
                 this.cancel();
                 return;
             } 
 
             //sending data to server
-            $.when(this.save(newValueStr))
+            $.when(this.save(newValue))
             .done($.proxy(function(response) {
                 //run success callback
-                var res = typeof this.options.success === 'function' ? this.options.success.call(this, response, newValue) : null;
+                var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
                 
-                //if success callback returns string --> show error
-                if(res && typeof res === 'string') {
+                //if success callback returns false --> keep form open and do not activate input
+                if(res === false) {
+                    this.error(false);
+                    this.showForm(false);
+                    return;
+                }     
+                
+                //if success callback returns string -->  keep form open, show error and activate input               
+                if(typeof res === 'string') {
                     this.error(res);
                     this.showForm();
                     return;
@@ -218,7 +228,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                     if(params.newValue === 'username') {...}
                 });                    
                 **/                
-                this.$element.triggerHandler('save', {newValue: newValue, response: response});
+                this.$div.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
                 this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
@@ -226,10 +236,16 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
             }, this));
         },
 
-        save: function(value) {
-            var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this) : this.options.pk,
+        save: function(newValue) {
+            //convert value for submitting to server
+            var submitValue = this.input.value2submit(newValue);
+            
+            //try parse composite pk defined as json string in data-pk 
+            this.options.pk = $.fn.editableutils.tryParseJson(this.options.pk, true); 
+            
+            var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this.options.scope) : this.options.pk,
             send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk)))),
-            params, ajaxOptions;
+            params;
 
             if (send) { //send to server
                 this.showLoading();
@@ -237,30 +253,29 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 //standard params
                 params = {
                     name: this.options.name || '',
-                    value: value,
+                    value: submitValue,
                     pk: pk 
                 };
 
                 //additional params
                 if(typeof this.options.params === 'function') {
-                    $.extend(params, this.options.params.call(this, params));  
+                    $.extend(params, this.options.params.call(this.options.scope, params));  
                 } else {
                     //try parse json in single quotes (from data-params attribute)
-                    this.options.params = $.fn.editableform.utils.tryParseJson(this.options.params, true);   
+                    this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
                     $.extend(params, this.options.params);
                 }
 
                 if(typeof this.options.url === 'function') { //user's function
-                    return this.options.url.call(this, params);
-                } else {  //send ajax to server and return deferred object
-                    ajaxOptions = $.extend({
+                    return this.options.url.call(this.options.scope, params);
+                } else {  
+                    //send ajax to server and return deferred object
+                    return $.ajax($.extend({
                         url     : this.options.url,
                         data    : params,
                         type    : 'post',
                         dataType: 'json'
-                    }, this.options.ajaxOptions);
-
-                    return $.ajax(ajaxOptions);
+                    }, this.options.ajaxOptions));
                 }
             }
         }, 
@@ -270,7 +285,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
                 value = this.value;
             }
             if (typeof this.options.validate === 'function') {
-                return this.options.validate.call(this, value);
+                return this.options.validate.call(this.options.scope, value);
             }
         },
 
@@ -377,7 +392,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         name: null,
         /**
         Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.
-        Can be calculated dinamically via function.
+        Can be calculated dynamically via function.
 
         @property pk 
         @type string|object|function
@@ -418,7 +433,7 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         validate: null,
         /**
         Success callback. Called when value successfully sent on server and **response status = 200**.  
-        Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
+        Useful to work with json response. For example, if your backend response can be <code>{success: true}</code>
         or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
         If it returns **string** - means error occured and string is shown as error message.  
         If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
@@ -440,28 +455,44 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
         @property ajaxOptions 
         @type object
         @default null
+        @since 1.1.1        
         **/        
         ajaxOptions: null,
         /**
-        Wether to show buttons or not.  
+        Whether to show buttons or not.  
         Form without buttons can be auto-submitted by input or by onblur = 'submit'.
+        @example 
+        ajaxOptions: {
+            method: 'PUT',
+            dataType: 'xml'
+        }
 
         @property showbuttons 
         @type boolean
         @default true
+        @since 1.1.1
         **/         
-        showbuttons: true
-        
-        /*todo: 
-        Submit strategy. Can be <code>normal|never</code>
-        <code>submitmode='never'</code> usefull for turning into classic form several inputs and submitting them together manually.
-        Works pretty with <code>showbuttons=false</code>
+        showbuttons: true,
+        /**
+        Scope for callback methods (success, validate).  
+        If <code>null</code> means editableform instance itself. 
 
-        @property submitmode 
-        @type string
-        @default normal
-        */         
-//        submitmode: 'normal' 
+        @property scope 
+        @type DOMElement|object
+        @default null
+        @since 1.2.0
+        @private
+        **/            
+        scope: null,
+        /**
+        Whether to save or cancel value when it was not changed but form was submitted
+
+        @property savenochange 
+        @type boolean
+        @default false
+        @since 1.2.0
+        **/
+        savenochange: false         
     };   
 
     /*
@@ -482,15 +513,9 @@ Editableform is linked with one of input types, e.g. 'text' or 'select'.
     $.fn.editableform.buttons = '<button type="submit" class="editable-submit">ok</button>'+
     '<button type="button" class="editable-cancel">cancel</button>';      
 
-    //error class attahced to control-group
+    //error class attached to control-group
     $.fn.editableform.errorGroupClass = null;  
 
-    //error class attahced to editable-error-block
+    //error class attached to editable-error-block
     $.fn.editableform.errorBlockClass = 'editable-error';
-
-    //input types
-    $.fn.editableform.types = {};
-    //utils
-    $.fn.editableform.utils = {};
-
 }(window.jQuery));

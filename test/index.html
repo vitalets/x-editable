@@ -3,55 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>Test X-editable</title>
-
-  <!-- jquery -->
-  <script src="libs/jquery/jquery-1.8.2.js"></script>
-
-  <!-- qunit -->
-  <link rel="stylesheet" href="libs/qunit/qunit-1.10.0.css" type="text/css" media="screen" />
-  <script src="libs/qunit/qunit-1.10.0.js"></script>
-  
-  <!-- mockjax -->
-  <script src="libs/mockjax/jquery.mockjax.js"></script>  
-  <script src="mocks.js"></script>
-  
-  <script src="loader.js"></script>
   <script>
-      var fc = getFC(),
-      assets = getAssets(fc.f, fc.c, '../src/', 'libs/');
-      loadAssets(assets.css, assets.js);
-      
-      var fx, sfx;  
-      $(function () {
-          $.fx.off = true;
-          $.support.transition = false;
-      });       
-  </script>  
+    window.onload = function() {
+       QUnit.config.autostart = false;
+    };
+  </script>
+  
+<!--  <script data-main="main.js" src="require-jquery.js"></script>-->
+  <script data-main="main.js" src="require.js"></script>
+  
+   <!-- qunit (should be included here, otherwise phantomjs hangs-up on several tests )-->
+   <link rel="stylesheet" href="libs/qunit/qunit-1.10.0.css" type="text/css" media="screen" />
+   <script src="libs/qunit/qunit-1.10.0.js"></script>
 
 </head>
 <body>
-  <div>
+  <div> 
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <div id="async-fixture"></div>
   </div>
-  
-  <!-- unit tests -->
-  <!--  You can also add "?module=[module]" URL to run only tests within that module-->
-  <script src="unit/common.js"></script>
-  <script src="unit/text.js"></script>
-  <script src="unit/select.js"></script>  
-  <script src="unit/textarea.js"></script>  
-  <script src="unit/api.js"></script>
-  <script src="unit/checklist.js"></script>
-  <script>  
-    if(fc.f === 'bootstrap') {
-        loadJs('unit/date.js'); 
-    } else {
-        loadJs('unit/dateui.js'); 
-    }
-  </script>  
-   
-  
 </body>
 </html>

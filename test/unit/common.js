@@ -62,9 +62,9 @@
 //        equal(e3.data('editable').lastSavedValue, v, 'lastSavedValue taken from text correctly (escaped)');             
       }); 
       
-      test("should take container's title from json options", function () {
+      test("container's title and placement from json options", function () {
         //do not test inline  
-        if(fc.c === 'inline') {
+        if($.fn.editableContainer.Constructor.prototype.containerName === 'editableform') {
             expect(0);
             return;
         }
@@ -81,7 +81,7 @@
         ok(p.is(':visible'), 'popover shown');   
 
         //todo: for jqueryui phantomjs calcs wrong position. Need investigation
-        if(!$.browser.webkit && fc.f !== 'jqueryui') {
+        if(!$.browser.webkit && $.fn.editableContainer.Constructor.prototype.containerName !== 'tooltip') {
             ok(p.offset().top > e.offset().top, 'placement ok');
         }
         
@@ -362,36 +362,88 @@
         ok(!p.find('.editable-buttons').length, '.editable-buttons block not rendered'); 
      });            
       
-      //unfortunatly, testing this feature does not always work in browsers. Tested manually.
-      /*
-       test("enablefocus option", function () {
-            // focusing not passed in phantomjs
-            if($.browser.webkit) {
-                ok(true, 'skipped in PhantomJS');
-                return;
-            }
-            
-            var e = $('<a href="#">abc</a>').appendTo('#qunit-fixture').editable({
-              enablefocus: true
-            }),
-             e1 = $('<a href="#">abcd</a>').appendTo('#qunit-fixture').editable({
-              enablefocus: false
-            });            
-            
-            e.click()
-            var p = tip(e);
-            ok(p.is(':visible'), 'popover 1 visible');
-            p.find('button[type=button]').click();
-            ok(!p.is(':visible'), 'popover closed');            
-            ok(e.is(':focus'), 'element 1 is focused');            
-            
-            e1.click()
-            p = tip(e1);
-            ok(p.is(':visible'), 'popover 2 visible');
-            p.find('button[type=button]').click();
-            ok(!p.is(':visible'), 'popover closed');            
-            ok(!e1.is(':focus'), 'element 2 is not focused');            
-      });
-     */
+      asyncTest("composite pk defined as json in data-pk attribute", function () {
+        var e = $('<a href="#" data-pk="{a: 1, b: 2}" data-url="post-pk.php">abc</a>').appendTo(fx).editable({
+             name: 'username'
+          }),  
+          newText = 'cd<e>;"'
+
+          $.mockjax({
+              url: 'post-pk.php',
+              response: function(settings) {
+                 equal(settings.data.pk.a, 1, 'first part ok');
+                 equal(settings.data.pk.b, 2, 'second part ok');
+              }
+          });          
+          
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+    });        
+     
+      asyncTest("savenochange: false", function () {
+        var v = 'abc',
+            e = $('<a href="#" data-type="text" data-pk="1" data-url="post-no.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
+            savenochange: false
+        }),
+            req = 0;
+
+         $.mockjax({
+                url: 'post-no.php',
+                response: function() {
+                    req++;
+                }
+         });          
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        p.find('input[type="text"]').val(v); 
+        p.find('form').submit(); 
+                
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(req, 0, 'request was not performed');
+           e.remove();    
+           start();  
+        }, timeout);                     
+      });    
+      
+      asyncTest("savenochange: true", function () {
+        var v = 'abc',
+            e = $('<a href="#" data-type="text" data-pk="1" data-url="post-yes.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
+            savenochange: true
+        }),
+            req = 0;
+
+         $.mockjax({
+                url: 'post-yes.php',
+                response: function() {
+                    req++;
+                }
+         });          
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        p.find('input[type="text"]').val(v); 
+        p.find('form').submit(); 
+                
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(req, 1, 'request was performed');
+           e.remove();    
+           start();  
+        }, timeout);                     
+      });        
           
 }(jQuery));  

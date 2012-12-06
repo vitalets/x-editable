@@ -20,18 +20,18 @@ $(function(){
         this.init('text', options, Text.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Text, $.fn.editableform.types.abstract);
+    $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstract);
 
     $.extend(Text.prototype, {
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
             }
         }  
     });
 
-    Text.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    Text.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         /**
         @property tpl 
         @default <input type="text">
@@ -47,6 +47,6 @@ $(function(){
         placeholder: null
     });
 
-    $.fn.editableform.types.text = Text;
+    $.fn.editabletypes.text = Text;
 
 }(window.jQuery));

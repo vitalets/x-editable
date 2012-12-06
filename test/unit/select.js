@@ -345,7 +345,7 @@ $(function () {
          var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
              e1 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
              e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">6456</a>').appendTo(fx).editable(),
-             errText = $.fn.editableform.types.select.defaults.sourceError;
+             errText = $.fn.editabletypes.select.defaults.sourceError;
            
           setTimeout(function() {
 
@@ -362,6 +362,55 @@ $(function () {
         
      });     
      
+     
+    asyncTest("sourceCache: false", function () {
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
+              sourceCache: false
+         }),
+            e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
+              sourceCache: false                 
+          }),
+          req = 0;
+
+        $.mockjax({
+                url: 'groups-cache-false.php',
+                response: function() {
+                    req++;
+                    this.responseText = groups;
+                }
+         });           
+           
+        //click first
+        e.click();
+        var p = tip(e);
+        
+        setTimeout(function() {
+            ok(p.is(':visible'), 'popover visible');
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(req, 1, 'one request performed');
+            
+            p.find('button[type=button]').click(); 
+            ok(!p.is(':visible'), 'popover was removed');  
+            
+            //click second
+            e1.click();
+            p = tip(e1);
+            
+            setTimeout(function() {
+                ok(p.is(':visible'), 'popover2 visible');
+                equal(p.find('select').find('option').length, size, 'options loaded');
+                equal(req, 2, 'second request performed');
+                
+                p.find('button[type=button]').click(); 
+                ok(!p.is(':visible'), 'popover was removed');                  
+                
+                e.remove();    
+                e1.remove();    
+                start();  
+            }, timeout);
+        }, timeout);  
+        
+     });       
      
      
      asyncTest("autotext: auto", function () {
@@ -474,6 +523,60 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);   
-     });    
+     });   
+     
+     asyncTest("'display' callback", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             pk: 1,
+             source: groups,
+             display: function(value, sourceData) {
+                var els = $.grep(sourceData, function(o) {return o.value == value;});  
+                $(this).text('qq' + els[0].text);
+             }
+        }),
+        selected = 3;
+
+        equal(e.text(), 'qq'+groups[2], 'autotext display ok'); 
+        
+        e.click();
+        var p = tip(e);
+
+        p.find('select').val(selected);
+        p.find('form').submit();
+         
+         setTimeout(function() {
+               ok(!p.is(':visible'), 'popover closed');
+               equal(e.data('editable').value, selected, 'new value saved')
+               equal(e.text(), 'qq'+groups[selected], 'text shown correctly') 
+               e.remove();    
+               start();  
+         }, timeout);   
+     });   
+     
+     asyncTest("submit by enter", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             pk: 1,
+             source: groups
+        }),
+        selected = 3;
+             
+        e.click();
+        var p = tip(e);
+        p.find('select').val(selected);
+        
+        var event = jQuery.Event("keydown");
+        event.which = 13;
+       
+        p.find('select').trigger(event);
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed');
+           equal(e.data('editable').value, selected, 'new value saved')
+           equal(e.text(), groups[selected], 'text shown correctly') 
+           e.remove();    
+           start(); 
+        }, timeout);           
+    })       
+          
      
 });

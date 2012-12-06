@@ -16,6 +16,8 @@
    *display: inline;
 }
 
+
+
 .editable-input {
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
@@ -31,8 +33,9 @@
 }
 
 /*for jquery-ui buttons need set height to look more pretty*/
-.editable-buttons button.ui-button {
+.editable-buttons button.ui-button-icon-only {
    height: 24px; 
+   width: 30px;
 }
 
 .editableform-loading {
@@ -77,6 +80,10 @@
 .editable-checklist label span {
     vertical-align: middle;
     margin: 0;
+}
+
+.editable-checklist label {
+    white-space: nowrap; 
 }
 
 .editable-clear {

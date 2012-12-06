@@ -21,7 +21,7 @@ $(function(){
         this.init('textarea', options, Textarea.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Textarea, $.fn.editableform.types.abstract);
+    $.fn.editableutils.inherit(Textarea, $.fn.editabletypes.abstract);
 
     $.extend(Textarea.prototype, {
         render: function () {
@@ -60,13 +60,13 @@ $(function(){
 
         activate: function() {
             if(this.$input.is(':visible')) {
-                $.fn.editableform.utils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
                 this.$input.focus();
             }
         }         
     });
 
-    Textarea.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
+    Textarea.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
         /**
         @property tpl 
         @default <textarea></textarea>
@@ -74,9 +74,9 @@ $(function(){
         tpl:'<textarea></textarea>',
         /**
         @property inputclass 
-        @default span3
+        @default input-large
         **/          
-        inputclass:'span3',
+        inputclass: 'input-large',
         /**
         Placeholder attribute of input. Shown when input is empty.
 
@@ -87,6 +87,6 @@ $(function(){
         placeholder: null        
     });
 
-    $.fn.editableform.types.textarea = Textarea;    
+    $.fn.editabletypes.textarea = Textarea;    
 
 }(window.jQuery));
