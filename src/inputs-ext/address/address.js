@@ -61,11 +61,17 @@ $(function(){
         },
       
        /*
-        method for converting data before sent on server.
-        As jQuery correctly sends objects via ajax, you can just return value
+        converts value to string. 
+        It is used in internal comparing (not for sending to server).
        */
        value2str: function(value) {
-           return value;
+           var str = '';
+           if(value) {
+               for(var k in value) {
+                   str = str + k + ':' + value[k] + ';';  
+               }
+           }
+           return str;
        }, 
        
        /*
