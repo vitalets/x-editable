@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.2.0 wip
 ----------------------------  
+[enh #36] 'submit' method: added 'ajaxOptions' property to modify ajax request (vitalets)  
 [enh] editableContainer removed from docs as not widely used (vitalets)  
 [enh] editableContainer: removed 'autohide' option and 'cancel' event. Use 'hidden' event instead (vitalets)  
 [enh] 'hidden' event: added param 'reason' that points to reason caused hiding (vitalets)  

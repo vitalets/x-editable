@@ -429,6 +429,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
+            @param {object} options.ajaxOptions additional ajax options            
             @param {function} options.error(obj) error handler (called on both client-side and server-side validation errors)
             @param {function} options.success(obj) success handler 
             @returns {Object} jQuery object
@@ -439,21 +440,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 errors = this.editable('validate'),
                 values;
 
-                if(typeof config.error !== 'function') {
-                    config.error = function() {};
-                } 
-
                 if($.isEmptyObject(errors)) {
                     values = this.editable('getValue'); 
                     if(config.data) {
                         $.extend(values, config.data);
-                    }
-                    $.ajax({
-                        type: 'POST',
+                    }                    
+                    
+                    $.ajax($.extend({
                         url: config.url, 
                         data: values, 
+                        type: 'POST',                        
                         dataType: 'json'
-                    }).success(function(response) {
+                    }, config.ajaxOptions))
+                    .success(function(response) {
+                        //successful response 
                         if(typeof response === 'object' && response.id) {
                             $elems.editable('option', 'pk', response.id); 
                             $elems.removeClass('editable-unsaved');
@@ -461,13 +461,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                                 config.success.apply($elems, arguments);
                             } 
                         } else { //server-side validation error
+                           if(typeof config.error === 'function') {
+                                config.error.apply($elems, arguments);
+                           }
+                        }
+                    })
+                    .error(function(){  //ajax error
+                        if(typeof config.error === 'function') {
                             config.error.apply($elems, arguments);
                         }
-                    }).error(function(){  //ajax error
-                        config.error.apply($elems, arguments);
                     });
                 } else { //client-side validation error
-                    config.error.call($elems, {errors: errors});
+                    if(typeof config.error === 'function') {
+                        config.error.call($elems, {errors: errors});
+                    }
                 }
             return this;
         }

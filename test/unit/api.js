@@ -213,7 +213,6 @@ $(function () {
      });    
      
       asyncTest("'submit' method: client and server validation", function () {
-        expect(6);  
         var ev1 = 'ev1',
             ev2 = 'ev2',
             e1v = 'e1v',
@@ -230,6 +229,7 @@ $(function () {
                 equal(settings.data.text, ev2, 'first value ok');
                 equal(settings.data.text1, e1v, 'second value ok');
                 equal(settings.data.a, 123, 'custom data ok');
+                equal(settings.type, 'PUT', 'ajaxOptions ok');
                 this.responseText = {errors: {
                     text1: 'server-invalid'
                   }
@@ -256,11 +256,13 @@ $(function () {
             data: {a: 123},
             error: function(data) {
                 equal(data.errors.text1, 'server-invalid', 'server validation error ok');
-                
                 e.remove();
                 e1.remove();
                 start(); 
-            }            
+            },
+            ajaxOptions: {
+                type: 'PUT'
+            }
         });       
        
      });                  
