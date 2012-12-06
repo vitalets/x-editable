@@ -100,9 +100,18 @@ module.exports = function(grunt) {
 
  //module for testing
  var module = ''; 
-//module = '&module=textarea';
+ module = '&module=textarea';
 //module = '&module=select';
 //module = '&module=text';
+
+ var qunit_testover = [];
+ ['bootstrap', 'jqueryui', 'plain'].forEach(function(f){
+     ['popup', 'inline'].forEach(function(c){
+         ['1.6.4', '1.7.1', '1.7.2', '1.8.2', '1.8.3'].forEach(function(jqver) {
+             qunit_testover.push('http://localhost:8000/test/index.html?f='+f+'&c='+c+'&jquery='+jqver+module); 
+         });
+     });
+ });    
 
  //get js and css for different builds
  var files = getFiles();
@@ -133,8 +142,9 @@ module.exports = function(grunt) {
       plain: [
                   'http://localhost:8000/test/index.html?f=plain&c=popup'+module,
                   'http://localhost:8000/test/index.html?f=plain&c=inline'+module
-                 ]                                    
-//      files: ['test/index.html']
+                 ],            
+      //test all builds under several versions of jquery                                   
+      testover: qunit_testover
     },
     server: {
         port: 8000,
@@ -208,38 +218,14 @@ module.exports = function(grunt) {
          }
        } 
     },
-    
-    //compress does not work properly for MAC OS (see https://github.com/vitalets/bootstrap-editable/issues/19)
-    //zip will be created manually
-    /*
-    compress: {
-        zip: {
-            options: {
-                mode: "zip",
-                //TODO: unfortunatly here <%= dist_source %> and <config:dist_source> does not work
-                basePath: "dist"
-               },
-            files: {
-                "<%= dist %>/bootstrap-editable-v<%= pkg.version %>.zip": ["<%= dist_source %>/ **", "<%= dist %>/libs/ **"]
-            }
-        },
-        tgz: {
-            options: {
-                mode: "tgz",
-                basePath: "dist"
-               },
-            files: {
-                "<%= dist %>/bootstrap-editable-v<%= pkg.version %>.tar.gz": ["<%= dist_source %>/ **", "<%= dist %>/libs/ **"]
-            }
-        }
-    },
-    */    
+ 
     uglify: {}
   });
 
   //test task
   grunt.registerTask('test', 'lint server qunit:bootstrap');
-  grunt.registerTask('testall', 'lint server qunit');  
+  grunt.registerTask('testall', 'lint server qunit:bootstrap qunit:jqueryui qunit:plain');  
+  grunt.registerTask('testover', 'lint server qunit:testover');  
   
   // Default task.
 //  grunt.registerTask('default', 'lint qunit');
