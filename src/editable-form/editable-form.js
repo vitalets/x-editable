@@ -481,6 +481,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @type DOMElement|object
         @default null
         @since 1.2.0
+        @private
         **/            
         scope: null,
         /**

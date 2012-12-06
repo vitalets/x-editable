@@ -362,6 +362,7 @@ Applied as jQuery method.
         @property onblur 
         @type string
         @default 'cancel'
+        @since 1.1.1
         **/        
         onblur: 'cancel'
     };

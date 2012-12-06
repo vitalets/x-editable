@@ -272,6 +272,7 @@ List - abstract class for inputs that have source option loaded from js array or
         @property sourceCache 
         @type boolean
         @default true
+        @since 1.2.0
         **/        
         sourceCache: true
     });
