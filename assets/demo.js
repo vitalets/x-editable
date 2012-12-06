@@ -26,17 +26,22 @@
     
     $('#lastname').editable();
 
-    $('#sex').on('render', function(e, editable) {
-        var colors = {"": "gray", 1: "green", 2: "blue"};
-        $(this).css("color", colors[editable.value]);  
-    });
-    
     $('#sex').editable({
         prepend: "not selected",
         source: [
             {value: 1, text: 'Male'},
             {value: 2, text: 'Female'}
-        ]   
+        ],
+        display: function(value, sourceData) {
+             var colors = {"": "gray", 1: "green", 2: "blue"},
+                 elem = $.grep(sourceData, function(o){return o.value == value;});
+                 
+             if(elem.length) {    
+                 $(this).text(elem[0].text).css("color", colors[value]); 
+             } else {
+                 $(this).empty(); 
+             }
+        }   
     });    
     
     $('#status').editable();   
@@ -53,7 +58,7 @@
     });     
 */    
     $('#comments').editable({
-        showbuttons: false
+        showbuttons: true
     }); 
     
     $('#note').editable(); 
@@ -85,26 +90,27 @@
         },
         validate: function(value) {
             if(value.city == '') return 'city is required!'; 
-        }
+        },
+        display: function(value) {
+            if(!value) {
+                $(this).empty();
+                return; 
+            }
+            var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').text(value.street).html() + ' st., bld. ' + $('<div>').text(value.building).html();
+            $(this).html(html); 
+        }         
     });              
-
-  //----------------------------------
-  // editableContainer() 
-  //---------------------------------- 
-  
-  /* 
-   $('#ec').editableContainer();
-  
-   $('#ec-show').click(function(e) {
-       e.stopPropagation();
-       $('#ec').editableContainer('option', 'value', 'abc');
-       $('#ec').editableContainer('show');
+         
+   $('#user .editable').on('hidden', function(e, reason){
+        if(reason === 'save' || reason === 'cancel') {
+            var $next = $(this).closest('tr').next().find('.editable');
+            $next.focus();
+            if($('#autoopen').is(':checked')) {
+                setTimeout(function() {
+                    $next.editable('show');
+                }, 300); 
+            } 
+        }
    });
-   
-   $('#ec-hide').click(function(e) {
-       e.stopPropagation();
-       $('#ec').editableContainer('hide');
-   });
-   */
    
 }());

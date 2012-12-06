@@ -28,3 +28,29 @@ Handlebars.registerHelper('source', function(options) {
   var out = '<pre class="prettyprint linenums">' + (Handlebars.Utils.escapeExpression(options.fn(this))).trim() + '</pre>';
   return new Handlebars.SafeString(out);
 });
+
+//since
+Handlebars.registerHelper('since', function() {
+    if(this.since) {
+       return new Handlebars.SafeString('<div style="text-align: right"><span class="muted" style="font-size: 0.8em">since '+ this.since +'</span></div>');
+    }
+});
+
+//new
+Handlebars.registerHelper('new', function(ver) {
+    if(this.since == ver) {
+       return new Handlebars.SafeString(' <sup><span class="label label-success">new</span></sup>');
+    }
+});
+
+
+//allows to pass parameters into partial
+Handlebars.registerHelper('include', function(templatename, options){  
+    var partial = Handlebars.partials[templatename];
+    if (typeof partial === "string") {
+        partial = Handlebars.compile(partial);
+    }  
+    var context = this;
+    for(var k in options.hash) { context[k]=options.hash[k]; }
+    return new Handlebars.SafeString(partial(context));
+});

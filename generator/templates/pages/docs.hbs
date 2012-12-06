@@ -4,7 +4,7 @@
 <div class="row">
     <div class="span12">
         <section id="gettingstarted">
-            <h1>Getting started</h1>    
+            <h1>Getting started</h1> 
             {{>getstarted}}
         </section>
         <hr>
@@ -12,15 +12,7 @@
             <h1>$().editable(options)</h1>
             <p>{{{classes.editable.description}}}</p>
             {{#with myClasses.editable}}
-            {{>classtabs}}
-            {{/with}}
-        </section>
-        <hr>
-        <section id="editableContainer">
-            <h1>$().editableContainer(options)</h1>
-            <p>{{{classes.editableContainer.description}}}</p>
-            {{#with myClasses.editableContainer}}
-            {{>classtabs}}
+            {{include "classtabs" project=../project}}
             {{/with}}
         </section>
         <hr>
@@ -41,7 +33,7 @@
          <section id="{{name}}">
             <h2>{{name}}</h2>
             <p>{{md description}}</p>
-            {{>inputtabs}}
+            {{include "inputtabs" project=../project}}
             </section>
         {{/each}}            
 

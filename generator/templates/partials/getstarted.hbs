@@ -59,10 +59,12 @@ POST /post
 }
 {{/source}}
 If server <strong>response</strong> status is <code>200 OK</code> - element will be updated in with new value. No response body required.<br>
-Any other status means error, form stays open and responseText is shown as error message.<br>
+Any other status means error, form stays open and <i>responseText</i> is shown as error message.<br>
 You can use <code>success</code> callback option for more complex iteraction (e.g. to process <code>json</code> response).<br><br>
 </li>
+<!--
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
 Container is attached to element only for <strong>positioning</strong>. You can show/hide it manually, set value via options and subscribe to events (save/cancel).
 </li>
+-->
 </ol>

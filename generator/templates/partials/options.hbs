@@ -4,7 +4,7 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -13,7 +13,7 @@
     <tbody>
       {{#each property}}
         <tr>
-            <td>{{name}}</td>
+            <td>{{name}}{{new ../project.version}}</td>
             <td>{{type}}</td>
             <td>{{default}}</td>
             <td>{{md description}}
@@ -22,6 +22,7 @@
                     {{{example}}}
                 {{/source}}
             {{/if}}
+            {{since}}
             </td>
         </tr> 
        {{/each}}                             

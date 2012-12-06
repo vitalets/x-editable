@@ -26,19 +26,21 @@ $(function(){
         this.init('address', options, Address.defaults);
     };
 
-    $.fn.editableform.utils.inherit(Address, $.fn.editableform.types.abstract);
+    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstract);
 
     $.extend(Address.prototype, {
          render: function() {
              Address.superclass.render.call(this);
-             
-            // this.$input.
          },
         
-        
+        //standard way to show value in element. Used only if display option not defined.
         value2html: function(value, element) {
-            var html = value.city + ', ' + value.street + ' st., bld. ' + value.building;
-            $(element).text(html); 
+            if(!value) {
+                $(element).empty();
+                return; 
+            }
+            var html = $('<div>').text(value.city).html() + ', ' + $('<div>').text(value.street).html() + ' st., bld. ' + $('<div>').text(value.building).html();
+            $(element).html(html); 
         },
         
         html2value: function(html) {        
@@ -59,11 +61,17 @@ $(function(){
         },
       
        /*
-        method for converting data before sent on server.
-        As jQuery correctly sends objects via ajax, you can just return value
+        converts value to string. 
+        It is used in internal comparing (not for sending to server).
        */
        value2str: function(value) {
-           return value;
+           var str = '';
+           if(value) {
+               for(var k in value) {
+                   str = str + k + ':' + value[k] + ';';  
+               }
+           }
+           return str;
        }, 
        
        /*
@@ -94,14 +102,14 @@ $(function(){
        }  
     });
 
-    Address.defaults = $.extend({}, $.fn.editableform.types.abstract.defaults, {
-        tpl: '<div><label><span>City: </span><input type="text" name="city" class="span2"></label></div>'+
-             '<div><label><span>Street: </span><input type="text" name="street" class="span2"></label></div>'+
-             '<div><label><span>Building: </span><input type="text" name="building" class="span1"></label></div>',
+    Address.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+        tpl: '<div><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
+             '<div><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
+             '<div><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
              
         inputclass: 'editable-address'
     });
 
-    $.fn.editableform.types.address = Address;
+    $.fn.editabletypes.address = Address;
 
 }(window.jQuery));

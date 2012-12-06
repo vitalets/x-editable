@@ -1,4 +1,4 @@
-/*! X-editable - v1.1.1 
+/*! X-editable - v1.2.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -21,6 +21,8 @@
    *display: inline;
 }
 
+
+
 .editable-input {
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
@@ -36,8 +38,9 @@
 }
 
 /*for jquery-ui buttons need set height to look more pretty*/
-.editable-buttons button.ui-button {
+.editable-buttons button.ui-button-icon-only {
    height: 24px; 
+   width: 30px;
 }
 
 .editableform-loading {
@@ -84,6 +87,10 @@
     margin: 0;
 }
 
+.editable-checklist label {
+    white-space: nowrap; 
+}
+
 .editable-clear {
    clear: both;
    font-size: 0.9em;
@@ -91,7 +98,7 @@
    text-align: right;
 }
 .editable-container {
-    max-width: none; /* without this rule poshytip does not stretch */
+    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
 }  
 
 .editable-container.popover {
@@ -102,6 +109,10 @@
 .editable-container.editable-inline {
     display: inline; 
     vertical-align: middle;
+}
+
+.editable-container.ui-widget {
+   font-size: inherit;  /* jqueryui widget font 1.1em too big, overwrite it */
 }
 .editable-click, 
 a.editable-click, 

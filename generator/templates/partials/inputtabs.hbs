@@ -5,7 +5,7 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="{{name}}-options">
-      {{>options}}
+      {{include "options" project=project}}
     </div>
     <div class="tab-pane" id="{{name}}-example">
      {{#source}}

@@ -89,7 +89,7 @@
         <a class="btn btn-success btn-large" style="width: 150px" href="demo.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
         <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
         </p>                    
-        <small class="muted">Current version 1.1.1 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
+        <small class="muted">Current version 1.2.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
     </div>
 </div>    
 
@@ -103,7 +103,7 @@
     <div class="span4">
         <h2>jQuery UI <small>(1.9+)</small></h2>
         <p>Starting from jQuery UI 1.9 it has <a href="http://jqueryui.com/tooltip" target="_blank">Tooltip plugin</a>. 
-        In combination with <a href="http://jqueryui.com/button" target="_blank">Button widget</a> it is very suitable for editable form and popup.
+        In combination with <a href="http://jqueryui.com/button" target="_blank">Button widget</a> it is suitable enough for editable form and popup.
         You can apply any theme of jQuery UI <a href="http://jqueryui.com/themeroller" target="_blank">Themeroller</a>.</p>
     </div>
     <div class="span4">
@@ -117,15 +117,15 @@
 <div class="row">
     <div class="span4">
         <p class="centered"><img src="assets/img/bootstrap.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.1.1.zip"><strong>Download</strong> (bootstrap build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.2.0.zip"><strong>Download</strong> (bootstrap build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jqueryui.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.1.1.zip"><strong>Download</strong> (jquery-ui build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.2.0.zip"><strong>Download</strong> (jquery-ui build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jquery.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.1.1.zip"><strong>Download</strong> (jquery build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.2.0.zip"><strong>Download</strong> (jquery build)</a></p>
     </div>
 </div>
 
@@ -135,7 +135,33 @@
 <div class="row">
     <div class="span4">
         <h2 class="muted">News</h2>
-        <p><i>30/11/2012</i><br>
+        <p><i>06/12/2012</i><br>
+    <strong>Version 1.2.0 released!</strong><br>
+    New version contains some <span class='label label-warning'>incompatible changes!</span><br>
+Please, look through <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> before updating.<br>
+Major improvements are:
+<ul>
+<li><strong>render</strong> event was replaced with <strong>display</strong> callback.
+It gives more flexibility to display value, even into another element</li>
+<li>all callback's scope was changed to <i>element</i>.
+Check your <code>validate</code>, <code>success</code> and etc methods for using <strong>this</strong> keyword
+</li>
+<li><strong>$.fn.editableform.types</strong> replaced with <strong>$.fn.editabletypes</strong>.
+It allows including inputs before editableform is loaded.
+Also $.fn.editableform.utils replaced with $.fn.editableutils</li>
+<li><strong>hidden</strong> event now has <i>reason</i> parameter allowing smart focusing between editable elements.
+See <a href='demo.html' target='_blank'>updated demo</a></li>
+<li>many other <a href='assets/x-editable/CHANGELOG.txt'>fixes</a></li>
+</ul>
+Thanks for your feedback and support!
+ 
+</p>
+        
+        
+        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
+        <div style="display: none" id="news"> 
+             
+          <p><i>30/11/2012</i><br>
     <strong>Version 1.1.1 released!</strong><br>
      <ul>
 <li>activate editable by <i>dblclick</i></li>
@@ -144,11 +170,7 @@
 <li>and some <a href='assets/x-editable/CHANGELOG.txt'>other changes</a></li>
 </ul>
  
-</p>
-        
-        
-        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
-        <div style="display: none" id="news"> 
+</p>             
              
           <p><i>27/11/2012</i><br>
     <strong>Version 1.1.0 released!</strong><br>
