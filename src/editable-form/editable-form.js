@@ -84,10 +84,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 //append form to container
                 this.$div.append(this.$form);
-
+                 
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-                //                this.$form.find('.editable-buttons button').eq(1).click($.proxy(this.cancel, this));
 
                 if(this.input.error) {
                     this.error(this.input.error);

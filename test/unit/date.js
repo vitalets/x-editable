@@ -14,8 +14,6 @@ $(function () {
     }
      
     asyncTest("container should contain datepicker with value and save new entered date", function () {
-        expect(9);
-        
         $.fn.editabletypes.date.defaults.datepicker.weekStart = 1;
         
         var d = '15.05.1984',
@@ -39,8 +37,10 @@ $(function () {
         e.click();
         var p = tip(e);
         ok(p.find('.datepicker').is(':visible'), 'datepicker exists');
+        ok(p.find('.datepicker').find('.datepicker-days').is(':visible'), 'datepicker days visible');        
         
         equal(frmt(e.data('editable').value, f), d, 'day set correct');
+        ok(p.find('td.day.active').is(':visible'), 'active day is visible');
         equal(p.find('td.day.active').text(), 15, 'day shown correct');
         equal(p.find('th.dow').eq(0).text(), 'Mo', 'weekStart correct');
 
