@@ -92,11 +92,14 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);
                     this.input.$input.attr('disabled', true);
+                    //prevent form from submitting
+                    this.$form.submit(function(e){ e.preventDefault(); });
                 } else {
                     this.error(false);
                     this.input.$input.removeAttr('disabled');
                     this.$form.find('.editable-submit').removeAttr('disabled');
                     this.input.value2input(this.value);
+                    //attach submit handler
                     this.$form.submit($.proxy(this.submit, this));
                 }
 
