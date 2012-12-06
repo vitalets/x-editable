@@ -62,7 +62,7 @@
 //        equal(e3.data('editable').lastSavedValue, v, 'lastSavedValue taken from text correctly (escaped)');             
       }); 
       
-      test("should take container's title from json options", function () {
+      test("container's title and placement from json options", function () {
         //do not test inline  
         if($.fn.editableContainer.Constructor.prototype.containerName === 'editableform') {
             expect(0);
