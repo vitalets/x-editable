@@ -104,11 +104,12 @@
    $('#user .editable').on('hidden', function(e, reason){
         if(reason === 'save' || reason === 'cancel') {
             var $next = $(this).closest('tr').next().find('.editable');
-            $next.focus();
             if($('#autoopen').is(':checked')) {
                 setTimeout(function() {
                     $next.editable('show');
                 }, 300); 
+            } else {
+                $next.focus();
             } 
         }
    });
