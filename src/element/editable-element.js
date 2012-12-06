@@ -20,9 +20,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 doAutotext, 
                 finalize;
 
-            //initialization flag    
-            this.isInit = true;    
-                
             //editableContainer must be defined
             if(!$.fn.editableContainer) {
                 $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editable-popover.js)');
@@ -71,13 +68,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     //stop propagation not required anymore because in document click handler it checks event target
                     //e.stopPropagation();
                     
-                    //mark event with special flag: it will not be processed in document click handler
-                    /*
-                    if(e.type === 'click' && e.target !== e.currentTarget) {
-                        $(e.target).data('editable-element', e.currentTarget);
-                    }
-                    */
-                    
                     if(this.options.toggle === 'mouseenter') {
                         //for hover only show container
                         this.show(); 
@@ -102,20 +92,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     this.enable(); 
                 }
                /**        
-               Fired each time when element's text is rendered. Occurs on initialization and on each update of value.
-               Can be used to customize display of value.
+               Fired when element was initialized by editable method.
                               
-               @event render 
+               @event init 
                @param {Object} event event object
                @param {Object} editable editable instance
-               @example
-               $('#action').on('render', function(e, editable) {
-                    var colors = {0: "gray", 1: "green", 2: "blue", 3: "red"};
-                    $(this).css("color", colors[editable.value]);  
-               });                  
                **/                  
-                this.$element.triggerHandler('render', this);
-                this.isInit = false;    
+                this.$element.triggerHandler('init', this);
             }, this));
         },
 
@@ -361,7 +344,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             $.when(this.render())
             .then($.proxy(function() {
                 this.handleEmpty();
-                this.$element.triggerHandler('render', this);                        
             }, this));
         },
         

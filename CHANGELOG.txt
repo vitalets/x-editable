@@ -4,6 +4,8 @@ X-editable changelog
 
 Version 1.2.0 wip
 ----------------------------  
+[enh] 'init' event was added due to removal of render event (vitalets)  
+[enh] 'render' event was removed, use 'display' callback instead (vitalets)  
 [enh] 'checklist' submit value as array, not comma separated string (vitalets)  
 [enh] 'checklist' was refactored: options 'viewseparator', 'limit', 'limitText' are supressed by 'display' callback (vitalets)  
 [enh] new option: 'display' callback. Makes far more flexible rendering value into element's text. (vitalets)  
