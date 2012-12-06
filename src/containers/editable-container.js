@@ -80,8 +80,10 @@ Applied as jQuery method.
             .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this),
-                cancel: $.proxy(this.cancel, this),
-                show: $.proxy(this.setPosition, this), //re-position container every time form is shown (after loading state)
+                cancel: $.proxy(function(){
+                   this.hide('cancel'); 
+                }, this),
+                show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
                     /**        
@@ -144,8 +146,9 @@ Applied as jQuery method.
         /**
         Hides container with form
         @method hide()
+        @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
         **/         
-        hide: function() {  
+        hide: function(reason) {  
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
                 return;
             }
@@ -155,9 +158,17 @@ Applied as jQuery method.
             Fired when container was hidden. It occurs on both save or cancel.
 
             @event hidden 
-            @param {Object} event event object
+            @param {object} event event object
+            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+            @example
+            $('#username').on('hidden', function(e, reason) {
+                if(reason === 'save' || reason === 'cancel') {
+                    //auto-open next editable
+                    $(this).closest('tr').next().find('.editable').editable('show');
+                } 
+            });            
             **/             
-            this.$element.triggerHandler('hidden');   
+            this.$element.triggerHandler('hidden', reason);   
         },
         
         /* internal hide method. To be overwritten in child classes */
@@ -186,23 +197,8 @@ Applied as jQuery method.
             //tbd in child class
         },
 
-        cancel: function() {     
-            if(this.options.autohide) {
-                this.hide();
-            }
-            /**        
-            Fired when form was cancelled by user
-            
-            @event cancel 
-            @param {Object} event event object
-            **/             
-            this.$element.triggerHandler('cancel');
-        },
-
         save: function(e, params) {
-            if(this.options.autohide) {
-                this.hide();
-            }
+            this.hide('save');
             /**        
             Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
@@ -263,7 +259,7 @@ Applied as jQuery method.
         */
         closeOthers: function(element) {
             $('.editable-open').each(function(i, el){
-                //do nothing with passed element
+                //do nothing with passed element and it's children
                 if(el === element || $(el).find(element).length) {
                     return;
                 }
@@ -277,7 +273,7 @@ Applied as jQuery method.
                 }
                 
                 if(ec.options.onblur === 'cancel') {
-                    $el.data('editableContainer').hide();
+                    $el.data('editableContainer').hide('onblur');
                 } else if(ec.options.onblur === 'submit') {
                     $el.data('editableContainer').tip().find('form').submit();
                 }

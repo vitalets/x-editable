@@ -79,9 +79,9 @@ $(function () {
         e.editable();
     });      
   
-     asyncTest("events: shown / cancel / hidden", function () {
-        expect(3);
-        var val = '1',
+     asyncTest("events: shown / hidden (reason: cancel, onblur, manual)", function () {
+        expect(11);
+        var val = '1', test_reason, 
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('shown', function(event) {
@@ -89,14 +89,8 @@ $(function () {
              equal(editable.value, val, 'shown triggered, value correct');
         });
         
-        e.on('cancel', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'cancel triggered'); 
-        });     
-        
-        e.on('hidden', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'hidden triggered'); 
+        e.on('hidden', function(event, reason) {
+             ok((reason === test_reason) || (test_reason === 'manual' && reason === undefined), 'hidden triggered, reason ok'); 
         });            
         
         e.editable({
@@ -107,28 +101,42 @@ $(function () {
         
         setTimeout(function() {
              var p = tip(e);
-             p.find('button[type=button]').click(); 
-             setTimeout(function() {
-                 e.remove();    
-                 start();  
-             }, timeout);
+             
+             test_reason = 'cancel'
+             p.find('button[type=button]').click();  //cancel
+             ok(!p.is(':visible'), 'popover closed');
+
+             test_reason = 'onblur'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             e.parent().click();
+             ok(!p.is(':visible'), 'popover closed');
+             
+             test_reason = 'manual'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             e.editable('hide');
+             ok(!p.is(':visible'), 'popover closed');             
+             
+             e.remove();    
+             start();  
         }, timeout);                                        
         
      });    
      
-     asyncTest("event: save / hidden", function () {
+     asyncTest("event: save / hidden (reason: save)", function () {
         expect(2);
         var val = '1',
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('save', function(event, params) {
-            var editable = $(this).data('editable');
             equal(params.newValue, 2, 'save triggered, value correct');
         });
         
-        e.on('hidden', function(event) {
-             var editable = $(this).data('editable');
-             ok(true, 'hidden triggered'); 
+        e.on('hidden', function(event, reason) {
+            equal(reason, 'save', 'hidden triggered, reason ok'); 
         });         
         
         e.editable({

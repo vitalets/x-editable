@@ -4,6 +4,9 @@ X-editable changelog
 
 Version 1.2.0 wip
 ----------------------------  
+[enh] editableContainer removed from docs as not widely used (vitalets)  
+[enh] editableContainer: removed 'autohide' option and 'cancel' event. Use 'hidden' event instead (vitalets)  
+[enh] 'hidden' event: added param 'reason' that points to reason caused hiding (vitalets)  
 [enh] 'select' submit by enter (vitalets)  
 [bug #37] fix incorrectly shown datepicker in jquery 1.7.1 + webkit (vitalets)  
 [enh] added url param 'jquery' to run tests in different versions of jquery, e.g. '&jquery=1.7.2' (vitalets)  

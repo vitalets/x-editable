@@ -246,15 +246,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //init editableContainer: popover, tooltip, inline, etc..
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
-                    value: this.value,
-                    autohide: false //element will take care to show/hide container. Otherwise hide() will be called twice
+                    value: this.value
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on({
-                    save: $.proxy(this.save, this),
-                    cancel: $.proxy(function(){
-                            this.hide();
-                    }, this)
+                    save: $.proxy(this.save, this)
                 });
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
@@ -293,13 +289,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         */          
         save: function(e, params) {
             //if url is not user's function and value was not sent to server and value changed --> mark element with unsaved css. 
-            if(typeof this.options.url !== 'function' && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
+            if(typeof this.options.url !== 'function' && this.options.display !== false && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
                 this.$element.addClass('editable-unsaved');
             } else {
                 this.$element.removeClass('editable-unsaved');
             }
             
-            this.hide();
+           // this.hide();
             this.setValue(params.newValue);
             
             /**        
