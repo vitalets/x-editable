@@ -4,6 +4,8 @@ X-editable changelog
 
 Version 1.2.0 wip
 ----------------------------  
+[enh] added url param 'jquery' to run tests in different versions of jquery, e.g. '&jquery=1.7.1' (vitalets)  
+[enh] 'enablefocus' option removed. More efficient to use 'save/hide' events to set focus to any element (vitalets)  
 [enh] 'init' event was added due to removal of render event (vitalets)  
 [enh] 'render' event was removed, use 'display' callback instead (vitalets)  
 [enh] 'checklist' submit value as array, not comma separated string (vitalets)  

@@ -68,43 +68,7 @@ $(function () {
         ok(!('dob' in values), 'date value not present') ;
      });    
      
-    /* 
-    //deprecated in 2.0
-      asyncTest("'update' event", function () {
-        expect(2);
-        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable(),
-            e_nopk = $('<a href="#" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable(),
-            newVal = 'xyt';
-        
-        e.on('update', function() {
-             equal($(this).data('editable').value, newVal, 'triggered update after submit');
-        });
-
-        e_nopk.on('update', function() {
-             equal($(this).data('editable').value, newVal, 'triggered update after no-submit');
-        });
-
-        e_nopk.click();
-        var p = e_nopk.data('popover').$tip;
-        p.find('input').val(newVal);
-        p.find('form').submit();        
-                              
-        e.click();
-        p = tip(e);
-        p.find('input').val(newVal);
-        p.find('form').submit();
-                
-        setTimeout(function() {
-           e.remove();    
-           e_nopk.remove();    
-           start();  
-        }, timeout);                     
-      });     
-     */
-     
-     /* 
-     //deprecated in 2.0
-     test("'init' event", function () {
+    test("'init' event", function () {
         expect(1);
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture');
         
@@ -113,71 +77,8 @@ $(function () {
         });
 
         e.editable();
-      });      
-     */
-      
-     asyncTest("'render' event for text", function () {
-        expect(4);
-        var val = 'afas',
-            e = $('<a href="#" data-pk="1" data-type="text" data-url="post.php" data-name="text1">'+val+'</a>').appendTo(fx),
-            isInit = true;
-        
-        e.on('render', function(e, editable) {
-             equal(editable.isInit, isInit, 'isInit flag correct');
-             equal(editable.value, val, 'value correct');
-        });
-
-        e.editable();   
-        
-        isInit = false;
-        val = '123';
-        
-        e.click();
-        var p = tip(e);
-        p.find('input[type=text]').val(val);
-        p.find('form').submit(); 
-        
-        setTimeout(function() {
-           e.remove();    
-           start();  
-        }, timeout);                     
-        
-     });    
-     
-    asyncTest("'render' event for select", function () {
-        expect(4);
-        var val = '1',
-            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text1" data-value="'+val+'"></a>').appendTo(fx),
-            isInit = true;
-        
-        e.on('render', function(e, editable) {
-             equal(editable.isInit, isInit, 'isInit flag correct');
-             equal(editable.value, val, 'init triggered, value correct');
-        });
-
-        e.editable({
-            source: 'groups.php',
-            autotext: 'always'
-        });
-        
-        setTimeout(function() {
-            isInit = false;
-            val = '3';
-            
-            e.click();
-            var p = tip(e);
-            p.find('select').val(val);
-            p.find('form').submit(); 
-            
-            setTimeout(function() {
-               e.remove();    
-               start();  
-            }, timeout);  
-        }, timeout);                                        
-        
-     });  
-              
-     
+    });      
+  
      asyncTest("events: shown / cancel / hidden", function () {
         expect(3);
         var val = '1',

@@ -264,11 +264,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {  
                 this.container.hide();
             }
-                
-            //return focus on element
-            if (this.options.enablefocus && this.options.toggle === 'click') {
-                this.$element.focus();
-            }   
         },
         
         /**
@@ -542,15 +537,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default 'auto'
         **/          
         autotext: 'auto', 
-        /**
-        Whether to return focus on element after form is closed. 
-        This allows fully keyboard input.
-
-        @property enablefocus 
-        @type boolean
-        @default false
-        **/          
-        enablefocus: false,
         /**
         Initial value of input. Taken from <code>data-value</code> or element's text.
 

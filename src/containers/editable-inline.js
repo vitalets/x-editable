@@ -43,10 +43,6 @@
         innerHide: function () {
             this.$form.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
-                //return focus on element
-                if (this.options.enablefocus) {
-                    this.$element.focus();
-                }  
             }, this)); 
         },
         
@@ -57,8 +53,7 @@
 
     //defaults
     $.fn.editableContainer.defaults = $.extend({}, $.fn.editableContainer.defaults, {
-        anim: 'fast',
-        enablefocus: false
+        anim: 'fast'
     });    
 
 

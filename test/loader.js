@@ -15,7 +15,6 @@ define(function () {
                 f = params.f, 
                 c = params.c,
                 shim = {
-                'editable-form/editable-form-utils': ['jquery'],
                 'containers/editable-container': {
                     deps: ['require', 'editable-form/editable-form-utils', 'editable-form/editable-form'],
                     init: function(require) {

@@ -445,40 +445,5 @@
            start();  
         }, timeout);                     
       });        
-      
-         
-      
-      
-      //unfortunatly, testing this feature does not always work in browsers. Tested manually.
-      /*
-       test("enablefocus option", function () {
-            // focusing not passed in phantomjs
-            if($.browser.webkit) {
-                ok(true, 'skipped in PhantomJS');
-                return;
-            }
-            
-            var e = $('<a href="#">abc</a>').appendTo('#qunit-fixture').editable({
-              enablefocus: true
-            }),
-             e1 = $('<a href="#">abcd</a>').appendTo('#qunit-fixture').editable({
-              enablefocus: false
-            });            
-            
-            e.click()
-            var p = tip(e);
-            ok(p.is(':visible'), 'popover 1 visible');
-            p.find('button[type=button]').click();
-            ok(!p.is(':visible'), 'popover closed');            
-            ok(e.is(':focus'), 'element 1 is focused');            
-            
-            e1.click()
-            p = tip(e1);
-            ok(p.is(':visible'), 'popover 2 visible');
-            p.find('button[type=button]').click();
-            ok(!p.is(':visible'), 'popover closed');            
-            ok(!e1.is(':focus'), 'element 2 is not focused');            
-      });
-     */
           
 }(jQuery));  

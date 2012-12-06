@@ -1,12 +1,13 @@
-require(["jquery", "loader"], function($, loader) {
+//detect version of jquery from url param, e.g. 'jquery=1.7.2' 
+var jqver = decodeURIComponent((new RegExp('[?|&]' + 'jquery' + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+    jqurl = jqver ? "http://ajax.googleapis.com/ajax/libs/jquery/"+jqver+"/jquery.min.js" : "libs/jquery/jquery-1.8.2.min.js";
+    
+require(["loader", jqurl], function(loader) {
 
     requirejs.config(loader.getConfig("../src"));
    
-    //loader.loadCss('libs/qunit/qunit-1.10.0.css');
-   
     require(['element/editable-element', 
-             'test/libs/mockjax/jquery.mockjax',
-      //       'test/libs/qunit/qunit-1.10.0'
+             'test/libs/mockjax/jquery.mockjax'
              ], 
     function() {
         //disable effects
