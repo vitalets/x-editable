@@ -7,7 +7,7 @@ It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/boots
 See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
-When creating issues please provide jsFiddle example. You can just fork [this fiddle](http://jsfiddle.net/xBB5x/5/) as starting point.  
+When creating issues please provide jsFiddle example. You can easily fork one of templates: [bootstrap](http://jsfiddle.net/xBB5x/25/), [jqueryui](http://jsfiddle.net/xBB5x/24/), [plain](http://jsfiddle.net/xBB5x/23/).  
 Your feedback is very appreciated!
 
 ## Contribution
@@ -19,7 +19,7 @@ A few steps how to start contributing:
 **x-editable**  
  | -- **lib** (repo related to <code>dev</code> and <code>master</code> branches)  
  | -- **gh-pages** (repo related to <code>gh-pages</code> branch for docs & demo)  
- | -- **playground** (simple node-server and html page for testing, [playground.zip](https://github.com/downloads/vitalets/x-editable/playground.zip))      
+ | -- **playground** (simple node-server and html page for testing, [playground_1.2.zip](https://github.com/downloads/vitalets/x-editable/playground_1.2.zip), **updated in 1.2.0!**)      
 
 To make it easy follow this script ( _assuming you have [nodejs](http://nodejs.org) installed_ ).
 Please replace <code>&lt;your-github-name&gt;</code> with your name:
@@ -43,7 +43,7 @@ npm install
 cd ..
 
 #playground 
-#download playground.zip from https://github.com/downloads/vitalets/x-editable/playground.zip
+#download playground.zip from https://github.com/downloads/vitalets/x-editable/playground_1.2.zip
 unzip playground.zip
 cd playground
 npm install 

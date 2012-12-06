@@ -1,4 +1,26 @@
 [
+
+{  "date": "06/12/2012",
+    "header": "Version 1.2.0 released!",
+    "content": "New version contains some <span class='label label-warning'>incompatible changes!</span><br>\n
+        Please, look through <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> before updating.<br>\n
+        Major improvements are:\n
+        <ul>\n
+            <li><strong>render</strong> event was replaced with <strong>display</strong> callback.\n
+               It gives more flexibility to display value, even into another element</li>\n
+            <li>all callback's scope was changed to <i>element</i>.\n
+               Check your <code>validate</code>, <code>success</code> and etc methods for using <strong>this</strong> keyword\n</li>\n 
+            <li><strong>$.fn.editableform.types</strong> replaced with <strong>$.fn.editabletypes</strong>.\n
+                 It allows including inputs before editableform is loaded.\n
+                 Also $.fn.editableform.utils replaced with $.fn.editableutils</li>\n
+            <li><strong>hidden</strong> event now has <i>reason</i> parameter allowing smart focusing between editable elements.\n
+                 See <a href='demo.html' target='_blank'>updated demo</a></li>\n
+            <li>many other <a href='assets/x-editable/CHANGELOG.txt'>fixes</a></li>\n                 
+        </ul>\n
+        Thanks for your feedback and support!\n
+     "
+ }, 
+
  {  "date": "30/11/2012",
     "header": "Version 1.1.1 released!",
     "content": " <ul>\n

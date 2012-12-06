@@ -87,7 +87,6 @@
             <ul class="nav">
                 <li><a href="#gettingstarted">getting started</a></li>
                 <li><a href="#editable">$().editable</a></li>
-                <li><a href="#editableContainer">$().editableContainer</a></li>
                 <li class="dropdown">
                   <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
                   <ul class="dropdown-menu">
@@ -130,7 +129,7 @@
 <div class="row">
     <div class="span12">
         <section id="gettingstarted">
-            <h1>Getting started</h1>    
+            <h1>Getting started</h1> 
             <ol>
 <li>Decide which core library you want to use: 
 <ul>
@@ -176,12 +175,14 @@ Open your page and click on element. You will see form that will submit ajax req
     value: &#x27;superuser!&#x27; //new value
 }</pre>
 If server <strong>response</strong> status is <code>200 OK</code> - element will be updated in with new value. No response body required.<br>
-Any other status means error, form stays open and responseText is shown as error message.<br>
+Any other status means error, form stays open and <i>responseText</i> is shown as error message.<br>
 You can use <code>success</code> callback option for more complex iteraction (e.g. to process <code>json</code> response).<br><br>
 </li>
+<!--
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
 Container is attached to element only for <strong>positioning</strong>. You can show/hide it manually, set value via options and subscribe to events (save/cancel).
 </li>
+-->
 </ol>
         </section>
         <hr>
@@ -194,7 +195,6 @@ Container is attached to element only for <strong>positioning</strong>. You can 
     <li><a href="#editable-methods" data-toggle="tab">Methods</a></li>
     <li><a href="#editable-events" data-toggle="tab">Events</a></li>
 </ul>
-
 <div class="tab-content">
     <div class="tab-pane active" id="editable-options">
         <p>All options can be defined as <code>data-*</code> attributes.
@@ -203,7 +203,7 @@ Please, see also <a href="#inputs">input dependent options</a>.
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -219,6 +219,7 @@ Please, see also <a href="#inputs">input dependent options</a>.
 List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.com/jQuery.ajax</a></p>
 
             
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div>
             </td>
         </tr> 
        
@@ -226,9 +227,10 @@ List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.co
             <td>autotext</td>
             <td>string</td>
             <td>&#x27;auto&#x27;</td>
-            <td><p>Allows to automatically set element&#39;s text based on it&#39;s value. Can be <code>auto|always|never</code>. Usefull for select and date.
+            <td><p>Allows to automatically set element&#39;s text based on it&#39;s value. Can be <code>auto|always|never</code>. Useful for select and date.
 For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> and element&#39;s value set to <code>1</code>, it&#39;s html will be automatically set to <code>&#39;a&#39;</code>.<br><code>auto</code> - text will be automatically set only if element is empty.<br><code>always|never</code> - always(never) try to set element&#39;s text.</p>
 
+            
             
             </td>
         </tr> 
@@ -240,6 +242,23 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td><p>Sets disabled state of editable</p>
 
             
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>display <sup><span class="label label-success">new</span></sup></td>
+            <td>function|boolean</td>
+            <td>null</td>
+            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s value2html() will be called.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will no change.<br>Runs under element&#39;s scope.<br>Second parameter <strong>sourceData</strong> is passed for inputs with source (select, checklist).</p>
+
+            
+                <pre class="prettyprint linenums">display: function(value, sourceData) {
+    var escapedValue = $(&#x27;&lt;div&gt;&#x27;).text(value).html();
+    $(this).html(&#x27;&lt;b&gt;&#x27;+escapedValue+&#x27;&lt;/b&gt;&#x27;);
+}</pre>
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
         </tr> 
        
@@ -250,16 +269,6 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td><p>Text shown when element is empty.</p>
 
             
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>enablefocus</td>
-            <td>boolean</td>
-            <td>false</td>
-            <td><p>Wether to return focus on element after form is closed. 
-This allows fully keyboard input.</p>
-
             
             </td>
         </tr> 
@@ -271,6 +280,7 @@ This allows fully keyboard input.</p>
             <td><p>Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute</p>
 
             
+            
             </td>
         </tr> 
        
@@ -281,6 +291,7 @@ This allows fully keyboard input.</p>
             <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.<br>Setting <code>ignore</code> allows to have several containers open.</p>
 
             
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div>
             </td>
         </tr> 
        
@@ -295,6 +306,7 @@ This allows fully keyboard input.</p>
     return { a: 1 };
 }</pre>
             
+            
             </td>
         </tr> 
        
@@ -303,8 +315,9 @@ This allows fully keyboard input.</p>
             <td>string|object|function</td>
             <td>null</td>
             <td><p>Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: &#39;en&#39;}</code>.
-Can be calculated dinamically via function.</p>
+Can be calculated dynamically via function.</p>
 
+            
             
             </td>
         </tr> 
@@ -316,6 +329,18 @@ Can be calculated dinamically via function.</p>
             <td><p>Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.</p>
 
             
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>savenochange <sup><span class="label label-success">new</span></sup></td>
+            <td>boolean</td>
+            <td>false</td>
+            <td><p>Whether to save or cancel value when it was not changed but form was submitted</p>
+
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
         </tr> 
        
@@ -327,6 +352,7 @@ Can be calculated dinamically via function.</p>
 When &#39;auto&#39; data will be sent on server only if pk defined, otherwise new value will be stored in element.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -334,9 +360,15 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>showbuttons</td>
             <td>boolean</td>
             <td>true</td>
-            <td><p>Wether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
+            <td><p>Whether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
 
             
+                <pre class="prettyprint linenums">ajaxOptions: {
+    method: &#x27;PUT&#x27;,
+    dataType: &#x27;xml&#x27;
+}</pre>
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div>
             </td>
         </tr> 
        
@@ -344,13 +376,14 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>success</td>
             <td>function</td>
             <td>null</td>
-            <td><p>Success callback. Called when value successfully sent on server and <strong>response status = 200</strong>.<br>Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
+            <td><p>Success callback. Called when value successfully sent on server and <strong>response status = 200</strong>.<br>Useful to work with json response. For example, if your backend response can be <code>{success: true}</code>
 or <code>{success: false, msg: &quot;server error&quot;}</code> you can check it inside this callback.<br>If it returns <strong>string</strong> - means error occured and string is shown as error message.<br>If it returns <strong>object like</strong> <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.<br>Otherwise newValue simply rendered into element.</p>
 
             
                 <pre class="prettyprint linenums">success: function(response, newValue) {
     if(!response.success) return response.msg;
 }</pre>
+            
             
             </td>
         </tr> 
@@ -368,6 +401,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
     $(&#x27;#username&#x27;).editable(&#x27;toggle&#x27;);
 });</pre>
             
+            
             </td>
         </tr> 
        
@@ -377,6 +411,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>&#x27;text&#x27;</td>
             <td><p>Type of input. Can be <code>text|textarea|select|date|checklist</code> and more</p>
 
+            
             
             </td>
         </tr> 
@@ -397,6 +432,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
     }
 }</pre>
             
+            
             </td>
         </tr> 
        
@@ -413,6 +449,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
     }
 }</pre>
             
+            
             </td>
         </tr> 
        
@@ -422,6 +459,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>element&#x27;s text</td>
             <td><p>Initial value of input. Taken from <code>data-value</code> or element&#39;s text.</p>
 
+            
             
             </td>
         </tr> 
@@ -455,12 +493,12 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
 </td>
             <td>jQuery method to initialize editable element.
             
-            <pre class="prettyprint linenums">
-$('#username').editable({
-    type: 'text',
-    url: '/post',
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).editable({
+    type: &#x27;text&#x27;,
+    url: &#x27;/post&#x27;,
     pk: 1
 });</pre>
+            
             
             </td>
         </tr> 
@@ -473,6 +511,7 @@ $('#username').editable({
 </td>
             <td>Activates input of visible container (e.g. set focus)
             
+            
             </td>
         </tr> 
        
@@ -483,6 +522,7 @@ $('#username').editable({
 
 </td>
             <td>Disables editable
+            
             
             </td>
         </tr> 
@@ -495,6 +535,7 @@ $('#username').editable({
 </td>
             <td>Enables editable
             
+            
             </td>
         </tr> 
        
@@ -506,13 +547,13 @@ $('#username').editable({
 </td>
             <td>Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned
             
-            <pre class="prettyprint linenums">
-$('#username, #fullname').editable('validate');
+                <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;validate&#x27;);
 // possible result:
 {
-username: "superuser",
-fullname: "John"
+username: &quot;superuser&quot;,
+fullname: &quot;John&quot;
 }</pre>
+            
             
             </td>
         </tr> 
@@ -524,6 +565,7 @@ fullname: "John"
 
 </td>
             <td>Hides container with form
+            
             
             </td>
         </tr> 
@@ -546,8 +588,8 @@ fullname: "John"
 </td>
             <td>Sets new option
             
-            <pre class="prettyprint linenums">
-$('.editable').editable('option', 'pk', 2);</pre>
+                <pre class="prettyprint linenums">$(&#x27;.editable&#x27;).editable(&#x27;option&#x27;, &#x27;pk&#x27;, 2);</pre>
+            
             
             </td>
         </tr> 
@@ -561,7 +603,7 @@ $('.editable').editable('option', 'pk', 2);</pre>
         
     </li>
     
-    <li><strong>convertStr</strong> <i>Boolean</i> wether to convert value from string to internal format
+    <li><strong>convertStr</strong> <i>Boolean</i> whether to convert value from string to internal format
         
     </li>
     
@@ -569,6 +611,7 @@ $('.editable').editable('option', 'pk', 2);</pre>
 
 </td>
             <td>Sets new value of editable
+            
             
             </td>
         </tr> 
@@ -578,7 +621,7 @@ $('.editable').editable('option', 'pk', 2);</pre>
             <td>
 <ul>
     
-    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
+    <li><strong>closeAll</strong> <i>Boolean</i> Whether to close all other editable containers when showing this one. Default true.
         
     </li>
     
@@ -586,6 +629,7 @@ $('.editable').editable('option', 'pk', 2);</pre>
 
 </td>
             <td>Shows container with form
+            
             
             </td>
         </tr> 
@@ -603,6 +647,8 @@ $('.editable').editable('option', 'pk', 2);</pre>
             
             <li><strong>data</strong> <i>Object</i> additional data to submit
             
+            <li><strong>ajaxOptions</strong> <i>Object</i> additional ajax options
+            
             <li><strong>error(obj)</strong> <i>Function</i> error handler (called on both client-side and server-side validation errors)
             
             <li><strong>success(obj)</strong> <i>Function</i> success handler
@@ -617,6 +663,7 @@ $('.editable').editable('option', 'pk', 2);</pre>
             <td>This method collects values from several editable elements and submit them all to server. 
 It is designed mainly for <a href="#newrecord">creating new records</a>.
             
+            
             </td>
         </tr> 
        
@@ -625,7 +672,7 @@ It is designed mainly for <a href="#newrecord">creating new records</a>.
             <td>
 <ul>
     
-    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
+    <li><strong>closeAll</strong> <i>Boolean</i> Whether to close all other editable containers when showing this one. Default true.
         
     </li>
     
@@ -633,6 +680,7 @@ It is designed mainly for <a href="#newrecord">creating new records</a>.
 
 </td>
             <td>Toggles container visibility (show / hide)
+            
             
             </td>
         </tr> 
@@ -645,6 +693,7 @@ It is designed mainly for <a href="#newrecord">creating new records</a>.
 </td>
             <td>Toggles enabled / disabled state of editable element
             
+            
             </td>
         </tr> 
        
@@ -656,13 +705,13 @@ It is designed mainly for <a href="#newrecord">creating new records</a>.
 </td>
             <td>Runs client-side validation for all matched editables
             
-            <pre class="prettyprint linenums">
-$('#username, #fullname').editable('validate');
+                <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;validate&#x27;);
 // possible result:
 {
-  username: "username is requied",
-  fullname: "fullname should be minimum 3 letters length"
+  username: &quot;username is required&quot;,
+  fullname: &quot;fullname should be minimum 3 letters length&quot;
 }</pre>
+            
             
             </td>
         </tr> 
@@ -682,23 +731,6 @@ $('#username, #fullname').editable('validate');
     <tbody>
       
         <tr>
-            <td>cancel</td>
-            <td>
-<ul>
-    
-    <li><strong>event</strong> <i>Object</i> event object
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Fired when form was cancelled by user
-            
-            </td>
-        </tr> 
-       
-        <tr>
             <td>hidden</td>
             <td>
 <ul>
@@ -707,16 +739,28 @@ $('#username, #fullname').editable('validate');
         
     </li>
     
+    <li><strong>reason</strong> <i>String</i> Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+        
+    </li>
+    
 </ul>
 
 </td>
             <td>Fired when container was hidden. It occurs on both save or cancel.
             
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;hidden&#x27;, function(e, reason) {
+    if(reason === &#x27;save&#x27; || reason === &#x27;cancel&#x27;) {
+        //auto-open next editable
+        $(this).closest(&#x27;tr&#x27;).next().find(&#x27;.editable&#x27;).editable(&#x27;show&#x27;);
+    } 
+});</pre>
+            
+            
             </td>
         </tr> 
        
         <tr>
-            <td>render</td>
+            <td>init <sup><span class="label label-success">new</span></sup></td>
             <td>
 <ul>
     
@@ -731,15 +775,9 @@ $('#username, #fullname').editable('validate');
 </ul>
 
 </td>
-            <td>Fired each time when element's text is rendered. Occurs on initialization and on each update of value.
-Can be used for display customization.
+            <td>Fired when element was initialized by editable method.
             
-            <pre class="prettyprint linenums">
-$('#action').on('render', function(e, editable) {
-     var colors = {0: "gray", 1: "green", 2: "blue", 3: "red"};
-     $(this).css("color", colors[editable.value]);  
-});                  </pre>
-            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
         </tr> 
        
@@ -769,16 +807,16 @@ $('#action').on('render', function(e, editable) {
 </td>
             <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
-            <pre class="prettyprint linenums">
-$('#username').on('save', function(e, params) {
-    //assuming server response: '{success: true}'
-    var pk = $(this).data('editable').options.pk;
-    if(params.response && params.response.success) {
-        alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;save&#x27;, function(e, params) {
+    //assuming server response: &#x27;{success: true}&#x27;
+    var pk = $(this).data(&#x27;editable&#x27;).options.pk;
+    if(params.response &amp;&amp; params.response.success) {
+        alert(&#x27;value: &#x27; + params.newValue + &#x27; with pk: &#x27; + pk + &#x27; saved!&#x27;);
     } else {
-        alert('error!'); 
+        alert(&#x27;error!&#x27;); 
     } 
 });</pre>
+            
             
             </td>
         </tr> 
@@ -797,453 +835,11 @@ $('#username').on('save', function(e, params) {
 </td>
             <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
             
-            <pre class="prettyprint linenums">
-$('#username').on('shown', function() {
-     var $tip = $(this).data('editableContainer').tip();
-     $tip.find('input').val('overwriting value of input..');
-});                     </pre>
-            
-            </td>
-        </tr> 
-                                    
-    </tbody>
-</table>
-    </div>
-</div>
-            
-        </section>
-        <hr>
-        <section id="editableContainer">
-            <h1>$().editableContainer(options)</h1>
-            <p>Attaches stand-alone container with editable-form to HTML element. Element is used only for positioning, value is not stored anywhere.<br>
-This method applied internally in <code>$().editable()</code>. You should subscribe on it's events (save / cancel) to get profit of it.<br>
-Final realization can be different: bootstrap-popover, jqueryui-tooltip, poshytip, inline-div. It depends on which js file you include.<br>
-Applied as jQuery method.</p>
-            
-            <ul class="nav nav-tabs" id="editableContainer-tabs">
-    <li class="active"><a href="#editableContainer-options" data-toggle="tab">Options</a></li>
-    <li><a href="#editableContainer-methods" data-toggle="tab">Methods</a></li>
-    <li><a href="#editableContainer-events" data-toggle="tab">Events</a></li>
-</ul>
-
-<div class="tab-content">
-    <div class="tab-pane active" id="editableContainer-options">
-        <p>All options can be defined as <code>data-*</code> attributes.
-Please, see also <a href="#inputs">input dependent options</a>.
-</p>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 10%;">Name</th>
-            <th style="width: 15%;">Type</th>
-            <th style="width: 15%;">Default</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-            <td>ajaxOptions</td>
-            <td>object</td>
-            <td>null</td>
-            <td><p>Additional options for ajax request.
-List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.com/jQuery.ajax</a></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>autohide</td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>Wether to hide container on save/cancel.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>onblur</td>
-            <td>string</td>
-            <td>&#x27;cancel&#x27;</td>
-            <td><p>Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.<br>Setting <code>ignore</code> allows to have several containers open.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>params</td>
-            <td>object|function</td>
-            <td>null</td>
-            <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
-
-            
-                <pre class="prettyprint linenums">params: function(params) {
-    return { a: 1 };
-}</pre>
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>pk</td>
-            <td>string|object|function</td>
-            <td>null</td>
-            <td><p>Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: &#39;en&#39;}</code>.
-Can be calculated dinamically via function.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>placement</td>
-            <td>string</td>
-            <td>&#x27;top&#x27;</td>
-            <td><p>Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>send</td>
-            <td>string</td>
-            <td>&#x27;auto&#x27;</td>
-            <td><p>Strategy for sending data on server. Can be <code>auto|always|never</code>.
-When &#39;auto&#39; data will be sent on server only if pk defined, otherwise new value will be stored in element.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>showbuttons</td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>Wether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>success</td>
-            <td>function</td>
-            <td>null</td>
-            <td><p>Success callback. Called when value successfully sent on server and <strong>response status = 200</strong>.<br>Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
-or <code>{success: false, msg: &quot;server error&quot;}</code> you can check it inside this callback.<br>If it returns <strong>string</strong> - means error occured and string is shown as error message.<br>If it returns <strong>object like</strong> <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.<br>Otherwise newValue simply rendered into element.</p>
-
-            
-                <pre class="prettyprint linenums">success: function(response, newValue) {
-    if(!response.success) return response.msg;
-}</pre>
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>type</td>
-            <td>string</td>
-            <td>&#x27;text&#x27;</td>
-            <td><p>Type of input. Can be <code>text|textarea|select|date|checklist</code></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>url</td>
-            <td>string|function</td>
-            <td>null</td>
-            <td><p>Url for submit, e.g. <code>&#39;/post&#39;</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
-
-            
-                <pre class="prettyprint linenums">url: function(params) {
-    if(params.value === &#x27;abc&#x27;) {
-        var d = new $.Deferred;
-        return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
-    } else {
-        someModel.set(params.name, params.value); //save data in some js model
-    }
-}</pre>
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>validate</td>
-            <td>function</td>
-            <td>null</td>
-            <td><p>Function for client-side validation. If returns string - means validation not passed and string showed as error.</p>
-
-            
-                <pre class="prettyprint linenums">validate: function(value) {
-    if($.trim(value) == &#x27;&#x27;) {
-        return &#x27;This field is required&#x27;;
-    }
-}</pre>
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>value</td>
-            <td>mixed</td>
-            <td>null</td>
-            <td><p>Initial value of form input</p>
-
-            
-            </td>
-        </tr> 
-                                    
-    </tbody>
-</table>
-    </div>
-    <div class="tab-pane" id="editableContainer-methods">
-        <p>All methods can be called as <code>$().editableContainer('method', params);</code></p>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 20%;">Method</th>
-            <th style="width: 20%;">Parameters</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-            <td>$().editableContainer(options)</td>
-            <td>
-<ul>
-    
-    <li><strong>options</strong> <i>Object</i> 
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>jQuery method to initialize editableContainer.
-            
-            <pre class="prettyprint linenums">
-$('#edit').editableContainer({
-    type: 'text',
-    url: '/post',
-    pk: 1,
-    value: 'hello'
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;shown&#x27;, function() {
+     var $tip = $(this).data(&#x27;editableContainer&#x27;).tip();
+     $tip.find(&#x27;input&#x27;).val(&#x27;overwriting value of input..&#x27;);
 });</pre>
             
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>activate()</td>
-            <td>
-<i>none</i>
-
-</td>
-            <td>Activates input of visible container (e.g. set focus)
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>destroy()</td>
-            <td>
-<i>none</i>
-
-</td>
-            <td>Destroys the container instance
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>hide()</td>
-            <td>
-<i>none</i>
-
-</td>
-            <td>Hides container with form
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>option(key, value)</td>
-            <td>
-<ul>
-    
-    <li><strong>key</strong> <i>String</i> 
-        
-    </li>
-    
-    <li><strong>value</strong> <i>Mixed</i> 
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Sets new option
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>show()</td>
-            <td>
-<ul>
-    
-    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Shows container with form
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>toggle()</td>
-            <td>
-<ul>
-    
-    <li><strong>closeAll</strong> <i>Boolean</i> Wether to close all other editable containers when showing this one. Default true.
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Toggles container visibility (show / hide)
-            
-            </td>
-        </tr> 
-                                    
-    </tbody>
-</table>
-    </div>
-    <div class="tab-pane" id="editableContainer-events">
-        <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 10%;">Event</th>
-            <th style="width: 30%;">Callback parameters</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-            <td>cancel</td>
-            <td>
-<ul>
-    
-    <li><strong>event</strong> <i>Object</i> event object
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Fired when form was cancelled by user
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>hidden</td>
-            <td>
-<ul>
-    
-    <li><strong>event</strong> <i>Object</i> event object
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Fired when container was hidden. It occurs on both save or cancel.
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>save</td>
-            <td>
-<ul>
-    
-    <li><strong>event</strong> <i>Object</i> event object
-        
-    </li>
-    
-    <li><strong>params</strong> <i>Object</i> additional params
-        
-        <ul type="circle" style="margin-left: 20px">
-            
-            <li><strong>newValue</strong> <i>Mixed</i> submitted value
-            
-            <li><strong>response</strong> <i>Object</i> ajax response
-            
-        </ul>
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
-            
-            <pre class="prettyprint linenums">
-$('#username').on('save', function(e, params) {
-    //assuming server response: '{success: true}'
-    var pk = $(this).data('editableContainer').options.pk;
-    if(params.response && params.response.success) {
-        alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
-    } else {
-        alert('error!'); 
-    } 
-});</pre>
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>shown</td>
-            <td>
-<ul>
-    
-    <li><strong>event</strong> <i>Object</i> event object
-        
-    </li>
-    
-</ul>
-
-</td>
-            <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
-            
-            <pre class="prettyprint linenums">
-$('#username').on('shown', function() {
-     var $tip = $(this).data('editableContainer').tip();
-     $tip.find('input').val('overwriting value of input..');
-});                     </pre>
             
             </td>
         </tr> 
@@ -1296,7 +892,7 @@ $('#username').on('shown', function() {
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1311,6 +907,7 @@ $('#username').on('shown', function() {
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1321,15 +918,17 @@ $('#username').on('shown', function() {
             <td><p>Placeholder attribute of input. Shown when input is empty.</p>
 
             
+            
             </td>
         </tr> 
        
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>span2</td>
+            <td>input-medium</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1340,6 +939,7 @@ $('#username').on('shown', function() {
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 
@@ -1378,7 +978,7 @@ $(function(){
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1393,15 +993,17 @@ $(function(){
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>span3</td>
+            <td>input-large</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1413,6 +1015,7 @@ $(function(){
             <td><p>Placeholder attribute of input. Shown when input is empty.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1422,6 +1025,7 @@ $(function(){
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 
@@ -1460,7 +1064,7 @@ $(function(){
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1475,6 +1079,7 @@ $(function(){
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1484,8 +1089,9 @@ $(function(){
             <td>null</td>
             <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
 Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
-For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
+For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.<br>If source is <strong>string</strong>, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.</p>
 
+            
             
             </td>
         </tr> 
@@ -1494,8 +1100,9 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td>prepend</td>
             <td>string|array|object</td>
             <td>false</td>
-            <td><p>Data automatically prepended to the begining of dropdown list.</p>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
+            
             
             </td>
         </tr> 
@@ -1507,15 +1114,28 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
 
             
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>sourceCache <sup><span class="label label-success">new</span></sup></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
+
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
         </tr> 
        
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>span2</td>
+            <td>input-medium</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1526,6 +1146,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 
@@ -1569,7 +1190,7 @@ $(function(){
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1584,6 +1205,7 @@ $(function(){
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1593,6 +1215,7 @@ $(function(){
             <td>editable-date well</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1605,6 +1228,7 @@ $(function(){
 Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
 
             
+            
             </td>
         </tr> 
        
@@ -1614,6 +1238,7 @@ Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
             <td>null</td>
             <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
 
+            
             
             </td>
         </tr> 
@@ -1630,6 +1255,7 @@ Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
 Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a></p>
 
             
+            
             </td>
         </tr> 
        
@@ -1641,6 +1267,7 @@ Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">
 If <code>false</code> clear button will not be rendered.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1650,6 +1277,7 @@ If <code>false</code> clear button will not be rendered.</p>
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 
@@ -1692,7 +1320,7 @@ $(function(){
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1707,6 +1335,7 @@ $(function(){
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1716,6 +1345,7 @@ $(function(){
             <td>&#x27;editable-date&#x27;</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1728,6 +1358,7 @@ $(function(){
 Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">http://docs.jquery.com/UI/Datepicker/formatDate</a></p>
 
             
+            
             </td>
         </tr> 
        
@@ -1737,6 +1368,7 @@ Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">h
             <td>null</td>
             <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
 
+            
             
             </td>
         </tr> 
@@ -1753,6 +1385,7 @@ Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">h
 Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jqueryui.com/datepicker</a></p>
 
             
+            
             </td>
         </tr> 
        
@@ -1764,6 +1397,7 @@ Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jq
 If <code>false</code> clear button will not be rendered.</p>
 
             
+            
             </td>
         </tr> 
        
@@ -1773,6 +1407,7 @@ If <code>false</code> clear button will not be rendered.</p>
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 
@@ -1816,7 +1451,7 @@ Internally value stored as javascript array of values.</p>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 10%;">Name</th>
+            <th style="width: 15%;">Name</th>
             <th style="width: 15%;">Type</th>
             <th style="width: 15%;">Default</th>
             <th>Description</th>
@@ -1831,15 +1466,17 @@ Internally value stored as javascript array of values.</p>
             <td><p>HTML template of input. Normally you should not change it.</p>
 
             
+            
             </td>
         </tr> 
        
         <tr>
             <td>inputclass</td>
             <td>string</td>
-            <td>span2 editable-checklist</td>
+            <td>editable-checklist</td>
             <td><p>CSS class automatically applied to input</p>
 
+            
             
             </td>
         </tr> 
@@ -1848,40 +1485,9 @@ Internally value stored as javascript array of values.</p>
             <td>separator</td>
             <td>string</td>
             <td>&#x27;, &#x27;</td>
-            <td><p>Separator of values in string when sending to server</p>
+            <td><p>Separator of values when reading from &#39;data-value&#39; string</p>
 
             
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>viewseparator</td>
-            <td>string</td>
-            <td>&#x27;&lt;br&gt;&#x27;</td>
-            <td><p>Separator of text when display as element content.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>limit</td>
-            <td>integer</td>
-            <td>4</td>
-            <td><p>Maximum number of items shown as element content. 
-If checked more items - <code>limitText</code> will be shown.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>limitText</td>
-            <td>string</td>
-            <td>&#x27;Selected {checked} of {count}&#x27;</td>
-            <td><p>Text shown when count of checked items is greater than <code>limit</code> parameter.
-You can use <code>{checked}</code> and <code>{count}</code> placeholders.</p>
-
             
             </td>
         </tr> 
@@ -1892,8 +1498,9 @@ You can use <code>{checked}</code> and <code>{count}</code> placeholders.</p>
             <td>null</td>
             <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
 Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
-For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.</p>
+For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.<br>If source is <strong>string</strong>, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.</p>
 
+            
             
             </td>
         </tr> 
@@ -1902,8 +1509,9 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td>prepend</td>
             <td>string|array|object</td>
             <td>false</td>
-            <td><p>Data automatically prepended to the begining of dropdown list.</p>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
+            
             
             </td>
         </tr> 
@@ -1915,6 +1523,18 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
 
             
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>sourceCache <sup><span class="label label-success">new</span></sup></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
+
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
         </tr> 
        
@@ -1924,6 +1544,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
             <td>null</td>
             <td><p>Name attribute of input</p>
 
+            
             
             </td>
         </tr> 

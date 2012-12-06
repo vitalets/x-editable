@@ -9,12 +9,15 @@
     <tbody>
       {{#each event}}
         <tr>
-            <td>{{name}}</td>
+            <td>{{name}}{{new ../project.version}}</td>
             <td>{{#with params}}{{>params}}{{/with}}</td>
             <td>{{{description}}}
             {{#if example}}
-            <pre class="prettyprint linenums">{{{example}}}</pre>
+                {{#source}}
+                    {{{example}}}
+                {{/source}}
             {{/if}}
+            {{since}}
             </td>
         </tr> 
        {{/each}}                             

@@ -3,15 +3,14 @@
     <li><a href="#{{name}}-methods" data-toggle="tab">Methods</a></li>
     <li><a href="#{{name}}-events" data-toggle="tab">Events</a></li>
 </ul>
-
 <div class="tab-content">
     <div class="tab-pane active" id="{{name}}-options">
-        {{>options}}
+        {{include "options" project=project}}
     </div>
     <div class="tab-pane" id="{{name}}-methods">
-        {{>methods}}
+        {{include "methods" project=project}}
     </div>
     <div class="tab-pane" id="{{name}}-events">
-        {{>events}}
+        {{include "events" project=project}}
     </div>
 </div>

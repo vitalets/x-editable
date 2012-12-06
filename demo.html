@@ -83,8 +83,9 @@
             <hr>
 
             <h2>Example</h2>   
-            <p>Click on fields to edit</p>
+            <p>Click to edit</p>
             <p style="text-align: right">
+            <label style="display: inline-block; margin-right: 50px"><input type="checkbox" id="autoopen" style="vertical-align: baseline">&nbsp;auto-open next field</label>
             <button id="enable" class="btn">enable / disable</button>
 <!--            &nbsp;&nbsp;
             <button id="turn" class="btn" style1="display: none">turn into classic form</button>   -->
@@ -109,13 +110,8 @@
                     <tr>         
                         <td>Sex</td>
                         <td><a href="#" id="sex" data-type="select" data-name="sex" data-pk="1" data-value="" data-original-title="Select sex"></a></td>
-                        <td><span class="muted">Select, loaded from js array. Custom render</span></td>
+                        <td><span class="muted">Select, loaded from js array. Custom display</span></td>
                     </tr>
-<!--                    <tr>         
-                        <td>Action</td>
-                        <td><a href="#" id="action" data-type="select" data-name="action" data-pk="1" data-value="1" data-source='{"0": "None", "1":"Insert", "2": "Update", "3": "Delete"}' data-original-title="Select action">Insert</a></td>
-                        <td><span class="muted">Select, loaded from inline HTML. Custom render.</span></td>
-                    </tr> -->                                    
                     <tr>         
                         <td>Group</td>
                         <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="/groups" data-original-title="Select group">Admin</a></td>
@@ -134,7 +130,7 @@
                     <tr>         
                         <td>Comments</td>
                         <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-name="comments" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
-                        <td><span class="muted">Textarea. <i>No buttons</i> mode. Submit by ctrl+enter</span></td>
+                        <td><span class="muted">Textarea. Submit by ctrl+enter</span></td>
                     </tr>                                     
 <!--                    <tr>         
                         <td>Weight, kg</td>
@@ -144,7 +140,7 @@
                     <tr>         
                         <td>Fresh fruits <sup><span class="label label-success">new</span></sup></td>
                         <td><a href="#" id="fruits" data-type="checklist" data-value="2,3" data-original-title="Select fruits"></a></td>
-                        <td><span class="muted">Checklist. Try to select more that 3.</span></td>
+                        <td><span class="muted">Checklist</span></td>
                     </tr>  
                     
                     <tr>         

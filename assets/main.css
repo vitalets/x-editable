@@ -16,3 +16,7 @@ body {
 section {
     padding-top: 85px;
 }
+
+.table td ul {
+   padding-bottom: 0; 
+}
