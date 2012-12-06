@@ -564,9 +564,9 @@ $(function () {
         var p = tip(e);
         p.find('select').val(selected);
         
-        event = jQuery.Event("keydown");
+        var event = jQuery.Event("keydown");
         event.which = 13;
-
+       
         p.find('select').trigger(event);
         
         setTimeout(function() {

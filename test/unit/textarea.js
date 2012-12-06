@@ -93,7 +93,7 @@ $(function () {
         var p = tip(e);
         p.find('textarea').val(vnew);
         
-        event = jQuery.Event("keydown");
+        var event = jQuery.Event("keydown");
         event.ctrlKey = true;
         event.which = 13;
 
