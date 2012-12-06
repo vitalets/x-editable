@@ -97,6 +97,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                @event init 
                @param {Object} event event object
                @param {Object} editable editable instance
+               @since 1.2.0
                **/                  
                 this.$element.triggerHandler('init', this);
             }, this));
@@ -522,7 +523,6 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default 'click'
         **/          
         toggle: 'click',
-
         /**
         Text shown when element is empty.
 

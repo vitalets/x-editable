@@ -390,10 +390,10 @@
         
     });        
      
-      asyncTest("cancelnochange: true", function () {
+      asyncTest("savenochange: false", function () {
         var v = 'abc',
             e = $('<a href="#" data-type="text" data-pk="1" data-url="post-no.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
-            cancelnochange: true
+            savenochange: false
         }),
             req = 0;
 
@@ -418,10 +418,10 @@
         }, timeout);                     
       });    
       
-      asyncTest("cancelnochange: false", function () {
+      asyncTest("savenochange: true", function () {
         var v = 'abc',
             e = $('<a href="#" data-type="text" data-pk="1" data-url="post-yes.php" data-name="text1">'+v+'</a>').appendTo(fx).editable({
-            cancelnochange: false
+            savenochange: true
         }),
             req = 0;
 
