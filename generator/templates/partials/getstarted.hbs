@@ -58,9 +58,10 @@ POST /post
     value: 'superuser!' //new value
 }
 {{/source}}
-If server <strong>response</strong> status is <code>200 OK</code> - element will be updated in with new value. No response body required.<br>
-Any other status means error, form stays open and <i>responseText</i> is shown as error message.<br>
-You can use <code>success</code> callback option for more complex iteraction (e.g. to process <code>json</code> response).<br><br>
+If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
+If <strong>status != 200</strong> form stays open and <i>responseText</i> is shown as error message.<br>
+Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
+For more complex iteraction with server you may use <code>success</code> callback option (e.g. to process json response).<br><br>
 </li>
 <!--
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>

@@ -14,6 +14,11 @@
             {{#with myClasses.editable}}
             {{include "classtabs" project=../project}}
             {{/with}}
+
+            <div class="alert alert-success">
+                <strong>Note:</strong> you can modify <code>$.fn.editable.defaults</code> to set default options for all editable elements on the page.<br>
+                For example, to force all elements submit via <strong>PUT</strong> method: <code>$.fn.editable.defaults.ajaxOptions = {type: "put"}</code>
+            </div>
         </section>
         <hr>
         <section id="inputs">

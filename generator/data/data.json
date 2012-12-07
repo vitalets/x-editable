@@ -750,7 +750,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 347,
+            "line": 346,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
@@ -760,7 +760,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 355,
+            "line": 354,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
@@ -773,7 +773,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 373,
+            "line": 372,
             "description": "Additional params for submit. Function can be used to calculate params dynamically",
             "example": [
                 "\nparams: function(params) {\n    return { a: 1 };\n}"
@@ -786,7 +786,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 385,
+            "line": 384,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -796,7 +796,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 393,
+            "line": 392,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dynamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -806,7 +806,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 402,
+            "line": 401,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -816,7 +816,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 411,
+            "line": 410,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -826,7 +826,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 420,
+            "line": 419,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -839,7 +839,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 434,
+            "line": 433,
             "description": "Success callback. Called when value successfully sent on server and **response status = 200**.  \nUseful to work with json response. For example, if your backend response can be <code>{success: true}</code>\nor <code>{success: false, msg: \"server error\"}</code> you can check it inside this callback.  \nIf it returns **string** - means error occured and string is shown as error message.  \nIf it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  \nOtherwise newValue simply rendered into element.",
             "itemtype": "property",
             "name": "success",
@@ -852,7 +852,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 451,
+            "line": 450,
             "description": "Additional options for ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
             "itemtype": "property",
             "name": "ajaxOptions",
@@ -863,7 +863,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 461,
+            "line": 460,
             "description": "Whether to show buttons or not.  \nForm without buttons can be auto-submitted by input or by onblur = 'submit'.",
             "example": [
                 " \najaxOptions: {\n    method: 'PUT',\n    dataType: 'xml'\n}"
@@ -877,7 +877,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 476,
+            "line": 475,
             "description": "Scope for callback methods (success, validate).  \nIf <code>null</code> means editableform instance itself.",
             "itemtype": "property",
             "name": "scope",
@@ -890,7 +890,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 487,
+            "line": 486,
             "description": "Whether to save or cancel value when it was not changed but form was submitted",
             "itemtype": "property",
             "name": "savenochange",
@@ -1119,7 +1119,7 @@
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
             "line": 424,
-            "description": "This method collects values from several editable elements and submit them all to server. \nIt is designed mainly for <a href=\"#newrecord\">creating new records</a>.",
+            "description": "This method collects values from several editable elements and submit them all to server.   \nInternally it runs client-side validation for all fields and submits only in case of success.  \nSee <a href=\"#newrecord\">creating new records</a> for details.",
             "itemtype": "method",
             "name": "submit(options)",
             "params": [
@@ -1145,11 +1145,11 @@
                         },
                         {
                             "name": "error(obj)",
-                            "description": "error handler (called on both client-side and server-side validation errors)",
+                            "description": "error handler",
                             "type": "Function"
                         },
                         {
-                            "name": "success(obj)",
+                            "name": "success(obj,config)",
                             "description": "success handler",
                             "type": "Function"
                         }
@@ -1164,7 +1164,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 500,
+            "line": 492,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code> and more",
             "itemtype": "property",
             "name": "type",
@@ -1174,7 +1174,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 508,
+            "line": 500,
             "description": "Sets disabled state of editable",
             "itemtype": "property",
             "name": "disabled",
@@ -1184,7 +1184,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 516,
+            "line": 508,
             "description": "How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   \nWhen set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    \n**Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, \nyou need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.",
             "example": [
                 "\n$('#edit-button').click(function(e) {\n    e.stopPropagation();\n    $('#username').editable('toggle');\n});"
@@ -1197,7 +1197,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 533,
+            "line": 525,
             "description": "Text shown when element is empty.",
             "itemtype": "property",
             "name": "emptytext",
@@ -1207,7 +1207,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 541,
+            "line": 533,
             "description": "Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Useful for select and date.\nFor example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  \n<code>auto</code> - text will be automatically set only if element is empty.  \n<code>always|never</code> - always(never) try to set element's text.",
             "itemtype": "property",
             "name": "autotext",
@@ -1217,7 +1217,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 552,
+            "line": 544,
             "description": "Initial value of input. Taken from <code>data-value</code> or element's text.",
             "itemtype": "property",
             "name": "value",
@@ -1227,7 +1227,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 560,
+            "line": 552,
             "description": "Callback to perform custom displaying of value in element's text.  \nIf <code>null</code>, default input's value2html() will be called.  \nIf <code>false</code>, no displaying methods will be called, element's text will no change.  \nRuns under element's scope.  \nSecond parameter __sourceData__ is passed for inputs with source (select, checklist).",
             "itemtype": "property",
             "name": "display",

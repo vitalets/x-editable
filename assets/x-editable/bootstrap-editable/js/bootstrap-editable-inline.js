@@ -278,8 +278,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     return $.ajax($.extend({
                         url     : this.options.url,
                         data    : params,
-                        type    : 'post',
-                        dataType: 'json'
+                        type    : 'POST'
                     }, this.options.ajaxOptions));
                 }
             }
@@ -1461,15 +1460,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
             /**  
             This method collects values from several editable elements and submit them all to server. 
-            It is designed mainly for <a href="#newrecord">creating new records</a>. 
+            Internally it runs client-side validation for all fields and submits only in case of success.
             
             @method submit(options)
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
             @param {object} options.ajaxOptions additional ajax options            
-            @param {function} options.error(obj) error handler (called on both client-side and server-side validation errors)
-            @param {function} options.success(obj) success handler 
+            @param {function} options.error(errors) error handler 
+            @param {function} options.success(response, config) success handler. Passing __config__ to be able to call error handler. 
             @returns {Object} jQuery object
             **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
@@ -1487,22 +1486,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     $.ajax($.extend({
                         url: config.url, 
                         data: values, 
-                        type: 'POST',                        
-                        dataType: 'json'
+                        type: 'POST'                        
                     }, config.ajaxOptions))
                     .success(function(response) {
-                        //successful response 
-                        if(typeof response === 'object' && response.id) {
-                            $elems.editable('option', 'pk', response.id); 
-                            $elems.removeClass('editable-unsaved');
-                            if(typeof config.success === 'function') {
-                                config.success.apply($elems, arguments);
-                            } 
-                        } else { //server-side validation error
-                           if(typeof config.error === 'function') {
-                                config.error.apply($elems, arguments);
-                           }
-                        }
+                        //successful response 200 OK
+                        if(typeof config.success === 'function') {
+                            config.success.call($elems, response, config);
+                        } 
                     })
                     .error(function(){  //ajax error
                         if(typeof config.error === 'function') {
@@ -1511,7 +1501,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     });
                 } else { //client-side validation error
                     if(typeof config.error === 'function') {
-                        config.error.call($elems, {errors: errors});
+                        config.error.call($elems, errors);
                     }
                 }
             return this;
@@ -1845,7 +1835,7 @@ List - abstract class for inputs that have source option loaded from js array or
                 }
                 deferred.resolve();
             }, function () {
-                List.superclass.value2html(this.options.sourceError, element);
+                //do nothing with element
                 deferred.resolve();
             });
 

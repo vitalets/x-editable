@@ -7,7 +7,10 @@ It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/boots
 See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
-When creating issues please provide jsFiddle example. You can easily fork one of templates: [bootstrap](http://jsfiddle.net/xBB5x/25/), [jqueryui](http://jsfiddle.net/xBB5x/24/), [plain](http://jsfiddle.net/xBB5x/23/).  
+When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of **jsFiddle templates**:   
+1. [bootstrap](http://jsfiddle.net/xBB5x/25/)  
+2. [jqueryui](http://jsfiddle.net/xBB5x/24/)  
+3. [plain](http://jsfiddle.net/xBB5x/23/)    
 Your feedback is very appreciated!
 
 ## Contribution
@@ -54,13 +57,12 @@ To test the result go to **playground**, start server <code>node server.js</code
 4.To run unit tests you can open it directly in browser **lib/test/index.html**.   
 Or use grunt's _qunit_ task <code>grunt test</code>. For that you also need to [install PhantomJS](https://github.com/gruntjs/grunt/blob/master/docs/faq.md#why-does-grunt-complain-that-phantomjs-isnt-installed)
 
-5.To build lib + docs:
-* run <code>grunt build</code> in **lib** directory
-* run <code>build data-docs-dist</code> in **gh-pages** directory  
-You will get distributive in **lib/dist** and updated docs in **gh-pages/*.html**.  
+5.To build distributive run <code>grunt build</code> in **lib** directory. Result will appear in **lib/dist**.
+
+6.To build docs run <code>build data-docs-dist</code> in **gh-pages** directory. Result will appear in **gh-pages/*.html**.  
 Do not edit **index.html** and **docs.html** directly! Instead look at [Handlebars](https://github.com/wycats/handlebars.js) templates in **generator/templates**.
 
-6.Commit changes on <code>dev</code> / <code>gh-pages-dev</code> branch and make pull request as usual.  
+7.Commit changes on <code>dev</code> / <code>gh-pages-dev</code> branch and make pull request as usual. 
 
 Thanks for your support!
 

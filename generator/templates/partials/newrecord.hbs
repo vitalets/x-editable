@@ -1,12 +1,13 @@
 <p>
     Creating <strong>new record</strong> is a bit problem for editable interface because primary key (record id) is yet <i>unknown</i> and in-place-editing has no related object on backend.
-    In that case element will store new value inside and will not submit anything to server until you do it manually. This is automatic behavior when <code>pk</code> option is empty and <code>send='auto'</code>.
+    In that case element will store new value inside and will not submit anything to server until you do it manually. 
+    Such behavior applied when <code>send</code> option is <code>'never'</code> or <code>send='auto'</code> and <code>pk</code> is empty.
     To submit manually several editable fields use <code>submit()</code> method. Try example below to see how it works.
 </p>
 
 <script src="assets/newrecord.js"></script>         
 
-<h4>Live example - creating new user:</h4>
+<h4>Live example - creating new record:</h4>
 <div style="width: 40%">
     <div id="msg" class="alert hide"></div>
     <table id="user" class="table table-bordered table-striped">
@@ -37,6 +38,7 @@
 </div>  
 
 <br>
+<p>How it works:</p>
 <p>Initialization performed without <code>pk</code> option:</p>
 {{#source}}
 //init editables 
@@ -51,47 +53,81 @@ $('#new_username').editable('option', 'validate', function(v) {
 {{/source}}
 
  <p>When you enter data first time - nothing sent to server, but all values are stored.<br>
- When you click on save button method <code>submit</code> is called. It runs validation for all fields and if no errors - submits to server.<br>
- If server response is like <code>{id: &lt;new-record-id&gt;}</code> it automatically stores <i>id</i> into <code>pk</code> value of all editables and they start working in regular way.<br>
- Two callbacks <code>success</code> and <code>error</code> allow to process response.</p>
+ When you click on save button - <code>submit()</code> method is called. It runs validation for all fields and if no errors - submits to server.<br>
+ Two callbacks <code>success</code> and <code>error</code> are passed into <code>submit()</code>.
+ Success applied if <strong>http response = 200 OK</strong>, otherwise called error.<br>
+ Inside <code>success</code> you can update editables with new <code>pk</code> received from server and they will start working in regular way (submit individually).<br>
+ </p>
 {{#source}}
 $('#save-btn').click(function() {
-    $('.myeditable').editable('submit', { //call submit
-        url: '/newuser', //url for creating new user
-        success: function(data) {
-            var msg = 'New user created! Now editables work in regular way.';
-            $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
-            $('#save-btn').hide();
-        },
-        error: function(data) {
-            var msg = '';
-            if(data.errors) { //validation error, no matter server-side or client-side
-                $.each(data.errors, function(k, v) { msg += k+": "+v+"<br>"; });
-            } else if(data.responseText) { //ajax error
-                msg = data.responseText;
-            }
-            $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
-        }
-    });
-});
+   $('.myeditable').editable('submit', { 
+       url: '/newuser', 
+       ajaxOptions: {
+           dataType: 'json' //assuming json response
+       },           
+       success: function(data, config) {
+           if(data && data.id) {  //record created, response like {"id": 2}
+               //set pk
+               $(this).editable('option', 'pk', data.id);
+               //remove unsaved class
+               $(this).removeClass('editable-unsaved');
+               //show messages
+               var msg = 'New user created! Now editables submit individually.';
+               $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
+               $('#save-btn').hide();                    
+           } else if(data && data.errors){ 
+               //server-side validation error, response like {"errors": {"username": "username already exist"} }
+               config.error.call(this, data.errors);
+           }               
+       },
+       error: function(errors) {
+           var msg = '';
+           if(errors && errors.responseText) { //ajax error, errors = xhr object
+               msg = errors.responseText;
+           } else { //validation error (client-side or server-side)
+               $.each(errors, function(k, v) { msg += k+": "+v+"<br>"; });
+           } 
+           $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
+       }
+   });
+});   
 {{/source}}    
-<p><code>error(obj)</code> callback is called in one of three possible error scenarios:</p>
+<p>There are three possible error scenarios:</p>
 <ul>
     <li>
         <strong>client-side validation error</strong><br>
-        Callback parameter <code>obj</code> is hash object containing field names and errors. E.g.
+         <code>error</code> callback applied with parameter containing field names and errors. E.g.
         {{#source}}
-        { errors: {username: 'Required field!'} }
+error: function(data) {
+// data is: { username: 'Required field!' }
+...
+}
         {{/source}}
     </li>
     <li>
         <strong>server-side validation error</strong><br>
-        Server response pattern must <strong>not</strong> be like: <code>{id: &lt;something&gt;}</code>. Good solution is response like <code>{errors: &lt;object with error messages&gt;}</code>
-        to have silimar handling of server-side and client-side validation errors.<br> 
-        Callback parameter <code>obj</code> is hash object containing field names and errors (the same as previous).<br><br>
-    </li>
+        In that case response status is <strong>200 OK</strong> but it's body contains error information.<br>
+        Initially <code>success</code> is called, but you can check response inside and if needed apply <code>error</code> (see example above).<br>
+        To do it simply there is second parameter of success that is exactly config object.
+        {{#source}}
+success: function(data, config) {
+   if(data.id) {  //record created, response like {"id": 2}
+       //proceed success...       
+   } else if(data.errors){ 
+       //server-side validation error, response like {"errors": {"username": "username already exist"} }
+       //call error 
+       config.error.call(this, data.errors);
+   }               
+}
+        {{/source}}        
+    </li> 
     <li>
         <strong>ajax error, http status != 200</strong><br>
-        Callback parameter <code>obj</code> is xhr object.
+        <code>error</code> callback called with xhr object as parameter.
     </li>
 </ul>
+
+<br>
+<div class="alert alert-success">
+<strong>Note:</strong> you can use this approach not only for creating new record but also for submitting several fields of existing record at once.
+</div>
