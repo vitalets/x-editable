@@ -246,9 +246,8 @@ $(function () {
  
         $(fx).find('.new').editable('submit', {
             url: 'new.php', 
-            error: function(data) {
-               ok(data.errors, 'errors defined');
-               equal(data.errors.text, 'invalid', 'client validation error ok');
+            error: function(errors) {
+               equal(errors.text, 'invalid', 'client validation error ok');
             }
         });
         
@@ -261,8 +260,19 @@ $(function () {
         $(fx).find('.new').editable('submit', {
             url: 'new-error.php',
             data: {a: 123},
-            error: function(data) {
-                equal(data.errors.text1, 'server-invalid', 'server validation error ok');
+            success: function(data, config) {
+                console.log(data);
+               ok(data.errors, 'errors received from server');
+               ok(typeof config.error === 'function', 'config passed correctly');
+               
+               if(data && data.id) { 
+                  //success 
+               } else if(data && data.errors){ 
+                   config.error.call(this, data.errors); //call error from success
+               }               
+            },
+            error: function(errors) {
+                equal(errors.text1, 'server-invalid', 'server validation error ok');
                 e.remove();
                 e1.remove();
                 start(); 
