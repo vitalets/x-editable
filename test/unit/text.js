@@ -218,6 +218,9 @@ $(function () {
              params: {
                 q: 2 
              },
+             ajaxOptions: {
+                dataType: 'json'  
+             },
              success: function(resp) {   
                  equal(resp.dataType, 'json', 'dataType ok');
                  equal(resp.data.pk, 1, 'pk ok');
@@ -243,19 +246,12 @@ $(function () {
       });
       
     asyncTest("params as function", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({
+        var e = $('<a href="#" data-pk="1" data-url="post-params-func.php">abc</a>').appendTo(fx).editable({
              name: 'username',
              params: function(params) {
                  ok(this === e[0], 'scope is ok');
                  equal(params.pk, 1, 'params in func already have values (pk)');
                  return { q: 2, pk: 3 };
-             },
-             success: function(resp) {   
-                 equal(resp.dataType, 'json', 'dataType ok');
-                 equal(resp.data.pk, 3, 'pk ok');
-                 equal(resp.data.name, 'username', 'name ok');
-                 equal(resp.data.value, newText, 'value ok');
-                 equal(resp.data.q, 2, 'additional params ok');
              },
              ajaxOptions: {
                  headers: {"myHeader": "123"}
@@ -263,6 +259,18 @@ $(function () {
           }),  
           newText = 'cd<e>;"'
 
+          $.mockjax({
+              url: 'post-params-func.php',
+              response: function(settings) {
+                 equal(settings.dataType, undefined, 'dataType undefined (correct)');
+                 equal(settings.data.pk, 3, 'pk ok');
+                 equal(settings.data.name, 'username', 'name ok');
+                 equal(settings.data.value, newText, 'value ok');
+                 equal(settings.data.q, 2, 'additional params ok');
+              }
+          });         
+          
+          
         e.click()
         var p = tip(e);
 

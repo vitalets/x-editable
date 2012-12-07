@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.2.1 wip
 ----------------------------  
+[enh] removed default dataType='json' for submit request. Use 'ajaxOptions' to specify dataType if needed (vitalets) 
 [enh] select: do not show 'sourceError' in element during autotext execution (vitalets) 
 
 
