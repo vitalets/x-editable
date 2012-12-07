@@ -212,7 +212,7 @@ $(function () {
         equal(e.text(), 'abcd', 'text set correctly (by object)');        
      });    
      
-      asyncTest("'submit' method: client and server validation", function () {
+      asyncTest("'submit' method: client and server validation errors", function () {
         var ev1 = 'ev1',
             ev2 = 'ev2',
             e1v = 'e1v',
@@ -236,15 +236,22 @@ $(function () {
                 };  
             }
         });
+        
+        $.mockjax({
+            url: 'new.php',
+            response: function(settings) {
+               ok(false, 'should not submit to new.php');
+            }
+        });        
  
         $(fx).find('.new').editable('submit', {
-            url: 'new.php',
+            url: 'new.php', 
             error: function(data) {
                ok(data.errors, 'errors defined');
                equal(data.errors.text, 'invalid', 'client validation error ok');
             }
         });
-       
+        
         //change value to pass client side validation
         e.click();
         var p = tip(e);
@@ -261,15 +268,21 @@ $(function () {
                 start(); 
             },
             ajaxOptions: {
-                type: 'PUT'
+                type: 'PUT',
+                dataType: 'json'
             }
-        });       
+        }); 
+        
+        setTimeout(function() {
+             e.remove();    
+             e1.remove();    
+             start();  
+        }, timeout);                 
        
      });                  
         
         
      asyncTest("'submit' method: server error", function () {
-       expect(2);  
         var ev1 = 'ev1',
             e1v = 'e1v',
             e = $('<a href="#" class="new" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable(),
@@ -278,7 +291,10 @@ $(function () {
        $(fx).find('.new').editable('submit', {
             url: 'error.php',
             error: function(data) {
-                ok(!data.errors, 'no client errors');
+                equal(this[0], $(fx).find('.new')[0], 'success context ok');
+                equal(this[1], $(fx).find('.new')[1], 'success context2 ok');                
+
+                equal(data.status, 500, 'status 500 ok');
                 equal(data.responseText, 'customtext', 'server error ok');
                 
                 e.remove();
@@ -290,7 +306,6 @@ $(function () {
      });       
      
      asyncTest("'submit' method: success", function () {
-       expect(7);  
         var ev1 = 'ev1',
             e1v = 'e1v',
             pk = 123,
@@ -302,20 +317,16 @@ $(function () {
             response: function(settings) {
                 equal(settings.data.text, ev1, 'first value ok');
                 equal(settings.data.text1, e1v, 'second value ok');
-                this.responseText = {id: pk};  
+                this.responseText = 'response-body';  
             }
         });            
             
        $(fx).find('.new').editable('submit', {
             url: 'new-success.php',
             success: function(data) {
-                equal(e.data('editable').options.pk, pk, 'pk1 ok'); 
-                ok(!e.hasClass('editable-changed'), 'no "editable-changed" class'); 
-                
-                equal(e1.data('editable').options.pk, pk, 'pk2 ok'); 
-                ok(!e1.hasClass('editable-changed'), 'no "editable-changed" class'); 
-                
-                equal(data.id, pk, 'server result id ok');
+                equal(this[0], $(fx).find('.new')[0], 'success context ok');
+                equal(this[1], $(fx).find('.new')[1], 'success context2 ok');
+                equal(data, 'response-body', 'response body ok');
                 
                 e.remove();
                 e1.remove();

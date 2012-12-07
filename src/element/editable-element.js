@@ -449,22 +449,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     $.ajax($.extend({
                         url: config.url, 
                         data: values, 
-                        type: 'POST',                        
-                        dataType: 'json'
+                        type: 'POST'                        
                     }, config.ajaxOptions))
                     .success(function(response) {
                         //successful response 
-                        if(typeof response === 'object' && response.id) {
-                            $elems.editable('option', 'pk', response.id); 
-                            $elems.removeClass('editable-unsaved');
-                            if(typeof config.success === 'function') {
-                                config.success.apply($elems, arguments);
-                            } 
-                        } else { //server-side validation error
-                           if(typeof config.error === 'function') {
-                                config.error.apply($elems, arguments);
-                           }
-                        }
+                        if(typeof config.success === 'function') {
+                            config.success.apply($elems, arguments);
+                        } 
                     })
                     .error(function(){  //ajax error
                         if(typeof config.error === 'function') {
