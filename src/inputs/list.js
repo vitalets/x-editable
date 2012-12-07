@@ -45,7 +45,7 @@ List - abstract class for inputs that have source option loaded from js array or
                 }
                 deferred.resolve();
             }, function () {
-                List.superclass.value2html(this.options.sourceError, element);
+                //do nothing with element
                 deferred.resolve();
             });
 

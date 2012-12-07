@@ -2,6 +2,11 @@ X-editable changelog
 =============================
 
 
+Version 1.2.1 wip
+----------------------------  
+[enh] select: do not show 'sourceError' in element during autotext execution (vitalets) 
+
+
 Version 1.2.0 Dec 6, 2012
 ----------------------------  
 [enh #36] 'submit' method: added 'ajaxOptions' property to modify ajax request (vitalets)  
