@@ -422,16 +422,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             return result;
 
             /**  
-            This method collects values from several editable elements and submit them all to server. 
-            Internally it runs client-side validation for all fields and submits only in case of success.
+            This method collects values from several editable elements and submit them all to server.   
+            Internally it runs client-side validation for all fields and submits only in case of success.  
+            See <a href="#newrecord">creating new records</a> for details.
             
             @method submit(options)
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
             @param {object} options.ajaxOptions additional ajax options            
-            @param {function} options.error(errors) error handler 
-            @param {function} options.success(response, config) success handler. Passing __config__ to be able to call error handler. 
+            @param {function} options.error(obj) error handler 
+            @param {function} options.success(obj,config) success handler
             @returns {Object} jQuery object
             **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
