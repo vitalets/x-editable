@@ -4,8 +4,9 @@ X-editable changelog
 
 Version 1.2.1 wip
 ----------------------------  
+[enh] 'hidden' event: added possible value of reason param - 'nochange'. Occurs when form is submitted but value was not changed (vitalets) 
 [enh] 'submit' method changed: error-callback's parameter simplified (vitalets) 
-[enh] 'submit' method changed: now when response 200 OK it does not set pk automatically, use success callback (vitalets) 
+[enh] 'submit' method changed: now when response 200 OK it does not set pk automatically (vitalets) 
 [enh] 'submit' method changed: removed dataType='json'. Use 'ajaxOptions' to specify dataType if needed (vitalets) 
 [enh] removed default ajax dataType='json'. Use 'ajaxOptions' to specify dataType if needed (vitalets) 
 [enh] select: do not show 'sourceError' in element during autotext execution (vitalets) 

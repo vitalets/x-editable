@@ -79,8 +79,8 @@ $(function () {
         e.editable();
     });      
   
-     asyncTest("events: shown / hidden (reason: cancel, onblur, manual)", function () {
-        expect(11);
+     asyncTest("events: shown / hidden (reason: cancel, onblur, nochange, manual)", function () {
+        expect(15);
         var val = '1', test_reason, 
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
@@ -112,6 +112,13 @@ $(function () {
              ok(p.is(':visible'), 'popover shown');
              e.parent().click();
              ok(!p.is(':visible'), 'popover closed');
+             
+             test_reason = 'nochange'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             p.find('form').submit();  //submit value without changes
+             ok(!p.is(':visible'), 'popover closed');             
              
              test_reason = 'manual'            
              e.click();
