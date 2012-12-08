@@ -26,7 +26,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        Renders input. Can return jQuery deferred object.
+        Renders input from tpl. Can return jQuery deferred object.
         
         @method render() 
        **/       
