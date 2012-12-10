@@ -279,9 +279,6 @@ $(function () {
             },
             error: function(errors) {
                 equal(errors.text1, 'server-invalid', 'server validation error ok');
-                e.remove();
-                e1.remove();
-                start(); 
             },
             ajaxOptions: {
                 type: 'PUT',
