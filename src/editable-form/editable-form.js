@@ -454,7 +454,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if(!response.success) return response.msg;
         }
         **/          
-        success: function(response, newValue) {},
+        success: null,
         /**
         Additional options for ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
