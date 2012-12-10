@@ -65,7 +65,7 @@ To create your own input you can inherit from this class.
        },
         
        /**
-        Converts value to string (for comparering)
+        Converts value to string (for internal compare). For submitting to server used value2submit().
         
         @method value2str(value) 
         @param {mixed} value

@@ -42,7 +42,8 @@ function getFiles() {
     inputs+'text.js',
     inputs+'textarea.js',
     inputs+'select.js',    
-    inputs+'checklist.js'
+    inputs+'checklist.js',
+    inputs+'html5types.js'
     ]; 
 
     //common css files

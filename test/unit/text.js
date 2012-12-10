@@ -438,6 +438,67 @@ $(function () {
            start();  
         }, timeout);             
         
-      });                   
+      });     
+
+   test("password", function () {
+          var v = '123', v1 = '456';
+       
+          var e = $('<a href="#" data-pk="1" data-name="name" data-value="'+v+'"></a>').appendTo('#qunit-fixture').editable({
+                type: 'password',
+                url: function(params) {
+                   equal(params.value, v1, 'submitted value correct'); 
+                }
+            });
+            
+            equal(e.text(), '[hidden]', 'text is hidden');             
+            
+            e.click()
+            var p = tip(e);
+            ok(p.is(':visible'), 'popover visible');
+            var $input = p.find('input[type="password"]');
+            ok($input.length, 'input exists');
+            equal($input.val(), v, 'input contains correct value');
+            $input.val(v1);
+            p.find('form').submit(); 
+            
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value, v1, 'new value saved to value');
+            equal(e.text(), '[hidden]', 'new text shown');             
+  });        
+      
+      
+   test("html5 types", function () {
+       
+        var types = ['email', 'url', 'tel', 'number', 'range'],
+            v = '12',
+            v1 = '45';
+       
+        expect(8*types.length);
+                             
+        for(var i = 0; i< types.length; i++) {
+            var e = $('<a href="#" data-pk="1" data-name="name">'+v+'</a>').appendTo('#qunit-fixture').editable({
+                type: types[i],
+                url: function(params) {
+                   equal(params.value, v1, 'submitted value correct'); 
+                }
+            });
+            
+            equal(e.data('editable').value, v, 'value correct');
+            
+            e.click()
+            var p = tip(e);
+            ok(p.is(':visible'), 'popover visible');
+            var $input = p.find('input[type='+types[i]+']');
+            ok($input.length, 'input exists');
+            equal($input.val(), v, 'input contain correct value');
+            $input.val(v1);
+            p.find('form').submit(); 
+            
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value, v1, 'new value saved to value');
+            equal(e.text(), v1, 'new text shown');             
+        }    
+                  
+  });                    
          
 });    

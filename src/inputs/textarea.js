@@ -84,7 +84,7 @@ $(function(){
         @type string
         @default null
         **/             
-        placeholder: null        
+        placeholder: null 
     });
 
     $.fn.editabletypes.textarea = Textarea;    

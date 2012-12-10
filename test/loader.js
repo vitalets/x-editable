@@ -33,6 +33,7 @@ define(function () {
                     'inputs/textarea',
                     'inputs/select',
                     'inputs/checklist',
+                    'inputs/html5types',
                     'inputs-ext/address/address'],
                     init: function(require) {
                         loadCss(require.toUrl("./editable-form.css")); 
@@ -44,6 +45,7 @@ define(function () {
                 'inputs/text': ['inputs/abstract'],
                 'inputs/textarea': ['inputs/abstract'],
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
+                'inputs/html5types': ['inputs/text'],   
 
                 //bootstrap
                 'bootstrap/js/bootstrap': {
