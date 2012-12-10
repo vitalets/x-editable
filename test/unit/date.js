@@ -6,6 +6,7 @@ $(function () {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.datepicker.DPGlobal;
+            $.support.transition = false;
         }
     });
     

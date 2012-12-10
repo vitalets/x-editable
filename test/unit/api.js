@@ -223,12 +223,12 @@ $(function () {
         var ev1 = 'ev1',
             ev2 = 'ev2',
             e1v = 'e1v',
-            e = $('<a href="#" class="new" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" class="new-val" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable({
                 validate: function(value) {
                     if(value == ev1) return 'invalid';
                 }
             }),
-            e1 = $('<a href="#" class="new" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
+            e1 = $('<a href="#" class="new-val" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
 
         $.mockjax({
             url: 'new-error.php',
@@ -251,7 +251,7 @@ $(function () {
             }
         });        
  
-        $(fx).find('.new').editable('submit', {
+        $(fx).find('.new-val').editable('submit', {
             url: 'new.php', 
             error: function(errors) {
                equal(errors.text, 'invalid', 'client validation error ok');
@@ -264,7 +264,7 @@ $(function () {
         p.find('input[type=text]').val(ev2);
         p.find('button[type=submit]').click(); 
        
-        $(fx).find('.new').editable('submit', {
+        $(fx).find('.new-val').editable('submit', {
             url: 'new-error.php',
             data: {a: 123},
             success: function(data, config) {
@@ -301,14 +301,14 @@ $(function () {
      asyncTest("'submit' method: server error", function () {
         var ev1 = 'ev1',
             e1v = 'e1v',
-            e = $('<a href="#" class="new" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable(),
-            e1 = $('<a href="#" class="new" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
+            e = $('<a href="#" class="new-err" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable(),
+            e1 = $('<a href="#" class="new-err" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
 
-       $(fx).find('.new').editable('submit', {
+       $(fx).find('.new-err').editable('submit', {
             url: 'error.php',
             error: function(data) {
-                equal(this[0], $(fx).find('.new')[0], 'success context ok');
-                equal(this[1], $(fx).find('.new')[1], 'success context2 ok');                
+                equal(this[0], $(fx).find('.new-err')[0], 'success context ok');
+                equal(this[1], $(fx).find('.new-err')[1], 'success context2 ok');                
 
                 equal(data.status, 500, 'status 500 ok');
                 equal(data.responseText, 'customtext', 'server error ok');
@@ -347,6 +347,9 @@ $(function () {
                 e.remove();
                 e1.remove();
                 start();                 
+            },
+            error: function(errors) {
+                ok(false, 'error should not be called');
             }
         });
         

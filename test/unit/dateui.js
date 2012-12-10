@@ -5,6 +5,7 @@ $(function () {
    module("dateui", {
         setup: function(){
             fx = $('#async-fixture');
+            $.support.transition = false;
         }
     });
     

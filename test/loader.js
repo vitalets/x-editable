@@ -145,7 +145,8 @@ define(function () {
             return {
                 baseUrl: baseUrl,
                 paths: {
-                    "bootstrap": "../test/libs/bootstrap221", 
+//                    "bootstrap": "../test/libs/bootstrap221", 
+                    "bootstrap": "../test/libs/bootstrap222", 
                     "jqueryui": "../test/libs/jquery-ui-1.9.1.custom", 
                     "poshytip": "../test/libs/poshytip",
                     "test": "../test" 
