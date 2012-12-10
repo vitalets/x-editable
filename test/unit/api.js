@@ -268,7 +268,6 @@ $(function () {
             url: 'new-error.php',
             data: {a: 123},
             success: function(data, config) {
-                console.log(data);
                ok(data.errors, 'errors received from server');
                ok(typeof config.error === 'function', 'config passed correctly');
                
