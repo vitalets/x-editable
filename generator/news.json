@@ -1,5 +1,19 @@
 [
 
+{  "date": "10/12/2012",
+    "header": "Version 1.3.0 released!",
+    "content": "Major improvements:\n
+        <ul>\n
+            <li>support for Bootstrap 2.2.2</li>\n
+            <li>added HTML5 inputs: email, url, tel, number, range</li>\n
+            <li>removed default dataType=<code>json</code>. If you are using json please set <strong>ajaxOptions</strong> config.</li>\n 
+            <li><strong>submit</strong> method refactored. See <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for details.</li>\n
+            <li>some other fixes</li>\n                 
+        </ul>\n
+     "
+ }, 
+
+
 {  "date": "06/12/2012",
     "header": "Version 1.2.0 released!",
     "content": "New version contains some <span class='label label-warning'>incompatible changes!</span><br>\n

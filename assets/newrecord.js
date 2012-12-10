@@ -3,9 +3,7 @@ $(function(){
     $.mockjax({
         url: '/post',
         responseTime: 500,
-        responseText: {
-            success: true
-        }
+        responseText: ''
     });  
     
     $.mockjax({
@@ -29,12 +27,21 @@ $(function(){
     
    //init editables 
    $('.myeditable').editable({
-      url: '/post'
+      url: '/post',
+      placement: 'right'
    });
    
    //make username required
    $('#new_username').editable('option', 'validate', function(v) {
        if(v == '') return 'Required field!';
+   });
+   
+   //automatically show next editable
+   $('.myeditable').on('save.newuser', function(){
+       var that = this;
+       setTimeout(function() {
+           $(that).closest('tr').next().find('.myeditable').editable('show');
+       }, 200);
    });
    
    //create new user
@@ -53,7 +60,8 @@ $(function(){
                    //show messages
                    var msg = 'New user created! Now editables submit individually.';
                    $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
-                   $('#save-btn').hide();                    
+                   $('#save-btn').hide(); 
+                   $(this).off('save.newuser');                   
                } else if(data && data.errors){ 
                    //server-side validation error, response like {"errors": {"username": "username already exist"} }
                    config.error.call(this, data.errors);

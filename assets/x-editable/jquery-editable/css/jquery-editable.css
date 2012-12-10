@@ -1,4 +1,4 @@
-/*! X-editable - v1.2.0 
+/*! X-editable - v1.3.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -108,7 +108,8 @@
 }
 
 .editable-container.editable-inline {
-    display: inline; 
+/*    display: inline; */  /* display: inline does not correctly work with show()/hide() in jquery <= 1.7.2 */
+    display: inline-block; 
     vertical-align: middle;
 }
 

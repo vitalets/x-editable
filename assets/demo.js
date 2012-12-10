@@ -102,7 +102,7 @@
     });              
          
    $('#user .editable').on('hidden', function(e, reason){
-        if(reason === 'save') {
+        if(reason === 'save' || reason === 'nochange') {
             var $next = $(this).closest('tr').next().find('.editable');
             if($('#autoopen').is(':checked')) {
                 setTimeout(function() {

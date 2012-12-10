@@ -89,7 +89,7 @@
         <a class="btn btn-success btn-large" style="width: 150px" href="demo.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
         <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
         </p>                    
-        <small class="muted">Current version 1.2.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
+        <small class="muted">Current version 1.3.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small>
     </div>
 </div>    
 
@@ -117,15 +117,15 @@
 <div class="row">
     <div class="span4">
         <p class="centered"><img src="assets/img/bootstrap.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.2.0.zip"><strong>Download</strong> (bootstrap build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.3.0.zip"><strong>Download</strong> (bootstrap build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jqueryui.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.2.0.zip"><strong>Download</strong> (jquery-ui build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.3.0.zip"><strong>Download</strong> (jquery-ui build)</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jquery.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.2.0.zip"><strong>Download</strong> (jquery build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.3.0.zip"><strong>Download</strong> (jquery build)</a></p>
     </div>
 </div>
 
@@ -135,7 +135,24 @@
 <div class="row">
     <div class="span4">
         <h2 class="muted">News</h2>
-        <p><i>06/12/2012</i><br>
+        <p><i>10/12/2012</i><br>
+    <strong>Version 1.3.0 released!</strong><br>
+    Major improvements:
+<ul>
+<li>support for Bootstrap 2.2.2</li>
+<li>added HTML5 inputs: email, url, tel, number, range</li>
+<li>removed default dataType=<code>json</code>. If you are using json please set <strong>ajaxOptions</strong> config.</li>
+<li><strong>submit</strong> method refactored. See <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for details.</li>
+<li>some other fixes</li>
+</ul>
+ 
+</p>
+        
+        
+        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
+        <div style="display: none" id="news"> 
+             
+          <p><i>06/12/2012</i><br>
     <strong>Version 1.2.0 released!</strong><br>
     New version contains some <span class='label label-warning'>incompatible changes!</span><br>
 Please, look through <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> before updating.<br>
@@ -155,11 +172,7 @@ See <a href='demo.html' target='_blank'>updated demo</a></li>
 </ul>
 Thanks for your feedback and support!
  
-</p>
-        
-        
-        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
-        <div style="display: none" id="news"> 
+</p>             
              
           <p><i>30/11/2012</i><br>
     <strong>Version 1.1.1 released!</strong><br>
@@ -226,6 +239,8 @@ Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade i
                <li>textarea</li>
                
                <li>select</li>
+               
+               <li>html5types <sup><span class="label label-success">new</span></sup></li>
                
                <li>date</li>
                

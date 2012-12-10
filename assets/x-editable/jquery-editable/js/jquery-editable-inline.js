@@ -1,4 +1,4 @@
-/*! X-editable - v1.2.0 
+/*! X-editable - v1.3.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2012 Vitaliy Potapov; Licensed MIT */
@@ -184,11 +184,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 return;
             } 
             
-            //if value not changed --> cancel
+            //if value not changed --> trigger 'nochange' event and return
             /*jslint eqeq: true*/
             if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
-                this.cancel();
+                /**        
+                Fired when value not changed but form is submitted. Requires savenochange = false.
+                @event nochange 
+                @param {Object} event event object
+                **/                    
+                this.$div.triggerHandler('nochange');            
                 return;
             } 
 
@@ -264,7 +269,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 //additional params
                 if(typeof this.options.params === 'function') {
-                    $.extend(params, this.options.params.call(this.options.scope, params));  
+                    params = this.options.params.call(this.options.scope, params);  
                 } else {
                     //try parse json in single quotes (from data-params attribute)
                     this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
@@ -375,10 +380,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         url:null,
         /**
-        Additional params for submit. Function can be used to calculate params dynamically
+        Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  
+        If defined as <code>function</code> - returned object **overwrites** original ajax data.
         @example
         params: function(params) {
-            return { a: 1 };
+            //originally params contain pk, name and value
+            params.a = 1;
+            return params;
         }
 
         @property params 
@@ -451,7 +459,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if(!response.success) return response.msg;
         }
         **/          
-        success: function(response, newValue) {},
+        success: null,
         /**
         Additional options for ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
@@ -734,9 +742,8 @@ Applied as jQuery method.
             .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this),
-                cancel: $.proxy(function(){
-                   this.hide('cancel'); 
-                }, this),
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this),
+                nochange: $.proxy(function(){ this.hide('nochange'); }, this),
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
@@ -800,7 +807,7 @@ Applied as jQuery method.
         /**
         Hides container with form
         @method hide()
-        @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+        @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
         **/         
         hide: function(reason) {  
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
@@ -813,7 +820,7 @@ Applied as jQuery method.
 
             @event hidden 
             @param {object} event event object
-            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
             @example
             $('#username').on('hidden', function(e, reason) {
                 if(reason === 'save' || reason === 'cancel') {
@@ -1287,9 +1294,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     value: this.value
                 });
                 this.$element.editableContainer(containerOptions);
-                this.$element.on({
-                    save: $.proxy(this.save, this)
-                });
+                this.$element.on("save.internal", $.proxy(this.save, this));
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
                 return;
@@ -1459,16 +1464,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             return result;
 
             /**  
-            This method collects values from several editable elements and submit them all to server. 
-            Internally it runs client-side validation for all fields and submits only in case of success.
+            This method collects values from several editable elements and submit them all to server.   
+            Internally it runs client-side validation for all fields and submits only in case of success.  
+            See <a href="#newrecord">creating new records</a> for details.
             
             @method submit(options)
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
             @param {object} options.ajaxOptions additional ajax options            
-            @param {function} options.error(errors) error handler 
-            @param {function} options.success(response, config) success handler. Passing __config__ to be able to call error handler. 
+            @param {function} options.error(obj) error handler 
+            @param {function} options.success(obj,config) success handler
             @returns {Object} jQuery object
             **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
@@ -1606,20 +1612,22 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     };
     
 }(window.jQuery));
-/**
-Abstract editable input class.
-To create your own input you should inherit from this class.
 
-@class abstract
+/**
+AbstractInput - base class for all editable inputs.
+It defines interface to be implemented by any input type.
+To create your own input you can inherit from this class.
+
+@class abstractinput
 **/
 (function ($) {
 
     //types
     $.fn.editabletypes = {};
     
-    var Abstract = function () { };
+    var AbstractInput = function () { };
 
-    Abstract.prototype = {
+    AbstractInput.prototype = {
        /**
         Initializes input
         
@@ -1634,7 +1642,7 @@ To create your own input you should inherit from this class.
        },
        
        /**
-        Renders input. Can return jQuery deferred object.
+        Renders input from tpl. Can return jQuery deferred object.
         
         @method render() 
        **/       
@@ -1672,7 +1680,7 @@ To create your own input you should inherit from this class.
        },
         
        /**
-        Converts value to string (for comparering)
+        Converts value to string (for internal compare). For submitting to server used value2submit().
         
         @method value2str(value) 
         @param {mixed} value
@@ -1758,7 +1766,7 @@ To create your own input you should inherit from this class.
        }
     };
         
-    Abstract.defaults = {  
+    AbstractInput.defaults = {  
         /**
         HTML template of input. Normally you should not change it.
 
@@ -1785,14 +1793,15 @@ To create your own input you should inherit from this class.
         name: null
     };
     
-    $.extend($.fn.editabletypes, {abstract: Abstract});
+    $.extend($.fn.editabletypes, {abstractinput: AbstractInput});
         
 }(window.jQuery));
+
 /**
 List - abstract class for inputs that have source option loaded from js array or via ajax
 
 @class list
-@extends abstract
+@extends abstractinput
 **/
 (function ($) {
 
@@ -1800,7 +1809,7 @@ List - abstract class for inputs that have source option loaded from js array or
        
     };
 
-    $.fn.editableutils.inherit(List, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(List, $.fn.editabletypes.abstractinput);
 
     $.extend(List.prototype, {
         render: function () {
@@ -2027,7 +2036,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
     });      
 
-    List.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    List.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
@@ -2074,7 +2083,7 @@ List - abstract class for inputs that have source option loaded from js array or
 Text input
 
 @class text
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="username" data-type="text" data-pk="1">awesome</a>
@@ -2092,7 +2101,7 @@ $(function(){
         this.init('text', options, Text.defaults);
     };
 
-    $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstractinput);
 
     $.extend(Text.prototype, {
         activate: function() {
@@ -2103,7 +2112,7 @@ $(function(){
         }  
     });
 
-    Text.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <input type="text">
@@ -2127,7 +2136,7 @@ $(function(){
 Textarea input
 
 @class textarea
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
@@ -2146,7 +2155,7 @@ $(function(){
         this.init('textarea', options, Textarea.defaults);
     };
 
-    $.fn.editableutils.inherit(Textarea, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(Textarea, $.fn.editabletypes.abstractinput);
 
     $.extend(Textarea.prototype, {
         render: function () {
@@ -2191,7 +2200,7 @@ $(function(){
         }         
     });
 
-    Textarea.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Textarea.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <textarea></textarea>
@@ -2209,7 +2218,7 @@ $(function(){
         @type string
         @default null
         **/             
-        placeholder: null        
+        placeholder: null 
     });
 
     $.fn.editabletypes.textarea = Textarea;    
@@ -2441,6 +2450,194 @@ $(function(){
 }(window.jQuery));
 
 /**
+HTML5 input types.
+Following types are supported:
+
+* password
+* email
+* url
+* tel
+* number
+* range
+
+Learn more about html5 inputs:  
+http://www.w3.org/wiki/HTML5_form_additions  
+To check browser compatibility please see:  
+https://developer.mozilla.org/en-US/docs/HTML/Element/Input
+            
+@class html5types 
+@extends text
+@final
+@since 1.3.0
+@example
+<a href="#" id="email" data-type="email" data-pk="1">admin@example.com</a>
+<script>
+$(function(){
+    $('#email').editable({
+        url: '/post',
+        title: 'Enter email'
+    });
+});
+</script>
+**/
+
+/**
+@property tpl 
+@default depends on type
+**/ 
+
+/*
+Password
+*/
+(function ($) {
+    var Password = function (options) {
+        this.init('password', options, Password.defaults);
+    };
+    $.fn.editableutils.inherit(Password, $.fn.editabletypes.text);
+    $.extend(Password.prototype, {
+       //do not display password, show '[hidden]' instead
+       value2html: function(value, element) {
+           if(value) {
+               $(element).text('[hidden]');
+           } else {
+               $(element).empty(); 
+           }
+       },
+       //as password not displayed, should not set value by html
+       html2value: function(html) {
+           return null;
+       }       
+    });    
+    Password.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="password">'
+    });
+    $.fn.editabletypes.password = Password;
+}(window.jQuery));
+
+
+/*
+Email
+*/
+(function ($) {
+    var Email = function (options) {
+        this.init('email', options, Email.defaults);
+    };
+    $.fn.editableutils.inherit(Email, $.fn.editabletypes.text);
+    Email.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="email">'
+    });
+    $.fn.editabletypes.email = Email;
+}(window.jQuery));
+
+
+/*
+Url
+*/
+(function ($) {
+    var Url = function (options) {
+        this.init('url', options, Url.defaults);
+    };
+    $.fn.editableutils.inherit(Url, $.fn.editabletypes.text);
+    Url.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="url">'
+    });
+    $.fn.editabletypes.url = Url;
+}(window.jQuery));
+
+
+/*
+Tel
+*/
+(function ($) {
+    var Tel = function (options) {
+        this.init('tel', options, Tel.defaults);
+    };
+    $.fn.editableutils.inherit(Tel, $.fn.editabletypes.text);
+    Tel.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="tel">'
+    });
+    $.fn.editabletypes.tel = Tel;
+}(window.jQuery));
+
+
+/*
+Number
+*/
+(function ($) {
+    var NumberInput = function (options) {
+        this.init('number', options, NumberInput.defaults);
+    };
+    $.fn.editableutils.inherit(NumberInput, $.fn.editabletypes.text);
+    $.extend(NumberInput.prototype, {
+         render: function () {
+            NumberInput.superclass.render.call(this);
+
+            if (this.options.min !== null) {
+                this.$input.attr('min', this.options.min);
+            } 
+            
+            if (this.options.max !== null) {
+                this.$input.attr('max', this.options.max);
+            } 
+            
+            if (this.options.step !== null) {
+                this.$input.attr('step', this.options.step);
+            }                         
+        }
+    });     
+    NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="number">',
+        inputclass: 'input-mini',
+        min: null,
+        max: null,
+        step: null
+    });
+    $.fn.editabletypes.number = NumberInput;
+}(window.jQuery));
+
+
+/*
+Range (inherit from number)
+*/
+(function ($) {
+    var Range = function (options) {
+        this.init('range', options, Range.defaults);
+    };
+    $.fn.editableutils.inherit(Range, $.fn.editabletypes.number);
+    $.extend(Range.prototype, {
+        render: function () {
+            this.$input = $(this.options.tpl);
+            var $slider = this.$input.filter('input');
+            if(this.options.inputclass) {
+                $slider.addClass(this.options.inputclass); 
+            }
+            if (this.options.min !== null) {
+                $slider.attr('min', this.options.min);
+            } 
+            
+            if (this.options.max !== null) {
+                $slider.attr('max', this.options.max);
+            } 
+            
+            if (this.options.step !== null) {
+                $slider.attr('step', this.options.step);
+            }             
+            
+            $slider.on('input', function(){
+                $(this).siblings('output').text($(this).val()); 
+            });  
+        },
+        activate: function() {
+            this.$input.filter('input').focus();
+        }         
+    });
+    Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {
+        tpl: '<input type="range"><output style="width: 30px; display: inline-block"></output>',
+        inputclass: 'input-medium'
+    });
+    $.fn.editabletypes.range = Range;
+}(window.jQuery));
+/**
 * Editable Inline 
 * ---------------------
 */
@@ -2506,7 +2703,7 @@ Description and examples: http://jqueryui.com/datepicker.
 This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
 
 @class dateui
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
@@ -2548,7 +2745,7 @@ $(function(){
         this.options.datepicker.dateFormat = this.options.datepicker.format;        
     };
 
-    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstract);    
+    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstractinput);    
     
     $.extend(DateUI.prototype, {
         render: function () {
@@ -2631,7 +2828,7 @@ $(function(){
 
     });
     
-    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <div></div>

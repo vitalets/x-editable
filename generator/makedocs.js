@@ -69,11 +69,12 @@ function loadContext() {
     context.lastNews = context.news.shift();
     
     //group properties, methods, events
+    //added only classes that have at least one property/method/event
     classes = _.chain(context.classitems)
                    .filter(function(item) { return (item.class && item.itemtype); })
                    .groupBy('class')
+                   //merge into one object: name, (property, method, event), origina class information
                    .map(function(item, key){
-//                      return [key, _.extend({name: key}, _.groupBy(item, 'itemtype'))]; 
                       return _.extend({name: key}, _.groupBy(item, 'itemtype'), context.classes[key]); 
                    })
                    //.object()
@@ -103,14 +104,25 @@ function loadContext() {
     classes.editable.mainClass = true; 
     classes.editableContainer.mainClass = true; 
     
+    //sort alphabetically
+    var sf = function(a,b) {return a.name > b.name ? 1 : -1;};
+    _.each(['editableContainer', 'editable'], function(k) {
+        classes[k].property.sort(sf); 
+        classes[k].method.sort(sf); 
+        classes[k].event.sort(sf); 
+    });    
+    
     //inputs
     var inputs = _.chain(classes)
+                   //exclude main classes: editableform, etc
                   .filter(function(item, key) {
                       return _.indexOf(exclude, key) === -1;
                   })
+                  //sort for correct merging defaults
                   .sortBy(function(item) {
-                      if(item.name === 'abstract') return 0;
-                      if(item.name === 'list') return 1;
+                      if(item.name === 'abstractinput') return 0;
+                      //inputs that are parents for others
+                      if(item.name === 'list' || item.name === 'text') return 1;
                       return 10;
                   })                  
                   .map(function(item) {
@@ -129,13 +141,7 @@ function loadContext() {
                //   .object()
                   .value();
     
-    //sort
-    var sf = function(a,b) {return a.name > b.name ? 1 : -1;};
-    _.each(['editableContainer', 'editable'], function(k) {
-        classes[k].property.sort(sf); 
-        classes[k].method.sort(sf); 
-        classes[k].event.sort(sf); 
-    });
+    
     
     context.myClasses = classes;   
     context.inputs = inputs;   
@@ -144,6 +150,10 @@ function loadContext() {
 }
 
 function mergeDefaults(o, parent) {
+    if(!o.property) {
+        o.property = [];
+    }
+
     _.each(parent.property, function(prop) {
         if(prop.access === 'private') return;
         

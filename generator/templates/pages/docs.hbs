@@ -26,18 +26,20 @@
             <p>There are several <i>input types</i> supported by library. Each type may have additional configuration options.<br>
             Input options are defined as well as other parameters of <code>$().editable()</code> method.<br>
             Currently supported:
-            </p>
+            </p> 
             <ul>
             {{#each inputs}}
-            <li>{{name}}</li>
+            <li>{{name}}{{new ../project.version}}</li>
             {{/each}}       
             </ul>
         </section> 
                    
         {{#each inputs}}
          <section id="{{name}}">
-            <h2>{{name}}</h2>
-            <p>{{md description}}</p>
+            <h2>{{name}}{{new ../project.version}}</h2>
+            <p>{{md description}}
+               {{since}}
+            </p>
             {{include "inputtabs" project=../project}}
             </section>
         {{/each}}            

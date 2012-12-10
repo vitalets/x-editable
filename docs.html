@@ -21,6 +21,7 @@
         <script src="assets/mockjax/jquery.mockjax.js"></script>
         
         <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+<!--        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.js"></script>-->
         <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
         
         
@@ -97,6 +98,8 @@
                      
                       <li><a href="#select">select</a></li>
                      
+                      <li><a href="#html5types">html5types</a></li>
+                     
                       <li><a href="#date">date</a></li>
                      
                       <li><a href="#dateui">dateui</a></li>
@@ -153,8 +156,16 @@ inline
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot; data-type=&quot;text&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Enter username&quot;&gt;superuser&lt;/a&gt;</pre>
+Main attributes you should define are:
+<ul>
+<li><code>type</code> - type of input (text, textarea, select, etc)</li>
+<li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
+<li><code>pk</code> - primary key of record to be updated (ID of user in db)</li>
+<li><code>name</code> - fieldname to be updated (column in db). Can be taken from html <code>id</code> attribute</li>
+</ul>
+<br>
 </li>
-<li>Apply <strong>editable()</strong> method to elements
+<li>Apply <strong>editable()</strong> method to these elements
 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).editable();</pre>                                               
 Alternatively, you can set all options via javascript
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot;&gt;superuser&lt;/a&gt;</pre>
@@ -166,7 +177,7 @@ Alternatively, you can set all options via javascript
 });</pre>                                                          
 </li>
 <li>That's it!<br>
-Open your page and click on element. You will see form that will submit ajax request on <code>/post</code>.<br>
+Open your page and click on element. Enter new value and submit form. It will send ajax request with new value on <code>/post</code>.<br>
 <strong>Request</strong> contains <code>name</code>, <code>value</code> and <code>pk</code> of record:<br><br>
 <pre class="prettyprint linenums">POST /post
 {
@@ -174,8 +185,9 @@ Open your page and click on element. You will see form that will submit ajax req
     pk:    1            //primary key (record id)
     value: &#x27;superuser!&#x27; //new value
 }</pre>
+This library has nothing to do with server-side part: you can write it on any language you prefer. The main is response.<br>
 If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
-If <strong>status != 200</strong> form stays open and <i>responseText</i> is shown as error message.<br>
+If <strong>status != 200</strong> form remains open and <i>responseText</i> is shown as error message.<br>
 Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
 For more complex iteraction with server you may use <code>success</code> callback option (e.g. to process json response).<br><br>
 </li>
@@ -248,7 +260,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
         </tr> 
        
         <tr>
-            <td>display <sup><span class="label label-success">new</span></sup></td>
+            <td>display</td>
             <td>function|boolean</td>
             <td>null</td>
             <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s value2html() will be called.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will no change.<br>Runs under element&#39;s scope.<br>Second parameter <strong>sourceData</strong> is passed for inputs with source (select, checklist).</p>
@@ -300,11 +312,13 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td>params</td>
             <td>object|function</td>
             <td>null</td>
-            <td><p>Additional params for submit. Function can be used to calculate params dynamically</p>
+            <td><p>Additional params for submit. If defined as <code>object</code> - it is <strong>appended</strong> to original ajax data (pk, name and value).<br>If defined as <code>function</code> - returned object <strong>overwrites</strong> original ajax data.</p>
 
             
                 <pre class="prettyprint linenums">params: function(params) {
-    return { a: 1 };
+    //originally params contain pk, name and value
+    params.a = 1;
+    return params;
 }</pre>
             
             
@@ -335,7 +349,7 @@ Can be calculated dynamically via function.</p>
         </tr> 
        
         <tr>
-            <td>savenochange <sup><span class="label label-success">new</span></sup></td>
+            <td>savenochange</td>
             <td>boolean</td>
             <td>false</td>
             <td><p>Whether to save or cancel value when it was not changed but form was submitted</p>
@@ -741,7 +755,7 @@ See <a href="#newrecord">creating new records</a> for details.
         
     </li>
     
-    <li><strong>reason</strong> <i>String</i> Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+    <li><strong>reason</strong> <i>String</i> Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
         
     </li>
     
@@ -762,7 +776,7 @@ See <a href="#newrecord">creating new records</a> for details.
         </tr> 
        
         <tr>
-            <td>init <sup><span class="label label-success">new</span></sup></td>
+            <td>init</td>
             <td>
 <ul>
     
@@ -863,7 +877,7 @@ See <a href="#newrecord">creating new records</a> for details.
             <p>There are several <i>input types</i> supported by library. Each type may have additional configuration options.<br>
             Input options are defined as well as other parameters of <code>$().editable()</code> method.<br>
             Currently supported:
-            </p>
+            </p> 
             <ul>
             
             <li>text</li>
@@ -871,6 +885,8 @@ See <a href="#newrecord">creating new records</a> for details.
             <li>textarea</li>
             
             <li>select</li>
+            
+            <li>html5types <sup><span class="label label-success">new</span></sup></li>
             
             <li>date</li>
             
@@ -885,7 +901,9 @@ See <a href="#newrecord">creating new records</a> for details.
          <section id="text">
             <h2>text</h2>
             <p><p>Text input</p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="text-tabs">
     <li class="active"><a href="#text-options" data-toggle="tab">Options</a></li>
     <li><a href="#text-example" data-toggle="tab">Example</a></li>
@@ -971,7 +989,9 @@ $(function(){
          <section id="textarea">
             <h2>textarea</h2>
             <p><p>Textarea input</p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="textarea-tabs">
     <li class="active"><a href="#textarea-options" data-toggle="tab">Options</a></li>
     <li><a href="#textarea-example" data-toggle="tab">Example</a></li>
@@ -1057,7 +1077,9 @@ $(function(){
          <section id="select">
             <h2>select</h2>
             <p><p>Select (dropdown)</p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="select-tabs">
     <li class="active"><a href="#select-options" data-toggle="tab">Options</a></li>
     <li><a href="#select-example" data-toggle="tab">Example</a></li>
@@ -1126,7 +1148,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
         </tr> 
        
         <tr>
-            <td>sourceCache <sup><span class="label label-success">new</span></sup></td>
+            <td>sourceCache</td>
             <td>boolean</td>
             <td>true</td>
             <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
@@ -1180,10 +1202,112 @@ $(function(){
 </div>
             </section>
         
+         <section id="html5types">
+            <h2>html5types <sup><span class="label label-success">new</span></sup></h2>
+            <p><p>HTML5 input types.
+Following types are supported:
+
+</p>
+<ul>
+<li>password</li>
+<li>email</li>
+<li>url</li>
+<li>tel</li>
+<li>number</li>
+<li>range</li>
+</ul>
+<p>Learn more about html5 inputs:<br><a href="http://www.w3.org/wiki/HTML5_form_additions">http://www.w3.org/wiki/HTML5_form_additions</a><br>To check browser compatibility please see:<br><a href="https://developer.mozilla.org/en-US/docs/HTML/Element/Input">https://developer.mozilla.org/en-US/docs/HTML/Element/Input</a></p>
+
+               <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.3.0</span></div>
+            </p>
+            <ul class="nav nav-tabs" id="html5types-tabs">
+    <li class="active"><a href="#html5types-options" data-toggle="tab">Options</a></li>
+    <li><a href="#html5types-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="html5types-options">
+      <p>All options can be defined as <code>data-*</code> attributes.
+
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl</td>
+            <td>string</td>
+            <td>depends on type</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>placeholder</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Placeholder attribute of input. Shown when input is empty.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>input-medium</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Name attribute of input</p>
+
+            
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="html5types-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;email&quot; data-type=&quot;email&quot; data-pk=&quot;1&quot;&gt;admin@example.com&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#email&#x27;).editable({
+        url: &#x27;/post&#x27;,
+        title: &#x27;Enter email&#x27;
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
          <section id="date">
             <h2>date</h2>
             <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a>.<br>For localization you can include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a></p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="date-tabs">
     <li class="active"><a href="#date-options" data-toggle="tab">Options</a></li>
     <li><a href="#date-example" data-toggle="tab">Example</a></li>
@@ -1313,7 +1437,9 @@ $(function(){
          <section id="dateui">
             <h2>dateui</h2>
             <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>This input is also accessible as <strong>date</strong> type. Do not use it together with <strong>bootstrap-datepicker</strong> as both apply <code>$().datepicker()</code> method.</p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="dateui-tabs">
     <li class="active"><a href="#dateui-options" data-toggle="tab">Options</a></li>
     <li><a href="#dateui-example" data-toggle="tab">Example</a></li>
@@ -1444,7 +1570,9 @@ $(function(){
             <h2>checklist</h2>
             <p><p>List of checkboxes. 
 Internally value stored as javascript array of values.</p>
-</p>
+
+               
+            </p>
             <ul class="nav nav-tabs" id="checklist-tabs">
     <li class="active"><a href="#checklist-options" data-toggle="tab">Options</a></li>
     <li><a href="#checklist-example" data-toggle="tab">Example</a></li>
@@ -1535,7 +1663,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
         </tr> 
        
         <tr>
-            <td>sourceCache <sup><span class="label label-success">new</span></sup></td>
+            <td>sourceCache</td>
             <td>boolean</td>
             <td>true</td>
             <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
@@ -1660,6 +1788,14 @@ $(&#x27;.myeditable&#x27;).editable({
 //make username required
 $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, function(v) {
     if(v == &#x27;&#x27;) return &#x27;Required field!&#x27;;
+});
+
+//automatically show next editable
+$(&#x27;.myeditable&#x27;).on(&#x27;save.newuser&#x27;, function(){
+    var that = this;
+    setTimeout(function() {
+        $(that).closest(&#x27;tr&#x27;).next().find(&#x27;.myeditable&#x27;).editable(&#x27;show&#x27;);
+    }, 200);
 });</pre>
 
  <p>When you enter data first time - nothing sent to server, but all values are stored.<br>
@@ -1683,7 +1819,8 @@ $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, 
                //show messages
                var msg = &#x27;New user created! Now editables submit individually.&#x27;;
                $(&#x27;#msg&#x27;).addClass(&#x27;alert-success&#x27;).removeClass(&#x27;alert-error&#x27;).html(msg).show();
-               $(&#x27;#save-btn&#x27;).hide();                    
+               $(&#x27;#save-btn&#x27;).hide(); 
+               $(this).off(&#x27;save.newuser&#x27;);                     
            } else if(data &amp;&amp; data.errors){ 
                //server-side validation error, response like {&quot;errors&quot;: {&quot;username&quot;: &quot;username already exist&quot;} }
                config.error.call(this, data.errors);
