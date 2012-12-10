@@ -2,7 +2,7 @@
 Text input
 
 @class text
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="username" data-type="text" data-pk="1">awesome</a>
@@ -20,7 +20,7 @@ $(function(){
         this.init('text', options, Text.defaults);
     };
 
-    $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstractinput);
 
     $.extend(Text.prototype, {
         activate: function() {
@@ -31,7 +31,7 @@ $(function(){
         }  
     });
 
-    Text.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <input type="text">

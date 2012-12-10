@@ -2,7 +2,7 @@
 List - abstract class for inputs that have source option loaded from js array or via ajax
 
 @class list
-@extends abstract
+@extends abstractinput
 **/
 (function ($) {
 
@@ -10,7 +10,7 @@ List - abstract class for inputs that have source option loaded from js array or
        
     };
 
-    $.fn.editableutils.inherit(List, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(List, $.fn.editabletypes.abstractinput);
 
     $.extend(List.prototype, {
         render: function () {
@@ -237,7 +237,7 @@ List - abstract class for inputs that have source option loaded from js array or
 
     });      
 
-    List.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    List.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>

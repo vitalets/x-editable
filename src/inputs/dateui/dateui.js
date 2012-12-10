@@ -4,7 +4,7 @@ Description and examples: http://jqueryui.com/datepicker.
 This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
 
 @class dateui
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
@@ -46,7 +46,7 @@ $(function(){
         this.options.datepicker.dateFormat = this.options.datepicker.format;        
     };
 
-    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstract);    
+    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstractinput);    
     
     $.extend(DateUI.prototype, {
         render: function () {
@@ -129,7 +129,7 @@ $(function(){
 
     });
     
-    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <div></div>

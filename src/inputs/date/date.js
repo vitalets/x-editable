@@ -4,7 +4,7 @@ Description and examples: http://vitalets.github.com/bootstrap-datepicker.
 For localization you can include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
 
 @class date
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
@@ -48,7 +48,7 @@ $(function(){
         this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);
     };
 
-    $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstract);    
+    $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
     
     $.extend(Date.prototype, {
         render: function () {
@@ -112,7 +112,7 @@ $(function(){
 
     });
     
-    Date.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Date.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <div></div>

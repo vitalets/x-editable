@@ -3,7 +3,7 @@ Address editable input.
 Internally value stored as {city: "Moscow", street: "Lenina", building: "15"}
 
 @class address
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="address" data-type="address" data-pk="1">awesome</a>
@@ -27,7 +27,7 @@ $(function(){
     };
 
     //inherit from Abstract input
-    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstractinput);
 
     $.extend(Address.prototype, {
         /**
@@ -152,7 +152,7 @@ $(function(){
        }       
     });
 
-    Address.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<div><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
              '<div><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
              '<div><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',

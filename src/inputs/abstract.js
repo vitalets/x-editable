@@ -1,17 +1,18 @@
 /**
-Abstract editable input class.
-To create your own input you should inherit from this class.
+AbstractInput - base class for all editable inputs.
+It defines interface to be implemented by any input type.
+To create your own input you can inherit from this class.
 
-@class abstract
+@class AbstractInput
 **/
 (function ($) {
 
     //types
     $.fn.editabletypes = {};
     
-    var Abstract = function () { };
+    var AbstractInput = function () { };
 
-    Abstract.prototype = {
+    AbstractInput.prototype = {
        /**
         Initializes input
         
@@ -150,7 +151,7 @@ To create your own input you should inherit from this class.
        }
     };
         
-    Abstract.defaults = {  
+    AbstractInput.defaults = {  
         /**
         HTML template of input. Normally you should not change it.
 
@@ -177,6 +178,6 @@ To create your own input you should inherit from this class.
         name: null
     };
     
-    $.extend($.fn.editabletypes, {abstract: Abstract});
+    $.extend($.fn.editabletypes, {abstractinput: AbstractInput});
         
 }(window.jQuery));
