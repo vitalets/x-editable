@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.3.0 wip
 ----------------------------  
+[bug #43] fix for bootstrap 2.2.2 (vitalets) 
 [enh #41] 'abstract' class renamed to 'abstractinput' as abstract is reserved word (vitalets)
 [enh #40] 'params' option defined as function overwrites original ajax data instead of appending (vitalets)
 [bug] datepicker: error when click on arrows after clear date (vitalets) 
