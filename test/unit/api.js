@@ -159,9 +159,8 @@ $(function () {
              e.remove();    
              start();  
         }, timeout);                                        
-     });       
-  
-   
+     });   
+     
      test("show/hide/toggle methods", function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable();
         e.editable('show');
