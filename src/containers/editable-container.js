@@ -80,9 +80,8 @@ Applied as jQuery method.
             .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this),
-                cancel: $.proxy(function(){
-                   this.hide('cancel'); 
-                }, this),
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this),
+                nochange: $.proxy(function(){ this.hide('nochange'); }, this),
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
@@ -146,7 +145,7 @@ Applied as jQuery method.
         /**
         Hides container with form
         @method hide()
-        @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+        @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
         **/         
         hide: function(reason) {  
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
@@ -159,7 +158,7 @@ Applied as jQuery method.
 
             @event hidden 
             @param {object} event event object
-            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|undefined (=manual)</code>
+            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
             @example
             $('#username').on('hidden', function(e, reason) {
                 if(reason === 'save' || reason === 'cancel') {

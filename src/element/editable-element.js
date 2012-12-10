@@ -250,9 +250,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     value: this.value
                 });
                 this.$element.editableContainer(containerOptions);
-                this.$element.on({
-                    save: $.proxy(this.save, this)
-                });
+                this.$element.on("save.internal", $.proxy(this.save, this));
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
                 return;
@@ -422,16 +420,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             return result;
 
             /**  
-            This method collects values from several editable elements and submit them all to server. 
-            It is designed mainly for <a href="#newrecord">creating new records</a>. 
+            This method collects values from several editable elements and submit them all to server.   
+            Internally it runs client-side validation for all fields and submits only in case of success.  
+            See <a href="#newrecord">creating new records</a> for details.
             
             @method submit(options)
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
             @param {object} options.ajaxOptions additional ajax options            
-            @param {function} options.error(obj) error handler (called on both client-side and server-side validation errors)
-            @param {function} options.success(obj) success handler 
+            @param {function} options.error(obj) error handler 
+            @param {function} options.success(obj,config) success handler
             @returns {Object} jQuery object
             **/            
             case 'submit':  //collects value, validate and submit to server for creating new record
@@ -449,22 +448,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     $.ajax($.extend({
                         url: config.url, 
                         data: values, 
-                        type: 'POST',                        
-                        dataType: 'json'
+                        type: 'POST'                        
                     }, config.ajaxOptions))
                     .success(function(response) {
-                        //successful response 
-                        if(typeof response === 'object' && response.id) {
-                            $elems.editable('option', 'pk', response.id); 
-                            $elems.removeClass('editable-unsaved');
-                            if(typeof config.success === 'function') {
-                                config.success.apply($elems, arguments);
-                            } 
-                        } else { //server-side validation error
-                           if(typeof config.error === 'function') {
-                                config.error.apply($elems, arguments);
-                           }
-                        }
+                        //successful response 200 OK
+                        if(typeof config.success === 'function') {
+                            config.success.call($elems, response, config);
+                        } 
                     })
                     .error(function(){  //ajax error
                         if(typeof config.error === 'function') {
@@ -473,7 +463,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     });
                 } else { //client-side validation error
                     if(typeof config.error === 'function') {
-                        config.error.call($elems, {errors: errors});
+                        config.error.call($elems, errors);
                     }
                 }
             return this;

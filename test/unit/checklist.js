@@ -3,7 +3,8 @@ $(function () {
     module("checklist", {
         setup: function(){
             sfx = $('#qunit-fixture'),
-            fx = $('#async-fixture');               
+            fx = $('#async-fixture'); 
+            $.support.transition = false;              
         }
     });  
    

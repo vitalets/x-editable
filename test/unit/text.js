@@ -211,71 +211,6 @@ $(function () {
         
       });      
        
-   
-      asyncTest("should submit all required params", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({
-             name: 'username',
-             params: {
-                q: 2 
-             },
-             success: function(resp) {   
-                 equal(resp.dataType, 'json', 'dataType ok');
-                 equal(resp.data.pk, 1, 'pk ok');
-                 equal(resp.data.name, 'username', 'name ok');
-                 equal(resp.data.value, newText, 'value ok');
-                 equal(resp.data.q, 2, 'additional params ok');
-             } 
-          }),  
-          newText = 'cd<e>;"'
-
-        e.click()
-        var p = tip(e);
-
-        ok(p.find('input[type=text]').length, 'input exists')
-        p.find('input').val(newText);
-        p.find('form').submit(); 
-        
-        setTimeout(function() {
-           e.remove();    
-           start();  
-        }, timeout);             
-        
-      });
-      
-    asyncTest("params as function", function () {
-        var e = $('<a href="#" data-pk="1" data-url="post-resp.php">abc</a>').appendTo(fx).editable({
-             name: 'username',
-             params: function(params) {
-                 ok(this === e[0], 'scope is ok');
-                 equal(params.pk, 1, 'params in func already have values (pk)');
-                 return { q: 2, pk: 3 };
-             },
-             success: function(resp) {   
-                 equal(resp.dataType, 'json', 'dataType ok');
-                 equal(resp.data.pk, 3, 'pk ok');
-                 equal(resp.data.name, 'username', 'name ok');
-                 equal(resp.data.value, newText, 'value ok');
-                 equal(resp.data.q, 2, 'additional params ok');
-             },
-             ajaxOptions: {
-                 headers: {"myHeader": "123"}
-             } 
-          }),  
-          newText = 'cd<e>;"'
-
-        e.click()
-        var p = tip(e);
-
-        ok(p.find('input[type=text]').length, 'input exists')
-        p.find('input').val(newText);
-        p.find('form').submit(); 
-        
-        setTimeout(function() {
-           e.remove();    
-           start();  
-        }, timeout);             
-        
-      });    
               
      asyncTest("ajaxOptions", function () {
         var e = $('<a href="#" data-pk="1" data-url="post-options.php">abc</a>').appendTo(fx).editable({
@@ -503,6 +438,67 @@ $(function () {
            start();  
         }, timeout);             
         
-      });                   
+      });     
+
+   test("password", function () {
+          var v = '123', v1 = '456';
+       
+          var e = $('<a href="#" data-pk="1" data-name="name" data-value="'+v+'"></a>').appendTo('#qunit-fixture').editable({
+                type: 'password',
+                url: function(params) {
+                   equal(params.value, v1, 'submitted value correct'); 
+                }
+            });
+            
+            equal(e.text(), '[hidden]', 'text is hidden');             
+            
+            e.click()
+            var p = tip(e);
+            ok(p.is(':visible'), 'popover visible');
+            var $input = p.find('input[type="password"]');
+            ok($input.length, 'input exists');
+            equal($input.val(), v, 'input contains correct value');
+            $input.val(v1);
+            p.find('form').submit(); 
+            
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value, v1, 'new value saved to value');
+            equal(e.text(), '[hidden]', 'new text shown');             
+  });        
+      
+      
+   test("html5 types", function () {
+       
+        var types = ['email', 'url', 'tel', 'number', 'range'],
+            v = '12',
+            v1 = '45';
+       
+        expect(8*types.length);
+                             
+        for(var i = 0; i< types.length; i++) {
+            var e = $('<a href="#" data-pk="1" data-name="name">'+v+'</a>').appendTo('#qunit-fixture').editable({
+                type: types[i],
+                url: function(params) {
+                   equal(params.value, v1, 'submitted value correct'); 
+                }
+            });
+            
+            equal(e.data('editable').value, v, 'value correct');
+            
+            e.click()
+            var p = tip(e);
+            ok(p.is(':visible'), 'popover visible');
+            var $input = p.find('input[type='+types[i]+']');
+            ok($input.length, 'input exists');
+            equal($input.val(), v, 'input contain correct value');
+            $input.val(v1);
+            p.find('form').submit(); 
+            
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value, v1, 'new value saved to value');
+            equal(e.text(), v1, 'new text shown');             
+        }    
+                  
+  });                    
          
 });    

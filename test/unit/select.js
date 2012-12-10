@@ -295,12 +295,12 @@ $(function () {
         expect(4);
         
         //clear cache
-        $(document).removeData('groups.php-name1');          
+        $(document).removeData('groups-cache-sim.php-name1');          
         
         var req = 0;
         $.mockjax({
                 url: 'groups-cache-sim.php',
-                responseTime: 200,
+                responseTime: 50,
                 response: function() {
                     req++;
                     this.responseText = groups;
@@ -312,7 +312,6 @@ $(function () {
              e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-url="post.php" data-source="groups-cache-sim.php"></a>').appendTo(fx).editable();
            
           setTimeout(function() {
-
                 equal(req, 1, 'one request');
                 equal(e.text(), groups[1], 'text1 correct');
                 equal(e1.text(), groups[2], 'text2 correct');
@@ -330,7 +329,7 @@ $(function () {
         expect(4);
         
         //clear cache
-        $(document).removeData('groups.php-name1');           
+        $(document).removeData('groups-cache-sim-err.php-name1');           
         
         var req = 0;
         $.mockjax({
@@ -342,17 +341,16 @@ $(function () {
                 }
          });  
 
-         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
-             e1 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">35</a>').appendTo(fx).editable(),
-             e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">6456</a>').appendTo(fx).editable(),
-             errText = $.fn.editabletypes.select.defaults.sourceError;
+         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">11</a>').appendTo(fx).editable(),
+             e1 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php">22</a>').appendTo(fx).editable(),
+             e2 = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="3" data-autotext="always" data-url="post.php" data-source="groups-cache-sim-err.php"></a>').appendTo(fx).editable();
            
           setTimeout(function() {
 
                 equal(req, 1, 'one request');
-                equal(e.text(), errText, 'text1 correct');
-                equal(e1.text(), errText, 'text2 correct');
-                equal(e2.text(), errText, 'text3 correct');
+                equal(e.text(), '11', 'text1 correct');
+                equal(e1.text(), '22', 'text2 correct');
+                equal(e2.text(), $.fn.editable.defaults.emptytext, 'text3 correct');
                 
                 e.remove();    
                 e1.remove();    

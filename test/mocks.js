@@ -57,7 +57,7 @@ $(function () {
     
 });
 
-// useful functions
+// usefull functions
 
 function tip(e) {
     return e.data('editableContainer').tip();   

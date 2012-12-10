@@ -179,11 +179,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 return;
             } 
             
-            //if value not changed --> cancel
+            //if value not changed --> trigger 'nochange' event and return
             /*jslint eqeq: true*/
             if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
-                this.cancel();
+                /**        
+                Fired when value not changed but form is submitted. Requires savenochange = false.
+                @event nochange 
+                @param {Object} event event object
+                **/                    
+                this.$div.triggerHandler('nochange');            
                 return;
             } 
 
@@ -259,7 +264,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 //additional params
                 if(typeof this.options.params === 'function') {
-                    $.extend(params, this.options.params.call(this.options.scope, params));  
+                    params = this.options.params.call(this.options.scope, params);  
                 } else {
                     //try parse json in single quotes (from data-params attribute)
                     this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
@@ -273,8 +278,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     return $.ajax($.extend({
                         url     : this.options.url,
                         data    : params,
-                        type    : 'post',
-                        dataType: 'json'
+                        type    : 'POST'
                     }, this.options.ajaxOptions));
                 }
             }
@@ -371,10 +375,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         url:null,
         /**
-        Additional params for submit. Function can be used to calculate params dynamically
+        Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  
+        If defined as <code>function</code> - returned object **overwrites** original ajax data.
         @example
         params: function(params) {
-            return { a: 1 };
+            //originally params contain pk, name and value
+            params.a = 1;
+            return params;
         }
 
         @property params 
@@ -447,7 +454,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if(!response.success) return response.msg;
         }
         **/          
-        success: function(response, newValue) {},
+        success: null,
         /**
         Additional options for ajax request.
         List of values: http://api.jquery.com/jQuery.ajax

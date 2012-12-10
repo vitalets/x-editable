@@ -79,8 +79,8 @@ $(function () {
         e.editable();
     });      
   
-     asyncTest("events: shown / hidden (reason: cancel, onblur, manual)", function () {
-        expect(11);
+     asyncTest("events: shown / hidden (reason: cancel, onblur, nochange, manual)", function () {
+        expect(15);
         var val = '1', test_reason, 
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
@@ -112,6 +112,13 @@ $(function () {
              ok(p.is(':visible'), 'popover shown');
              e.parent().click();
              ok(!p.is(':visible'), 'popover closed');
+             
+             test_reason = 'nochange'            
+             e.click();
+             p = tip(e);
+             ok(p.is(':visible'), 'popover shown');
+             p.find('form').submit();  //submit value without changes
+             ok(!p.is(':visible'), 'popover closed');             
              
              test_reason = 'manual'            
              e.click();
@@ -152,9 +159,8 @@ $(function () {
              e.remove();    
              start();  
         }, timeout);                                        
-     });       
-  
-   
+     });   
+     
      test("show/hide/toggle methods", function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable();
         e.editable('show');
@@ -212,16 +218,16 @@ $(function () {
         equal(e.text(), 'abcd', 'text set correctly (by object)');        
      });    
      
-      asyncTest("'submit' method: client and server validation", function () {
+      asyncTest("'submit' method: client and server validation errors", function () {
         var ev1 = 'ev1',
             ev2 = 'ev2',
             e1v = 'e1v',
-            e = $('<a href="#" class="new" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" class="new-val" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable({
                 validate: function(value) {
                     if(value == ev1) return 'invalid';
                 }
             }),
-            e1 = $('<a href="#" class="new" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
+            e1 = $('<a href="#" class="new-val" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
 
         $.mockjax({
             url: 'new-error.php',
@@ -236,49 +242,71 @@ $(function () {
                 };  
             }
         });
- 
-        $(fx).find('.new').editable('submit', {
+        
+        $.mockjax({
             url: 'new.php',
-            error: function(data) {
-               ok(data.errors, 'errors defined');
-               equal(data.errors.text, 'invalid', 'client validation error ok');
+            response: function(settings) {
+               ok(false, 'should not submit to new.php');
+            }
+        });        
+ 
+        $(fx).find('.new-val').editable('submit', {
+            url: 'new.php', 
+            error: function(errors) {
+               equal(errors.text, 'invalid', 'client validation error ok');
             }
         });
-       
+        
         //change value to pass client side validation
         e.click();
         var p = tip(e);
         p.find('input[type=text]').val(ev2);
         p.find('button[type=submit]').click(); 
        
-        $(fx).find('.new').editable('submit', {
+        $(fx).find('.new-val').editable('submit', {
             url: 'new-error.php',
             data: {a: 123},
-            error: function(data) {
-                equal(data.errors.text1, 'server-invalid', 'server validation error ok');
-                e.remove();
-                e1.remove();
-                start(); 
+            success: function(data, config) {
+               ok(data.errors, 'errors received from server');
+               ok(typeof config.error === 'function', 'config passed correctly');
+               
+               if(data && data.id) { 
+                  //success 
+               } else if(data && data.errors){ 
+                   config.error.call(this, data.errors); //call error from success
+               }               
+            },
+            error: function(errors) {
+                equal(errors.text1, 'server-invalid', 'server validation error ok');
             },
             ajaxOptions: {
-                type: 'PUT'
+                type: 'PUT',
+                dataType: 'json'
             }
-        });       
+        }); 
+        
+        setTimeout(function() {
+             e.remove();    
+             e1.remove();    
+             start();  
+        }, timeout);                 
        
      });                  
         
         
      asyncTest("'submit' method: server error", function () {
-       expect(2);  
         var ev1 = 'ev1',
             e1v = 'e1v',
-            e = $('<a href="#" class="new" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable(),
-            e1 = $('<a href="#" class="new" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
+            e = $('<a href="#" class="new-err" data-type="text" data-url="post.php" data-name="text">'+ev1+'</a>').appendTo(fx).editable(),
+            e1 = $('<a href="#" class="new-err" data-type="text" data-name="text1">'+e1v+'</a>').appendTo(fx).editable();
 
-       $(fx).find('.new').editable('submit', {
+       $(fx).find('.new-err').editable('submit', {
             url: 'error.php',
             error: function(data) {
-                ok(!data.errors, 'no client errors');
+                equal(this[0], $(fx).find('.new-err')[0], 'success context ok');
+                equal(this[1], $(fx).find('.new-err')[1], 'success context2 ok');                
+
+                equal(data.status, 500, 'status 500 ok');
                 equal(data.responseText, 'customtext', 'server error ok');
                 
                 e.remove();
@@ -290,7 +318,6 @@ $(function () {
      });       
      
      asyncTest("'submit' method: success", function () {
-       expect(7);  
         var ev1 = 'ev1',
             e1v = 'e1v',
             pk = 123,
@@ -302,24 +329,23 @@ $(function () {
             response: function(settings) {
                 equal(settings.data.text, ev1, 'first value ok');
                 equal(settings.data.text1, e1v, 'second value ok');
-                this.responseText = {id: pk};  
+                this.responseText = 'response-body';  
             }
         });            
             
        $(fx).find('.new').editable('submit', {
             url: 'new-success.php',
             success: function(data) {
-                equal(e.data('editable').options.pk, pk, 'pk1 ok'); 
-                ok(!e.hasClass('editable-changed'), 'no "editable-changed" class'); 
-                
-                equal(e1.data('editable').options.pk, pk, 'pk2 ok'); 
-                ok(!e1.hasClass('editable-changed'), 'no "editable-changed" class'); 
-                
-                equal(data.id, pk, 'server result id ok');
+                equal(this[0], $(fx).find('.new')[0], 'success context ok');
+                equal(this[1], $(fx).find('.new')[1], 'success context2 ok');
+                equal(data, 'response-body', 'response body ok');
                 
                 e.remove();
                 e1.remove();
                 start();                 
+            },
+            error: function(errors) {
+                ok(false, 'error should not be called');
             }
         });
         

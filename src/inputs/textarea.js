@@ -2,7 +2,7 @@
 Textarea input
 
 @class textarea
-@extends abstract
+@extends abstractinput
 @final
 @example
 <a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>
@@ -21,7 +21,7 @@ $(function(){
         this.init('textarea', options, Textarea.defaults);
     };
 
-    $.fn.editableutils.inherit(Textarea, $.fn.editabletypes.abstract);
+    $.fn.editableutils.inherit(Textarea, $.fn.editabletypes.abstractinput);
 
     $.extend(Textarea.prototype, {
         render: function () {
@@ -66,7 +66,7 @@ $(function(){
         }         
     });
 
-    Textarea.defaults = $.extend({}, $.fn.editabletypes.abstract.defaults, {
+    Textarea.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <textarea></textarea>
@@ -84,7 +84,7 @@ $(function(){
         @type string
         @default null
         **/             
-        placeholder: null        
+        placeholder: null 
     });
 
     $.fn.editabletypes.textarea = Textarea;    

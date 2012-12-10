@@ -4,30 +4,41 @@ var jqver = decodeURIComponent((new RegExp('[?|&]' + 'jquery' + '=' + '([^&;]+?)
     
 require(["loader", jqurl], function(loader) {
 
-    requirejs.config(loader.getConfig("../src"));
+    var config = loader.getConfig("../src"),
+        params = loader.getParams();
+    
+    //add test specific dependencies
+    config.shim['test/mocks'] = ['element/editable-element', 'test/libs/mockjax/jquery.mockjax'];
+        
+    //as we need to keep order of tests, create shim dependencies automatically
+    addTests(config);
+    
+    requirejs.config(config);
    
-    require(['element/editable-element', 
-             'test/libs/mockjax/jquery.mockjax'
-             ], 
+    require(['test/unit/api'], 
     function() {
         //disable effects
         $.fx.off = true;
         $.support.transition = false;           
         
-        var params = loader.getParams();
-        
-        require([
+        QUnit.load();
+        QUnit.start();
+    });
+    
+    function addTests(config) {
+        var tests = [
             'test/mocks',
             'test/unit/common',
             'test/unit/text',
             'test/unit/textarea',
             'test/unit/select',
             'test/unit/checklist',
-            'test/unit/api',
-            (params.f === 'bootstrap') ?  'test/unit/date' :  'test/unit/dateui'
-        ], function() {
-            QUnit.load();
-            QUnit.start();
-        });
-    });
+            (params.f === 'bootstrap') ?  'test/unit/date' :  'test/unit/dateui',            
+            'test/unit/api'
+       ];
+       
+       for(var i=0; i<tests.length-1; i++) {
+          config.shim[tests[i+1]] = [tests[i]]; 
+       }
+    }
 });
