@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.2.1 wip
 ----------------------------  
+[enh #40] 'params' option defined as function overwrites original ajax data instead of appending (vitalets)
 [bug] datepicker: error when click on arrows after clear date (vitalets) 
 [enh] 'hidden' event: added possible value of reason param - 'nochange'. Occurs when form is submitted but value was not changed (vitalets) 
 [enh] 'submit' method changed: error-callback's parameter simplified (vitalets) 

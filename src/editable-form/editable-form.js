@@ -264,7 +264,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 //additional params
                 if(typeof this.options.params === 'function') {
-                    $.extend(params, this.options.params.call(this.options.scope, params));  
+                    params = this.options.params.call(this.options.scope, params);  
                 } else {
                     //try parse json in single quotes (from data-params attribute)
                     this.options.params = $.fn.editableutils.tryParseJson(this.options.params, true);   
@@ -375,10 +375,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         url:null,
         /**
-        Additional params for submit. Function can be used to calculate params dynamically
+        Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  
+        If defined as <code>function</code> - returned object **overwrites** original ajax data.
         @example
         params: function(params) {
-            return { a: 1 };
+            //originally params contain pk, name and value
+            params.a = 1;
+            return params;
         }
 
         @property params 
