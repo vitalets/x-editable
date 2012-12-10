@@ -3,7 +3,7 @@ AbstractInput - base class for all editable inputs.
 It defines interface to be implemented by any input type.
 To create your own input you can inherit from this class.
 
-@class AbstractInput
+@class abstractinput
 **/
 (function ($) {
 

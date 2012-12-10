@@ -1,19 +1,23 @@
 /**
 HTML5 input types.
 Following types are supported:
-- password
-- email
-- url
-- tel
-- number
-- range
 
-To check browser compatibility please see:
-http://www.wufoo.com/html5/
+* password
+* email
+* url
+* tel
+* number
+* range
 
+Learn more about html5 inputs:  
+http://www.w3.org/wiki/HTML5_form_additions  
+To check browser compatibility please see:  
+https://developer.mozilla.org/en-US/docs/HTML/Element/Input
+            
 @class html5types 
 @extends text
 @final
+@since 1.3.0
 @example
 <a href="#" id="email" data-type="email" data-pk="1">admin@example.com</a>
 <script>
@@ -25,7 +29,11 @@ $(function(){
 });
 </script>
 **/
-   
+
+/**
+@property tpl 
+@default depends on type
+**/ 
 
 /*
 Password
