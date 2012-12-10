@@ -250,9 +250,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     value: this.value
                 });
                 this.$element.editableContainer(containerOptions);
-                this.$element.on({
-                    save: $.proxy(this.save, this)
-                });
+                this.$element.on("save.internal", $.proxy(this.save, this));
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
                 return;
