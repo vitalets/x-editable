@@ -8,9 +8,11 @@
 }
 
 .editable-container.editable-inline {
-/*    display: inline; */  /* display: inline does not correctly work with show()/hide() in jquery <= 1.7.2 */
     display: inline-block; 
     vertical-align: middle;
+    /* inline-block emulation for IE7*/
+    zoom: 1; 
+    *display: inline;    
 }
 
 .editable-container.ui-widget {
