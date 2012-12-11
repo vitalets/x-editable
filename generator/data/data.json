@@ -783,7 +783,7 @@
             "type": "string|function",
             "default": "null",
             "example": [
-                "\nurl: function(params) {\n    if(params.value === 'abc') {\n        var d = new $.Deferred;\n        return d.reject('field cannot be \"abc\"'); //returning error via deferred object\n    } else {\n        someModel.set(params.name, params.value); //save data in some js model\n    }\n} "
+                "\nurl: function(params) {\n    if(params.value === 'abc') {\n        var d = new $.Deferred;\n        return d.reject('error message'); //returning error via deferred object\n    } else {\n        someModel.set(params.name, params.value); //save data in some js model\n    }\n} "
             ],
             "class": "editableform"
         },
@@ -875,15 +875,15 @@
             "type": "object",
             "default": "null",
             "since": "1.1.1",
+            "example": [
+                " \najaxOptions: {\n    type: 'put',\n    dataType: 'json'\n}        "
+            ],
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 468,
-            "description": "Whether to show buttons or not.  \nForm without buttons can be auto-submitted by input or by onblur = 'submit'.",
-            "example": [
-                " \najaxOptions: {\n    method: 'PUT',\n    dataType: 'xml'\n}"
-            ],
+            "line": 473,
+            "description": "Whether to show buttons or not.  \nForm without buttons is auto-submitted.",
             "itemtype": "property",
             "name": "showbuttons",
             "type": "boolean",
@@ -1234,7 +1234,7 @@
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
             "line": 542,
-            "description": "Initial value of input. Taken from <code>data-value</code> or element's text.",
+            "description": "Initial value of input. If not set, taken from element's text.",
             "itemtype": "property",
             "name": "value",
             "type": "mixed",

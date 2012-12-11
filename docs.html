@@ -232,6 +232,11 @@ Please, see also <a href="#inputs">input dependent options</a>.
 List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.com/jQuery.ajax</a></p>
 
             
+                <pre class="prettyprint linenums">ajaxOptions: {
+    type: &#x27;put&#x27;,
+    dataType: &#x27;json&#x27;
+}</pre>
+            
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div>
             </td>
         </tr> 
@@ -375,13 +380,8 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>showbuttons</td>
             <td>boolean</td>
             <td>true</td>
-            <td><p>Whether to show buttons or not.<br>Form without buttons can be auto-submitted by input or by onblur = &#39;submit&#39;.</p>
+            <td><p>Whether to show buttons or not.<br>Form without buttons is auto-submitted.</p>
 
-            
-                <pre class="prettyprint linenums">ajaxOptions: {
-    method: &#x27;PUT&#x27;,
-    dataType: &#x27;xml&#x27;
-}</pre>
             
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div>
             </td>
@@ -441,7 +441,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
                 <pre class="prettyprint linenums">url: function(params) {
     if(params.value === &#x27;abc&#x27;) {
         var d = new $.Deferred;
-        return d.reject(&#x27;field cannot be &quot;abc&quot;&#x27;); //returning error via deferred object
+        return d.reject(&#x27;error message&#x27;); //returning error via deferred object
     } else {
         someModel.set(params.name, params.value); //save data in some js model
     }
@@ -472,7 +472,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>value</td>
             <td>mixed</td>
             <td>element&#x27;s text</td>
-            <td><p>Initial value of input. Taken from <code>data-value</code> or element&#39;s text.</p>
+            <td><p>Initial value of input. If not set, taken from element&#39;s text.</p>
 
             
             
