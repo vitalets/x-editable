@@ -138,8 +138,11 @@ List - abstract class for inputs that have source option loaded from js array or
                         }
                     }, this)
                 });
-            } else { //options as json/array
-                this.sourceData = this.makeArray(this.options.source);
+            } else { //options as json/array/function
+				if (typeof this.options.source === 'function')
+            		this.sourceData = this.makeArray(this.options.source());
+				else
+					this.sourceData = this.makeArray(this.options.source);
                 if($.isArray(this.sourceData)) {
                     this.doPrepend();
                     success.call(this);   
@@ -243,7 +246,8 @@ List - abstract class for inputs that have source option loaded from js array or
         Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
         For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
         If source is **string**, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
-        
+        If source is **function**, should return data in array format: <code>[{value: 1, text: "text"}, {...}]</code> or object format: <code>{value1: "text1", value2: "text2" ...}</code>
+		
         @property source 
         @type string|array|object
         @default null
