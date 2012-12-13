@@ -83,14 +83,12 @@
             <hr>
 
             <h2>Example</h2>   
-            <p>Click to edit</p>
-            <p style="text-align: right">
+            <div style="float: right; margin-bottom: 10px">
             <label style="display: inline-block; margin-right: 50px"><input type="checkbox" id="autoopen" style="vertical-align: baseline">&nbsp;auto-open next field <sup><span class="label label-success">new</span></sup></label>
             <button id="enable" class="btn">enable / disable</button>
-<!--            &nbsp;&nbsp;
-            <button id="turn" class="btn" style1="display: none">turn into classic form</button>   -->
-            </p>
-            <table id="user" class="table table-bordered table-striped">
+            </div>
+            <p>Click to edit</p>
+            <table id="user" class="table table-bordered table-striped" style="clear: both">
                 <tbody> 
                     <tr>         
                         <td width="15%">Username</td>
@@ -152,19 +150,26 @@
                     
                 </tbody>
             </table>
-            <br>
-            <div><span class="muted">All ajax requests here are emulated:</span></div>
-            <div><textarea id="console" rows="8" style="width: 70%" autocomplete="off"></textarea></div>
             
-            <hr>
-            <h2>More examples and tricks <small>(jsFiddle)</small></h2> 
-            <ul>
-                <li><a href="http://jsfiddle.net/xBB5x/38/" target="_blank">submit data via PUT method</a></li>
-                <li><a href="http://jsfiddle.net/xBB5x/39/" target="_blank">autotext option for select</a></li>
-                <li><a href="http://jsfiddle.net/xBB5x/40/" target="_blank">display checklist as &lt;UL&gt;</a></li>
-            </ul>
-            <p>If you want to share some usefull fiddle, please feel free to <a href="mailto: noginsk@rambler.ru">contact me</a>.</p>
-            <footer class="footer">
+            <div style="float: left; width: 50%">
+                <h3>Console <small>(all ajax requests here are emulated)</small></h3> 
+                <div><textarea id="console" rows="8" style="width: 70%" autocomplete="off"></textarea></div>
+            </div>
+           
+            <div style="float: left">             
+                <h3>More examples and tricks <small>(jsFiddle)</small></h3> 
+                <ul>
+                    <li><a href="http://jsfiddle.net/xBB5x/38/" target="_blank">submit data via PUT method</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/39/" target="_blank">autotext option for select</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/40/" target="_blank">display checklist as &lt;UL&gt;</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/62/" target="_blank">process JSON response</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/63/" target="_blank">editable column in table</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/64/" target="_blank">MVC pattern in editable interface</a></li>
+                </ul>
+                <p>If you'd like to share some usefull jsFiddle, please feel free to <a href="mailto: noginsk@rambler.ru">contact me</a>.</p>
+            </div>
+            
+            <footer class="footer" style="clear: both; padding-top: 10px">
                 <hr>
                 <p><a href="http://vitalets.github.com/x-editable">X-editable</a> &copy; Vitaliy Potapov 2012. Released under the MIT license.</p> 
             </footer>
