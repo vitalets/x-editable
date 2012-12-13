@@ -53,7 +53,13 @@ $(function(){
             }
             var lines = html.split(/<br\s*\/?>/i);
             for (var i = 0; i < lines.length; i++) {
-                lines[i] = $('<div>').html(lines[i]).text();
+                var text = $('<div>').html(lines[i]).text();
+
+                // Remove newline characters (\n) to avoid them being converted by value2html() method
+                // thus adding extra <br> tags
+                text = text.replace(new RegExp(String.fromCharCode(10), 'g'), '');
+
+                lines[i] = text;
             }
             return lines.join("\n"); 
         },        
