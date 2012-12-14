@@ -51,48 +51,50 @@ $(function(){
             if(!html) {
                 return '';
             }
+
+            var regex = new RegExp(String.fromCharCode(10), 'g');
             var lines = html.split(/<br\s*\/?>/i);
             for (var i = 0; i < lines.length; i++) {
                 var text = $('<div>').html(lines[i]).text();
 
                 // Remove newline characters (\n) to avoid them being converted by value2html() method
                 // thus adding extra <br> tags
-                text = text.replace(new RegExp(String.fromCharCode(10), 'g'), '');
+                text = text.replace(regex, '');
 
                 lines[i] = text;
             }
-            return lines.join("\n"); 
-        },        
+            return lines.join("\n");
+        },
 
         activate: function() {
             if(this.$input.is(':visible')) {
                 $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
                 this.$input.focus();
             }
-        }         
+        }
     });
 
     Textarea.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
-        @property tpl 
+        @property tpl
         @default <textarea></textarea>
-        **/          
+        **/
         tpl:'<textarea></textarea>',
         /**
-        @property inputclass 
+        @property inputclass
         @default input-large
-        **/          
+        **/
         inputclass: 'input-large',
         /**
         Placeholder attribute of input. Shown when input is empty.
 
-        @property placeholder 
+        @property placeholder
         @type string
         @default null
-        **/             
-        placeholder: null 
+        **/
+        placeholder: null
     });
 
-    $.fn.editabletypes.textarea = Textarea;    
+    $.fn.editabletypes.textarea = Textarea;
 
 }(window.jQuery));
