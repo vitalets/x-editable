@@ -39,7 +39,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$form = $($.fn.editableform.template); 
         },
         initButtons: function() {
-            this.$form.find('.editable-buttons').append($.fn.editableform.buttons);
+            if (!this.options.miniButtons) {
+                this.$form.find('.editable-buttons').append($.fn.editableform.buttons);
+            }
+            else {
+                this.$form.find('.editable-buttons').append($.fn.editableform.minibuttons);
+            }
         },
         /**
         Renders editableform

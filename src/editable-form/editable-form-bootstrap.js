@@ -12,7 +12,9 @@ Editableform based on Twitter Bootstrap
     
     //buttons
     $.fn.editableform.buttons = '<button type="submit" class="btn btn-primary editable-submit"><i class="icon-ok icon-white"></i></button>'+
-                                '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';         
+                                '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
+    $.fn.editableform.minibuttons = '<button type="submit" class="btn btn-mini btn-primary editable-submit"><i class="icon-ok icon-white"></i></button>'+
+                                '<button type="button" class="btn btn-mini editable-cancel"><i class="icon-remove"></i></button>';         
     
     //error classes
     $.fn.editableform.errorGroupClass = 'error';
