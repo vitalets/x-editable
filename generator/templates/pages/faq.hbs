@@ -1,0 +1,35 @@
+<div class="row" style="margin-top: 60px;">
+    <div class="span12">
+        <h1>Frequently Asked Questions</h1>
+        <hr>
+
+        <h3>What should be on backend side?</h3>
+        <p>X-editable has no limitation to backend side, you can write it on any server language you prefer.<br>
+        The common logic is: </p>
+        <ol>
+         <li>read <code>pk</code>, <code>name</code> and <code>value</code> from request (POST by default).</li>
+         <li>apply validation of value. If validation failed - return HTTP status != 200 and error message in response body.</li>
+         <li>If validation succeed - update object in database: set column specified by <code>name</code> to <code>value</code> using <code>pk</code> as object's unique identifier (<strong>ID</strong>).</li>
+         <li>send HTTP 200 OK response.</li>
+        </ol>
+        <hr>
+        
+        <h3>Is DateTime field supported?</h3>
+        <p>Currently not. It will be definitely added in future versions as one of the most popular feature.<br>
+        Please have a look on <a href="https://github.com/eternicode/bootstrap-datepicker/issues/29" target="_blank">discussion</a> in original datepicker.
+        </p>
+        <hr>
+        
+        <h3>How can I support development of X-editable?</h3>
+        <p>All your ideas and feedback are very appreciated! Please feel free to open issues on <a href="http://github.com/vitalets/x-editable/issues">github</a> or send me <a href="mailto:noginsk@rambler.ru">email</a>.</p>
+        <p>I'm also grateful for your donations to support development and maintenance of this project.</p>
+        
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="323QN8B6N4LN6">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/ru_RU/i/scr/pixel.gif" width="1" height="1">
+        </form>
+        <p>Thank you!</p>
+    </div>
+</div>
