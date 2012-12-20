@@ -58,27 +58,20 @@
 
 <div class="row">
     <div class="span4">
-        <h2 class="muted">News</h2>
-        {{> news lastNews}}
-        
-        {{#if news}}
-        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
-        <div style="display: none" id="news"> 
-          {{#each news}}   
-          {{> news this}}             
-          {{/each}}
-        </div>        
-        {{/if}}      
-    </div>
-    <div class="span4">
-        <h2 class="muted">Why editable?</h2>
-        <ul>
-            <li>fast development, no special FORM markup</li>
-            <li>less number of screens in your application</li>                            
-            <li>easy adding / removing fields</li>
-            <li>simple backend script for data update</li>
-            <li>more convenient on small forms</li>                            
-        </ul>        
+        <h2 class="muted">Latest release</h2>
+        {{#mdb}}
+#### 1.3.0 (Dec 10, 2012) 
+* support for Bootstrap 2.2.2
+* added HTML5 inputs: email, url, tel, number, range
+* removed default dataType=json. If you are using json please set `ajaxOptions` config.
+* `submit` method refactored. See [changelog](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt) for details.
+* `params` defined as function now overwrites original ajax data (not append!). If you are using it, please see [updated docs](http://vitalets.github.com/x-editable/docs.html#editable).
+* some other fixes
+        {{/mdb}}
+        <div style="margin-top: 20px">
+          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
+          <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a>
+        </div>
     </div>
     <div class="span4">
         <h2 class="muted">Features</h2>
@@ -97,13 +90,21 @@
             <li>works in IE7+ and all modern browsers</li>                            
             <li>unit tested</li>                            
         </ul>        
-        <!--       
-        <h2 class="muted">Plugins</h2>
+    </div>
+    <div class="span4">
+        <h2 class="muted">Why editable?</h2>
         <ul>
-            <li><a target="_blank" href="http://ybe.demopage.ru">Yii-bootstrap-editable extension</a></li>
+            <li>fast development, no special FORM markup</li>
+            <li>less number of screens in your application</li>                            
+            <li>easy adding / removing fields</li>
+            <li>simple backend script for data update</li>
+            <li>more convenient on small forms</li>                            
         </ul>
-        <p>If you've created X-editable based plugin please feel free to contact me and share it with community.</p>  
-        -->
+        <br>
+        <h2 class="muted">Related links</h2>  
+        <ul>
+            <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a></li>
+        </ul>
     </div>
 </div>
 

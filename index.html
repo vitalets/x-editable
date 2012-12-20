@@ -134,99 +134,21 @@
 
 <div class="row">
     <div class="span4">
-        <h2 class="muted">News</h2>
-        <p><i>10/12/2012</i><br>
-    <strong>Version 1.3.0 released!</strong><br>
-    Major improvements:
+        <h2 class="muted">Latest release</h2>
+        <h4>1.3.0 (Dec 10, 2012)</h4>
 <ul>
 <li>support for Bootstrap 2.2.2</li>
 <li>added HTML5 inputs: email, url, tel, number, range</li>
-<li>removed default dataType=<code>json</code>. If you are using json please set <strong>ajaxOptions</strong> config.</li>
-<li><strong>submit</strong> method refactored. See <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for details.</li>
-<li><strong>params</strong> defined as function now overwrites original ajax data (not append!). If you are using it, please see <a href='docs.html#editable'>updated docs</a>.</li>
+<li>removed default dataType=json. If you are using json please set <code>ajaxOptions</code> config.</li>
+<li><code>submit</code> method refactored. See <a href="http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt">changelog</a> for details.</li>
+<li><code>params</code> defined as function now overwrites original ajax data (not append!). If you are using it, please see <a href="http://vitalets.github.com/x-editable/docs.html#editable">updated docs</a>.</li>
 <li>some other fixes</li>
 </ul>
- 
-</p>
-        
-        
-        <div style="text-align: right"><a onclick="$('#news').toggle(); return false;" href="#">↓ Show all news</a></div>
-        <div style="display: none" id="news"> 
-             
-          <p><i>06/12/2012</i><br>
-    <strong>Version 1.2.0 released!</strong><br>
-    New version contains some <span class='label label-warning'>incompatible changes!</span><br>
-Please, look through <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> before updating.<br>
-Major improvements are:
-<ul>
-<li><strong>render</strong> event was replaced with <strong>display</strong> callback.
-It gives more flexibility to display value, even into another element</li>
-<li>all callback's scope was changed to <i>element</i>.
-Check your <code>validate</code>, <code>success</code> and etc methods for using <strong>this</strong> keyword
-</li>
-<li><strong>$.fn.editableform.types</strong> replaced with <strong>$.fn.editabletypes</strong>.
-It allows including inputs before editableform is loaded.
-Also $.fn.editableform.utils replaced with $.fn.editableutils</li>
-<li><strong>hidden</strong> event now has <i>reason</i> parameter allowing smart focusing between editable elements.
-See <a href='demo.html' target='_blank'>updated demo</a></li>
-<li>many other <a href='assets/x-editable/CHANGELOG.txt'>fixes</a></li>
-</ul>
-Thanks for your feedback and support!
- 
-</p>             
-             
-          <p><i>30/11/2012</i><br>
-    <strong>Version 1.1.1 released!</strong><br>
-     <ul>
-<li>activate editable by <i>dblclick</i></li>
-<li>hide buttons via new option</li>
-<li>write your own inputs (see <i>address</i> in <a href='demo.html' target='_blank'>demo</a>)</li>
-<li>and some <a href='assets/x-editable/CHANGELOG.txt'>other changes</a></li>
-</ul>
- 
-</p>             
-             
-          <p><i>27/11/2012</i><br>
-    <strong>Version 1.1.0 released!</strong><br>
-    Major improvements of new version:
-<ul>
-<li>Added new input type <b>checklist</b>. Try it in <a href='demo.html' target='_blank'>demo</a></li>
-<li>In <b>date</b> widgets appeared 'clear' button to reset date</li>
-<li>CSS was refactored to ensure IE7+ support</li>
-<li>Form template was a bit changed. If you use overwritten template in your projects please refer to <a href='docs.html#global'>global templates</a> section before update</li>
-</ul>
-Many thanks to community for support!<br>
-Full list of changes <a href='assets/x-editable/CHANGELOG.txt'>here</a>.
- 
-</p>             
-             
-          <p><i>19/11/2012</i><br>
-    <strong>Version 1.0.0 released!</strong><br>
-    Initial release of X-editable.
-This library is new life of <a href='http://vitalets.github.com/bootstrap-editable' target='_blank'>bootstrap-editable plugin</a> (1.1.4) that was strongly refactored and improved.
-Main reasons caused re-branding and creation of new project are:
-<ul>
-<li>support not only bootstrap but any core library: bootstrap, jquery-ui or pure jquery</li>
-<li>different container classes to show form:<br> popover, tooltip, poshytip</li>
-<li>inline and popup modes</li>
-<li>new directory structure and logic in separate js files allowing easy extending</li>
-</ul>
-Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade instructions.
- 
-</p>             
-          
-        </div>        
-              
-    </div>
-    <div class="span4">
-        <h2 class="muted">Why editable?</h2>
-        <ul>
-            <li>fast development, no special FORM markup</li>
-            <li>less number of screens in your application</li>                            
-            <li>easy adding / removing fields</li>
-            <li>simple backend script for data update</li>
-            <li>more convenient on small forms</li>                            
-        </ul>        
+
+        <div style="margin-top: 20px">
+          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
+          <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a>
+        </div>
     </div>
     <div class="span4">
         <h2 class="muted">Features</h2>
@@ -257,13 +179,21 @@ Please see <a href='assets/x-editable/CHANGELOG.txt'>changelog</a> for upgrade i
             <li>works in IE7+ and all modern browsers</li>                            
             <li>unit tested</li>                            
         </ul>        
-        <!--       
-        <h2 class="muted">Plugins</h2>
+    </div>
+    <div class="span4">
+        <h2 class="muted">Why editable?</h2>
         <ul>
-            <li><a target="_blank" href="http://ybe.demopage.ru">Yii-bootstrap-editable extension</a></li>
+            <li>fast development, no special FORM markup</li>
+            <li>less number of screens in your application</li>                            
+            <li>easy adding / removing fields</li>
+            <li>simple backend script for data update</li>
+            <li>more convenient on small forms</li>                            
         </ul>
-        <p>If you've created X-editable based plugin please feel free to contact me and share it with community.</p>  
-        -->
+        <br>
+        <h2 class="muted">3rd party extensions</h2>  
+        <ul>
+            <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a></li>
+        </ul>
     </div>
 </div>
 

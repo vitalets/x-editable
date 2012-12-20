@@ -61,12 +61,9 @@ console.log('ok');
 
 function loadContext() {
     var context = require('./data/data.json'),
-        classes = {}, news_content;
+        classes = {};
         
     context.project = require('../../lib/package.json');
-    //linebreaks in news json shoud be ended with \n to parse correctly
-    context.news = JSON.parse(fs.readFileSync('./generator/news.json').toString().replace(/\\n\s*\r?\n\s*/g, '\\n'));
-    context.lastNews = context.news.shift();
     
     //group properties, methods, events
     //added only classes that have at least one property/method/event

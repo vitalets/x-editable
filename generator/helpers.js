@@ -23,6 +23,11 @@ Handlebars.registerHelper('md', function(string) {
     return new Handlebars.SafeString(marked(string));
 });
 
+//markdown block
+Handlebars.registerHelper('mdb', function(options) {
+    return new Handlebars.SafeString(marked(options.fn(this).trim()));
+});
+
 //source
 Handlebars.registerHelper('source', function(options) {
   var out = '<pre class="prettyprint linenums">' + (Handlebars.Utils.escapeExpression(options.fn(this))).trim() + '</pre>';
