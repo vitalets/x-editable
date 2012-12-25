@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+<!--        <meta property="fb:app_id" content="558710054143871" />-->
         <title>X-editable :: In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</title>
         <!-- jquery -->
         <script src="assets/jquery/jquery-1.8.2.min.js"></script>
@@ -53,13 +54,30 @@
 <!-- facebook -->
 <div class="pull-right" style="width: 90px">
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
+<script>
+
+
+
+/*
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+*/
+
+//new
+(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=558710054143871";
   fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+}(document, 'script', 'facebook-jssdk'));
+
+</script>
 <div style="vertical-align:top;zoom:1;*display:inline" class="fb-like" data-href="http://vitalets.github.com/x-editable" data-send="false" data-layout="button_count" data-width1="450" data-show-faces="false"></div>
 </div>
 
