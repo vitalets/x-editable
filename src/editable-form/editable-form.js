@@ -367,7 +367,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         url: function(params) {
             if(params.value === 'abc') {
                 var d = new $.Deferred;
-                return d.reject('field cannot be "abc"'); //returning error via deferred object
+                return d.reject('error message'); //returning error via deferred object
             } else {
                 someModel.set(params.name, params.value); //save data in some js model
             }
@@ -458,21 +458,21 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         /**
         Additional options for ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
-
+        
         @property ajaxOptions 
         @type object
         @default null
         @since 1.1.1        
+        @example 
+        ajaxOptions: {
+            type: 'put',
+            dataType: 'json'
+        }        
         **/        
         ajaxOptions: null,
         /**
         Whether to show buttons or not.  
-        Form without buttons can be auto-submitted by input or by onblur = 'submit'.
-        @example 
-        ajaxOptions: {
-            method: 'PUT',
-            dataType: 'xml'
-        }
+        Form without buttons is auto-submitted.
 
         @property showbuttons 
         @type boolean

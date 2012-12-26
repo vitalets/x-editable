@@ -96,8 +96,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                               
                @event init 
                @param {Object} event event object
-               @param {Object} editable editable instance
+               @param {Object} editable editable instance (as here it cannot accessed via data('editable'))
                @since 1.2.0
+               @example
+               $('#username').on('init', function(e, editable) {
+                   alert('initialized ' + editable.options.name);
+               });
                **/                  
                 this.$element.triggerHandler('init', this);
             }, this));
@@ -307,13 +311,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @param {Object} params.response ajax response
             @example
             $('#username').on('save', function(e, params) {
-                //assuming server response: '{success: true}'
-                var pk = $(this).data('editable').options.pk;
-                if(params.response && params.response.success) {
-                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
-                } else {
-                    alert('error!'); 
-                } 
+                alert('Saved value: ' + params.newValue);
             });
             **/
             //event itself is triggered by editableContainer. Description here is only for documentation              
@@ -540,7 +538,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         autotext: 'auto', 
         /**
-        Initial value of input. Taken from <code>data-value</code> or element's text.
+        Initial value of input. If not set, taken from element's text.
 
         @property value 
         @type mixed
@@ -550,7 +548,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         Callback to perform custom displaying of value in element's text.  
         If <code>null</code>, default input's value2html() will be called.  
-        If <code>false</code>, no displaying methods will be called, element's text will no change.  
+        If <code>false</code>, no displaying methods will be called, element's text will never change.  
         Runs under element's scope.  
         Second parameter __sourceData__ is passed for inputs with source (select, checklist).
         
