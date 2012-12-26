@@ -34,7 +34,10 @@
             </tr> 
         </tbody>
     </table>
+    <div>
     <button id="save-btn" class="btn btn-primary">Save new user!</button>
+    <button id="reset-btn" class="btn pull-right">Reset</button>
+    </div>
 </div>  
 
 <br>
@@ -48,7 +51,7 @@ $('.myeditable').editable({
 
 //make username required
 $('#new_username').editable('option', 'validate', function(v) {
-    if(v == '') return 'Required field!';
+    if(!v) return 'Required field!';
 });
 
 //automatically show next editable
@@ -66,6 +69,7 @@ $('.myeditable').on('save.newuser', function(){
  Success applied if <strong>http response = 200 OK</strong>, otherwise called error.<br>
  Inside <code>success</code> you can update editables with new <code>pk</code> received from server and they will start working in regular way (submit individually).<br>
  </p>
+ <p><strong>Save button click:</strong></p>
 {{#source}}
 $('#save-btn').click(function() {
    $('.myeditable').editable('submit', { 
@@ -135,6 +139,20 @@ success: function(data, config) {
         <code>error</code> callback called with xhr object as parameter.
     </li>
 </ul>
+
+<br>
+<p><strong>Reset button click:</strong></p>
+{{#source}}
+$('#reset-btn').click(function() {
+    $('.myeditable').editable('setValue', null)  //clear values
+        .editable('option', 'pk', null)          //clear pk
+        .removeClass('editable-unsaved');        //remove bold css
+                   
+    $('#save-btn').show();
+    $('#msg').hide();                
+});
+{{/source}}
+
 
 <br>
 <div class="alert alert-success">

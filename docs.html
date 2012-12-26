@@ -1792,7 +1792,10 @@ Default value:</p>
             </tr> 
         </tbody>
     </table>
+    <div>
     <button id="save-btn" class="btn btn-primary">Save new user!</button>
+    <button id="reset-btn" class="btn pull-right">Reset</button>
+    </div>
 </div>  
 
 <br>
@@ -1805,7 +1808,7 @@ $(&#x27;.myeditable&#x27;).editable({
 
 //make username required
 $(&#x27;#new_username&#x27;).editable(&#x27;option&#x27;, &#x27;validate&#x27;, function(v) {
-    if(v == &#x27;&#x27;) return &#x27;Required field!&#x27;;
+    if(!v) return &#x27;Required field!&#x27;;
 });
 
 //automatically show next editable
@@ -1822,6 +1825,7 @@ $(&#x27;.myeditable&#x27;).on(&#x27;save.newuser&#x27;, function(){
  Success applied if <strong>http response = 200 OK</strong>, otherwise called error.<br>
  Inside <code>success</code> you can update editables with new <code>pk</code> received from server and they will start working in regular way (submit individually).<br>
  </p>
+ <p><strong>Save button click:</strong></p>
 <pre class="prettyprint linenums">$(&#x27;#save-btn&#x27;).click(function() {
    $(&#x27;.myeditable&#x27;).editable(&#x27;submit&#x27;, { 
        url: &#x27;/newuser&#x27;, 
@@ -1885,6 +1889,18 @@ $(&#x27;.myeditable&#x27;).on(&#x27;save.newuser&#x27;, function(){
         <code>error</code> callback called with xhr object as parameter.
     </li>
 </ul>
+
+<br>
+<p><strong>Reset button click:</strong></p>
+<pre class="prettyprint linenums">$(&#x27;#reset-btn&#x27;).click(function() {
+    $(&#x27;.myeditable&#x27;).editable(&#x27;setValue&#x27;, null)  //clear values
+        .editable(&#x27;option&#x27;, &#x27;pk&#x27;, null)          //clear pk
+        .removeClass(&#x27;editable-unsaved&#x27;);        //remove bold css
+                   
+    $(&#x27;#save-btn&#x27;).show();
+    $(&#x27;#msg&#x27;).hide();                
+});</pre>
+
 
 <br>
 <div class="alert alert-success">

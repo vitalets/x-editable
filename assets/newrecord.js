@@ -33,7 +33,7 @@ $(function(){
    
    //make username required
    $('#new_username').editable('option', 'validate', function(v) {
-       if(v == '') return 'Required field!';
+       if(!v) return 'Required field!';
    });
    
    //automatically show next editable
@@ -77,5 +77,15 @@ $(function(){
                $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
            }
        });
-   });   
+   }); 
+   
+   //reset
+   $('#reset-btn').click(function() {
+       $('.myeditable').editable('setValue', null)
+                       .editable('option', 'pk', null)
+                       .removeClass('editable-unsaved');
+                       
+       $('#save-btn').show();
+       $('#msg').hide();                
+   });
 });
