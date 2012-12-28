@@ -86,7 +86,7 @@ $(function () {
       });     
       
      asyncTest("should show error on server validation", function () {
-        var msg = 'required',
+        var msg = "required\nfield",
            e = $('<a href="#" data-name="text1">abc</a>').appendTo(fx).editable({
               validate: function(value) { 
                   ok(this === e[0], 'scope is ok');
@@ -104,7 +104,8 @@ $(function () {
         setTimeout(function() {
            ok(p.is(':visible'), 'popover still shown');  
            ok(p.find('.editable-error-block').length, 'class "editable-error-block" exists');
-           equal(p.find('.editable-error-block').text(), 'required', 'error msg shown');   
+           equal(p.find('.editable-error-block').text(), msg.replace('\n', ''), 'error msg shown');   
+           equal(p.find('.editable-error-block').html(), msg.replace('\n', '<br>'), 'newline replaced with br');   
            p.find('button[type=button]').click(); 
            ok(!p.is(':visible'), 'popover was removed');
            e.remove();    

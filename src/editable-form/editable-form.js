@@ -154,14 +154,23 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
         error: function(msg) {
             var $group = this.$form.find('.control-group'),
-            $block = this.$form.find('.editable-error-block');
+                $block = this.$form.find('.editable-error-block'),
+                lines;
 
             if(msg === false) {
                 $group.removeClass($.fn.editableform.errorGroupClass);
                 $block.removeClass($.fn.editableform.errorBlockClass).empty().hide(); 
             } else {
+                //convert newline to <br> for more pretty error display
+                if(msg) {
+                    lines = msg.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        lines[i] = $('<div>').text(lines[i]).html();
+                    }
+                    msg = lines.join('<br>');
+                }
                 $group.addClass($.fn.editableform.errorGroupClass);
-                $block.addClass($.fn.editableform.errorBlockClass).text(msg).show();
+                $block.addClass($.fn.editableform.errorBlockClass).html(msg).show();
             }
         },
 
