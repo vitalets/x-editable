@@ -35,19 +35,23 @@ List - abstract class for inputs that have source option loaded from js array or
         },
         
         value2html: function (value, element, display) {
-            var deferred = $.Deferred();
-            this.onSourceReady(function () {
-                if(typeof display === 'function') {
-                    //custom display method
-                    display.call(element, value, this.sourceData); 
-                } else {
-                    this.value2htmlFinal(value, element);
-                }
-                deferred.resolve();
-            }, function () {
-                //do nothing with element
-                deferred.resolve();
-            });
+            var deferred = $.Deferred(),
+                success = function () {
+                    if(typeof display === 'function') {
+                        //custom display method
+                        display.call(element, value, this.sourceData); 
+                    } else {
+                        this.value2htmlFinal(value, element);
+                    }
+                    deferred.resolve();
+               };
+            
+            //for null value just call success without loading source
+            if(value === null) {
+               success.call(this);   
+            } else {
+               this.onSourceReady(success, function () { deferred.resolve(); });
+            }
 
             return deferred.promise();
         },  

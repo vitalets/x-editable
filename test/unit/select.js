@@ -596,7 +596,34 @@ $(function () {
            e.remove();    
            start(); 
         }, timeout);           
-    })       
+    });
+    
+    
+    asyncTest("set value to null should not trigger source load", function () {
+        var req = 0;
+        $.mockjax({
+                url: 'groups-null.php',
+                response: function() {
+                    req++;
+                }
+         });  
+
+        var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-url="post.php" data-source="groups-null.php">11</a>').appendTo(fx).editable(),
+        d = e.data('editable');
+        
+        e.editable('setValue', null);
+           
+      setTimeout(function() {
+            equal(req, 0, 'no request');
+            equal(e.text(), d.options.emptytext, 'text correct');
+            equal(d.value, null, 'value correct');
+            
+            e.remove();    
+            start();  
+       }, timeout);
+        
+     });     
+     
           
      
 });
