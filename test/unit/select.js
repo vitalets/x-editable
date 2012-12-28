@@ -19,7 +19,10 @@ $(function () {
       })  
     
      asyncTest("load options from server", function () {
-        var e = $('<a href="#" data-type="select" data-name="load-srv" data-value="2" data-source="groups.php">customer</a>').appendTo(fx).editable();
+        var e = $('<a href="#" data-type="select" data-name="load-srv" data-value="2" data-source="groups.php">customer</a>').appendTo(fx).editable({
+            //need to disable cache to force request
+            sourceCache: false
+        });
 
         e.click();
         var p = tip(e); 
@@ -265,7 +268,7 @@ $(function () {
      
      asyncTest("cache request for same selects", function () {
         //clear cache
-        $(document).removeData('groups.php-name1');         
+        $(document).removeData('groups.php');         
                                  
          var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
              e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache.php">customer</a>').appendTo(fx).editable(),
@@ -314,7 +317,7 @@ $(function () {
         expect(4);
         
         //clear cache
-        $(document).removeData('groups-cache-sim.php-name1');          
+        $(document).removeData('groups-cache-sim.php');          
         
         var req = 0;
         $.mockjax({
@@ -348,7 +351,7 @@ $(function () {
         expect(4);
         
         //clear cache
-        $(document).removeData('groups-cache-sim-err.php-name1');           
+        $(document).removeData('groups-cache-sim-err.php');           
         
         var req = 0;
         $.mockjax({

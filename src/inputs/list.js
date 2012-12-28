@@ -73,7 +73,7 @@ List - abstract class for inputs that have source option loaded from js array or
             if (typeof this.options.source === 'string') {
                 //try to get from cache
                 if(this.options.sourceCache) {
-                    var cacheID = this.options.source + (this.options.name ? '-' + this.options.name : ''),
+                    var cacheID = this.options.source,
                     cache;
 
                     if (!$(document).data(cacheID)) {
@@ -84,11 +84,13 @@ List - abstract class for inputs that have source option loaded from js array or
                     //check for cached data
                     if (cache.loading === false && cache.sourceData) { //take source from cache
                         this.sourceData = cache.sourceData;
+                        this.doPrepend();
                         success.call(this);
                         return;
                     } else if (cache.loading === true) { //cache is loading, put callback in stack to be called later
                         cache.callbacks.push($.proxy(function () {
                             this.sourceData = cache.sourceData;
+                            this.doPrepend();
                             success.call(this);
                         }, this));
 
@@ -107,7 +109,6 @@ List - abstract class for inputs that have source option loaded from js array or
                     url: this.options.source,
                     type: 'get',
                     cache: false,
-                    data: this.options.name ? {name: this.options.name} : {},
                     dataType: 'json',
                     success: $.proxy(function (data) {
                         if(cache) {
@@ -115,17 +116,19 @@ List - abstract class for inputs that have source option loaded from js array or
                         }
                         this.sourceData = this.makeArray(data);
                         if($.isArray(this.sourceData)) {
-                            this.doPrepend();
-                            success.call(this);
                             if(cache) {
                                 //store result in cache
                                 cache.sourceData = this.sourceData;
-                                $.each(cache.callbacks, function () { this.call(); }); //run success callbacks for other fields
+                                //run success callbacks for other fields waiting for this source
+                                $.each(cache.callbacks, function () { this.call(); }); 
                             }
+                            this.doPrepend();
+                            success.call(this);
                         } else {
                             error.call(this);
                             if(cache) {
-                                $.each(cache.err_callbacks, function () { this.call(); }); //run error callbacks for other fields
+                                //run error callbacks for other fields waiting for this source
+                                $.each(cache.err_callbacks, function () { this.call(); }); 
                             }
                         }
                     }, this),
