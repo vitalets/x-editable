@@ -194,9 +194,9 @@ module.exports = function(grunt) {
     copy: {
         dist: {
             files: {
-                '<%= dist %>/bootstrap-editable/css/img/' : 'src/editable-form/img/*',
-                '<%= dist %>/jqueryui-editable/css/img/' : 'src/editable-form/img/*',
-                '<%= dist %>/jquery-editable/css/img/' : 'src/editable-form/img/*',
+                '<%= dist %>/bootstrap-editable/img/' : 'src/img/*',
+                '<%= dist %>/jqueryui-editable/img/' : 'src/img/*',
+                '<%= dist %>/jquery-editable/img/' : 'src/img/*',
                  //licences
                 '<%= dist %>/': ['LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
             },
