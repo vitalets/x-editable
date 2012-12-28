@@ -286,7 +286,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td>display</td>
             <td>function|boolean</td>
             <td>null</td>
-            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s value2html() will be called.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will no change.<br>Runs under element&#39;s scope.<br>Second parameter <strong>sourceData</strong> is passed for inputs with source (select, checklist).</p>
+            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s value2html() will be called.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will never change.<br>Runs under element&#39;s scope.<br>Second parameter <strong>sourceData</strong> is passed for inputs with source (select, checklist).</p>
 
             
                 <pre class="prettyprint linenums">display: function(value, sourceData) {
@@ -802,7 +802,7 @@ See <a href="#newrecord">creating new records</a> for details.
         
     </li>
     
-    <li><strong>editable</strong> <i>Object</i> editable instance
+    <li><strong>editable</strong> <i>Object</i> editable instance (as here it cannot accessed via data('editable'))
         
     </li>
     
@@ -810,6 +810,10 @@ See <a href="#newrecord">creating new records</a> for details.
 
 </td>
             <td>Fired when element was initialized by editable method.
+            
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;init&#x27;, function(e, editable) {
+    alert(&#x27;initialized &#x27; + editable.options.name);
+});</pre>
             
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
             </td>
@@ -842,13 +846,7 @@ See <a href="#newrecord">creating new records</a> for details.
             <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;save&#x27;, function(e, params) {
-    //assuming server response: &#x27;{success: true}&#x27;
-    var pk = $(this).data(&#x27;editable&#x27;).options.pk;
-    if(params.response &amp;&amp; params.response.success) {
-        alert(&#x27;value: &#x27; + params.newValue + &#x27; with pk: &#x27; + pk + &#x27; saved!&#x27;);
-    } else {
-        alert(&#x27;error!&#x27;); 
-    } 
+    alert(&#x27;Saved value: &#x27; + params.newValue);
 });</pre>
             
             
@@ -1132,11 +1130,15 @@ $(function(){
        
         <tr>
             <td>source</td>
-            <td>string|array|object</td>
+            <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
-Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
-For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.<br>If source is <strong>string</strong>, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.</p>
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability another format also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+
+</p>
+<p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
+
+</p>
+<p>If <strong>function</strong>, it should return data in format above.</p>
 
             
             
@@ -1145,7 +1147,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
        
         <tr>
             <td>prepend</td>
-            <td>string|array|object</td>
+            <td>string | array | object | function</td>
             <td>false</td>
             <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
@@ -1647,11 +1649,15 @@ Internally value stored as javascript array of values.</p>
        
         <tr>
             <td>source</td>
-            <td>string|array|object</td>
+            <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
-Array format is: <code>[{value: 1, text: &quot;text&quot;}, {...}]</code><br>
-For compability it also supports format <code>{value1: &quot;text1&quot;, value2: &quot;text2&quot; ...}</code> but it does not guarantee elements order.<br>If source is <strong>string</strong>, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.</p>
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability another format also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+
+</p>
+<p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
+
+</p>
+<p>If <strong>function</strong>, it should return data in format above.</p>
 
             
             
@@ -1660,7 +1666,7 @@ For compability it also supports format <code>{value1: &quot;text1&quot;, value2
        
         <tr>
             <td>prepend</td>
-            <td>string|array|object</td>
+            <td>string | array | object | function</td>
             <td>false</td>
             <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
