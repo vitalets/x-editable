@@ -8,9 +8,9 @@ See **http://vitalets.github.com/x-editable**
 
 ## Reporting issues
 When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of **jsFiddle templates**:   
-1. [bootstrap](http://jsfiddle.net/xBB5x/25/)  
-2. [jqueryui](http://jsfiddle.net/xBB5x/24/)  
-3. [plain](http://jsfiddle.net/xBB5x/23/)    
+1. [bootstrap](http://jsfiddle.net/xBB5x/195)  
+2. [jqueryui](http://jsfiddle.net/xBB5x/196)  
+3. [plain](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!
 
 ## Contribution
