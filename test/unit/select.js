@@ -546,12 +546,19 @@ $(function () {
      });   
      
      asyncTest("'display' callback", function () {
-         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+         var req = 0, 
+             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
              pk: 1,
              source: groups,
-             display: function(value, sourceData) {
+             display: function(value, sourceData, response) {
                 var els = $.grep(sourceData, function(o) {return o.value == value;});  
                 $(this).text('qq' + els[0].text);
+                if(req == 0) {
+                    ok(response === undefined, 'response param undefined on first request');
+                    req++;
+                } else {
+                    ok(response.success, 'response param ok on second request');
+                }
              }
         }),
         selected = 3;

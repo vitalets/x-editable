@@ -395,8 +395,9 @@ $(function () {
      asyncTest("'display' callback", function () {
         var newText = 'cd<e>;"',
             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
-             display: function(value) {
+             display: function(value, response) {
                  ok(this === e[0], 'scope is ok');
+                 ok(response.success, 'response param ok');
                  $(this).text('qq'+value);
              } 
           });  

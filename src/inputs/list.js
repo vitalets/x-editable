@@ -34,12 +34,12 @@ List - abstract class for inputs that have source option loaded from js array or
             return null; //can't set value by text
         },
         
-        value2html: function (value, element, display) {
+        value2html: function (value, element, display, response) {
             var deferred = $.Deferred(),
                 success = function () {
                     if(typeof display === 'function') {
                         //custom display method
-                        display.call(element, value, this.sourceData); 
+                        display.call(element, value, this.sourceData, response); 
                     } else {
                         this.value2htmlFinal(value, element);
                     }
