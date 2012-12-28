@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.3.1 wip
 ---------------------------- 
+[enh #57] remove css height for textarea (vitalets) 
 [enh] if new value for select is 'null' source should not load (vitalets) 
 [enh #53] 'name' no more appended to source defined as url (vitalets) 
 [enh #46] move 'img' dir outside 'css' (vitalets) 

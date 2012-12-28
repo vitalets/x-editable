@@ -65,10 +65,6 @@
    color: red;  
 }
 
-.editableform textarea {
-    height: 150px; /*default height for textarea*/
-}
-
 .editableform .editable-date {
     padding: 0; 
     margin: 0;
