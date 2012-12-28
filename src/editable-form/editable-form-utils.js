@@ -134,8 +134,9 @@
                return [];
            }
            
+           //convert to array
            if(!$.isArray(value)) {
-               value = [].push(value);
+               value = [value];
            }
                       
            /*jslint eqeq: true*/           
