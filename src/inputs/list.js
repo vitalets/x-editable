@@ -248,14 +248,16 @@ List - abstract class for inputs that have source option loaded from js array or
 
     List.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
-        Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
-        Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
-        For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
-        If source is **string**, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
-        If source is **function**, should return data in array format: <code>[{value: 1, text: "text"}, {...}]</code> or object format: <code>{value1: "text1", value2: "text2" ...}</code>
+        Source data for list.  
+        If **array** - it should be in format: `[{value: 1, text: "text1"}, {...}]`  
+        For compability, object format is also supported: `{"1": "text1", "2": "text2" ...}` but it does not guarantee elements order.
+        
+        If **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.
+          
+        If **function**, it should return data in format above (since 1.3.1).
 		
         @property source 
-        @type string|array|object
+        @type string | array | object | function
         @default null
         **/         
         source:null, 
@@ -263,7 +265,7 @@ List - abstract class for inputs that have source option loaded from js array or
         Data automatically prepended to the beginning of dropdown list.
         
         @property prepend 
-        @type string|array|object|function
+        @type string | array | object | function
         @default false
         **/         
         prepend:false,
