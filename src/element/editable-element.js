@@ -547,10 +547,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         value: null,
         /**
         Callback to perform custom displaying of value in element's text.  
-        If <code>null</code>, default input's value2html() will be called.  
-        If <code>false</code>, no displaying methods will be called, element's text will never change.  
+        If `null`, default input's value2html() will be called.  
+        If `false`, no displaying methods will be called, element's text will never change.  
         Runs under element's scope.  
-        Second parameter __sourceData__ is passed for inputs with source (select, checklist).
+        Second parameter __sourceData__ is passed for inputs with source (select, checklist). To get currently selected items
+        use `$.fn.editableutils.itemsByValue(value, sourceData)` function.
         
         @property display 
         @type function|boolean
@@ -558,8 +559,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.2.0
         @example
         display: function(value, sourceData) {
-            var escapedValue = $('<div>').text(value).html();
-            $(this).html('<b>'+escapedValue+'</b>');
+           //display checklist as comma-separated values
+           var html = [],
+               checked = $.fn.editableutils.itemsByValue(value, sourceData);
+               
+           if(checked.length) {
+               $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+               $(element).html(html.join(', '));
+           } else {
+               $(element).empty(); 
+           }
         }
         **/          
         display: null

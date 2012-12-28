@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.3.1 wip
 ---------------------------- 
+[enh] new util method `$.fn.editableutils.itemsByValue` to easily get selected items for sourced-inputs (vitalets)
 [enh] convert newlines to <br> in error message for more pretty display (vitalets)
 [enh #57] remove css height for textarea (vitalets) 
 [enh] if new value for select is 'null' source should not load (vitalets) 

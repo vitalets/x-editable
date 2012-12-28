@@ -609,7 +609,7 @@ $(function () {
          });  
 
         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="1" data-url="post.php" data-source="groups-null.php">11</a>').appendTo(fx).editable(),
-        d = e.data('editable');
+            d = e.data('editable');
         
         e.editable('setValue', null);
            

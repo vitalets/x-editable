@@ -124,6 +124,28 @@
        **/
        escape: function(str) {
            return $('<div>').text(str).html();
+       },
+       
+       /*
+        returns array items from sourceData having value property equal or inArray of 'value'
+       */
+       itemsByValue: function(value, sourceData) {
+           if(!sourceData || value === null) {
+               return [];
+           }
+           
+           if(!$.isArray(value)) {
+               value = [].push(value);
+           }
+                      
+           /*jslint eqeq: true*/           
+           var result = $.grep(sourceData, function(o){
+               return $.grep(value, function(v){ return v == o.value; }).length;
+           });
+           /*jslint eqeq: false*/
+           
+           return result;
        }           
+       
     };      
 }(window.jQuery));

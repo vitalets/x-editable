@@ -47,10 +47,13 @@ $(function(){
         },
        
         value2htmlFinal: function(value, element) {
-            var text = '', item = this.itemByVal(value);
-            if(item) {
-                text = item.text;
+            var text = '', 
+                items = $.fn.editableutils.itemsByValue(value, this.sourceData);
+                
+            if(items.length) {
+                text = items[0].text;
             }
+            
             Select.superclass.constructor.superclass.value2html(text, element);   
         },
         

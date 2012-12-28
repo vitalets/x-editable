@@ -236,20 +236,7 @@ List - abstract class for inputs that have source option loaded from js array or
                 });  
             }
             return result;
-        },
-        
-        //search for item by particular value
-        itemByVal: function(val) {
-            if($.isArray(this.sourceData)) {
-                for(var i=0; i<this.sourceData.length; i++){
-                    /*jshint eqeqeq: false*/
-                    if(this.sourceData[i].value == val) {
-                    /*jshint eqeqeq: true*/                            
-                        return this.sourceData[i];
-                    }
-                }
-            }
-        }        
+        }
 
     });      
 

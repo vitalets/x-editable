@@ -94,11 +94,8 @@ $(function(){
        //collect text of checked boxes
         value2htmlFinal: function(value, element) {
            var html = [],
-               /*jslint eqeq: true*/
-               checked = $.grep(this.sourceData, function(o){
-                   return $.grep(value, function(v){ return v == o.value; }).length;
-               });
-               /*jslint eqeq: false*/
+               checked = $.fn.editableutils.itemsByValue(value, this.sourceData);
+               
            if(checked.length) {
                $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
                $(element).html(html.join('<br>'));
