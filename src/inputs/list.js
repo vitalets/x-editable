@@ -139,10 +139,12 @@ List - abstract class for inputs that have source option loaded from js array or
                     }, this)
                 });
             } else { //options as json/array/function
-				if (typeof this.options.source === 'function')
-            		this.sourceData = this.makeArray(this.options.source());
-				else
-					this.sourceData = this.makeArray(this.options.source);
+                if (typeof this.options.source === 'function') {
+                   this.sourceData = this.makeArray(this.options.source());
+                } else {
+                   this.sourceData = this.makeArray(this.options.source);
+                }
+                    
                 if($.isArray(this.sourceData)) {
                     this.doPrepend();
                     success.call(this);   
@@ -163,10 +165,11 @@ List - abstract class for inputs that have source option loaded from js array or
                 if (typeof this.options.prepend === 'string') {
                     this.options.prepend = {'': this.options.prepend};
                 }              
-                if (typeof this.options.prepend === 'function')
-                	this.prependData = this.makeArray(this.options.prepend());
-				else
-					this.prependData = this.makeArray(this.options.prepend);
+                if (typeof this.options.prepend === 'function') {
+                    this.prependData = this.makeArray(this.options.prepend());
+                } else {
+                    this.prependData = this.makeArray(this.options.prepend);
+                }
             }
 
             if($.isArray(this.prependData) && $.isArray(this.sourceData)) {

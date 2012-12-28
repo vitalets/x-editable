@@ -38,7 +38,7 @@ $(function () {
             e.remove();    
             start();  
         }, timeout);                     
-    })      
+    });      
     
      test("load options from json", function () {
          var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
@@ -92,7 +92,26 @@ $(function () {
         equal(p.find('select').val(), 'x', 'selected value correct') 
         p.find('button[type=button]').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
-    }) 
+    }); 
+    
+     test("load options from function", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+             pk: 1,
+             prepend: 'prepend',
+             source: function() {
+                return groups; 
+             }
+          });
+
+        e.click()
+        var p = tip(e);
+        ok(p.is(':visible'), 'popover visible');
+        ok(p.find('select').length, 'select exists');
+        equal(p.find('select').find('option').length, size+1, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+        p.find('button[type=button]').click(); 
+        ok(!p.is(':visible'), 'popover was removed');  
+    });    
     
      test("load options from html (single quotes)", function () {
          var e = $('<a href="#" data-type="select" data-value="M" data-source=\'{"L":"Low", "": "None", "M": "Medium", "H": "High"}\'>customer</a>').appendTo('#qunit-fixture').editable({
