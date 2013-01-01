@@ -1,7 +1,8 @@
 /**
 Bootstrap-datepicker.  
-Description and examples: http://vitalets.github.com/bootstrap-datepicker.  
-For localization you can include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
+For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+and set `language` option.
 
 @class date
 @extends abstractinput

@@ -2,6 +2,7 @@
 jQuery UI Datepicker.  
 Description and examples: http://jqueryui.com/datepicker.   
 This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
+For **i18n** you should include js file from here: https://github.com/jquery/jquery-ui/tree/master/ui/i18n.
 
 @class dateui
 @extends abstractinput
