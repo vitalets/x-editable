@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.3.1 wip
 ---------------------------- 
+[enh] update bootstrap-datepicker to upstream (vitalets)
 [enh] 'display' method: added param 'response' allowing to show text directly from server (vitalets)
 [enh] new util method `$.fn.editableutils.itemsByValue` to easily get selected items for sourced-inputs (vitalets)
 [enh] convert newlines to <br> in error message for more pretty display (vitalets)
