@@ -260,6 +260,17 @@ List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.co
         </tr> 
        
         <tr>
+            <td>anim</td>
+            <td>string</td>
+            <td>&#x27;fast&#x27;</td>
+            <td><p>Animation speed (inline mode)</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>autotext</td>
             <td>string</td>
             <td>&#x27;auto&#x27;</td>
@@ -286,12 +297,35 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td>display</td>
             <td>function|boolean</td>
             <td>null</td>
-            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s value2html() will be called.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will never change.<br>Runs under element&#39;s scope.<br>Second parameter <strong>sourceData</strong> is passed for inputs with source (select, checklist).</p>
+            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s display used.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will never change.<br>Runs under element&#39;s scope.<br><em>Parameters:</em>  
+
+</p>
+<ul>
+<li><code>value</code> current value to be displayed</li>
+<li><code>response</code> server response (if display called after ajax submit), since 1.3.1</li>
+</ul>
+<p>For <strong>inputs with source</strong> (select, checklist) parameters are different:  
+
+</p>
+<ul>
+<li><code>value</code> current value to be displayed</li>
+<li><code>sourceData</code> array of items for current input (e.g. dropdown items) </li>
+<li><code>response</code> server response (if display called after ajax submit), since 1.3.1</li>
+</ul>
+<p>To get currently selected items use <code>$.fn.editableutils.itemsByValue(value, sourceData)</code>.</p>
 
             
                 <pre class="prettyprint linenums">display: function(value, sourceData) {
-    var escapedValue = $(&#x27;&lt;div&gt;&#x27;).text(value).html();
-    $(this).html(&#x27;&lt;b&gt;&#x27;+escapedValue+&#x27;&lt;/b&gt;&#x27;);
+   //display checklist as comma-separated values
+   var html = [],
+       checked = $.fn.editableutils.itemsByValue(value, sourceData);
+       
+   if(checked.length) {
+       $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+       $(this).html(html.join(&#x27;, &#x27;));
+   } else {
+       $(this).empty(); 
+   }
 }</pre>
             
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
@@ -306,6 +340,17 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
 
             
             
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>mode <sup><span class="label label-success">new</span></sup></td>
+            <td>string</td>
+            <td>&#x27;popup&#x27;</td>
+            <td><p>Mode of editable, can be <code>popup</code> or <code>inline</code></p>
+
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.4.0</span></div>
             </td>
         </tr> 
        
@@ -902,7 +947,7 @@ See <a href="#newrecord">creating new records</a> for details.
             
             <li>select</li>
             
-            <li>html5types <sup><span class="label label-success">new</span></sup></li>
+            <li>html5types</li>
             
             <li>date</li>
             
@@ -1132,13 +1177,13 @@ $(function(){
             <td>source</td>
             <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability another format also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
 
 </p>
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above.</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.3.1).</p>
 
             
             
@@ -1223,7 +1268,7 @@ $(function(){
             </section>
         
          <section id="html5types">
-            <h2>html5types <sup><span class="label label-success">new</span></sup></h2>
+            <h2>html5types</h2>
             <p><p>HTML5 input types.
 Following types are supported:
 
@@ -1324,7 +1369,8 @@ $(function(){
         
          <section id="date">
             <h2>date</h2>
-            <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a>.<br>For localization you can include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a></p>
+            <p><p>Bootstrap-datepicker.<br>Description and examples: <a href="https://github.com/eternicode/bootstrap-datepicker">https://github.com/eternicode/bootstrap-datepicker</a>.<br>For <strong>i18n</strong> you should include js file from here: <a href="https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales">https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales</a>
+and set <code>language</code> option.</p>
 
                
             </p>
@@ -1456,7 +1502,8 @@ $(function(){
         
          <section id="dateui">
             <h2>dateui</h2>
-            <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>This input is also accessible as <strong>date</strong> type. Do not use it together with <strong>bootstrap-datepicker</strong> as both apply <code>$().datepicker()</code> method.</p>
+            <p><p>jQuery UI Datepicker.<br>Description and examples: <a href="http://jqueryui.com/datepicker">http://jqueryui.com/datepicker</a>.<br>This input is also accessible as <strong>date</strong> type. Do not use it together with <strong>bootstrap-datepicker</strong> as both apply <code>$().datepicker()</code> method.
+For <strong>i18n</strong> you should include js file from here: <a href="https://github.com/jquery/jquery-ui/tree/master/ui/i18n">https://github.com/jquery/jquery-ui/tree/master/ui/i18n</a>.</p>
 
                
             </p>
@@ -1651,13 +1698,13 @@ Internally value stored as javascript array of values.</p>
             <td>source</td>
             <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability another format also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
 
 </p>
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above.</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.3.1).</p>
 
             
             
