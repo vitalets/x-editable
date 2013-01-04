@@ -34,8 +34,7 @@ function getAssets(f, c, libs) {
 //        css.unshift('http://code.jquery.com/ui/1.9.1/themes/redmond/jquery-ui.css');
 
         //editable
-        editable_js = (c === 'inline') ? 'jqueryui-editable-inline.js' : 'jqueryui-editable.js'; 
-        editable_js = editable+'jqueryui-editable/js/'+editable_js;
+        editable_js = editable+'jqueryui-editable/js/jqueryui-editable.js';
         css.push(editable+'jqueryui-editable/css/jqueryui-editable.css'); 
 
         //style
@@ -46,8 +45,7 @@ function getAssets(f, c, libs) {
         css.unshift(libs+'poshytip/tip-yellowsimple/tip-yellowsimple.css');
 
         //editable  
-        editable_js = (c === 'inline') ? 'jquery-editable-inline.js' : 'jquery-editable-poshytip.js'; 
-        editable_js = editable+'jquery-editable/js/'+editable_js; 
+        editable_js = editable+'jquery-editable/js/jquery-editable-poshytip.js'; 
         css.push(editable+'jquery-editable/css/jquery-editable.css');           
 
         //dateui
@@ -64,8 +62,7 @@ function getAssets(f, c, libs) {
 //        css.unshift('//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap.min.css');
 
         //editable
-        editable_js = (c === 'inline') ? 'bootstrap-editable-inline.js' : 'bootstrap-editable.js'; 
-        editable_js = editable+'bootstrap-editable/js/'+editable_js;         
+        editable_js = editable+'bootstrap-editable/js/bootstrap-editable.js';         
         css.push(editable+'bootstrap-editable/css/bootstrap-editable.css');            
     }
     
