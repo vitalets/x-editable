@@ -109,10 +109,7 @@ $(function () {
      test("viewformat, init by value", function () {
         var dview = '15/05/1984',
             d = '1984-05-15',
-            e = $('<a href="#" data-type="date" data-pk="1" data-weekstart="1" data-value="'+d+'"></a>').appendTo('#qunit-fixture').editable({
-                format: 'yyyy-mm-dd',
-                viewformat: 'dd/mm/yyyy'
-            });
+            e = $('<a href="#" data-type="date" data-pk="1" data-format="yyyy-mm-dd" data-viewformat="dd/mm/yyyy"  data-value="'+d+'"></a>').appendTo('#qunit-fixture').editable();
         
         equal(frmt(e.data('editable').value, 'yyyy-mm-dd'), d, 'value correct');
         equal(e.text(), dview, 'text correct');

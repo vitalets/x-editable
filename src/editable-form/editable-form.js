@@ -21,18 +21,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            var TypeConstructor, typeOptions;
-
             //create input of specified type
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
+            this.input = $.fn.editableutils.createInput(this.options);
+            if(!this.input) {
                 return; 
-            }          
-
+            }             
+            
+            //set initial value
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {

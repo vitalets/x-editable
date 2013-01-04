@@ -146,7 +146,34 @@
            /*jslint eqeq: false*/
            
            return result;
-       }           
+       },
+       
+       /*
+       Returns input by options: type, mode. 
+       */
+       createInput: function(options) {
+            var TypeConstructor, typeOptions, input,
+                type = options.type;
+            
+            if(type === 'date' && options.mode === 'inline') {
+               if($.fn.editabletypes.datefield) {
+                   type = 'datefield';
+               } else if($.fn.editabletypes.dateuifield) {
+                   type = 'dateuifield';
+               } 
+            }
+                
+            //create input of specified type. Input will be used for converting value, not in form
+            if(typeof $.fn.editabletypes[type] === 'function') {
+                TypeConstructor = $.fn.editabletypes[type];
+                typeOptions = this.sliceObj(options, this.objectKeys(TypeConstructor.defaults));
+                input = new TypeConstructor(typeOptions);
+                return input;
+            } else {
+                $.error('Unknown type: '+ type);
+                return false; 
+            }  
+       }            
        
     };      
 }(window.jQuery));

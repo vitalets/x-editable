@@ -75,6 +75,9 @@ define(function () {
                         loadCss(require.toUrl("./bootstrap-datepicker/css/datepicker.css")); 
                     }
                 },
+                
+                //datefield
+                'inputs/date/datefield': ['inputs/date/date'],
 
                 //jqueryui
                 'jqueryui/js/jquery-ui-1.9.1.custom': {
@@ -128,7 +131,8 @@ define(function () {
             
             if(f === 'bootstrap') { 
                 //bootstrap
-                shim['editable-form/editable-form'].deps.push('inputs/date/date');
+//                shim['editable-form/editable-form'].deps.push('inputs/date/date');
+                shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {

@@ -15,27 +15,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     Editable.prototype = {
         constructor: Editable, 
         init: function () {
-            var TypeConstructor, 
-                isValueByText = false, 
-                doAutotext, 
-                finalize;
+            var isValueByText = false, 
+                doAutotext, finalize;
 
-            //editableContainer must be defined
-            if(!$.fn.editableContainer) {
-                $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editable-popover.js)');
-                return;
-            }    
-                
             //name
             this.options.name = this.options.name || this.$element.attr('id');
              
             //create input of specified type. Input will be used for converting value, not in form
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                this.typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(this.typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
+            this.input = $.fn.editableutils.createInput(this.options);
+            if(!this.input) {
                 return; 
             }            
 

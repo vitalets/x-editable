@@ -26,32 +26,37 @@ $(function(){
 
     var Date = function (options) {
         this.init('date', options, Date.defaults);
-        
-        //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
-
-        //overriding datepicker config (as by default jQuery extend() is not recursive)
-        this.options.datepicker = $.extend({}, Date.defaults.datepicker, directOptions, options.datepicker);
-
-        //by default viewformat equals to format
-        if(!this.options.viewformat) {
-            this.options.viewformat = this.options.datepicker.format;
-        }  
-        
-        //language
-        this.options.datepicker.language = this.options.datepicker.language || 'en'; 
-        
-        //store DPglobal
-        this.dpg = $.fn.datepicker.DPGlobal; 
-        
-        //store parsed formats
-        this.parsedFormat = this.dpg.parseFormat(this.options.datepicker.format);
-        this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);
+        this.initPicker();
     };
 
     $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
     
     $.extend(Date.prototype, {
+        initPicker: function() {
+            //'format' is set directly from settings or data-* attributes
+
+            //by default viewformat equals to format
+            if(!this.options.viewformat) {
+                this.options.viewformat = this.options.format;
+            }
+            
+            //overriding datepicker config (as by default jQuery extend() is not recursive)
+            //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
+            this.options.datepicker = $.extend({}, Date.defaults.datepicker, this.options.datepicker, {
+                format: this.options.viewformat
+            });
+            
+            //language
+            this.options.datepicker.language = this.options.datepicker.language || 'en'; 
+
+            //store DPglobal
+            this.dpg = $.fn.datepicker.DPGlobal; 
+
+            //store parsed formats
+            this.parsedFormat = this.dpg.parseFormat(this.options.format);
+            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);            
+        },
+        
         render: function () {
             Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
