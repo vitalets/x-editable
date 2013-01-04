@@ -28,14 +28,13 @@ function getFiles() {
         }      
     };
 
-    var inline = [containers+'editable-inline.js'];
-
     //common js files 
     var js = [
     '<banner:meta.banner>',
     forms+'editable-form.js',
     forms+'editable-form-utils.js',
     containers+'editable-container.js', 
+    containers+'editable-inline.js',
     lib+'element/editable-element.js',
     inputs+'abstract.js',
     inputs+'list.js',
@@ -60,7 +59,7 @@ function getFiles() {
         folder = '<%= dist %>/'+k+'-editable/';
 
         //popup
-        task = k+'_popup_js';
+        task = k+'_js';
         dest = folder+'js/'+k+'-editable'+ (k === 'jquery' ? '-poshytip' : '');
         concat_files[task] = {
             src:  js.concat(config[k].form).concat(config[k].container).concat(config[k].inputs),
@@ -71,7 +70,7 @@ function getFiles() {
             dest: dest + '.min.js'
         };      
 
-        //inline
+/*        //inline
         task = k+'_inline_js';
         dest = folder+'js/'+k+'-editable-inline';
         concat_files[task] = {
@@ -82,7 +81,7 @@ function getFiles() {
             src: ['<banner:meta.banner>', '<config:concat.'+task+'.dest>'],
             dest: dest + '.min.js'
         };      
-
+*/
         //css
         concat_files[k+'_css'] = {
             src: css.concat(config[k].css),
@@ -214,7 +213,7 @@ module.exports = function(grunt) {
         },
         ui_datepicker: {
          files: {
-             //copy jquery ui datepicker
+             //copy jquery ui datepicker (for jquery build)
              '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**' 
          }
        } 
