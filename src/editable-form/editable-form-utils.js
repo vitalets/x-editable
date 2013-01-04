@@ -155,13 +155,25 @@
             var TypeConstructor, typeOptions, input,
                 type = options.type;
             
-            if(type === 'date' && options.mode === 'inline') {
-               if($.fn.editabletypes.datefield) {
-                   type = 'datefield';
-               } else if($.fn.editabletypes.dateuifield) {
-                   type = 'dateuifield';
-               } 
-            }
+                //`date` is some kind of virtual type that is transformed to one of exact types
+                //depending on mode and core lib
+                if(type === 'date') {
+                    //inline
+                    if(options.mode === 'inline') {
+                        if($.fn.editabletypes.datefield) {
+                            type = 'datefield';
+                        } else if($.fn.editabletypes.dateuifield) {
+                            type = 'dateuifield';
+                        }
+                    //popup
+                    } else {
+                        if($.fn.editabletypes.date) {
+                            type = 'date';
+                        } else if($.fn.editabletypes.dateui) {
+                            type = 'dateui';
+                        }
+                    } 
+                }
                 
             //create input of specified type. Input will be used for converting value, not in form
             if(typeof $.fn.editabletypes[type] === 'function') {

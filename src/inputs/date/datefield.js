@@ -38,16 +38,8 @@ Automatically shown in inline mode.
             
         },   
         
-       value2str: function(value) {
-            return value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
-       }, 
-       
-       value2submit: function(value) {
-            return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : null;
-       },                
-        
        value2input: function(value) {
-           this.$field.val(this.value2str(value));
+           this.$field.val(value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '');
            this.$input.datepicker('update');
        },
         
@@ -70,7 +62,7 @@ Automatically shown in inline mode.
     DateField.defaults = $.extend({}, $.fn.editabletypes.date.defaults, {
         /**
         @property tpl 
-        @default <input type="text">
+        @default 
         **/         
         tpl:'<div class="input-append date"><input class="input-small" type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
         /**
@@ -79,13 +71,14 @@ Automatically shown in inline mode.
         **/         
         inputclass: '',
         
+        /* datepicker config */
         datepicker: {
             weekStart: 0,
             startView: 0,
-            autoclose: true,
-            keyboardNavigation: false
+            autoclose: true
         },
-         
+        
+        /* disable clear link */ 
         clear: false
     });
     

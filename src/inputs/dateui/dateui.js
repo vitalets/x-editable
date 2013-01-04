@@ -26,30 +26,29 @@ $(function(){
 
     var DateUI = function (options) {
         this.init('dateui', options, DateUI.defaults);
-        
-        //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
-
-        //overriding datepicker config (as by default jQuery extend() is not recursive)
-        this.options.datepicker = $.extend({}, DateUI.defaults.datepicker, directOptions, options.datepicker);
-        
-        //by default viewformat equals to format
-        if(!this.options.viewformat) {
-            this.options.viewformat = this.options.datepicker.format;
-        }
-        
-        //correct formats: replace yyyy with yy
-        this.options.viewformat = this.options.viewformat.replace('yyyy', 'yy'); 
-        this.options.datepicker.format = this.options.datepicker.format.replace('yyyy', 'yy'); 
-        
-        //copy format to dateFormat (dateFormat option required for ui datepicker).
-        //This allows common option 'format' for all datepickers
-        this.options.datepicker.dateFormat = this.options.datepicker.format;        
+        this.initPicker(options, DateUI.defaults);
     };
 
     $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstractinput);    
     
     $.extend(DateUI.prototype, {
+        initPicker: function(options, defaults) {
+            //by default viewformat equals to format
+            if(!this.options.viewformat) {
+                this.options.viewformat = this.options.format;
+            }
+            
+            //correct formats: replace yyyy with yy (for compatibility with bootstrap datepicker)
+            this.options.viewformat = this.options.viewformat.replace('yyyy', 'yy'); 
+            this.options.format = this.options.format.replace('yyyy', 'yy');             
+            
+            //overriding datepicker config (as by default jQuery extend() is not recursive)
+            //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
+            this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
+                dateFormat: this.options.viewformat
+            });                        
+        },
+        
         render: function () {
             DateUI.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
@@ -83,7 +82,7 @@ $(function(){
         },   
         
         value2str: function(value) {
-           return $.datepicker.formatDate(this.options.datepicker.dateFormat, value);
+           return $.datepicker.formatDate(this.options.format, value);
        }, 
        
        str2value: function(str) {
@@ -94,13 +93,13 @@ $(function(){
            //if string does not match format, UI datepicker throws exception
            var d;
            try {
-              d = $.datepicker.parseDate(this.options.datepicker.dateFormat, str);
+              d = $.datepicker.parseDate(this.options.format, str);
            } catch(e) {}
            
            return d;
        }, 
        
-       value2submit: function(value) {
+       value2submit: function(value) { 
            return this.value2str(value);
        },                     
 
@@ -189,6 +188,5 @@ $(function(){
     });   
 
     $.fn.editabletypes.dateui = DateUI;
-    $.fn.editabletypes.date = DateUI;
 
 }(window.jQuery));

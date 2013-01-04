@@ -76,7 +76,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts string received from server into value.
+        Converts string received from server into value. Usually from `data-value` attribute.
         
         @method str2value(str) 
         @param {string} str
@@ -87,7 +87,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts value for submitting to server
+        Converts value for submitting to server. Result can be string or object.
         
         @method value2submit(value) 
         @param {mixed} value

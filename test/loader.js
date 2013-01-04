@@ -95,6 +95,7 @@ define(function () {
                     'jqueryui/js/jquery-ui-1.9.1.custom'
                 ],                      
                 'inputs/dateui/dateui': ['inputs/abstract'],
+                'inputs/dateui/dateuifield': ['inputs/dateui/dateui'],
 
                 //plain
                 //'inputs/dateui/dateui': ['inputs/abstract', 'inputs/date/bootstrap-datepicker/js/bootstrap-datepicker'],
@@ -136,7 +137,7 @@ define(function () {
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {
                 //jqueryui
-                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateui');
+                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-jqueryui');
                 shim['element/editable-element'].deps.push('containers/editable-tooltip');
             } else {    

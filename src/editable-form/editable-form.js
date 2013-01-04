@@ -60,7 +60,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             @param {Object} event event object
             **/            
             this.$div.triggerHandler('rendering');
-
+            
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
