@@ -2,6 +2,21 @@ X-editable changelog
 =============================
 
 
+Version 1.4.0 wip
+---------------------------- 
+[enh] update bootstrap-datepicker to upstream (vitalets)
+[enh] 'display' method: added param 'response' allowing to show text directly from server (vitalets)
+[enh] new util method `$.fn.editableutils.itemsByValue` to easily get selected items for sourced-inputs (vitalets)
+[enh] convert newlines to <br> in error message for more pretty display (vitalets)
+[enh #57] remove css height for textarea (vitalets) 
+[enh] if new value for select is 'null' source should not load (vitalets) 
+[enh #53] 'name' no more appended to source defined as url (vitalets) 
+[enh #46] move 'img' dir outside 'css' (vitalets) 
+[enh #48] fix handling of newlines in textarea input (jmfontaine) 
+[enh #47] set select source to function (brianchance) 
+[bug] fix inline container move on next line in IE7 (vitalets) 
+
+
 Version 1.3.0 Dec 10, 2012
 ----------------------------  
 [enh] added html5 inputs support: password, email, url, tel, number, range (vitalets) 
@@ -54,8 +69,8 @@ Version 1.1.1 Nov 30, 2012
 [enh #13] 'onblur' option: to cancel, submit or ignore when user clicks outside the form (vitalets)  
 [enh] 'ajaxOptions' parameter for advanced ajax configuration (vitalets)  
 [enh] 'success' callback can return object to overwrite submitted value (vitalets)  
-       
-       
+	   
+	   
 Version 1.1.0 Nov 27, 2012
 ----------------------------   
 [enh #11] icon cancel changed to 'cross' (tarciozemel)  
@@ -65,7 +80,7 @@ Version 1.1.0 Nov 27, 2012
 [enh] form template changed: added DIV.editable-input, DIV.editable.buttons and $.fn.editableform.buttons (vitalets)      
 [enh] new input type: checklist (vitalets)      
 [enh] updated docs: inputs dropdown menu, global templates section (vitalets)      
-                            
+							
 
 Version 1.0.1 Nov 22, 2012
 ----------------------------          
@@ -74,8 +89,8 @@ Version 1.0.1 Nov 22, 2012
 [enh #1] params can be a function to calculate it dynamically (vitalets)         
 [enh #6] do not preventDefault() in click when toggle='manual'. This allows to have clickable links (vitalets)
 [bug #3] should not mark element with unsave css if url is user's function (vitalets)         
-          
-                 
+		  
+				 
 Version 1.0.0 Nov 19, 2012 
 ----------------------------
 Initial release. This library is new life of bootstrap-editable (1.1.4) that was strongly refactored and improved.
@@ -84,7 +99,7 @@ Main features:
 - different container classes to show form: popover, tooltip, poshytip, etc
 - inline and popup versions 
 - new directory structure and logic in separate js files allowing easy contribution
-                                                                
+																
 It is not fully compatible with bootstrap-editable but has mainly the same interface and api.
 Here list of differences to help you to upgrade your application:
 

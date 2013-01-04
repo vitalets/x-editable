@@ -163,14 +163,9 @@
 <pre class="prettyprint linenums">&lt;link href=&quot;path/to/bootstrap/css/bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;path/to/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;</pre>
 </li>
-<li>Download corresponding X-editable build<br><br></li>
-<li>Include <strong>popup</strong> or <strong>inline</strong> version of X-editable (css equal for both):<br>
-popup
+<li>Download corresponding X-editable build and include it on your page:<br>
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;bootstrap-editable/js/bootstrap-editable.js&quot;&gt;&lt;/script&gt;</pre>
-inline
-<pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
-&lt;script src=&quot;bootstrap-editable/js/bootstrap-editable-inline.js&quot;&gt;&lt;/script&gt;</pre>
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot; data-type=&quot;text&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Enter username&quot;&gt;superuser&lt;/a&gt;</pre>
@@ -178,8 +173,9 @@ Main attributes you should define are:
 <ul>
 <li><code>type</code> - type of input (text, textarea, select, etc)</li>
 <li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
-<li><code>pk</code> - primary key of record to be updated (ID of user in db)</li>
-<li><code>name</code> - fieldname to be updated (column in db). Can be taken from html <code>id</code> attribute</li>
+<li><code>pk</code> - primary key of record to be updated (ID in db). If pk is <i>empty</i>, value will be saved on page, but not sent to server. See also <code>send</code> option</li>
+<li><code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
+<li><code>value</code> - initial value. Usefull for select, where value is integer key of text to be shown. If <i>empty</i> - will be taken from element html contents</li>
 </ul>
 <br>
 </li>
@@ -302,7 +298,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
 </p>
 <ul>
 <li><code>value</code> current value to be displayed</li>
-<li><code>response</code> server response (if display called after ajax submit), since 1.3.1</li>
+<li><code>response</code> server response (if display called after ajax submit), since 1.4.0</li>
 </ul>
 <p>For <strong>inputs with source</strong> (select, checklist) parameters are different:  
 
@@ -310,7 +306,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
 <ul>
 <li><code>value</code> current value to be displayed</li>
 <li><code>sourceData</code> array of items for current input (e.g. dropdown items) </li>
-<li><code>response</code> server response (if display called after ajax submit), since 1.3.1</li>
+<li><code>response</code> server response (if display called after ajax submit), since 1.4.0</li>
 </ul>
 <p>To get currently selected items use <code>$.fn.editableutils.itemsByValue(value, sourceData)</code>.</p>
 
@@ -1183,7 +1179,7 @@ $(function(){
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above (since 1.3.1).</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).</p>
 
             
             
@@ -1704,7 +1700,7 @@ Internally value stored as javascript array of values.</p>
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above (since 1.3.1).</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).</p>
 
             
             

@@ -1268,7 +1268,7 @@
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
             "line": 549,
-            "description": "Callback to perform custom displaying of value in element's text.  \nIf `null`, default input's display used.  \nIf `false`, no displaying methods will be called, element's text will never change.  \nRuns under element's scope.  \n_Parameters:_  \n\n* `value` current value to be displayed\n* `response` server response (if display called after ajax submit), since 1.3.1\n \nFor **inputs with source** (select, checklist) parameters are different:  \n  \n* `value` current value to be displayed\n* `sourceData` array of items for current input (e.g. dropdown items) \n* `response` server response (if display called after ajax submit), since 1.3.1\n          \nTo get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.",
+            "description": "Callback to perform custom displaying of value in element's text.  \nIf `null`, default input's display used.  \nIf `false`, no displaying methods will be called, element's text will never change.  \nRuns under element's scope.  \n_Parameters:_  \n\n* `value` current value to be displayed\n* `response` server response (if display called after ajax submit), since 1.4.0\n \nFor **inputs with source** (select, checklist) parameters are different:  \n  \n* `value` current value to be displayed\n* `sourceData` array of items for current input (e.g. dropdown items) \n* `response` server response (if display called after ajax submit), since 1.4.0\n          \nTo get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.",
             "itemtype": "property",
             "name": "display",
             "type": "function|boolean",
@@ -1628,7 +1628,7 @@
         {
             "file": "..\\lib\\src\\inputs\\list.js",
             "line": 244,
-            "description": "Source data for list.  \nIf **array** - it should be in format: `[{value: 1, text: \"text1\"}, {...}]`  \nFor compability, object format is also supported: `{\"1\": \"text1\", \"2\": \"text2\" ...}` but it does not guarantee elements order.\n\nIf **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.\n  \nIf **function**, it should return data in format above (since 1.3.1).",
+            "description": "Source data for list.  \nIf **array** - it should be in format: `[{value: 1, text: \"text1\"}, {...}]`  \nFor compability, object format is also supported: `{\"1\": \"text1\", \"2\": \"text2\" ...}` but it does not guarantee elements order.\n\nIf **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.\n  \nIf **function**, it should return data in format above (since 1.4.0).",
             "itemtype": "property",
             "name": "source",
             "type": "string | array | object | function",

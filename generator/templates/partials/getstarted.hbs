@@ -12,17 +12,10 @@
 <script src="path/to/bootstrap/js/bootstrap.js"></script>           
 {{/source}}
 </li>
-<li>Download corresponding X-editable build<br><br></li>
-<li>Include <strong>popup</strong> or <strong>inline</strong> version of X-editable (css equal for both):<br>
-popup
+<li>Download corresponding X-editable build and include it on your page:<br>
 {{#source}}
 <link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
 <script src="bootstrap-editable/js/bootstrap-editable.js"></script> 
-{{/source}}
-inline
-{{#source}}
-<link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
-<script src="bootstrap-editable/js/bootstrap-editable-inline.js"></script>           
 {{/source}}
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
@@ -33,8 +26,9 @@ Main attributes you should define are:
 <ul>
 <li><code>type</code> - type of input (text, textarea, select, etc)</li>
 <li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
-<li><code>pk</code> - primary key of record to be updated (ID of user in db)</li>
-<li><code>name</code> - fieldname to be updated (column in db). Can be taken from html <code>id</code> attribute</li>
+<li><code>pk</code> - primary key of record to be updated (ID in db). If pk is <i>empty</i>, value will be saved on page, but not sent to server. See also <code>send</code> option</li>
+<li><code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
+<li><code>value</code> - initial value. Usefull for select, where value is integer key of text to be shown. If <i>empty</i> - will be taken from element html contents</li>
 </ul>
 <br>
 </li>
