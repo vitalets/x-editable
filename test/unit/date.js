@@ -1,13 +1,19 @@
 $(function () {         
    
-   var dpg, f = 'dd.mm.yyyy';
+   var dpg, f = 'dd.mm.yyyy', mode;
    
    module("date", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.datepicker.DPGlobal;
             $.support.transition = false;
-        }
+            mode = $.fn.editable.defaults.mode;
+            $.fn.editable.defaults.mode = 'popup';
+        },
+        teardown: function() {
+            //restore mode
+            $.fn.editable.defaults.mode = mode;
+        }        
     });
     
     function frmt(date, format) {

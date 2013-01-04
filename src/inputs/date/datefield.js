@@ -7,7 +7,7 @@ Automatically shown in inline mode.
 
     var DateField = function (options) {
         this.init('datefield', options, DateField.defaults);
-        this.initPicker();
+        this.initPicker(options, DateField.defaults);
     };
 
     $.fn.editableutils.inherit(DateField, $.fn.editabletypes.date);    
@@ -28,12 +28,14 @@ Automatically shown in inline mode.
             this.$input.datepicker(this.options.datepicker);
             
             //need to disable original event handlers
-            this.$field.off('focus keyup keydown');
+            this.$field.off('focus keydown');
             
-            //shadow update value of datepicker
+            //update value of datepicker
             this.$field.keyup($.proxy(function(){
-               this.$input.data('datepicker').date = this.input2value();  
+               this.$input.removeData('date');
+               this.$input.datepicker('update');
             }, this));
+            
         },   
         
        value2str: function(value) {
@@ -76,7 +78,14 @@ Automatically shown in inline mode.
         @default ''
         **/         
         inputclass: '',
-        datepicker: {autoclose: true}, 
+        
+        datepicker: {
+            weekStart: 0,
+            startView: 0,
+            autoclose: true,
+            keyboardNavigation: false
+        },
+         
         clear: false
     });
     

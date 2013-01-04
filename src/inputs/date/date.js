@@ -26,13 +26,13 @@ $(function(){
 
     var Date = function (options) {
         this.init('date', options, Date.defaults);
-        this.initPicker();
+        this.initPicker(options, Date.defaults);
     };
 
     $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
     
     $.extend(Date.prototype, {
-        initPicker: function() {
+        initPicker: function(options, defaults) {
             //'format' is set directly from settings or data-* attributes
 
             //by default viewformat equals to format
@@ -42,7 +42,7 @@ $(function(){
             
             //overriding datepicker config (as by default jQuery extend() is not recursive)
             //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
-            this.options.datepicker = $.extend({}, Date.defaults.datepicker, this.options.datepicker, {
+            this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
                 format: this.options.viewformat
             });
             

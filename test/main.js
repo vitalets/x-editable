@@ -27,16 +27,27 @@ require(["loader", jqurl], function(loader) {
     });
     
     function addTests(config) {
+        var date;
+        
+        switch(params.f) {
+            case 'bootstrap':
+              date = ['test/unit/datefield', 'test/unit/date'];
+              break;
+               
+            default:  
+              date = ['test/unit/dateui'];
+        }
+        
         var tests = [
             'test/mocks',
             'test/unit/common',
             'test/unit/text',
             'test/unit/textarea',
             'test/unit/select',
-            'test/unit/checklist',
-            (params.f === 'bootstrap') ?  'test/unit/date' :  'test/unit/dateui',            
-            'test/unit/api'
+            'test/unit/checklist'
        ];
+       tests = tests.concat(date);
+       tests.push('test/unit/api');
        
        for(var i=0; i<tests.length-1; i++) {
           config.shim[tests[i+1]] = [tests[i]]; 
