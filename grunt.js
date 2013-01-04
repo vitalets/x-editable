@@ -11,7 +11,10 @@ function getFiles() {
         bootstrap: {
             form: [forms+'editable-form-bootstrap.js'],
             container: [containers+'editable-popover.js'],
-            inputs: [inputs+'date/date.js', inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
+            inputs: [
+                inputs+'date/date.js', 
+                inputs+'date/datefield.js', 
+                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
             css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
         },  
         jqueryui: {

@@ -81,7 +81,6 @@ $(function () {
         }, timeout); 
         
      }); 
-      
      
      test("viewformat, init by text", function () {
          
