@@ -35,6 +35,7 @@
                    $.getScript(assets.editable_js, function(){
                       loadCss('assets/x-editable/inputs-ext/address/address.css');                        
                       $.getScript('assets/x-editable/inputs-ext/address/address.js', function() {
+                           $.fn.editable.defaults.mode = fc.c === 'inline' ? 'inline' : 'popup';
                            $.getScript('assets/demo.js');  
                       }); 
                    }); 
