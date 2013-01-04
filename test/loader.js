@@ -131,7 +131,6 @@ define(function () {
             
             if(f === 'bootstrap') { 
                 //bootstrap
-//                shim['editable-form/editable-form'].deps.push('inputs/date/date');
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');

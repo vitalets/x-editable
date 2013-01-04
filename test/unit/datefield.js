@@ -24,7 +24,7 @@ $(function () {
     asyncTest("container should contain input with value and save new entered date", function () {
 
         var d = '15.05.1984',
-            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date.php">'+d+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-datefield.php">'+d+'</a>').appendTo(fx).editable({
                 format: f,
                 viewformat: f,
                 datepicker: {
@@ -35,7 +35,7 @@ $(function () {
             finalD = '17.05.1984';
         
           $.mockjax({
-              url: 'post-date.php',
+              url: 'post-datefield.php',
               response: function(settings) {
                   equal(settings.data.value, finalD, 'submitted value correct');            
               }
