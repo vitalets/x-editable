@@ -19,7 +19,8 @@ require(["loader", jqurl], function(loader) {
     function() {
         //disable effects
         $.fx.off = true;
-        $.support.transition = false;           
+        $.support.transition = false;
+        $.fn.editable.defaults.mode = params.c === 'inline' ? 'inline' : 'popup';           
         
         QUnit.load();
         QUnit.start();

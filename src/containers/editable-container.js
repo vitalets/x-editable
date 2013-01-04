@@ -9,12 +9,16 @@ Applied as jQuery method.
 **/
 (function ($) {
 
-    var EditableContainer = function (element, options) {
+    var Popup = function (element, options) {
         this.init(element, options);
     };
+    
+    var Inline = function (element, options) {
+        this.init(element, options);
+    };    
 
     //methods
-    EditableContainer.prototype = {
+    Popup.prototype = {
         containerName: null, //tbd in child class
         innerCss: null, //tbd in child class
         init: function(element, options) {
@@ -48,7 +52,7 @@ Applied as jQuery method.
                         return;
                     } else {
                         //close all open containers (except one)
-                        EditableContainer.prototype.closeOthers(e.target);
+                        Popup.prototype.closeOthers(e.target);
                     }
                 });
                 
@@ -310,11 +314,12 @@ Applied as jQuery method.
         return this.each(function () {
             var $this = $(this),
             dataKey = 'editableContainer', 
-            data = $this.data(dataKey), 
-            options = typeof option === 'object' && option;
+            data = $this.data(dataKey),
+            options = typeof option === 'object' && option,
+            Constructor = (options.mode === 'inline') ? Inline : Popup;             
 
             if (!data) {
-                $this.data(dataKey, (data = new EditableContainer(this, options)));
+                $this.data(dataKey, (data = new Constructor(this, options)));
             }
 
             if (typeof option === 'string') { //call method 
@@ -323,8 +328,9 @@ Applied as jQuery method.
         });
     };     
 
-    //store constructor
-    $.fn.editableContainer.Constructor = EditableContainer;
+    //store constructors
+    $.fn.editableContainer.Popup = Popup;
+    $.fn.editableContainer.Inline = Inline;
 
     //defaults
     $.fn.editableContainer.defaults = {
@@ -363,7 +369,25 @@ Applied as jQuery method.
         @default 'cancel'
         @since 1.1.1
         **/        
-        onblur: 'cancel'
+        onblur: 'cancel',
+        
+        /**
+        Animation speed (inline mode)
+        @property anim 
+        @type string
+        @default 'fast'
+        **/        
+        anim: 'fast',
+        
+        /**
+        Mode of editable, can be `popup` or `inline` 
+        
+        @property mode 
+        @type string         
+        @default 'popup'
+        @since 1.4.0        
+        **/        
+        mode: 'popup'        
     };
 
     /* 

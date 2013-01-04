@@ -64,7 +64,7 @@
       
       test("container's title and placement from json options", function () {
         //do not test inline  
-        if($.fn.editableContainer.Constructor.prototype.containerName === 'editableform') {
+        if($.fn.editable.defaults.mode === 'inline') {
             expect(0);
             return;
         }
@@ -81,7 +81,7 @@
         ok(p.is(':visible'), 'popover shown');   
 
         //todo: for jqueryui phantomjs calcs wrong position. Need investigation
-        if(!$.browser.webkit && $.fn.editableContainer.Constructor.prototype.containerName !== 'tooltip') {
+        if(!$.browser.webkit && e.data('editableContainer').containerName !== 'tooltip') {
             ok(p.offset().top > e.offset().top, 'placement ok');
         }
         
@@ -520,5 +520,23 @@
         
       });          
            
+     test("mode: popup / inline", function () {
+        var e = $('<a href="#" id="a"></a>').appendTo('#qunit-fixture').editable({
+            mode: 'popup'
+        }),
+        e1 = $('<a href="#" id="a1"></a>').appendTo('#qunit-fixture').editable({
+            mode: 'inline'
+        });        
+        
+        e.click(); 
+        var p = tip(e);                       
+        ok(p.is(':visible'), 'popup visible');
+        ok(!p.hasClass('editable-inline'), 'no inline class');
+
+        e1.click(); 
+        p = tip(e1);                       
+        ok(p.is(':visible'), 'inline visible visible');
+        ok(p.hasClass('editable-inline'), 'has inline class');
+    }); 
           
 }(jQuery));  

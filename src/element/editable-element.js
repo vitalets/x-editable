@@ -554,13 +554,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         _Parameters:_  
         
         * `value` current value to be displayed
-        * `response` server response (if display called after ajax submit), since 1.3.1
+        * `response` server response (if display called after ajax submit), since 1.4.0
          
         For **inputs with source** (select, checklist) parameters are different:  
           
         * `value` current value to be displayed
         * `sourceData` array of items for current input (e.g. dropdown items) 
-        * `response` server response (if display called after ajax submit), since 1.3.1
+        * `response` server response (if display called after ajax submit), since 1.4.0
                   
         To get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.
         

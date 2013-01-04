@@ -6,7 +6,7 @@
 (function ($) {
     
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'tooltip',
         innerCss: '.ui-tooltip-content', 
         
@@ -108,13 +108,5 @@
            //jqueryui tooltip destroys itself
         }                 
     });
-    
-    //defaults
-    /*
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.tooltip.defaults, $.fn.editableContainer.defaults, {
-        items: '*',
-        content: ' ',
-    });
-    */
     
 }(window.jQuery));

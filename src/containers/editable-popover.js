@@ -6,7 +6,7 @@
 (function ($) {
 
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'popover',
         //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
         innerCss: $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
@@ -81,12 +81,5 @@
           /*jshint laxcomma: false*/  
         }            
     });
-
-    //defaults
-    /*
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.popover.defaults, $.fn.editableContainer.defaults, {
-        
-    });
-    */    
 
 }(window.jQuery));

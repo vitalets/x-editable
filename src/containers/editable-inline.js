@@ -3,9 +3,10 @@
 * ---------------------
 */
 (function ($) {
-
+    
+    //copy prototype from EditableContainer
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Inline.prototype, $.fn.editableContainer.Popup.prototype, {
         containerName: 'editableform',
         innerCss: null,
                  
@@ -50,11 +51,5 @@
             this.tip().remove();
         } 
     });
-
-    //defaults
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.editableContainer.defaults, {
-        anim: 'fast'
-    });    
-
 
 }(window.jQuery));

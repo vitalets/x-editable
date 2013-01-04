@@ -248,7 +248,7 @@ List - abstract class for inputs that have source option loaded from js array or
         
         If **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.
           
-        If **function**, it should return data in format above (since 1.3.1).
+        If **function**, it should return data in format above (since 1.4.0).
 		
         @property source 
         @type string | array | object | function
