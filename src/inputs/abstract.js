@@ -20,9 +20,10 @@ To create your own input you can inherit from this class.
         **/
        init: function(type, options, defaults) {
            this.type = type;
-           this.options = $.extend({}, defaults, options); 
-           this.$input = null;
-           this.$clear = null;
+           this.options = $.extend({}, defaults, options);
+           this.$tpl = null;     //whole tpl as jquery object
+           this.$input = null;   //input as jquery object
+           this.$clear = null;   //clear button
            this.error = null;
        },
        
@@ -32,14 +33,8 @@ To create your own input you can inherit from this class.
         @method render() 
        **/       
        render: function() {
-            this.$input = $(this.options.tpl);
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }
-            
-            if (this.options.placeholder) {
-                this.$input.attr('placeholder', this.options.placeholder);
-            }   
+            this.$tpl = $(this.options.tpl);
+            this.$input = this.$tpl;
        }, 
 
        /**

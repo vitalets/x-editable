@@ -60,14 +60,19 @@ $(function(){
         render: function () {
             Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
-                        
+        },
+        
+        postrender: function() {
+            //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
                     e.preventDefault();
                     e.stopPropagation();
                     this.clear();
                 }, this));
-            }
+                
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+            }            
         },
 
         value2html: function(value, element) {
@@ -123,12 +128,12 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-date well"></div>',
         /**
         @property inputclass 
-        @default editable-date well
+        @default
         **/         
-        inputclass: 'editable-date well',
+        inputclass: '',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  

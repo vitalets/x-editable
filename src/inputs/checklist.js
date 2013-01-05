@@ -44,8 +44,13 @@ $(function(){
                                      }))
                                      .append($('<span>').text(' '+this.sourceData[i].text));
                 
-                $('<div>').append($label).appendTo(this.$input);
+                $('<div>').append($label).appendTo(this.$tpl);
             }
+            
+            this.$input = this.$tpl.find('input[type="checkbox"]');
+            if(this.options.inputclass) {
+                this.$input.addClass(this.options.inputclass); 
+            }            
         },
        
        value2str: function(value) {
@@ -66,10 +71,9 @@ $(function(){
        
        //set checked on required checkboxes
        value2input: function(value) {
-            var $checks = this.$input.find('input[type="checkbox"]');
-            $checks.removeAttr('checked');
+            this.$input.removeAttr('checked');
             if($.isArray(value) && value.length) {
-               $checks.each(function(i, el) {
+               this.$input.each(function(i, el) {
                    var $el = $(el);
                    // cannot use $.inArray as it performs strict comparison
                    $.each(value, function(j, val){
@@ -85,7 +89,7 @@ $(function(){
         
        input2value: function() { 
            var checked = [];
-           this.$input.find('input:checked').each(function(i, el) {
+           this.$input.filter(':checked').each(function(i, el) {
                checked.push($(el).val());
            });
            return checked;
@@ -105,11 +109,11 @@ $(function(){
         },
         
        activate: function() {
-           this.$input.find('input[type="checkbox"]').first().focus();
+           this.$input.first().focus();
        },
        
        autosubmit: function() {
-           this.$input.find('input[type="checkbox"]').on('keydown', function(e){
+           this.$input.on('keydown', function(e){
                if (e.which === 13) {
                    $(this).closest('form').submit();
                }
@@ -122,14 +126,14 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-checklist"></div>',
         
         /**
         @property inputclass 
         @type string
-        @default editable-checklist
+        @default 
         **/         
-        inputclass: 'editable-checklist',        
+        inputclass: '',        
         
         /**
         Separator of values when reading from 'data-value' string

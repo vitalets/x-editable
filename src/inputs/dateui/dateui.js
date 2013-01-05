@@ -52,15 +52,20 @@ $(function(){
         render: function () {
             DateUI.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
-            
+        },
+        
+        postrender: function() {
+            //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
                     e.preventDefault();
                     e.stopPropagation();
                     this.clear();
                 }, this));
+                
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
             }            
-        },
+        },        
 
         value2html: function(value, element) {
             var text = $.datepicker.formatDate(this.options.viewformat, value);
@@ -134,12 +139,12 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-date"></div>',
         /**
         @property inputclass 
-        @default 'editable-date'
+        @default ''
         **/         
-        inputclass: 'editable-date',
+        inputclass: '',
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Full list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate

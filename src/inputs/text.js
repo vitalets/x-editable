@@ -23,11 +23,56 @@ $(function(){
     $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstractinput);
 
     $.extend(Text.prototype, {
+        render: function() {
+           Text.superclass.render.call(this);
+
+           if (this.options.clear) {
+               this.$clear = $('<span class="editable-clear-x"></span>');
+               this.$tpl = $('<div style="position: relative">')
+                        .append(this.$input)
+                        .append(this.$clear);
+           }
+           
+           if(this.options.inputclass) {
+               this.$input.addClass(this.options.inputclass); 
+           }
+            
+           if (this.options.placeholder) {
+               this.$input.attr('placeholder', this.options.placeholder);
+           }           
+        },
+        
+        postrender: function() { 
+            if (this.options.clear) {
+                var h = this.$input.parent().height() || 20;
+                this.$clear.css('top', (h - this.$clear.outerHeight()) / 2);
+                this.$input.keyup($.proxy(this.toggleClear, this));
+                this.$clear.click($.proxy(function(){
+                    this.$clear.hide();
+                    this.$input.val('').focus();
+                }, this));
+            } 
+        },
+        
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
                 $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                 if(this.options.clear) {
+                     this.toggleClear();
+                 }
             }
+        },
+        
+        //show / hide clear button
+        toggleClear: function() {
+            if(!this.options.clear) return;
+            
+            if(this.$input.val()) {
+                this.$clear.show();
+            } else {
+                this.$clear.hide();
+            } 
         }  
     });
 
@@ -44,7 +89,12 @@ $(function(){
         @type string
         @default null
         **/             
-        placeholder: null
+        placeholder: null,
+        
+        /**
+        Whether to show clear button / link or not 
+        **/
+        clear: true
     });
 
     $.fn.editabletypes.text = Text;

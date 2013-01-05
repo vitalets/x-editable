@@ -35,8 +35,12 @@ $(function(){
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
+                this.$tpl.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
+            
+            if(this.options.inputclass) {
+                this.$input.addClass(this.options.inputclass); 
+            }            
             
             //enter submit
             this.$input.on('keydown.editable', function (e) {

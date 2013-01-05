@@ -64,8 +64,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //input
-                this.$form.find('div.editable-input').append(this.input.$input);
+                //insert input in form
+                this.$form.find('div.editable-input').append(this.input.$tpl);
 
                 //automatically submit inputs when no buttons shown
                 if(!this.options.showbuttons) {
@@ -73,9 +73,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 }
                 
                 //"clear" link
-                if(this.input.$clear) {
-                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
-                }                
+//                if(this.input.$clear) {
+//                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
+//                }                
 
                 //append form to container
                 this.$div.append(this.$form);
@@ -83,6 +83,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
 
+                //call postrender to perform actions, required when input is in DOM
+                if(this.input.postrender) {
+                   this.input.postrender(); 
+                }
+                
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);

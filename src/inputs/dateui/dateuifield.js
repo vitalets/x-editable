@@ -14,9 +14,9 @@ Automatically shown in inline mode.
     
     $.extend(DateUIField.prototype, {
         render: function () {
-            $.fn.editabletypes.dateui.superclass.render.call(this);
-            this.$field = this.$input.find('input'); 
-            this.$field.datepicker(this.options.datepicker);
+            this.$tpl = $(this.options.tpl);
+            this.$input = this.$tpl.find('input'); 
+            this.$input.datepicker(this.options.datepicker);
 
             /*
             if(this.options.clear) {
@@ -30,18 +30,15 @@ Automatically shown in inline mode.
        },
       
        value2input: function(value) {
-           this.$field.val($.datepicker.formatDate(this.options.viewformat, value));
+           this.$input.val($.datepicker.formatDate(this.options.viewformat, value));
        },
         
        input2value: function() { 
-           return this.html2value(this.$field.val());
+           return this.html2value(this.$input.val());
        },        
         
        activate: function() {
-           if(this.$field.is(':visible')) {
-               this.$field.focus();
-               $.fn.editableutils.setCursorPosition(this.$field.get(0), this.$field.val().length);
-           }
+           $.fn.editabletypes.text.prototype.activate.call(this);
        },
        
        autosubmit: function() {

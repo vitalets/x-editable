@@ -155,29 +155,29 @@ Range (inherit from number)
     $.fn.editableutils.inherit(Range, $.fn.editabletypes.number);
     $.extend(Range.prototype, {
         render: function () {
-            this.$input = $(this.options.tpl);
-            var $slider = this.$input.filter('input');
+            this.$tpl = $(this.options.tpl);
+            this.$input = this.$tpl.filter('input');
             if(this.options.inputclass) {
-                $slider.addClass(this.options.inputclass); 
+                this.$input.addClass(this.options.inputclass); 
             }
             if (this.options.min !== null) {
-                $slider.attr('min', this.options.min);
+                this.$input.attr('min', this.options.min);
             } 
             
             if (this.options.max !== null) {
-                $slider.attr('max', this.options.max);
+                this.$input.attr('max', this.options.max);
             } 
             
             if (this.options.step !== null) {
-                $slider.attr('step', this.options.step);
+                this.$input.attr('step', this.options.step);
             }             
             
-            $slider.on('input', function(){
+            this.$input.on('input', function(){
                 $(this).siblings('output').text($(this).val()); 
             });  
         },
         activate: function() {
-            this.$input.filter('input').focus();
+            this.$input.focus();
         }         
     });
     Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {

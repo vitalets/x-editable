@@ -67,10 +67,7 @@ $(function(){
         },
 
         activate: function() {
-            if(this.$input.is(':visible')) {
-                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
-                this.$input.focus();
-            }
+            $.fn.editabletypes.text.prototype.activate.call(this);
         }
     });
 
