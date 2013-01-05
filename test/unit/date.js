@@ -130,7 +130,7 @@ $(function () {
         
         equal(p.find('td.day.active').text(), today.getDate(), 'day shown correct');
         
-        p.find('button[type=button]').click();
+        p.find('.editable-cancel').click();
         ok(!p.is(':visible'), 'popover closed');      
       });
       

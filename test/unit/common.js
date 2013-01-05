@@ -274,7 +274,7 @@
      });           
      
       
-     test("should not wrap buttons when parent has position:absolute", function () {
+     test("should not wrap buttons when parent has position:absolute (except ie7)", function () {
         var  d = $('<div style="position: absolute; top: 200px">').appendTo(fx),
              e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(d).editable({
                  showbuttons: true

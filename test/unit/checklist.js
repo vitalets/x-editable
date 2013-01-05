@@ -17,7 +17,7 @@ $(function () {
              value: [2, 3]
         });
            
-        equal(e.html(), groups[2]+sep+groups[3], 'autotext ok');
+        equal(e.html().toLowerCase(), (groups[2]+sep+groups[3]).toLowerCase(), 'autotext ok');
         
           $.mockjax({
               url: 'post-checklist.php',
@@ -47,7 +47,7 @@ $(function () {
                ok(!p.is(':visible'), 'popup closed');
                
                equal(e.data('editable').value.join(''), [newValue, 3].join(''), 'new value ok')
-               equal(e.html(), groups[newValue]+'<br>'+groups[3], 'new text ok');
+               equal(e.html().toLowerCase(), (groups[newValue]+'<br>'+groups[3]).toLowerCase(), 'new text ok');
               
                // open container again to see what checked
                e.click()

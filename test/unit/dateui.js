@@ -84,7 +84,7 @@ $(function () {
         
         equal(p.find('a.ui-state-active').text(), today.getDate(), 'day shown correct');
         
-        p.find('button[type=button]').click();
+        p.find('.editable-cancel').click();
         ok(!p.is(':visible'), 'popover closed');      
       }); 
       

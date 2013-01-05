@@ -94,7 +94,7 @@ $(function () {
         });            
         
         e.editable({
-            source: 'groups.php',
+            source: 'groups.php'
         });
         
         e.click();
@@ -103,7 +103,7 @@ $(function () {
              var p = tip(e);
              
              test_reason = 'cancel'
-             p.find('button[type=button]').click();  //cancel
+             p.find('.editable-cancel').click();  //cancel
              ok(!p.is(':visible'), 'popover closed');
 
              test_reason = 'onblur'            
@@ -147,7 +147,7 @@ $(function () {
         });         
         
         e.editable({
-            source: groups,
+            source: groups
         });
         
         e.click();

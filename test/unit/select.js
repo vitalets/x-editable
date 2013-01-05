@@ -14,7 +14,7 @@ $(function () {
         e.click();
         var p = tip(e);
         ok(p.find('select').length, 'select exists')
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');        
       })  
     
@@ -36,7 +36,7 @@ $(function () {
             ok(p.find('select').length, 'select exists');
             equal(p.find('select').find('option').length, size, 'options loaded');
             equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-            p.find('button[type=button]').click(); 
+            p.find('.editable-cancel').click(); 
             ok(!p.is(':visible'), 'popover was removed');  
             e.remove();    
             start();  
@@ -57,7 +57,7 @@ $(function () {
         ok(p.find('select').length, 'select exists')
         equal(p.find('select').find('option').length, size, 'options loaded')
         equal(p.find('select').val(), e.data('editable').value, 'selected value correct') 
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     });
     
@@ -75,7 +75,7 @@ $(function () {
         equal(p.find('select').find('option').length, groupsArr.length, 'options loaded');
         equal(p.find('select').val(), e.data('editable').value, 'selected value correct');
         
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     });    
     
@@ -93,7 +93,7 @@ $(function () {
         ok(p.find('select').length, 'select exists')
         equal(p.find('select').find('option').length, arr.length, 'options loaded')
         equal(p.find('select').val(), 'x', 'selected value correct') 
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     }); 
     
@@ -112,7 +112,7 @@ $(function () {
         ok(p.find('select').length, 'select exists');
         equal(p.find('select').find('option').length, size+1, 'options loaded');
         equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     });    
     
@@ -128,7 +128,7 @@ $(function () {
         ok(p.find('select').length, 'select exists');
         equal(p.find('select').find('option').length, size, 'options loaded');
         equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     })       
     
@@ -144,7 +144,7 @@ $(function () {
         ok(p.find('select').length, 'select exists');
         equal(p.find('select').find('option').length, size, 'options loaded');
         equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     })      
          
@@ -162,7 +162,7 @@ $(function () {
         equal(p.find('select').find('option').length, 0, 'options not loaded');
         equal(p.find('.editable-error-block').text(), 'error', 'sourceError message shown');
 
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     })           
          
@@ -179,7 +179,7 @@ $(function () {
             ok(!p.find('select').find('option').length, 'options not loaded')   
             ok(p.find('button[type=submit]:disabled').length, 'submit-btn disabled')
             ok(p.find('.editable-error-block').text().length, 'error shown')              
-            p.find('button[type=button]').click(); 
+            p.find('.editable-cancel').click(); 
             ok(!p.is(':visible'), 'popover was removed');  
             e.remove();    
             start();  
@@ -290,7 +290,7 @@ $(function () {
             equal(p.find('select').find('option').length, size, 'options loaded');
             equal(req, 1, 'one request performed');
             
-            p.find('button[type=button]').click(); 
+            p.find('.editable-cancel').click(); 
             ok(!p.is(':visible'), 'popover was removed');  
             
             //click second
@@ -302,7 +302,7 @@ $(function () {
                 equal(p.find('select').find('option').length, size, 'options loaded');
                 equal(req, 1, 'no extra request, options taken from cache');
                 
-                p.find('button[type=button]').click(); 
+                p.find('.editable-cancel').click(); 
                 ok(!p.is(':visible'), 'popover was removed');                  
                 
                 e.remove();    
@@ -409,7 +409,7 @@ $(function () {
             equal(p.find('select').find('option').length, size, 'options loaded');
             equal(req, 1, 'one request performed');
             
-            p.find('button[type=button]').click(); 
+            p.find('.editable-cancel').click(); 
             ok(!p.is(':visible'), 'popover was removed');  
             
             //click second
@@ -421,7 +421,7 @@ $(function () {
                 equal(p.find('select').find('option').length, size, 'options loaded');
                 equal(req, 2, 'second request performed');
                 
-                p.find('button[type=button]').click(); 
+                p.find('.editable-cancel').click(); 
                 ok(!p.is(':visible'), 'popover was removed');                  
                 
                 e.remove();    
@@ -496,7 +496,7 @@ $(function () {
         ok(p.is(':visible'), 'popover visible');
         equal(p.find('select').find('option').length, 3, 'options prepended (sync)');
         equal(p.find('select').val(), '', 'selected value correct');
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');   
         
         //async
@@ -513,7 +513,7 @@ $(function () {
             ok(p.is(':visible'), 'popover visible');
             equal(p.find('select').find('option').length, size+1, 'options prepended (async)');
             equal(p.find('select').val(), 'r', 'selected value correct'); 
-            p.find('button[type=button]').click(); 
+            p.find('.editable-cancel').click(); 
             ok(!p.is(':visible'), 'popover was removed');  
             e.remove();    
             start();   

@@ -16,7 +16,7 @@ $(function () {
         var p = tip(e);
         ok(p.find('textarea').length, 'textarea exists')
         ok(!p.find('textarea').val().length, 'textrea is empty')        
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed')         
       })
       
@@ -25,7 +25,7 @@ $(function () {
         e.click()
         var p = tip(e);
         equal(p.find('textarea').attr('placeholder'), 'abc', 'placeholder exists');        
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');         
       })      
       
