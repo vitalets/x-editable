@@ -20,7 +20,10 @@ function getFiles() {
         jqueryui: {
             form: [forms+'editable-form-jqueryui.js'],
             container: [containers+'editable-tooltip.js'],
-            inputs: [inputs+'dateui/dateui.js'], 
+            inputs: [
+               inputs+'dateui/dateui.js',
+               inputs+'dateui/dateuifield.js'
+            ], 
             css: []
         },  
         jquery: {
