@@ -28,9 +28,8 @@ $(function(){
 
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
-               this.$tpl = $('<div style="position: relative">')
-                        .append(this.$input)
-                        .append(this.$clear);
+               this.$tpl = $('<div style="position: relative">').append(this.$input).append(this.$clear);
+               this.$input.css('padding-right', '25px');         
            }
            
            if(this.options.inputclass) {
@@ -43,7 +42,8 @@ $(function(){
         },
         
         postrender: function() { 
-            if (this.options.clear) {
+            //attach `clear` button in postrender, because it requires parent height to be calculated (in DOM)
+            if (this.$clear) {
                 var h = this.$input.parent().height() || 20;
                 this.$clear.css('top', (h - this.$clear.outerHeight()) / 2);
                 this.$input.keyup($.proxy(this.toggleClear, this));
@@ -58,15 +58,17 @@ $(function(){
             if(this.$input.is(':visible')) {
                 this.$input.focus();
                 $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
-                 if(this.options.clear) {
-                     this.toggleClear();
-                 }
+                if(this.toggleClear) {
+                    this.toggleClear();
+                }
             }
         },
         
         //show / hide clear button
         toggleClear: function() {
-            if(!this.options.clear) return;
+            if(!this.$clear) {
+                return;
+            }
             
             if(this.$input.val()) {
                 this.$clear.show();
@@ -92,7 +94,7 @@ $(function(){
         placeholder: null,
         
         /**
-        Whether to show clear button / link or not 
+        Whether to show `clear` button / link or not 
         **/
         clear: true
     });

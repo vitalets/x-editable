@@ -501,6 +501,32 @@ $(function () {
             equal(e.text(), v1, 'new text shown');             
         }    
                   
-  });                    
+  });   
+  
+   test("`clear` option", function () {
+        var e = $('<a href="#" data-type="text" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable({
+          clear: true,
+          send: 'never'
+        });
+
+        e.click()
+        var p = tip(e);
+        var c = p.find('.editable-clear-x'); 
+        ok(c.is(':visible'), 'clear shown');
+        p.find('input').val('').trigger('keyup');
+        ok(!c.is(':visible'), 'clear hidden for empty input');
+        p.find('input').val('cde').trigger('keyup');
+        ok(c.is(':visible'), 'clear shown on keyboard input');
+        c.click();
+        ok(!c.is(':visible'), 'clear hidden after click');
+        ok(!p.find('input').val(), 'input empty');
+        
+        p.find('form').submit();
+        
+        //reopen with empty
+        e.click(); 
+        ok(!c.is(':visible'), 'clear hidden for empty input');
+  });
+                   
          
 });    
