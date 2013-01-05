@@ -68,7 +68,8 @@ Automatically shown in inline mode.
             buttonImageOnly: true,            
             firstDay: 0,
             changeYear: true,
-            changeMonth: true
+            changeMonth: true,
+            showOtherMonths: true
         },
         
         /* disable clear link */ 

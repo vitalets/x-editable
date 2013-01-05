@@ -174,7 +174,8 @@ $(function(){
         datepicker: {
             firstDay: 0,
             changeYear: true,
-            changeMonth: true
+            changeMonth: true,
+            showOtherMonths: true
         },
         /**
         Text shown as clear date button. 
