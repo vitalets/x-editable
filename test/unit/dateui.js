@@ -1,12 +1,18 @@
 $(function () {         
    
-   var dpg;
+   var dpg, mode;
    
    module("dateui", {
         setup: function(){
             fx = $('#async-fixture');
             $.support.transition = false;
-        }
+            mode = $.fn.editable.defaults.mode;
+            $.fn.editable.defaults.mode = 'popup';
+        },
+        teardown: function() {
+            //restore mode
+            $.fn.editable.defaults.mode = mode;
+        }   
     });
     
     function frmt(date, format) {
@@ -17,7 +23,7 @@ $(function () {
     asyncTest("container should contain datepicker with value and save new entered date", function () {
         var d = '15.05.1984',
             dview = '15/05/1984',
-            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date.php">'+dview+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-dateui.php">'+dview+'</a>').appendTo(fx).editable({
                 format: 'dd.mm.yyyy',
                 viewformat: 'dd/mm/yyyy',
                 datepicker: {
@@ -28,7 +34,7 @@ $(function () {
             nextDview = '16/05/1984';
         
           $.mockjax({
-              url: 'post-date.php',
+              url: 'post-dateui.php',
               response: function(settings) {
                   equal(settings.data.value, nextD, 'submitted value correct');            
               }

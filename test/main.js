@@ -35,7 +35,7 @@ require(["loader", jqurl], function(loader) {
               break;
                
             default:  
-              date = ['test/unit/dateui'];
+              date = ['test/unit/dateuifield', 'test/unit/dateui'];
         }
         
         var tests = [
