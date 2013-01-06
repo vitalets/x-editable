@@ -21,20 +21,20 @@ To create your own input you can inherit from this class.
        init: function(type, options, defaults) {
            this.type = type;
            this.options = $.extend({}, defaults, options);
-           this.$tpl = null;     //whole tpl as jquery object
-           this.$input = null;   //input as jquery object
-           this.$clear = null;   //clear button
-           this.error = null;
+           this.$tpl = $(this.options.tpl); //whole tpl as jquery object    
+           this.$input = this.$tpl;         //control itself, can be changed in render method
+           this.$clear = null;              //clear button
+           this.error = null;               //error message, if input cannot be rendered
        },
        
        /**
         Renders input from tpl. Can return jQuery deferred object.
+        Can be overwritten in child objects
         
         @method render() 
        **/       
        render: function() {
-            this.$tpl = $(this.options.tpl);
-            this.$input = this.$tpl;
+
        }, 
 
        /**
@@ -143,7 +143,20 @@ To create your own input you can inherit from this class.
        **/       
        autosubmit: function() {
         
-       }
+       },
+       
+       // -------- helper functions --------
+       setClass: function() {
+           if(this.options.inputclass) {
+               this.$input.addClass(this.options.inputclass); 
+           } 
+       },
+       setAttr: function(attr) {
+           if (this.options[attr]) {
+               this.$input.attr(attr, this.options[attr]);
+           } 
+       }       
+       
     };
         
     AbstractInput.defaults = {  

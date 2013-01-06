@@ -45,15 +45,22 @@ Applied as jQuery method.
 
                 //close containers when click outside
                 $(document).on('click.editable', function(e) {
-                    var $target = $(e.target);
+                    var $target = $(e.target), i,
+                        exclude_classes = ['.editable-container', 
+                                           '.ui-datepicker-header', 
+                                           '.modal-backdrop', 
+                                           '.bootstrap-wysihtml5-insert-image-modal', 
+                                           '.bootstrap-wysihtml5-insert-link-modal'];
                     
-                    //if click inside some editableContainer --> no nothing  
-                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {                
-                        return;
-                    } else {
-                        //close all open containers (except one)
-                        Popup.prototype.closeOthers(e.target);
+                    //if click inside one of exclude classes --> no nothing
+                    for(i=0; i<exclude_classes.length; i++) {
+                         if($target.is(exclude_classes[i]) || $target.parents(exclude_classes[i]).length) {
+                             return;
+                         }
                     }
+                      
+                    //close all open containers (except one)
+                    Popup.prototype.closeOthers(e.target);
                 });
                 
                 $(document).data('editable-handlers-attached', true);

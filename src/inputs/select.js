@@ -38,9 +38,7 @@ $(function(){
                 this.$tpl.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
             
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }            
+            this.setClass();
             
             //enter submit
             this.$input.on('keydown.editable', function (e) {
@@ -58,7 +56,7 @@ $(function(){
                 text = items[0].text;
             }
             
-            Select.superclass.constructor.superclass.value2html(text, element);   
+            $(element).text(text);
         },
         
         autosubmit: function() {

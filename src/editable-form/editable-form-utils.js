@@ -152,39 +152,44 @@
        Returns input by options: type, mode. 
        */
        createInput: function(options) {
-            var TypeConstructor, typeOptions, input,
-                type = options.type;
-            
-                //`date` is some kind of virtual type that is transformed to one of exact types
-                //depending on mode and core lib
-                if(type === 'date') {
-                    //inline
-                    if(options.mode === 'inline') {
-                        if($.fn.editabletypes.datefield) {
-                            type = 'datefield';
-                        } else if($.fn.editabletypes.dateuifield) {
-                            type = 'dateuifield';
-                        }
-                    //popup
-                    } else {
-                        if($.fn.editabletypes.date) {
-                            type = 'date';
-                        } else if($.fn.editabletypes.dateui) {
-                            type = 'dateui';
-                        }
-                    } 
-                }
-                
-            //create input of specified type. Input will be used for converting value, not in form
-            if(typeof $.fn.editabletypes[type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[type];
-                typeOptions = this.sliceObj(options, this.objectKeys(TypeConstructor.defaults));
-                input = new TypeConstructor(typeOptions);
-                return input;
-            } else {
-                $.error('Unknown type: '+ type);
-                return false; 
-            }  
+           var TypeConstructor, typeOptions, input,
+           type = options.type;
+
+           //`date` is some kind of virtual type that is transformed to one of exact types
+           //depending on mode and core lib
+           if(type === 'date') {
+               //inline
+               if(options.mode === 'inline') {
+                   if($.fn.editabletypes.datefield) {
+                       type = 'datefield';
+                   } else if($.fn.editabletypes.dateuifield) {
+                       type = 'dateuifield';
+                   }
+                   //popup
+               } else {
+                   if($.fn.editabletypes.date) {
+                       type = 'date';
+                   } else if($.fn.editabletypes.dateui) {
+                       type = 'dateui';
+                   }
+               } 
+           }
+
+           //change wysihtml5 to textarea for jquery UI and plain versions
+           if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {
+               type = 'textarea';
+           }
+
+           //create input of specified type. Input will be used for converting value, not in form
+           if(typeof $.fn.editabletypes[type] === 'function') {
+               TypeConstructor = $.fn.editabletypes[type];
+               typeOptions = this.sliceObj(options, this.objectKeys(TypeConstructor.defaults));
+               input = new TypeConstructor(typeOptions);
+               return input;
+           } else {
+               $.error('Unknown type: '+ type);
+               return false; 
+           }  
        }            
        
     };      

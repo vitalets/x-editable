@@ -14,16 +14,9 @@ Automatically shown in inline mode.
     
     $.extend(DateField.prototype, {
         render: function () {
-            this.$tpl = $(this.options.tpl);
             this.$input = this.$tpl.find('input');
-            
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }
-            
-            if (this.options.placeholder) {
-                this.$input.attr('placeholder', this.options.placeholder);
-            } 
+            this.setClass();
+            this.setAttr('placeholder');
             
             this.$tpl.datepicker(this.options.datepicker);
             
@@ -73,10 +66,7 @@ Automatically shown in inline mode.
             weekStart: 0,
             startView: 0,
             autoclose: true
-        },
-        
-        /* disable clear link */ 
-        clear: false
+        }
     });
     
     $.fn.editabletypes.datefield = DateField;

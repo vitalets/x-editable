@@ -15,8 +15,7 @@ List - abstract class for inputs that have source option loaded from js array or
     $.extend(List.prototype, {
         render: function () {
             var deferred = $.Deferred();
-            this.$tpl = $(this.options.tpl);
-            this.$input = this.$tpl; //will be set in renderList
+
             this.error = null;
             this.sourceData = null;
             this.prependData = null;

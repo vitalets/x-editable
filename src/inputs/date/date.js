@@ -58,11 +58,8 @@ $(function(){
         },
         
         render: function () {
-            Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
-        },
-        
-        postrender: function() {
+            
             //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
@@ -72,9 +69,9 @@ $(function(){
                 }, this));
                 
                 this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            }            
+            }                
         },
-
+        
         value2html: function(value, element) {
             var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
             Date.superclass.value2html(text, element); 

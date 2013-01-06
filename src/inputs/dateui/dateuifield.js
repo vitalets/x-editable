@@ -13,20 +13,10 @@ Automatically shown in inline mode.
     $.fn.editableutils.inherit(DateUIField, $.fn.editabletypes.dateui);    
     
     $.extend(DateUIField.prototype, {
-        render: function () {
-            this.$tpl = $(this.options.tpl);
-            this.$input = this.$tpl.find('input'); 
+       render: function () {
+          //  this.$input = this.$tpl.find('input'); 
             this.$input.datepicker(this.options.datepicker);
-
-            /*
-            if(this.options.clear) {
-                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.clear();
-                }, this));
-            } 
-            */           
+            $.fn.editabletypes.text.prototype.renderClear.call(this);
        },
       
        value2input: function(value) {
@@ -41,8 +31,12 @@ Automatically shown in inline mode.
            $.fn.editabletypes.text.prototype.activate.call(this);
        },
        
+       toggleClear: function() {
+           $.fn.editabletypes.text.prototype.toggleClear.call(this);
+       },
+       
        autosubmit: function() {
-         //reset autosubmit to empty  
+          //reset autosubmit to empty  
        }
     });
     
@@ -51,7 +45,7 @@ Automatically shown in inline mode.
         @property tpl 
         @default <input type="text">
         **/         
-        tpl: '<div><input type="text" /></div>',
+        tpl: '<input type="text"/>',
         /**
         @property inputclass 
         @default ''

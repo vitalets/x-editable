@@ -48,9 +48,7 @@ $(function(){
             }
             
             this.$input = this.$tpl.find('input[type="checkbox"]');
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }            
+            this.setClass();
         },
        
        value2str: function(value) {

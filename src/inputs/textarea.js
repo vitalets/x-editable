@@ -25,15 +25,8 @@ $(function(){
 
     $.extend(Textarea.prototype, {
         render: function () {
-            Textarea.superclass.render.call(this);
-
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }            
-            
-            if(this.options.placeholder) {
-               this.$input.attr('placeholder', this.options.placeholder);
-            }             
+            this.setClass();
+            this.setAttr('placeholder');            
             
             //ctrl + enter
             this.$input.keydown(function (e) {

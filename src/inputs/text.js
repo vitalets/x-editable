@@ -24,34 +24,9 @@ $(function(){
 
     $.extend(Text.prototype, {
         render: function() {
-           Text.superclass.render.call(this);
-
-           if (this.options.clear) {
-               this.$clear = $('<span class="editable-clear-x"></span>');
-               this.$tpl = $('<div style="position: relative">').append(this.$input).append(this.$clear);
-               this.$input.css('padding-right', '25px');         
-           }
-           
-           if(this.options.inputclass) {
-               this.$input.addClass(this.options.inputclass); 
-           }
-            
-           if (this.options.placeholder) {
-               this.$input.attr('placeholder', this.options.placeholder);
-           }           
-        },
-        
-        postrender: function() { 
-            //attach `clear` button in postrender, because it requires parent height to be calculated (in DOM)
-            if (this.$clear) {
-                var h = this.$input.parent().height() || 20;
-                this.$clear.css('top', (h - this.$clear.outerHeight()) / 2);
-                this.$input.keyup($.proxy(this.toggleClear, this));
-                this.$clear.click($.proxy(function(){
-                    this.$clear.hide();
-                    this.$input.val('').focus();
-                }, this));
-            } 
+           this.renderClear();
+           this.setClass();
+           this.setAttr('placeholder');
         },
         
         activate: function() {
@@ -62,6 +37,35 @@ $(function(){
                     this.toggleClear();
                 }
             }
+        },
+        
+        //render clear button
+        renderClear:  function() {
+           if (this.options.clear) {
+               this.$clear = $('<span class="editable-clear-x"></span>');
+               this.$input.after(this.$clear).parent().css('position', 'relative');
+               this.$input.keyup($.proxy(this.toggleClear, this));
+               this.$clear.click($.proxy(function(){
+                   this.$clear.hide();
+                   this.$input.val('').focus();
+               }, this));                       
+           }            
+        },
+        
+        shown: function() {
+            if(this.$clear) {
+                //can position clear button only here, when form is shown and height can be calculated
+                var h = this.$input.outerHeight() || 20,
+                    delta = (h - this.$clear.height()) / 2;
+                
+                //workaround for plain-popup  
+                if(delta < 3) {
+                   delta = 3; 
+                }
+                    
+                this.$clear.css({top: delta, right: delta});
+                this.$input.css('padding-right', this.$clear.width() + 2*delta - 3);
+            } 
         },
         
         //show / hide clear button

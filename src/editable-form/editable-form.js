@@ -42,12 +42,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @method render
         **/        
         render: function() {
+            //init loader
             this.$loading = $($.fn.editableform.loading);        
             this.$div.empty().append(this.$loading);
-            this.showLoading();
             
             //init form template and buttons
-            this.initTemplate(); 
+            this.initTemplate();
             if(this.options.showbuttons) {
                 this.initButtons();
             } else {
@@ -61,32 +61,25 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             **/            
             this.$div.triggerHandler('rendering');
             
+            //show loading state
+            this.showLoading();
+            
+            //append input to form
+            this.$form.find('div.editable-input').append(this.input.$tpl);            
+
+            //append form to container
+            this.$div.append(this.$form);
+            
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //insert input in form
-                this.$form.find('div.editable-input').append(this.input.$tpl);
-
-                //automatically submit inputs when no buttons shown
+                //setup input to submit automatically when no buttons shown
                 if(!this.options.showbuttons) {
                     this.input.autosubmit(); 
                 }
-                
-                //"clear" link
-//                if(this.input.$clear) {
-//                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
-//                }                
-
-                //append form to container
-                this.$div.append(this.$form);
                  
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-
-                //call postrender to perform actions, required when input is in DOM
-                if(this.input.postrender) {
-                   this.input.postrender(); 
-                }
                 
                 if(this.input.error) {
                     this.error(this.input.error);
@@ -111,6 +104,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('rendered');                
 
                 this.showForm();
+                
+                //call shown method to perform actions required form to be shown
+                if(this.input.shown) {
+                    this.input.shown();
+                }                
             }, this));
         },
         cancel: function() {   
@@ -122,11 +120,17 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$div.triggerHandler('cancel');
         },
         showLoading: function() {
-            var w;
+            var w, h;
             if(this.$form) {
-                //set loading size equal to form 
-                this.$loading.width(this.$form.outerWidth());
-                this.$loading.height(this.$form.outerHeight());
+                //set loading size equal to form
+                w = this.$form.outerWidth();
+                h = this.$form.outerHeight(); 
+                if(w) {
+                    this.$loading.width(w);
+                }
+                if(h) {
+                    this.$loading.height(h);
+                }
                 this.$form.hide();
             } else {
                 //stretch loading to fill container width

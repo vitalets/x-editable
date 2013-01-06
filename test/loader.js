@@ -51,7 +51,9 @@ define(function () {
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
                 'inputs/html5types': ['inputs/text'],   
 
-                //bootstrap
+                /*
+                 bootstrap
+                */
                 'bootstrap/js/bootstrap': {
                     deps: ['require'],
                     init: function(require) {
@@ -75,11 +77,26 @@ define(function () {
                         loadCss(require.toUrl("./bootstrap-datepicker/css/datepicker.css")); 
                     }
                 },
+
+                //wysihtml5
+                'inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min': ['inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min'],
+                'inputs/wysihtml5/wysihtml5': {
+                    deps: ['require', 
+                    'bootstrap/js/bootstrap',
+                    'inputs/abstract', 
+                    'inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min'],
+                    init: function(require) {
+                        loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css")); 
+                        loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/wysiwyg-color.css")); 
+                    }
+                },
                 
                 //datefield
                 'inputs/date/datefield': ['inputs/date/date'],
 
-                //jqueryui
+                /*
+                 jqueryui
+                */
                 'jqueryui/js/jquery-ui-1.9.1.custom': {
                     deps: ['require'],
                     init: function(require) {
@@ -97,7 +114,9 @@ define(function () {
                 'inputs/dateui/dateui': ['inputs/abstract'],
                 'inputs/dateui/dateuifield': ['inputs/dateui/dateui'],
 
-                //plain
+                /*
+                 plain
+                */
                 //'inputs/dateui/dateui': ['inputs/abstract', 'inputs/date/bootstrap-datepicker/js/bootstrap-datepicker'],
                 'containers/editable-poshytip': [ 
                     'containers/editable-inline', 
@@ -133,6 +152,7 @@ define(function () {
             if(f === 'bootstrap') { 
                 //bootstrap
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
+                shim['editable-form/editable-form'].deps.push('inputs/wysihtml5/wysihtml5');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {

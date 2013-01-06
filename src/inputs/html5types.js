@@ -120,18 +120,9 @@ Number
     $.extend(NumberInput.prototype, {
          render: function () {
             NumberInput.superclass.render.call(this);
-
-            if (this.options.min !== null) {
-                this.$input.attr('min', this.options.min);
-            } 
-            
-            if (this.options.max !== null) {
-                this.$input.attr('max', this.options.max);
-            } 
-            
-            if (this.options.step !== null) {
-                this.$input.attr('step', this.options.step);
-            }                         
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');
         }
     });     
     NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
@@ -155,22 +146,12 @@ Range (inherit from number)
     $.fn.editableutils.inherit(Range, $.fn.editabletypes.number);
     $.extend(Range.prototype, {
         render: function () {
-            this.$tpl = $(this.options.tpl);
             this.$input = this.$tpl.filter('input');
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }
-            if (this.options.min !== null) {
-                this.$input.attr('min', this.options.min);
-            } 
             
-            if (this.options.max !== null) {
-                this.$input.attr('max', this.options.max);
-            } 
-            
-            if (this.options.step !== null) {
-                this.$input.attr('step', this.options.step);
-            }             
+            this.setClass();
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');           
             
             this.$input.on('input', function(){
                 $(this).siblings('output').text($(this).val()); 
