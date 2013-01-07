@@ -44,7 +44,7 @@ $(function(){
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
                this.$input.after(this.$clear)
-                          .css('padding-right', 25)
+                          .css('padding-right', 20)
                           .keyup($.proxy(this.toggleClear, this))
                           .parent().css('position', 'relative');
                           

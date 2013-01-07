@@ -10,7 +10,8 @@ Textarea input
 $(function(){
     $('#comments').editable({
         url: '/post',
-        title: 'Enter comments'
+        title: 'Enter comments',
+        rows: 10
     });
 });
 </script>
