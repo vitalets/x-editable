@@ -38,6 +38,7 @@ $(function(){
             this.setAttr('rows');            
             this.setAttr('placeholder');            
 
+            
             //resolve deffered when widget loaded
             $.extend(this.options.wysihtml5, {
                 events: {
@@ -48,6 +49,15 @@ $(function(){
             });
             
             this.$input.wysihtml5(this.options.wysihtml5);
+            
+            /*
+             In IE8 wysihtml5 iframe stays on the same line with buttons toolbar (inside popover).
+             Not pretty but working solution is to add <br>. If you fine better way, please send PR.   
+            */
+            if($.browser.msie && parseInt($.browser.version, 10) <= 8) {
+                this.$input.before('<br><br>'); 
+            }
+            
             return deferred.promise();
         },
        
