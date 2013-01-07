@@ -27,15 +27,15 @@ require(["loader", jqurl], function(loader) {
     });
     
     function addTests(config) {
-        var date;
+        var custom;
         
         switch(params.f) {
             case 'bootstrap':
-              date = ['test/unit/datefield', 'test/unit/date'];
+              custom = ['test/unit/datefield', 'test/unit/date', 'test/unit/wysihtml5'];
               break;
                
             default:  
-              date = ['test/unit/dateuifield', 'test/unit/dateui'];
+              custom = ['test/unit/dateuifield', 'test/unit/dateui'];
         }
         
         var tests = [
@@ -46,7 +46,7 @@ require(["loader", jqurl], function(loader) {
             'test/unit/select',
             'test/unit/checklist'
        ];
-       tests = tests.concat(date);
+       tests = tests.concat(custom);
        tests.push('test/unit/api');
        
        for(var i=0; i<tests.length-1; i++) {
