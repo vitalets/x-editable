@@ -88,12 +88,48 @@
     white-space: nowrap; 
 }
 
+/* set exact width of textarea to fit buttons toolbar */
+.editable-wysihtml5 {
+    width: 566px;  
+}
+
+/* clear button shown as link in date inputs */
 .editable-clear {
    clear: both;
    font-size: 0.9em;
    text-decoration: none;
    text-align: right;
 }
+
+/* IOS-style clear button for text inputs */
+.editable-clear-x {
+   background: url('../img/clear.png') center center no-repeat;
+   display: block;
+   width: 13px;    
+   height: 13px;
+   position: absolute;
+   opacity: 0.6;
+   z-index: 100;
+}
+
+.editable-clear-x:hover {
+   opacity: 1;
+}
+
+/*
+.editable-clear-x1 {
+   background: url('../img/clear.png') center center no-repeat;
+   display: inline-block;
+   zoom: 1; 
+   *display: inline;    
+   width: 13px;    
+   height: 13px;
+   vertical-align: middle;
+   position: relative;    
+   margin-left: -20px;
+}
+*/
+
 .editable-container {
     max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
 }  

@@ -1,8 +1,7 @@
-(function(){
+$(function(){
   
-    //defaults
-//    $.fn.editable.defaults.url = '/error'; 
-    $.fn.editable.defaults.url = '/post'; 
+   //defaults
+   $.fn.editable.defaults.url = '/post'; 
 
     //enable / disable
    $('#enable').click(function() {
@@ -52,11 +51,6 @@
 
     $('#dob').editable();      
     
-/* 
-    $('#weight').editable({
-        url: '/error'  
-    });     
-*/    
     $('#comments').editable({
         showbuttons: true
     }); 
@@ -114,4 +108,4 @@
         }
    });
    
-}());
+});

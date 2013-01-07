@@ -26,18 +26,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            var TypeConstructor, typeOptions;
-
             //create input of specified type
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
+            this.input = $.fn.editableutils.createInput(this.options);
+            if(!this.input) {
                 return; 
-            }          
-
+            }             
+            
+            //set initial value
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {
@@ -52,12 +47,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @method render
         **/        
         render: function() {
+            //init loader
             this.$loading = $($.fn.editableform.loading);        
             this.$div.empty().append(this.$loading);
-            this.showLoading();
             
             //init form template and buttons
-            this.initTemplate(); 
+            this.initTemplate();
             if(this.options.showbuttons) {
                 this.initButtons();
             } else {
@@ -70,29 +65,27 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             @param {Object} event event object
             **/            
             this.$div.triggerHandler('rendering');
+            
+            //show loading state
+            this.showLoading();
+            
+            //append input to form
+            this.$form.find('div.editable-input').append(this.input.$tpl);            
 
+            //append form to container
+            this.$div.append(this.$form);
+            
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //input
-                this.$form.find('div.editable-input').append(this.input.$input);
-
-                //automatically submit inputs when no buttons shown
+                //setup input to submit automatically when no buttons shown
                 if(!this.options.showbuttons) {
                     this.input.autosubmit(); 
                 }
-                
-                //"clear" link
-                if(this.input.$clear) {
-                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
-                }                
-
-                //append form to container
-                this.$div.append(this.$form);
                  
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-
+                
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);
@@ -116,6 +109,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('rendered');                
 
                 this.showForm();
+                
+                //call shown method to perform actions required form to be shown
+                if(this.input.shown) {
+                    this.input.shown();
+                }                
             }, this));
         },
         cancel: function() {   
@@ -127,11 +125,17 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$div.triggerHandler('cancel');
         },
         showLoading: function() {
-            var w;
+            var w, h;
             if(this.$form) {
-                //set loading size equal to form 
-                this.$loading.width(this.$form.outerWidth());
-                this.$loading.height(this.$form.outerHeight());
+                //set loading size equal to form
+                w = this.$form.outerWidth();
+                h = this.$form.outerHeight(); 
+                if(w) {
+                    this.$loading.width(w);
+                }
+                if(h) {
+                    this.$loading.height(h);
+                }
                 this.$form.hide();
             } else {
                 //stretch loading to fill container width
@@ -688,10 +692,55 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
            /*jslint eqeq: false*/
            
            return result;
-       }           
+       },
+       
+       /*
+       Returns input by options: type, mode. 
+       */
+       createInput: function(options) {
+           var TypeConstructor, typeOptions, input,
+           type = options.type;
+
+           //`date` is some kind of virtual type that is transformed to one of exact types
+           //depending on mode and core lib
+           if(type === 'date') {
+               //inline
+               if(options.mode === 'inline') {
+                   if($.fn.editabletypes.datefield) {
+                       type = 'datefield';
+                   } else if($.fn.editabletypes.dateuifield) {
+                       type = 'dateuifield';
+                   }
+                   //popup
+               } else {
+                   if($.fn.editabletypes.date) {
+                       type = 'date';
+                   } else if($.fn.editabletypes.dateui) {
+                       type = 'dateui';
+                   }
+               } 
+           }
+
+           //change wysihtml5 to textarea for jquery UI and plain versions
+           if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {
+               type = 'textarea';
+           }
+
+           //create input of specified type. Input will be used for converting value, not in form
+           if(typeof $.fn.editabletypes[type] === 'function') {
+               TypeConstructor = $.fn.editabletypes[type];
+               typeOptions = this.sliceObj(options, this.objectKeys(TypeConstructor.defaults));
+               input = new TypeConstructor(typeOptions);
+               return input;
+           } else {
+               $.error('Unknown type: '+ type);
+               return false; 
+           }  
+       }            
        
     };      
 }(window.jQuery));
+
 /**
 Attaches stand-alone container with editable-form to HTML element. Element is used only for positioning, value is not stored anywhere.<br>
 This method applied internally in <code>$().editable()</code>. You should subscribe on it's events (save / cancel) to get profit of it.<br>
@@ -739,15 +788,22 @@ Applied as jQuery method.
 
                 //close containers when click outside
                 $(document).on('click.editable', function(e) {
-                    var $target = $(e.target);
+                    var $target = $(e.target), i,
+                        exclude_classes = ['.editable-container', 
+                                           '.ui-datepicker-header', 
+                                           '.modal-backdrop', 
+                                           '.bootstrap-wysihtml5-insert-image-modal', 
+                                           '.bootstrap-wysihtml5-insert-link-modal'];
                     
-                    //if click inside some editableContainer --> no nothing  
-                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {                
-                        return;
-                    } else {
-                        //close all open containers (except one)
-                        Popup.prototype.closeOthers(e.target);
+                    //if click inside one of exclude classes --> no nothing
+                    for(i=0; i<exclude_classes.length; i++) {
+                         if($target.is(exclude_classes[i]) || $target.parents(exclude_classes[i]).length) {
+                             return;
+                         }
                     }
+                      
+                    //close all open containers (except one)
+                    Popup.prototype.closeOthers(e.target);
                 });
                 
                 $(document).data('editable-handlers-attached', true);
@@ -1170,27 +1226,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     Editable.prototype = {
         constructor: Editable, 
         init: function () {
-            var TypeConstructor, 
-                isValueByText = false, 
-                doAutotext, 
-                finalize;
+            var isValueByText = false, 
+                doAutotext, finalize;
 
-            //editableContainer must be defined
-            if(!$.fn.editableContainer) {
-                $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editable-popover.js)');
-                return;
-            }    
-                
             //name
             this.options.name = this.options.name || this.$element.attr('id');
              
             //create input of specified type. Input will be used for converting value, not in form
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                this.typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(this.typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
+            this.input = $.fn.editableutils.createInput(this.options);
+            if(!this.input) {
                 return; 
             }            
 
@@ -1764,26 +1808,21 @@ To create your own input you can inherit from this class.
         **/
        init: function(type, options, defaults) {
            this.type = type;
-           this.options = $.extend({}, defaults, options); 
-           this.$input = null;
-           this.$clear = null;
-           this.error = null;
+           this.options = $.extend({}, defaults, options);
+           this.$tpl = $(this.options.tpl); //whole tpl as jquery object    
+           this.$input = this.$tpl;         //control itself, can be changed in render method
+           this.$clear = null;              //clear button
+           this.error = null;               //error message, if input cannot be rendered
        },
        
        /**
         Renders input from tpl. Can return jQuery deferred object.
+        Can be overwritten in child objects
         
         @method render() 
        **/       
        render: function() {
-            this.$input = $(this.options.tpl);
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }
-            
-            if (this.options.placeholder) {
-                this.$input.attr('placeholder', this.options.placeholder);
-            }   
+
        }, 
 
        /**
@@ -1820,7 +1859,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts string received from server into value.
+        Converts string received from server into value. Usually from `data-value` attribute.
         
         @method str2value(str) 
         @param {string} str
@@ -1831,7 +1870,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts value for submitting to server
+        Converts value for submitting to server. Result can be string or object.
         
         @method value2submit(value) 
         @param {mixed} value
@@ -1892,7 +1931,20 @@ To create your own input you can inherit from this class.
        **/       
        autosubmit: function() {
         
-       }
+       },
+       
+       // -------- helper functions --------
+       setClass: function() {
+           if(this.options.inputclass) {
+               this.$input.addClass(this.options.inputclass); 
+           } 
+       },
+       setAttr: function(attr) {
+           if (this.options[attr]) {
+               this.$input.attr(attr, this.options[attr]);
+           } 
+       }       
+       
     };
         
     AbstractInput.defaults = {  
@@ -1942,8 +1994,8 @@ List - abstract class for inputs that have source option loaded from js array or
 
     $.extend(List.prototype, {
         render: function () {
-            List.superclass.render.call(this);
             var deferred = $.Deferred();
+
             this.error = null;
             this.sourceData = null;
             this.prependData = null;
@@ -2182,7 +2234,7 @@ List - abstract class for inputs that have source option loaded from js array or
         @type string | array | object | function
         @default null
         **/         
-        source:null, 
+        source: null, 
         /**
         Data automatically prepended to the beginning of dropdown list.
         
@@ -2190,7 +2242,7 @@ List - abstract class for inputs that have source option loaded from js array or
         @type string | array | object | function
         @default false
         **/         
-        prepend:false,
+        prepend: false,
         /**
         Error message when list cannot be loaded (e.g. ajax error)
         
@@ -2240,11 +2292,64 @@ $(function(){
     $.fn.editableutils.inherit(Text, $.fn.editabletypes.abstractinput);
 
     $.extend(Text.prototype, {
+        render: function() {
+           this.renderClear();
+           this.setClass();
+           this.setAttr('placeholder');
+        },
+        
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
                 $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                if(this.toggleClear) {
+                    this.toggleClear();
+                }
             }
+        },
+        
+        //render clear button
+        renderClear:  function() {
+           if (this.options.clear) {
+               this.$clear = $('<span class="editable-clear-x"></span>');
+               this.$input.after(this.$clear)
+                          .css('padding-right', 25)
+                          .keyup($.proxy(this.toggleClear, this))
+                          .parent().css('position', 'relative');
+                          
+               this.$clear.click($.proxy(function(){
+                   this.$clear.hide();
+                   this.$input.val('').focus();
+               }, this));                       
+           }            
+        },
+        
+        shown: function() {
+            if(this.$clear) {
+                //can position clear button only here, when form is shown and height can be calculated
+                var h = this.$input.outerHeight() || 20,
+                    delta = (h - this.$clear.height()) / 2;
+                
+                //workaround for plain-popup  
+                if(delta < 3) {
+                   delta = 3; 
+                }
+                    
+                this.$clear.css({top: delta, right: delta});
+            } 
+        },
+        
+        //show / hide clear button
+        toggleClear: function() {
+            if(!this.$clear) {
+                return;
+            }
+            
+            if(this.$input.val()) {
+                this.$clear.show();
+            } else {
+                this.$clear.hide();
+            } 
         }  
     });
 
@@ -2261,7 +2366,16 @@ $(function(){
         @type string
         @default null
         **/             
-        placeholder: null
+        placeholder: null,
+        
+        /**
+        Whether to show `clear` button 
+        
+        @property clear 
+        @type boolean
+        @default true        
+        **/
+        clear: true
     });
 
     $.fn.editabletypes.text = Text;
@@ -2295,8 +2409,10 @@ $(function(){
 
     $.extend(Textarea.prototype, {
         render: function () {
-            Textarea.superclass.render.call(this);
-
+            this.setClass();
+            this.setAttr('placeholder');
+            this.setAttr('rows');                        
+            
             //ctrl + enter
             this.$input.keydown(function (e) {
                 if (e.ctrlKey && e.which === 13) {
@@ -2337,10 +2453,7 @@ $(function(){
         },
 
         activate: function() {
-            if(this.$input.is(':visible')) {
-                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
-                this.$input.focus();
-            }
+            $.fn.editabletypes.text.prototype.activate.call(this);
         }
     });
 
@@ -2362,7 +2475,15 @@ $(function(){
         @type string
         @default null
         **/
-        placeholder: null
+        placeholder: null,
+        /**
+        Number of rows in textarea
+
+        @property rows
+        @type integer
+        @default 7
+        **/        
+        rows: 7        
     });
 
     $.fn.editabletypes.textarea = Textarea;
@@ -2406,8 +2527,10 @@ $(function(){
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
+                this.$tpl.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
+            
+            this.setClass();
             
             //enter submit
             this.$input.on('keydown.editable', function (e) {
@@ -2425,7 +2548,7 @@ $(function(){
                 text = items[0].text;
             }
             
-            Select.superclass.constructor.superclass.value2html(text, element);   
+            $(element).text(text);
         },
         
         autosubmit: function() {
@@ -2492,8 +2615,11 @@ $(function(){
                                      }))
                                      .append($('<span>').text(' '+this.sourceData[i].text));
                 
-                $('<div>').append($label).appendTo(this.$input);
+                $('<div>').append($label).appendTo(this.$tpl);
             }
+            
+            this.$input = this.$tpl.find('input[type="checkbox"]');
+            this.setClass();
         },
        
        value2str: function(value) {
@@ -2514,10 +2640,9 @@ $(function(){
        
        //set checked on required checkboxes
        value2input: function(value) {
-            var $checks = this.$input.find('input[type="checkbox"]');
-            $checks.removeAttr('checked');
+            this.$input.removeAttr('checked');
             if($.isArray(value) && value.length) {
-               $checks.each(function(i, el) {
+               this.$input.each(function(i, el) {
                    var $el = $(el);
                    // cannot use $.inArray as it performs strict comparison
                    $.each(value, function(j, val){
@@ -2533,7 +2658,7 @@ $(function(){
         
        input2value: function() { 
            var checked = [];
-           this.$input.find('input:checked').each(function(i, el) {
+           this.$input.filter(':checked').each(function(i, el) {
                checked.push($(el).val());
            });
            return checked;
@@ -2553,11 +2678,11 @@ $(function(){
         },
         
        activate: function() {
-           this.$input.find('input[type="checkbox"]').first().focus();
+           this.$input.first().focus();
        },
        
        autosubmit: function() {
-           this.$input.find('input[type="checkbox"]').on('keydown', function(e){
+           this.$input.on('keydown', function(e){
                if (e.which === 13) {
                    $(this).closest('form').submit();
                }
@@ -2570,21 +2695,21 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-checklist"></div>',
         
         /**
         @property inputclass 
         @type string
-        @default editable-checklist
+        @default null
         **/         
-        inputclass: 'editable-checklist',        
+        inputclass: null,        
         
         /**
-        Separator of values when reading from 'data-value' string
+        Separator of values when reading from `data-value` attribute
 
         @property separator 
         @type string
-        @default ', '
+        @default ','
         **/         
         separator: ','
     });
@@ -2715,18 +2840,9 @@ Number
     $.extend(NumberInput.prototype, {
          render: function () {
             NumberInput.superclass.render.call(this);
-
-            if (this.options.min !== null) {
-                this.$input.attr('min', this.options.min);
-            } 
-            
-            if (this.options.max !== null) {
-                this.$input.attr('max', this.options.max);
-            } 
-            
-            if (this.options.step !== null) {
-                this.$input.attr('step', this.options.step);
-            }                         
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');
         }
     });     
     NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
@@ -2750,29 +2866,19 @@ Range (inherit from number)
     $.fn.editableutils.inherit(Range, $.fn.editabletypes.number);
     $.extend(Range.prototype, {
         render: function () {
-            this.$input = $(this.options.tpl);
-            var $slider = this.$input.filter('input');
-            if(this.options.inputclass) {
-                $slider.addClass(this.options.inputclass); 
-            }
-            if (this.options.min !== null) {
-                $slider.attr('min', this.options.min);
-            } 
+            this.$input = this.$tpl.filter('input');
             
-            if (this.options.max !== null) {
-                $slider.attr('max', this.options.max);
-            } 
+            this.setClass();
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');           
             
-            if (this.options.step !== null) {
-                $slider.attr('step', this.options.step);
-            }             
-            
-            $slider.on('input', function(){
+            this.$input.on('input', function(){
                 $(this).siblings('output').text($(this).val()); 
             });  
         },
         activate: function() {
-            this.$input.filter('input').focus();
+            this.$input.focus();
         }         
     });
     Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {
@@ -2966,7 +3072,7 @@ Range (inherit from number)
 /**
 jQuery UI Datepicker.  
 Description and examples: http://jqueryui.com/datepicker.   
-This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.
+This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.  
 For **i18n** you should include js file from here: https://github.com/jquery/jquery-ui/tree/master/ui/i18n.
 
 @class dateui
@@ -2991,41 +3097,42 @@ $(function(){
 
     var DateUI = function (options) {
         this.init('dateui', options, DateUI.defaults);
-        
-        //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
-
-        //overriding datepicker config (as by default jQuery extend() is not recursive)
-        this.options.datepicker = $.extend({}, DateUI.defaults.datepicker, directOptions, options.datepicker);
-        
-        //by default viewformat equals to format
-        if(!this.options.viewformat) {
-            this.options.viewformat = this.options.datepicker.format;
-        }
-        
-        //correct formats: replace yyyy with yy
-        this.options.viewformat = this.options.viewformat.replace('yyyy', 'yy'); 
-        this.options.datepicker.format = this.options.datepicker.format.replace('yyyy', 'yy'); 
-        
-        //copy format to dateFormat (dateFormat option required for ui datepicker).
-        //This allows common option 'format' for all datepickers
-        this.options.datepicker.dateFormat = this.options.datepicker.format;        
+        this.initPicker(options, DateUI.defaults);
     };
 
     $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstractinput);    
     
     $.extend(DateUI.prototype, {
+        initPicker: function(options, defaults) {
+            //by default viewformat equals to format
+            if(!this.options.viewformat) {
+                this.options.viewformat = this.options.format;
+            }
+            
+            //correct formats: replace yyyy with yy (for compatibility with bootstrap datepicker)
+            this.options.viewformat = this.options.viewformat.replace('yyyy', 'yy'); 
+            this.options.format = this.options.format.replace('yyyy', 'yy');             
+            
+            //overriding datepicker config (as by default jQuery extend() is not recursive)
+            //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
+            this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
+                dateFormat: this.options.viewformat
+            });                        
+        },
+        
         render: function () {
-            DateUI.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
             
+            //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
                     e.preventDefault();
                     e.stopPropagation();
                     this.clear();
                 }, this));
-            }            
+                
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+            }              
         },
 
         value2html: function(value, element) {
@@ -3048,7 +3155,7 @@ $(function(){
         },   
         
         value2str: function(value) {
-           return $.datepicker.formatDate(this.options.datepicker.dateFormat, value);
+           return $.datepicker.formatDate(this.options.format, value);
        }, 
        
        str2value: function(str) {
@@ -3059,13 +3166,13 @@ $(function(){
            //if string does not match format, UI datepicker throws exception
            var d;
            try {
-              d = $.datepicker.parseDate(this.options.datepicker.dateFormat, str);
+              d = $.datepicker.parseDate(this.options.format, str);
            } catch(e) {}
            
            return d;
        }, 
        
-       value2submit: function(value) {
+       value2submit: function(value) { 
            return this.value2str(value);
        },                     
 
@@ -3100,12 +3207,12 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-date"></div>',
         /**
         @property inputclass 
-        @default 'editable-date'
+        @default null
         **/         
-        inputclass: 'editable-date',
+        inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Full list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate
@@ -3140,7 +3247,8 @@ $(function(){
         datepicker: {
             firstDay: 0,
             changeYear: true,
-            changeMonth: true
+            changeMonth: true,
+            showOtherMonths: true
         },
         /**
         Text shown as clear date button. 
@@ -3154,6 +3262,5 @@ $(function(){
     });   
 
     $.fn.editabletypes.dateui = DateUI;
-    $.fn.editabletypes.date = DateUI;
 
 }(window.jQuery));

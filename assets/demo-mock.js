@@ -57,7 +57,7 @@ $(function(){
                 s.push(a + ' = ' + str);
             }
             s.push('RESPONSE: status = ' + response.status);
-            console.log(response);
+
             if(response.responseText) {
                 if($.isArray(response.responseText)) {
                     s.push('[');

@@ -30,3 +30,7 @@ h2 {
 hr {
  color: #C0C0C0;   
 }
+
+.input-large {
+  width: 300px;  
+}

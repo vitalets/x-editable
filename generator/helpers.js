@@ -20,7 +20,7 @@ Handlebars.registerHelper('eachProperty', function(context, options) {
 
 //markdown
 Handlebars.registerHelper('md', function(string) {
-    return new Handlebars.SafeString(marked(string));
+    return string ? new Handlebars.SafeString(marked(string)) : '';
 });
 
 //markdown block

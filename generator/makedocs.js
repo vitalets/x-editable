@@ -45,7 +45,7 @@ files.forEach(function(item) {
   var page = item.replace('.hbs', ''),
       output_file = output_dir + page + '.html',      
       content = fs.readFileSync(pages_dir+item, 'utf8'),
-      layout = layouts['main'],
+      layout = page.indexOf('demo') !== -1 ? layouts['demo'] : layouts['main'],
       html;
       
       Handlebars.registerPartial('layout_content', content);  
@@ -109,6 +109,8 @@ function loadContext() {
         classes[k].event.sort(sf); 
     });    
     
+    var inputs_order = ['text', 'textarea', 'select', 'date', 'dateui', 'html5types', 'checklist', 'wysihtml5'];
+    
     //inputs
     var inputs = _.chain(classes)
                    //exclude main classes: editableform, etc
@@ -117,9 +119,11 @@ function loadContext() {
                   })
                   //sort for correct merging defaults
                   .sortBy(function(item) {
+                      //abstract input should be first
                       if(item.name === 'abstractinput') return 0;
                       //inputs that are parents for others
-                      if(item.name === 'list' || item.name === 'text') return 1;
+                      if( _.indexOf(['list', 'text'], item.name) !== -1) return 1;
+                      //all other inputs
                       return 10;
                   })                  
                   .map(function(item) {
@@ -132,7 +136,7 @@ function loadContext() {
                       return item.final;
                   })                  
                   .sortBy(function(item) {
-                      return -item.name.charCodeAt(0);
+                      return _.indexOf(inputs_order, item.name);
                   })
                   
                //   .object()
@@ -150,7 +154,7 @@ function mergeDefaults(o, parent) {
     if(!o.property) {
         o.property = [];
     }
-
+    
     _.each(parent.property, function(prop) {
         if(prop.access === 'private') return;
         

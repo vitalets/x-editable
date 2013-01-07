@@ -18,24 +18,7 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]--> 
         
-            
-        <!-- bootstrap -->
-        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">  
-        <script src="assets/bootstrap/js/bootstrap.js"></script>
-
-        <!-- x-editable (bootstrap) -->
-        <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
-        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.js"></script>
-
-        <!-- wysihtml5 -->
-        <link href="assets/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet">  
-        <script src="assets/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js"></script>  
-        <script src="assets/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"></script>
-
-        <script>
-        var f = 'bootstrap';
-        </script>
+        {{>layout_content}}
         
         <!-- address input -->
         <link href="assets/x-editable/inputs-ext/address/address.css" rel="stylesheet">
@@ -164,14 +147,19 @@
                     <tr>         
                         <td>Notes <sup><span class="label label-success">new</span></sup></td>
                         <td><div id="note" data-pk="1" data-type="wysihtml5" data-toggle="manual" data-original-title="Enter note">
-                           
+                           {{#if_eq page "demo"}}
                             <h3>Day plan</h3>
                              <ul>
                                <li><i>coding</i></li>
                                <li><b>drink</b></li>
                                <li><u>sleep</u></li>
                              </ul> 
-                             
+                            {{else}}
+  Day plan:<br>
+  * coding<br>
+  * drink<br>
+  * sleep<br> 
+                            {{/if_eq}} 
                             </div></td>
                         <td><a href="#" id="pencil"><i class="icon-pencil"></i> [edit]</a><br><span class="muted">Wysihtml5 (bootstrap only). Toggle by another element</span></td>
                     </tr>                                                                                            

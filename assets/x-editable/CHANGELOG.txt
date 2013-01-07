@@ -3,7 +3,11 @@ X-editable changelog
 
 
 Version 1.4.0 wip
----------------------------- 
+----------------------------
+[enh #60] added wysihtml5 input (vitalets) 
+[enh] added IOS-style clear button for text inputs (vitalets) 
+[enh] date inputs changed in inline mode (vitalets) 
+[enh #51] popup/inline modes can be toggled via `mode` config option. No more *-inline.js versions of files (vitalets)
 [enh] update bootstrap-datepicker to upstream (vitalets)
 [enh] 'display' method: added param 'response' allowing to show text directly from server (vitalets)
 [enh] new util method `$.fn.editableutils.itemsByValue` to easily get selected items for sourced-inputs (vitalets)
