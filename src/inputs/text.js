@@ -43,8 +43,11 @@ $(function(){
         renderClear:  function() {
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
-               this.$input.after(this.$clear).parent().css('position', 'relative');
-               this.$input.keyup($.proxy(this.toggleClear, this));
+               this.$input.after(this.$clear)
+                          .css('padding-right', 25)
+                          .keyup($.proxy(this.toggleClear, this))
+                          .parent().css('position', 'relative');
+                          
                this.$clear.click($.proxy(function(){
                    this.$clear.hide();
                    this.$input.val('').focus();
@@ -64,7 +67,6 @@ $(function(){
                 }
                     
                 this.$clear.css({top: delta, right: delta});
-                this.$input.css('padding-right', this.$clear.width() + 2*delta - 3);
             } 
         },
         
