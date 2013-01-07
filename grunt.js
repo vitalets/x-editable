@@ -14,6 +14,7 @@ function getFiles() {
             inputs: [
                 inputs+'date/date.js', 
                 inputs+'date/datefield.js', 
+                inputs+'wysihtml5/wysihtml5.js', 
                 inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
             css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
         },  
@@ -76,18 +77,6 @@ function getFiles() {
             dest: dest + '.min.js'
         };      
 
-/*        //inline
-        task = k+'_inline_js';
-        dest = folder+'js/'+k+'-editable-inline';
-        concat_files[task] = {
-            src: js.concat(config[k].form).concat(inline).concat(config[k].inputs),
-            dest: dest+'.js'
-        };
-        min_files[task] = {
-            src: ['<banner:meta.banner>', '<config:concat.'+task+'.dest>'],
-            dest: dest + '.min.js'
-        };      
-*/
         //css
         concat_files[k+'_css'] = {
             src: css.concat(config[k].css),
@@ -163,11 +152,11 @@ module.exports = function(grunt) {
       files: ['grunt.js', 
               'src/editable-form/*.js', 
               'src/containers/*.js', 
-              'src/inputs/*.js', 
               'src/element/*.js', 
               'src/inputs/*.js', 
-              'src/inputs/date/date.js',
-              'src/inputs/dateui/dateui.js',
+              'src/inputs/date/*.js',
+              'src/inputs/dateui/*.js',
+              'src/inputs/wysihtml5/*.js',
               'src/inputs-ext/**/*.js'
               ]
     },
