@@ -26,7 +26,8 @@ $(function(){
     $.extend(Textarea.prototype, {
         render: function () {
             this.setClass();
-            this.setAttr('placeholder');            
+            this.setAttr('placeholder');
+            this.setAttr('rows');                        
             
             //ctrl + enter
             this.$input.keydown(function (e) {
@@ -90,7 +91,15 @@ $(function(){
         @type string
         @default null
         **/
-        placeholder: null
+        placeholder: null,
+        /**
+        Number of rows in textarea
+
+        @property rows
+        @type integer
+        @default 7
+        **/        
+        rows: 7        
     });
 
     $.fn.editabletypes.textarea = Textarea;
