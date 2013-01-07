@@ -129,16 +129,16 @@ $(function(){
         /**
         @property inputclass 
         @type string
-        @default 
+        @default null
         **/         
-        inputclass: '',        
+        inputclass: null,        
         
         /**
-        Separator of values when reading from 'data-value' string
+        Separator of values when reading from `data-value` attribute
 
         @property separator 
         @type string
-        @default ', '
+        @default ','
         **/         
         separator: ','
     });

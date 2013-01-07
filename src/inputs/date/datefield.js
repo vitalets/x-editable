@@ -2,6 +2,11 @@
 Bootstrap datefield input - modification for inline mode.
 Shows normal <input type="text"> and binds popup datepicker.  
 Automatically shown in inline mode.
+
+@class datefield
+@extends date
+
+@since 1.4.0
 **/
 (function ($) {
 
@@ -52,7 +57,6 @@ Automatically shown in inline mode.
     DateField.defaults = $.extend({}, $.fn.editabletypes.date.defaults, {
         /**
         @property tpl 
-        @default 
         **/         
         tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
         /**

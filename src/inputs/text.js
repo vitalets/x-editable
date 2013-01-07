@@ -98,7 +98,11 @@ $(function(){
         placeholder: null,
         
         /**
-        Whether to show `clear` button / link or not 
+        Whether to show `clear` button 
+        
+        @property clear 
+        @type boolean
+        @default true        
         **/
         clear: true
     });

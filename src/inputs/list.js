@@ -254,7 +254,7 @@ List - abstract class for inputs that have source option loaded from js array or
         @type string | array | object | function
         @default null
         **/         
-        source:null, 
+        source: null, 
         /**
         Data automatically prepended to the beginning of dropdown list.
         
@@ -262,7 +262,7 @@ List - abstract class for inputs that have source option loaded from js array or
         @type string | array | object | function
         @default false
         **/         
-        prepend:false,
+        prepend: false,
         /**
         Error message when list cannot be loaded (e.g. ajax error)
         

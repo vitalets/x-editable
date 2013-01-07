@@ -1,12 +1,19 @@
 /**
-Bootstrap wysihtml5 input
-See https://github.com/jhollingworth/bootstrap-wysihtml5
+Bootstrap wysihtml5 editor.   
+To use it you should **manually** include required js and css files.
+
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css"></link>  
+    <script src="js/wysihtml5-0.3.0.js"></script>  
+    <script src="js/bootstrap-wysihtml5.js"></script>  
+
+You can download these files from https://github.com/jhollingworth/bootstrap-wysihtml5
 
 @class wysihtml5
 @extends abstractinput
 @final
+@since 1.4.0
 @example
-<a href="#" id="comments" data-type="wysihtml5" data-pk="1">awesome comment!</a>
+<div id="comments" data-type="wysihtml5" data-pk="1"><h2>awesome</h2> comment!</div>
 <script>
 $(function(){
     $('#comments').editable({
@@ -86,9 +93,9 @@ $(function(){
         tpl:'<textarea class="editable-wysihtml5"></textarea>',
         /**
         @property inputclass
-        @default 
+        @default null
         **/
-        inputclass: '',
+        inputclass: null,
         /**
         Placeholder attribute of input. Shown when input is empty.
 
@@ -106,7 +113,8 @@ $(function(){
         **/        
         rows: 10,
         /**
-        Wysihtml5 defaut options
+        Wysihtml5 defaut options.  
+        See https://github.com/jhollingworth/bootstrap-wysihtml5#options
 
         @property wysihtml5
         @type object

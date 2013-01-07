@@ -128,9 +128,9 @@ $(function(){
         tpl:'<div class="editable-date well"></div>',
         /**
         @property inputclass 
-        @default
+        @default null
         **/         
-        inputclass: '',
+        inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  

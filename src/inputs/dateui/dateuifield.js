@@ -2,6 +2,11 @@
 jQuery UI datefield input - modification for inline mode.
 Shows normal <input type="text"> and binds popup datepicker.  
 Automatically shown in inline mode.
+
+@class dateuifield
+@extends dateui
+
+@since 1.4.0
 **/
 (function ($) {
 
@@ -48,9 +53,9 @@ Automatically shown in inline mode.
         tpl: '<input type="text"/>',
         /**
         @property inputclass 
-        @default ''
+        @default null
         **/         
-        inputclass: '',
+        inputclass: null,
         
         /* datepicker config */
         datepicker: {
