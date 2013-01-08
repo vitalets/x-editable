@@ -241,7 +241,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //init editableContainer: popover, tooltip, inline, etc..
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
-                    value: this.value
+                    value: this.value,
+                    input: this.input //pass input to form (as it is already created)
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on("save.internal", $.proxy(this.save, this));
@@ -355,6 +356,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.destroy(); 
             }
+            
+            this.$element.off("save.internal");
+            
             this.$element.removeClass('editable');
             this.$element.removeClass('editable-open');
             this.$element.removeData('editable');

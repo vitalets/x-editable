@@ -32,6 +32,9 @@ $(function(){
     $.extend(Checklist.prototype, {
         renderList: function() {
             var $label, $div;
+            
+            this.$tpl.empty();
+            
             if(!$.isArray(this.sourceData)) {
                 return;
             }

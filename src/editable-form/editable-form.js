@@ -21,8 +21,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            //create input of specified type
-            this.input = $.fn.editableutils.createInput(this.options);
+            //take input from options or create new input instance
+            this.input = this.options.input || $.fn.editableutils.createInput(this.options);
             if(!this.input) {
                 return; 
             }             

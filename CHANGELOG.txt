@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.0 wip
 ----------------------------
+[bug] select: source loaded twice if sourceCache = false (vitalets) 
 [enh] added `destroy` method, see #61 (vitalets) 
 [enh] textarea: added `rows` property (vitalets) 
 [enh #60] added wysihtml5 input (vitalets) 

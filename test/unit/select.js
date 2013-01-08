@@ -37,7 +37,15 @@ $(function () {
             equal(p.find('select').find('option').length, size, 'options loaded');
             equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
             p.find('.editable-cancel').click(); 
-            ok(!p.is(':visible'), 'popover was removed');  
+            ok(!p.is(':visible'), 'popover was removed');
+            
+            //open second time: items should not dublicate
+            e.click();
+                        
+            ok(p.find('select').length, 'select exists');
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+                          
             e.remove();    
             start();  
         }, timeout);                     
@@ -384,50 +392,58 @@ $(function () {
      
      
     asyncTest("sourceCache: false", function () {
-         var e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
-              sourceCache: false
-         }),
-            e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
-              sourceCache: false                 
-          }),
-          req = 0;
-
-        $.mockjax({
+        
+         $.mockjax({
                 url: 'groups-cache-false.php',
                 response: function() {
                     req++;
                     this.responseText = groups;
                 }
-         });           
-           
-        //click first
-        e.click();
-        var p = tip(e);
+         });    
+        
+         var req = 0, 
+           e = $('<a href="#" data-type="select" data-pk="1" data-name="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php"></a>').appendTo(fx).editable({
+              sourceCache: false
+           }),
+           e1 = $('<a href="#" data-type="select" data-pk="1" id="name1" data-value="2" data-url="post.php" data-source="groups-cache-false.php">customer</a>').appendTo(fx).editable({
+              sourceCache: false                 
+           });
         
         setTimeout(function() {
-            ok(p.is(':visible'), 'popover visible');
-            equal(p.find('select').find('option').length, size, 'options loaded');
-            equal(req, 1, 'one request performed');
-            
-            p.find('.editable-cancel').click(); 
-            ok(!p.is(':visible'), 'popover was removed');  
-            
-            //click second
-            e1.click();
-            p = tip(e1);
+            equal(req, 1, 'autotext request performed');
+               
+            //click first
+            e.click();
             
             setTimeout(function() {
-                ok(p.is(':visible'), 'popover2 visible');
+            
+                var p = tip(e);            
+                
+                ok(p.is(':visible'), 'popover visible');
                 equal(p.find('select').find('option').length, size, 'options loaded');
-                equal(req, 2, 'second request performed');
+                equal(req, 1, 'no additional request performed, loaded on autotext');
                 
                 p.find('.editable-cancel').click(); 
-                ok(!p.is(':visible'), 'popover was removed');                  
+                ok(!p.is(':visible'), 'popover was removed');  
                 
-                e.remove();    
-                e1.remove();    
-                start();  
-            }, timeout);
+                //click second
+                e1.click();
+                p = tip(e1);
+                
+                setTimeout(function() {
+                    ok(p.is(':visible'), 'popover2 visible');
+                    equal(p.find('select').find('option').length, size, 'options loaded');
+                    equal(req, 2, 'second request performed');
+                    
+                    p.find('.editable-cancel').click(); 
+                    ok(!p.is(':visible'), 'popover was removed');                  
+                    
+                    e.remove();    
+                    e1.remove();    
+                    start(); 
+                     
+                }, timeout);
+            }, timeout);                 
         }, timeout);  
         
      });       

@@ -17,8 +17,6 @@ List - abstract class for inputs that have source option loaded from js array or
             var deferred = $.Deferred();
 
             this.error = null;
-            this.sourceData = null;
-            this.prependData = null;
             this.onSourceReady(function () {
                 this.renderList();
                 deferred.resolve();

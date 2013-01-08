@@ -30,12 +30,14 @@ $(function(){
 
     $.extend(Select.prototype, {
         renderList: function() {
+            this.$input.empty();
+            
             if(!$.isArray(this.sourceData)) {
                 return;
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                this.$tpl.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
+                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
             
             this.setClass();

@@ -33,7 +33,7 @@ Applied as jQuery method.
                 this.destroy();
             }, this)); 
             
-            //attach document handlers (once)
+            //attach document handler to close containers on click / escape
             if(!$(document).data('editable-handlers-attached')) {
                 //close all on escape
                 $(document).on('keyup.editable', function (e) {
@@ -59,7 +59,7 @@ Applied as jQuery method.
                          }
                     }
                       
-                    //close all open containers (except one)
+                    //close all open containers (except one - target)
                     Popup.prototype.closeOthers(e.target);
                 });
                 
@@ -72,6 +72,7 @@ Applied as jQuery method.
             this.containerOptions = {};
             this.formOptions = {};
             var cDef = $.fn[this.containerName].defaults;
+            //keys defined in container defaults go to container, others go to form
             for(var k in this.options) {
               if(k in cDef) {
                  this.containerOptions[k] = this.options[k];
@@ -90,9 +91,9 @@ Applied as jQuery method.
             this.$form = $('<div>')
             .editableform(this.formOptions)
             .on({
-                save: $.proxy(this.save, this),
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this),
-                nochange: $.proxy(function(){ this.hide('nochange'); }, this),
+                save: $.proxy(this.save, this), //click on submit button (value changed)
+                nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
