@@ -261,6 +261,8 @@ Applied as jQuery method.
         **/        
         destroy: function() {
             this.call('destroy');
+            this.$element.off('destroyed');
+            this.$element.removeData('editableContainer');
         },
         
         /*

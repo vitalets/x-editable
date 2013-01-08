@@ -341,7 +341,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.activate(); 
             }
-        }
+        },
+        
+        /**
+        Removes editable feature from element
+        @method destroy()
+        **/        
+        destroy: function() {
+            if(this.options.toggle !== 'manual') {
+                this.$element.removeClass('editable-click');
+                this.$element.off(this.options.toggle + '.editable');
+            }            
+            if(this.container) {
+               this.container.destroy(); 
+            }
+            this.$element.removeClass('editable');
+            this.$element.removeClass('editable-open');
+            this.$element.removeData('editable');
+        }        
     };
 
     /* EDITABLE PLUGIN DEFINITION

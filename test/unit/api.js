@@ -365,6 +365,28 @@ $(function () {
         
         equal(e.data('editable').value, 2, 'new value correct');
         equal(e.text(), groups[2], 'new text shown correctly');
-     });                                
+     });     
+     
+     
+     test("`destroy` method", function () {
+        var e = $('<a href="#" data-name="name" data-type="text" data-url="post.php"></a>').appendTo('#qunit-fixture').editable({
+        });
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'container visible');
+        
+        e.editable('destroy');
+        
+        ok(!p.is(':visible'), 'container closed');
+        ok(!e.data('editable'), 'editable instance removed');
+        ok(!e.data('editableContainer'), 'editableContainer instance removed');
+        ok(!e.hasClass('editable'), 'editable class removed');
+        ok(!e.hasClass('editable-click'), 'editable-click class removed');
+        
+        e.click();
+        
+        
+     });                                 
   
 });            
