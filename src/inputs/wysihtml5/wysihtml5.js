@@ -113,7 +113,7 @@ $(function(){
         **/        
         rows: 10,
         /**
-        Wysihtml5 defaut options.  
+        Wysihtml5 default options.  
         See https://github.com/jhollingworth/bootstrap-wysihtml5#options
 
         @property wysihtml5
