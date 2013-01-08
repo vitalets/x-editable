@@ -311,6 +311,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if(key === 'value') {
                 this.setValue(value);
             }
+            //pass to input
+            if(this.input.option) {
+                this.input.option(key, value);
+            }
         },
 
         setValue: function(value, convertStr) {

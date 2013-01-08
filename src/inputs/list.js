@@ -234,7 +234,17 @@ List - abstract class for inputs that have source option loaded from js array or
                 });  
             }
             return result;
-        }
+        },
+        
+        option: function(key, value) {
+            this.options[key] = value;
+            if(key === 'source') {
+                this.sourceData = null;
+            }
+            if(key === 'prepend') {
+                this.prependData = null;
+            }            
+        }        
 
     });      
 

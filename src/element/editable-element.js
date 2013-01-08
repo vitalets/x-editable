@@ -199,6 +199,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //transfer new option to container! 
             if(this.container) {
                 this.container.option(key, value);  
+            } else {
+                //pass option to input directly
+                if(this.input.option) {
+                    this.input.option(key, value);
+                }
             }
         },              
         

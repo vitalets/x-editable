@@ -647,6 +647,43 @@ $(function () {
         
      });     
      
-          
+    
+    asyncTest("change source", function () {
+        var e = $('<a href="#" data-type="select" data-name="load-srv" data-value="2" data-source="groups.php"></a>').appendTo(fx).editable({
+            //need to disable cache to force request
+            sourceCache: false
+        });
+
+        setTimeout(function() {
+        
+        e.click();
+        var p = tip(e); 
+       
+        equal(p.find('select').find('option').length, size, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;       
+        
+        p.find('.editable-cancel').click(); 
+        ok(!p.is(':visible'), 'popover was closed');
+        
+        $.mockjax({
+            url: 'groups1.php',
+            responseText: {a: 1, 2: 2}
+        });        
+                
+        //set new source
+        e.editable('option', 'source', 'groups1.php');
+        e.click();
+         
+        setTimeout(function() {
+                ok(p.find('select').length, 'select exists');
+                equal(p.find('select').find('option').length, 2, 'new options loaded');
+                equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+                p.find('.editable-cancel').click(); 
+                ok(!p.is(':visible'), 'popover was closed');
+                e.remove();    
+                start();  
+            }, timeout);
+        }, timeout);                                                  
+    });           
      
 });

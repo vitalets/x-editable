@@ -151,11 +151,16 @@ To create your own input you can inherit from this class.
                this.$input.addClass(this.options.inputclass); 
            } 
        },
+       
        setAttr: function(attr) {
            if (this.options[attr]) {
                this.$input.attr(attr, this.options[attr]);
            } 
-       }       
+       },
+       
+       option: function(key, value) {
+            this.options[key] = value;
+       }
        
     };
         
