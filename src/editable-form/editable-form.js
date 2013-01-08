@@ -323,6 +323,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             } else {
                 this.value = value;
             }
+            
+            //if form is visible, update input
+            if(this.$form && this.$form.is(':visible')) {
+                this.input.value2input(this.value);
+            }            
         }               
     };
 

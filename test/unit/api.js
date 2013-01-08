@@ -361,10 +361,18 @@ $(function () {
         equal(e.data('editable').value, 1, 'value correct');
         equal(e.text(), groups[1], 'text shown correctly');
         
+        //open editable to check update of input 
+        e.click();
+        var p = tip(e);
+        
+        equal(p.find('select').find('option').length, size, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');          
+        
         e.editable('setValue', 2);
         
         equal(e.data('editable').value, 2, 'new value correct');
         equal(e.text(), groups[2], 'new text shown correctly');
+        equal(p.find('select').val(), e.data('editable').value, 'new selected value correct'); 
      });     
      
      

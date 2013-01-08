@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.0 wip
 ----------------------------
+[enh] setValue method updates input if form is open (vitalets) 
 [enh] select: chnage source via option method, see #61 (vitalets) 
 [bug] select: source loaded twice if sourceCache = false (vitalets) 
 [enh] added `destroy` method, see #61 (vitalets) 
