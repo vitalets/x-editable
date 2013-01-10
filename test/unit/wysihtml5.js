@@ -8,6 +8,14 @@ $(function () {
     });
      
     asyncTest("should load correct value and save new entered value", function () {
+        
+        //skip test for ie7 as it is not supported by wysihtml5
+        if($.browser.msie && parseInt($.browser.version, 10) <= 8) {
+           expect(0);
+           start();  
+           return;
+        } 
+        
         var v1 = '<h1>qq</h1><br>qwerty',
             v2 = '11<h2>werqwr</h2>4353',
             e = $('<a href="#" data-pk="1" data-url="post.php">'+v1+'</a>').appendTo(fx).editable({
