@@ -38,30 +38,44 @@ $(function () {
                   equal(settings.data.value, nextD, 'submitted value correct');            
               }
           });
-       
-        equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
-            
-        e.click();
-        var p = tip(e);
-        ok(p.find('.datepicker').is(':visible'), 'datepicker exists');
-        ok(p.find('.datepicker').find('.datepicker-days').is(':visible'), 'datepicker days visible');        
-        
-        equal(frmt(e.data('editable').value, f), d, 'day set correct');
-        ok(p.find('td.day.active').is(':visible'), 'active day is visible');
-        equal(p.find('td.day.active').text(), 15, 'day shown correct');
-        equal(p.find('th.dow').eq(0).text(), 'Mo', 'weekStart correct');
 
-        //set new day
-        p.find('td.day.active').next().click();
-        p.find('form').submit();
-    
-        setTimeout(function() {          
-           ok(!p.is(':visible'), 'popover closed')
-           equal(frmt(e.data('editable').value, f), nextD, 'new date saved to value')
-           equal(e.text(), nextD, 'new text shown')            
-           e.remove();    
-           start();  
-        }, timeout); 
+        //testing func, run twice!
+        var func = function() {
+            var df = $.Deferred();
+            equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
+                
+            e.click();
+            var p = tip(e);
+            ok(p.find('.datepicker').is(':visible'), 'datepicker exists');
+            equal(p.find('.datepicker').length, 1, 'datepicker single');
+            ok(p.find('.datepicker').find('.datepicker-days').is(':visible'), 'datepicker days visible');        
+            
+            equal(frmt(e.data('editable').value, f), d, 'day set correct');
+            ok(p.find('td.day.active').is(':visible'), 'active day is visible');
+            equal(p.find('td.day.active').text(), 15, 'day shown correct');
+            equal(p.find('th.dow').eq(0).text(), 'Mo', 'weekStart correct');
+
+            //set new day
+            p.find('td.day.active').next().click();
+            p.find('form').submit();
+        
+            setTimeout(function() {          
+               ok(!p.is(':visible'), 'popover closed');
+               equal(frmt(e.data('editable').value, f), nextD, 'new date saved to value');
+               equal(e.text(), nextD, 'new text shown');
+               df.resolve();            
+            }, timeout);
+            
+            return df.promise();
+        };
+        
+        $.when(func()).then(function() {
+           e.editable('setValue', d, true);
+           $.when(func()).then(function() {
+              e.remove();    
+              start();  
+           });
+        });
         
      });  
      

@@ -65,6 +65,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.showLoading();
             
             //append input to form
+            this.input.prerender();
             this.$form.find('div.editable-input').append(this.input.$tpl);            
 
             //append form to container

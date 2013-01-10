@@ -21,10 +21,16 @@ To create your own input you can inherit from this class.
        init: function(type, options, defaults) {
            this.type = type;
            this.options = $.extend({}, defaults, options);
+       },
+       
+       /*
+       this method called before render to init $tpl that is inserted in DOM
+       */
+       prerender: function() {
            this.$tpl = $(this.options.tpl); //whole tpl as jquery object    
            this.$input = this.$tpl;         //control itself, can be changed in render method
            this.$clear = null;              //clear button
-           this.error = null;               //error message, if input cannot be rendered
+           this.error = null;               //error message, if input cannot be rendered           
        },
        
        /**

@@ -159,6 +159,8 @@ module.exports = function(grunt) {
               'src/inputs/date/*.js',
               'src/inputs/dateui/*.js',
               'src/inputs/wysihtml5/*.js',
+              'src/inputs/combodate/combodate.js',
+              'src/inputs/combodate/lib/combodate.js',
               'src/inputs-ext/**/*.js'
               ]
     },
