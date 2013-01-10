@@ -32,6 +32,9 @@ $(function(){
 });
 </script>
 **/
+
+/*global moment*/
+
 (function ($) {
 
     var Constructor = function (options) {
@@ -165,7 +168,7 @@ $(function(){
         }
         **/
         combodate: {
-        },
+        }
         
         /*
         (not implemented yet)
