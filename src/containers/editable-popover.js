@@ -15,9 +15,22 @@
             $.extend(this.containerOptions, {
                 trigger: 'manual',
                 selector: false,
-                content: ' '
+                content: ' ',
+                template: $.fn.popover.defaults.template
             });
+            
+            //as template property is used in inputs, hide it from popover
+            var t;
+            if(this.$element.data('template')) {
+               t = this.$element.data('template');
+               this.$element.removeData('template');  
+            } 
+            
             this.call(this.containerOptions);
+            
+            if(t) {
+               this.$element.data('template', t); 
+            }
         },        
         
         setContainerOption: function(key, value) {

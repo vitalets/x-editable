@@ -31,6 +31,7 @@ define(function () {
                         loadCss(require.toUrl("./editable-element.css")); 
                     }                         
                 },
+                //default inputs
                 'editable-form/editable-form': {
                     deps: ['require',
                     'inputs/text',
@@ -38,6 +39,7 @@ define(function () {
                     'inputs/select',
                     'inputs/checklist',
                     'inputs/html5types',
+                    'inputs/combodate/combodate',
                     'inputs-ext/address/address'],
                     init: function(require) {
                         loadCss(require.toUrl("./editable-form.css")); 
@@ -49,7 +51,8 @@ define(function () {
                 'inputs/text': ['inputs/abstract'],
                 'inputs/textarea': ['inputs/abstract'],
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
-                'inputs/html5types': ['inputs/text'],   
+                'inputs/html5types': ['inputs/text'], 
+                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],  
 
                 /*
                  bootstrap
