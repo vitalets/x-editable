@@ -29,9 +29,25 @@
             this.call(this.containerOptions);
             
             if(t) {
+               //restore data('template')
                this.$element.data('template', t); 
             }
-        },        
+        }, 
+        
+        /* show */
+        innerShow: function () {
+            this.call('show');                
+        },  
+        
+        /* hide */
+        innerHide: function () {
+            this.call('hide');       
+        }, 
+        
+        /* destroy */
+        innerDestroy: function() {
+            this.call('destroy');
+        },                               
         
         setContainerOption: function(key, value) {
             this.container().options[key] = value; 

@@ -26,6 +26,10 @@ Applied as jQuery method.
             //todo: what is in priority: data or js?
             this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableutils.getConfigData(this.$element), options);         
             this.splitOptions();
+            
+            //set scope of form callbacks to element
+            this.formOptions.scope = this.$element[0]; 
+            
             this.initContainer();
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
@@ -82,13 +86,29 @@ Applied as jQuery method.
             }
         },
         
+        /*
+        Returns jquery object of container
+        @method tip()
+        */         
+        tip: function() {
+            return this.container() ? this.container().$tip : null;
+        },
+
+        /* returns container object */
+        container: function() {
+            return this.$element.data(this.containerName); 
+        },
+
+        call: function() {
+            this.$element[this.containerName].apply(this.$element, arguments); 
+        },        
+        
         initContainer: function(){
             this.call(this.containerOptions);
         },
 
-        initForm: function() {
-            this.formOptions.scope = this.$element[0]; //set scope of form callbacks to element
-            this.$form = $('<div>')
+        renderForm: function() {
+            this.$form
             .editableform(this.formOptions)
             .on({
                 save: $.proxy(this.save, this), //click on submit button (value changed)
@@ -110,31 +130,16 @@ Applied as jQuery method.
                     **/                      
                     this.$element.triggerHandler('shown');
                 }, this) 
-            });
-            return this.$form;
+            })
+            .editableform('render');
         },        
-
-        /*
-        Returns jquery object of container
-        @method tip()
-        */         
-        tip: function() {
-            return this.container().$tip;
-        },
-
-        container: function() {
-            return this.$element.data(this.containerName); 
-        },
-
-        call: function() {
-            this.$element[this.containerName].apply(this.$element, arguments); 
-        },
 
         /**
         Shows container with form
         @method show()
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-        **/          
+        **/
+        /* Note: poshytip owerwrites this method totally! */          
         show: function (closeAll) {
             this.$element.addClass('editable-open');
             if(closeAll !== false) {
@@ -142,16 +147,37 @@ Applied as jQuery method.
                 this.closeOthers(this.$element[0]);  
             }
             
+            //show container itself
             this.innerShow();
-        },
-        
-        /* internal show method. To be overwritten in child classes */
-        innerShow: function () {
-            this.call('show');                
             this.tip().addClass('editable-container');
-            this.initForm();
-            this.tip().find(this.innerCss).empty().append(this.$form);     
-            this.$form.editableform('render');            
+
+            /*
+            Currently, form is re-rendered on every show. 
+            The main reason is that we dont know, what container will do with content when closed:
+            remove(), detach() or just hide().
+            
+            Detaching form itself before hide and re-insert before show is good solution, 
+            but visually it looks ugly, as container changes size before hide.  
+            */             
+            
+            //if form already exist - delete previous data 
+            if(this.$form) {
+                //todo: destroy prev data!
+                //this.$form.destroy();
+            }
+
+            this.$form = $('<div>');
+            
+            //insert form into container body
+            if(this.tip().is(this.innerCss)) {
+                //for inline container
+                this.tip().append(this.$form); 
+            } else {
+                this.tip().find(this.innerCss).append(this.$form);
+            } 
+            
+            //render form
+            this.renderForm();
         },
 
         /**
@@ -163,8 +189,10 @@ Applied as jQuery method.
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
                 return;
             }
+            
             this.$element.removeClass('editable-open');   
             this.innerHide();
+            
             /**        
             Fired when container was hidden. It occurs on both save or cancel.
 
@@ -182,9 +210,14 @@ Applied as jQuery method.
             this.$element.triggerHandler('hidden', reason);   
         },
         
+        /* internal show method. To be overwritten in child classes */
+        innerShow: function () {
+             
+        },        
+        
         /* internal hide method. To be overwritten in child classes */
         innerHide: function () {
-            this.call('hide');       
+    
         },        
         
         /**
@@ -193,7 +226,7 @@ Applied as jQuery method.
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/          
         toggle: function(closeAll) {
-            if(this.tip && this.tip().is(':visible')) {
+            if(this.container() && this.tip() && this.tip().is(':visible')) {
                 this.hide();
             } else {
                 this.show(closeAll);
@@ -261,10 +294,16 @@ Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
-            this.call('destroy');
+            this.hide();
+            this.innerDestroy();
             this.$element.off('destroyed');
             this.$element.removeData('editableContainer');
         },
+        
+        /* to be overwritten in child classes */
+        innerDestroy: function() {
+            
+        }, 
         
         /*
         Closes other containers except one related to passed element. 

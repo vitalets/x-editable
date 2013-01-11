@@ -183,12 +183,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             //disabled
             if(key === 'disabled') {
-                if(value) {
-                    this.disable();
-                } else {
-                    this.enable();
-                }
-                return;
+               return value ? this.disable() : this.enable();
             } 
             
             //value
@@ -199,12 +194,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //transfer new option to container! 
             if(this.container) {
                 this.container.option(key, value);  
-            } else {
-                //pass option to input directly
-                if(this.input.option) {
-                    this.input.option(key, value);
-                }
             }
+             
+            //pass option to input directly (as it points to the same in form)
+            if(this.input.option) {
+                this.input.option(key, value);
+            }
+            
         },              
         
         /*
@@ -354,13 +350,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
-            if(this.options.toggle !== 'manual') {
-                this.$element.removeClass('editable-click');
-                this.$element.off(this.options.toggle + '.editable');
-            }            
             if(this.container) {
                this.container.destroy(); 
             }
+
+            if(this.options.toggle !== 'manual') {
+                this.$element.removeClass('editable-click');
+                this.$element.off(this.options.toggle + '.editable');
+            } 
             
             this.$element.off("save.internal");
             

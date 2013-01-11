@@ -15,17 +15,14 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         if(!this.options.scope) {
             this.options.scope = this;
         }
-        this.initInput();
+        //nothing shown after init
     };
 
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            //take input from options or create new input instance
-            this.input = this.options.input || $.fn.editableutils.createInput(this.options);
-            if(!this.input) {
-                return; 
-            }             
+            //take input from options (as it is created in editable-element)
+            this.input = this.options.input;
             
             //set initial value
             this.value = this.input.str2value(this.options.value); 
@@ -54,6 +51,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$form.find('.editable-buttons').remove();
             }
 
+            //show loading state
+            this.showLoading();            
+            
             /**        
             Fired when rendering starts
             @event rendering 
@@ -61,8 +61,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             **/            
             this.$div.triggerHandler('rendering');
             
-            //show loading state
-            this.showLoading();
+            //init input
+            this.initInput();
             
             //append input to form
             this.input.prerender();
@@ -308,14 +308,17 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         },
 
         option: function(key, value) {
-            this.options[key] = value;
+            if(key in this.options) {
+                this.options[key] = value;
+            }
+            
             if(key === 'value') {
                 this.setValue(value);
             }
             //pass to input
-            if(this.input.option) {
-                this.input.option(key, value);
-            }
+//            if(this.input && this.input.option) {
+//                this.input.option(key, value);
+//            }
         },
 
         setValue: function(value, convertStr) {
