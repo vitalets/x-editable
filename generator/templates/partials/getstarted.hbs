@@ -32,6 +32,11 @@ Main attributes you should define are:
 </ul>
 <br>
 </li>
+<li>Setup editable mode: <strong>inline</strong> or <strong>popup</strong> (default)
+{{#source}}
+$.fn.editable.defaults.mode = 'inline'; 
+{{/source}}
+</li>
 <li>Apply <strong>editable()</strong> method to these elements
 {{#source}}
 $('#username').editable();

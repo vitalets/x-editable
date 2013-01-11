@@ -109,6 +109,9 @@ function loadContext() {
         classes[k].event.sort(sf); 
     });    
     
+   /* 
+   ----------------------------- inputs -----------------
+   */ 
     var inputs_order = ['text', 'textarea', 'select', 'date', 'dateui', 'html5types', 'checklist', 'wysihtml5'];
     
     //inputs
