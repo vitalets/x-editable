@@ -14,7 +14,6 @@ function getFiles() {
             inputs: [
                 inputs+'date/date.js', 
                 inputs+'date/datefield.js', 
-                inputs+'wysihtml5/wysihtml5.js', 
                 inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
             css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
         },  
@@ -30,7 +29,6 @@ function getFiles() {
         jquery: {
             form: [],
             container: [containers+'editable-poshytip.js'],
-            inputs: [inputs+'dateui/dateui.js'],
             css: []
         }      
     };
@@ -67,7 +65,7 @@ function getFiles() {
     for(var k in config) {
         folder = '<%= dist %>/'+k+'-editable/';
 
-        //popup
+        //js
         task = k+'_js';
         dest = folder+'js/'+k+'-editable'+ (k === 'jquery' ? '-poshytip' : '');
         concat_files[task] = {
@@ -155,12 +153,14 @@ module.exports = function(grunt) {
               'src/editable-form/*.js', 
               'src/containers/*.js', 
               'src/element/*.js', 
+              
               'src/inputs/*.js', 
               'src/inputs/date/*.js',
               'src/inputs/dateui/*.js',
-              'src/inputs/wysihtml5/*.js',
               'src/inputs/combodate/*.js',
-              'src/inputs-ext/**/*.js'
+              
+              'src/inputs-ext/address/*.js',
+              'src/inputs-ext/wysihtml5/*.js'
               ]
     },
     /*
@@ -208,13 +208,7 @@ module.exports = function(grunt) {
             options: {
                basePath: 'inputs-ext'
             }            
-        },
-        ui_datepicker: {
-         files: {
-             //copy jquery ui datepicker (for jquery build)
-             '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**' 
-         }
-       } 
+        }
     },
  
     uglify: {}
