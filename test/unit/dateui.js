@@ -1,12 +1,18 @@
 $(function () {         
    
-   var dpg;
+   var dpg, mode;
    
    module("dateui", {
         setup: function(){
             fx = $('#async-fixture');
             $.support.transition = false;
-        }
+            mode = $.fn.editable.defaults.mode;
+            $.fn.editable.defaults.mode = 'popup';
+        },
+        teardown: function() {
+            //restore mode
+            $.fn.editable.defaults.mode = mode;
+        }   
     });
     
     function frmt(date, format) {
@@ -17,7 +23,7 @@ $(function () {
     asyncTest("container should contain datepicker with value and save new entered date", function () {
         var d = '15.05.1984',
             dview = '15/05/1984',
-            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date.php">'+dview+'</a>').appendTo(fx).editable({
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-dateui.php">'+dview+'</a>').appendTo(fx).editable({
                 format: 'dd.mm.yyyy',
                 viewformat: 'dd/mm/yyyy',
                 datepicker: {
@@ -28,32 +34,47 @@ $(function () {
             nextDview = '16/05/1984';
         
           $.mockjax({
-              url: 'post-date.php',
+              url: 'post-dateui.php',
               response: function(settings) {
                   equal(settings.data.value, nextD, 'submitted value correct');            
               }
           });
        
-        equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
+        //testing func, run twice!
+        var func = function() {
+            var df = $.Deferred();       
+       
+            equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
+                
+            e.click();
+            var p = tip(e);
+            ok(p.find('.ui-datepicker').is(':visible'), 'datepicker exists');
+            equal(p.find('.ui-datepicker').length, 1, 'datepicker single');
             
-        e.click();
-        var p = tip(e);
-        ok(p.find('.ui-datepicker').is(':visible'), 'datepicker exists');
-        
-        equal(p.find('a.ui-state-active').text(), 15, 'day shown correct');
-        equal(p.find('.ui-datepicker-calendar > thead > tr > th').eq(0).find('span').text(), 'Mo', 'weekStart correct');
+            equal(p.find('a.ui-state-active').text(), 15, 'day shown correct');
+            equal(p.find('.ui-datepicker-calendar > thead > tr > th').eq(0).find('span').text(), 'Mo', 'weekStart correct');
 
-        //set new day
-        p.find('a.ui-state-active').parent().next().click();
-        p.find('form').submit();
-    
-        setTimeout(function() {          
-           ok(!p.is(':visible'), 'popover closed');
-           equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), nextD, 'new date saved to value');
-           equal(e.text(), nextDview, 'new text shown');            
-           e.remove();    
-           start();  
-        }, timeout); 
+            //set new day
+            p.find('a.ui-state-active').parent().next().click();
+            p.find('form').submit();
+        
+            setTimeout(function() {          
+               ok(!p.is(':visible'), 'popover closed');
+               equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), nextD, 'new date saved to value');
+               equal(e.text(), nextDview, 'new text shown');            
+               df.resolve(); 
+            }, timeout); 
+            
+            return df.promise();
+        };
+        
+        $.when(func()).then(function() {
+           e.editable('setValue', d, true);
+           $.when(func()).then(function() {
+              e.remove();    
+              start();  
+           });
+        });        
         
      });   
      
@@ -78,7 +99,7 @@ $(function () {
         
         equal(p.find('a.ui-state-active').text(), today.getDate(), 'day shown correct');
         
-        p.find('button[type=button]').click();
+        p.find('.editable-cancel').click();
         ok(!p.is(':visible'), 'popover closed');      
       }); 
       

@@ -14,11 +14,9 @@ List - abstract class for inputs that have source option loaded from js array or
 
     $.extend(List.prototype, {
         render: function () {
-            List.superclass.render.call(this);
             var deferred = $.Deferred();
+
             this.error = null;
-            this.sourceData = null;
-            this.prependData = null;
             this.onSourceReady(function () {
                 this.renderList();
                 deferred.resolve();
@@ -34,20 +32,24 @@ List - abstract class for inputs that have source option loaded from js array or
             return null; //can't set value by text
         },
         
-        value2html: function (value, element, display) {
-            var deferred = $.Deferred();
-            this.onSourceReady(function () {
-                if(typeof display === 'function') {
-                    //custom display method
-                    display.call(element, value, this.sourceData); 
-                } else {
-                    this.value2htmlFinal(value, element);
-                }
-                deferred.resolve();
-            }, function () {
-                //do nothing with element
-                deferred.resolve();
-            });
+        value2html: function (value, element, display, response) {
+            var deferred = $.Deferred(),
+                success = function () {
+                    if(typeof display === 'function') {
+                        //custom display method
+                        display.call(element, value, this.sourceData, response); 
+                    } else {
+                        this.value2htmlFinal(value, element);
+                    }
+                    deferred.resolve();
+               };
+            
+            //for null value just call success without loading source
+            if(value === null) {
+               success.call(this);   
+            } else {
+               this.onSourceReady(success, function () { deferred.resolve(); });
+            }
 
             return deferred.promise();
         },  
@@ -73,7 +75,7 @@ List - abstract class for inputs that have source option loaded from js array or
             if (typeof this.options.source === 'string') {
                 //try to get from cache
                 if(this.options.sourceCache) {
-                    var cacheID = this.options.source + (this.options.name ? '-' + this.options.name : ''),
+                    var cacheID = this.options.source,
                     cache;
 
                     if (!$(document).data(cacheID)) {
@@ -84,11 +86,13 @@ List - abstract class for inputs that have source option loaded from js array or
                     //check for cached data
                     if (cache.loading === false && cache.sourceData) { //take source from cache
                         this.sourceData = cache.sourceData;
+                        this.doPrepend();
                         success.call(this);
                         return;
                     } else if (cache.loading === true) { //cache is loading, put callback in stack to be called later
                         cache.callbacks.push($.proxy(function () {
                             this.sourceData = cache.sourceData;
+                            this.doPrepend();
                             success.call(this);
                         }, this));
 
@@ -107,7 +111,6 @@ List - abstract class for inputs that have source option loaded from js array or
                     url: this.options.source,
                     type: 'get',
                     cache: false,
-                    data: this.options.name ? {name: this.options.name} : {},
                     dataType: 'json',
                     success: $.proxy(function (data) {
                         if(cache) {
@@ -115,17 +118,19 @@ List - abstract class for inputs that have source option loaded from js array or
                         }
                         this.sourceData = this.makeArray(data);
                         if($.isArray(this.sourceData)) {
-                            this.doPrepend();
-                            success.call(this);
                             if(cache) {
                                 //store result in cache
                                 cache.sourceData = this.sourceData;
-                                $.each(cache.callbacks, function () { this.call(); }); //run success callbacks for other fields
+                                //run success callbacks for other fields waiting for this source
+                                $.each(cache.callbacks, function () { this.call(); }); 
                             }
+                            this.doPrepend();
+                            success.call(this);
                         } else {
                             error.call(this);
                             if(cache) {
-                                $.each(cache.err_callbacks, function () { this.call(); }); //run error callbacks for other fields
+                                //run error callbacks for other fields waiting for this source
+                                $.each(cache.err_callbacks, function () { this.call(); }); 
                             }
                         }
                     }, this),
@@ -138,8 +143,13 @@ List - abstract class for inputs that have source option loaded from js array or
                         }
                     }, this)
                 });
-            } else { //options as json/array
-                this.sourceData = this.makeArray(this.options.source);
+            } else { //options as json/array/function
+                if (typeof this.options.source === 'function') {
+                   this.sourceData = this.makeArray(this.options.source());
+                } else {
+                   this.sourceData = this.makeArray(this.options.source);
+                }
+                    
                 if($.isArray(this.sourceData)) {
                     this.doPrepend();
                     success.call(this);   
@@ -160,7 +170,11 @@ List - abstract class for inputs that have source option loaded from js array or
                 if (typeof this.options.prepend === 'string') {
                     this.options.prepend = {'': this.options.prepend};
                 }              
-                this.prependData = this.makeArray(this.options.prepend);
+                if (typeof this.options.prepend === 'function') {
+                    this.prependData = this.makeArray(this.options.prepend());
+                } else {
+                    this.prependData = this.makeArray(this.options.prepend);
+                }
             }
 
             if($.isArray(this.prependData) && $.isArray(this.sourceData)) {
@@ -222,41 +236,41 @@ List - abstract class for inputs that have source option loaded from js array or
             return result;
         },
         
-        //search for item by particular value
-        itemByVal: function(val) {
-            if($.isArray(this.sourceData)) {
-                for(var i=0; i<this.sourceData.length; i++){
-                    /*jshint eqeqeq: false*/
-                    if(this.sourceData[i].value == val) {
-                    /*jshint eqeqeq: true*/                            
-                        return this.sourceData[i];
-                    }
-                }
+        option: function(key, value) {
+            this.options[key] = value;
+            if(key === 'source') {
+                this.sourceData = null;
             }
+            if(key === 'prepend') {
+                this.prependData = null;
+            }            
         }        
 
     });      
 
     List.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
-        Source data for list. If string - considered ajax url to load items. Otherwise should be an array.
-        Array format is: <code>[{value: 1, text: "text"}, {...}]</code><br>
-        For compability it also supports format <code>{value1: "text1", value2: "text2" ...}</code> but it does not guarantee elements order.      
-        If source is **string**, results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
+        Source data for list.  
+        If **array** - it should be in format: `[{value: 1, text: "text1"}, {...}]`  
+        For compability, object format is also supported: `{"1": "text1", "2": "text2" ...}` but it does not guarantee elements order.
         
+        If **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.
+          
+        If **function**, it should return data in format above (since 1.4.0).
+		
         @property source 
-        @type string|array|object
+        @type string | array | object | function
         @default null
         **/         
-        source:null, 
+        source: null, 
         /**
         Data automatically prepended to the beginning of dropdown list.
         
         @property prepend 
-        @type string|array|object
+        @type string | array | object | function
         @default false
         **/         
-        prepend:false,
+        prepend: false,
         /**
         Error message when list cannot be loaded (e.g. ajax error)
         

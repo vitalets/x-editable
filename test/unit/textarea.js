@@ -16,7 +16,7 @@ $(function () {
         var p = tip(e);
         ok(p.find('textarea').length, 'textarea exists')
         ok(!p.find('textarea').val().length, 'textrea is empty')        
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed')         
       })
       
@@ -25,7 +25,7 @@ $(function () {
         e.click()
         var p = tip(e);
         equal(p.find('textarea').attr('placeholder'), 'abc', 'placeholder exists');        
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');         
       })      
       
@@ -58,7 +58,7 @@ $(function () {
       })            
   
      asyncTest("should replace <br> with newline (on show) and back (on save)", function () {
-        var  v = '12<br>3&lt;i&gt;4<br />56',
+        var  v = '12<br>\n3&lt;i&gt;4<br />56',
              e = $('<a href="#" data-type="textarea" data-pk="1" data-url="post.php">'+v+'</a>').appendTo(fx).editable(),
              v1 = '12\n3<i>4\n56',
              vnew = "12\n3<b>4\n56\n\n78",

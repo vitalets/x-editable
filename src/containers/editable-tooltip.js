@@ -6,7 +6,7 @@
 (function ($) {
     
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'tooltip',
         innerCss: '.ui-tooltip-content', 
         
@@ -47,24 +47,22 @@
         },         
         
         tip: function() {
-            return this.container()._find(this.container().element);
+            return this.container() ? this.container()._find(this.container().element) : null;
         },
         
         innerShow: function() {
             this.call('open');
-            this.tip().addClass('editable-container');
-            
-            this.initForm(); 
-            this.tip().find(this.innerCss)
-                .empty()
-                .append($('<label>').text(this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle")))
-                .append(this.$form);      
-            this.$form.editableform('render');             
+            var label = this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle"); 
+            this.tip().find(this.innerCss).empty().append($('<label>').text(label));
         },  
         
         innerHide: function() {
             this.call('close'); 
         },
+        
+        innerDestroy: function() {
+            /* tooltip destroys itself on hide */
+        },         
         
         setPosition: function() {
             this.tip().position( $.extend({
@@ -102,19 +100,8 @@
            }
            
            this.containerOptions.position = pos;
-        },
-        
-        destroy: function() {
-           //jqueryui tooltip destroys itself
-        }                 
+        }
+                
     });
-    
-    //defaults
-    /*
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.tooltip.defaults, $.fn.editableContainer.defaults, {
-        items: '*',
-        content: ' ',
-    });
-    */
     
 }(window.jQuery));

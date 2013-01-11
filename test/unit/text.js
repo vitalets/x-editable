@@ -15,8 +15,8 @@ $(function () {
              
         e.click();
         var p = tip(e);
-        equal(p.find('input[type=text]').val(), '', 'input val is empty string')
-        p.find('button[type=button]').click(); 
+        equal(p.find('input[type="text"]').val(), '', 'input val is empty string')
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed')    
      })   
       
@@ -26,7 +26,7 @@ $(function () {
         e.click();
         var p = tip(e);
         equal(p.find('input[type=text]').attr('placeholder'), 'abc', 'placeholder exists');
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');
       });   
       
@@ -36,7 +36,7 @@ $(function () {
         e.click();
         var p = tip(e);
         ok(p.find('input[type=text]').hasClass('span4'), 'class set correctly');
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');
       });           
      
@@ -86,7 +86,7 @@ $(function () {
       });     
       
      asyncTest("should show error on server validation", function () {
-        var msg = 'required',
+        var msg = "required\nfield",
            e = $('<a href="#" data-name="text1">abc</a>').appendTo(fx).editable({
               validate: function(value) { 
                   ok(this === e[0], 'scope is ok');
@@ -104,8 +104,9 @@ $(function () {
         setTimeout(function() {
            ok(p.is(':visible'), 'popover still shown');  
            ok(p.find('.editable-error-block').length, 'class "editable-error-block" exists');
-           equal(p.find('.editable-error-block').text(), 'required', 'error msg shown');   
-           p.find('button[type=button]').click(); 
+           equal(p.find('.editable-error-block').text().toLowerCase(), msg.replace('\n', ''), 'error msg shown');   
+           equal(p.find('.editable-error-block').html().toLowerCase(), msg.replace('\n', '<br>'), 'newline replaced with br');   
+           p.find('.editable-cancel').click(); 
            ok(!p.is(':visible'), 'popover was removed');
            e.remove();    
            start();   
@@ -136,7 +137,7 @@ $(function () {
         ok(p.is(':visible'), 'popover still shown');  
         ok(p.find('.error').length, 'class "error" exists');
         equal(p.find('.editable-error-block').text(), 'required1', 'error msg shown');   
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');
         
         e = e1;
@@ -147,7 +148,7 @@ $(function () {
         ok(p.is(':visible'), 'popover still shown');  
         ok(p.find('.error').length, 'class "error" exists');
         equal(p.find('.editable-error-block').text(), 'required2', 'error msg shown');   
-        p.find('button[type=button]').click(); 
+        p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');        
      });        
       */
@@ -173,7 +174,7 @@ $(function () {
            ok(p.is(':visible'), 'popover still shown');  
            ok(p.find('.editable-error-block').length, 'class "editable-error-block" exists');
            equal(p.find('.editable-error-block').text(), 'error', 'error msg shown');   
-           p.find('button[type=button]').click(); 
+           p.find('.editable-cancel').click(); 
            ok(!p.is(':visible'), 'popover was removed');
            e.remove();    
            start();  
@@ -203,7 +204,7 @@ $(function () {
            equal(e.data('editable').value, 'xyz', 'value ok');   
            equal(e.text(), 'xyz', 'text ok');   
            
-           p.find('button[type=button]').click(); 
+           p.find('.editable-cancel').click(); 
            ok(!p.is(':visible'), 'popover was removed');
            e.remove();    
            start();  
@@ -308,7 +309,7 @@ $(function () {
                ok(p.find('.editable-error-block').length, 'class "error" exists')
                equal(p.find('.editable-error-block').text(), 'customtext', 'error shown')               
                
-               p.find('button[type=button]').click(); 
+               p.find('.editable-cancel').click(); 
                ok(!p.is(':visible'), 'popover was removed')
                
                e.remove();  
@@ -338,7 +339,7 @@ $(function () {
                ok(p.find('.error').length, 'class "error" exists')
                equal(p.find('.editable-error-block').text(), 'Internal server error', 'error shown')               
                
-               p.find('button[type=button]').click(); 
+               p.find('.editable-cancel').click(); 
                ok(!p.is(':visible'), 'popover was removed')
                
                e.remove();  
@@ -394,8 +395,9 @@ $(function () {
      asyncTest("'display' callback", function () {
         var newText = 'cd<e>;"',
             e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
-             display: function(value) {
+             display: function(value, response) {
                  ok(this === e[0], 'scope is ok');
+                 ok(response.success, 'response param ok');
                  $(this).text('qq'+value);
              } 
           });  
@@ -499,6 +501,32 @@ $(function () {
             equal(e.text(), v1, 'new text shown');             
         }    
                   
-  });                    
+  });   
+  
+   test("`clear` option", function () {
+        var e = $('<a href="#" data-type="text" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable({
+          clear: true,
+          send: 'never'
+        });
+
+        e.click()
+        var p = tip(e);
+        var c = p.find('.editable-clear-x'); 
+        ok(c.is(':visible'), 'clear shown');
+        p.find('input').val('').trigger('keyup');
+        ok(!c.is(':visible'), 'clear hidden for empty input');
+        p.find('input').val('cde').trigger('keyup');
+        ok(c.is(':visible'), 'clear shown on keyboard input');
+        c.click();
+        ok(!c.is(':visible'), 'clear hidden after click');
+        ok(!p.find('input').val(), 'input empty');
+        
+        p.find('form').submit();
+        
+        //reopen with empty
+        e.click(); 
+        ok(!c.is(':visible'), 'clear hidden for empty input');
+  });
+                   
          
 });    

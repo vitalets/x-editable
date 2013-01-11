@@ -36,7 +36,7 @@ $(function(){
         @method render() 
         **/        
         render: function() {
-            Address.superclass.render.call(this);
+           this.$input = this.$tpl.find('input');
         },
         
         /**
@@ -111,9 +111,9 @@ $(function(){
         @param {mixed} value
        **/         
        value2input: function(value) {
-           this.$input.find('input[name="city"]').val(value.city);
-           this.$input.find('input[name="street"]').val(value.street);
-           this.$input.find('input[name="building"]').val(value.building);
+           this.$input.filter('[name="city"]').val(value.city);
+           this.$input.filter('[name="street"]').val(value.street);
+           this.$input.filter('[name="building"]').val(value.building);
        },       
        
        /**
@@ -123,9 +123,9 @@ $(function(){
        **/          
        input2value: function() { 
            return {
-              city: this.$input.find('input[name="city"]').val(), 
-              street: this.$input.find('input[name="street"]').val(), 
-              building: this.$input.find('input[name="building"]').val()
+              city: this.$input.filter('[name="city"]').val(), 
+              street: this.$input.filter('[name="street"]').val(), 
+              building: this.$input.filter('[name="building"]').val()
            };
        },        
        
@@ -135,7 +135,7 @@ $(function(){
         @method activate() 
        **/        
        activate: function() {
-            this.$input.find('input[name="city"]').focus();
+            this.$input.filter('[name="city"]').focus();
        },  
        
        /**
@@ -144,7 +144,7 @@ $(function(){
         @method autosubmit() 
        **/       
        autosubmit: function() {
-           this.$input.find('input[type="text"]').keydown(function (e) {
+           this.$input.keydown(function (e) {
                 if (e.which === 13) {
                     $(this).closest('form').submit();
                 }
@@ -153,11 +153,11 @@ $(function(){
     });
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
-             '<div><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
-             '<div><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
+        tpl: '<div class="editable-address"><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
+             '<div class="editable-address"><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
+             '<div class="editable-address"><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
              
-        inputclass: 'editable-address'
+        inputclass: ''
     });
 
     $.fn.editabletypes.address = Address;

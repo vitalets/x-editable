@@ -11,24 +11,31 @@ function getFiles() {
         bootstrap: {
             form: [forms+'editable-form-bootstrap.js'],
             container: [containers+'editable-popover.js'],
-            inputs: [inputs+'date/date.js', inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
+            inputs: [
+                inputs+'date/date.js', 
+                inputs+'date/datefield.js', 
+                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
             css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
         },  
         jqueryui: {
             form: [forms+'editable-form-jqueryui.js'],
             container: [containers+'editable-tooltip.js'],
-            inputs: [inputs+'dateui/dateui.js'], 
+            inputs: [
+               inputs+'dateui/dateui.js',
+               inputs+'dateui/dateuifield.js'
+            ], 
             css: []
         },  
         jquery: {
             form: [],
             container: [containers+'editable-poshytip.js'],
-            inputs: [inputs+'dateui/dateui.js'],
+            inputs: [
+               inputs+'dateui/dateui.js',
+               inputs+'dateui/dateuifield.js'
+            ],            
             css: []
         }      
     };
-
-    var inline = [containers+'editable-inline.js'];
 
     //common js files 
     var js = [
@@ -36,6 +43,7 @@ function getFiles() {
     forms+'editable-form.js',
     forms+'editable-form-utils.js',
     containers+'editable-container.js', 
+    containers+'editable-inline.js',
     lib+'element/editable-element.js',
     inputs+'abstract.js',
     inputs+'list.js',
@@ -43,7 +51,9 @@ function getFiles() {
     inputs+'textarea.js',
     inputs+'select.js',    
     inputs+'checklist.js',
-    inputs+'html5types.js'
+    inputs+'html5types.js',
+    inputs+'combodate/lib/combodate.js', 
+    inputs+'combodate/combodate.js'    
     ]; 
 
     //common css files
@@ -59,23 +69,11 @@ function getFiles() {
     for(var k in config) {
         folder = '<%= dist %>/'+k+'-editable/';
 
-        //popup
-        task = k+'_popup_js';
+        //js
+        task = k+'_js';
         dest = folder+'js/'+k+'-editable'+ (k === 'jquery' ? '-poshytip' : '');
         concat_files[task] = {
             src:  js.concat(config[k].form).concat(config[k].container).concat(config[k].inputs),
-            dest: dest+'.js'
-        };
-        min_files[task] = {
-            src: ['<banner:meta.banner>', '<config:concat.'+task+'.dest>'],
-            dest: dest + '.min.js'
-        };      
-
-        //inline
-        task = k+'_inline_js';
-        dest = folder+'js/'+k+'-editable-inline';
-        concat_files[task] = {
-            src: js.concat(config[k].form).concat(inline).concat(config[k].inputs),
             dest: dest+'.js'
         };
         min_files[task] = {
@@ -158,12 +156,15 @@ module.exports = function(grunt) {
       files: ['grunt.js', 
               'src/editable-form/*.js', 
               'src/containers/*.js', 
-              'src/inputs/*.js', 
               'src/element/*.js', 
+              
               'src/inputs/*.js', 
-              'src/inputs/date/date.js',
-              'src/inputs/dateui/dateui.js',
-              'src/inputs-ext/**/*.js'
+              'src/inputs/date/*.js',
+              'src/inputs/dateui/*.js',
+              'src/inputs/combodate/*.js',
+              
+              'src/inputs-ext/address/*.js',
+              'src/inputs-ext/wysihtml5/*.js'
               ]
     },
     /*
@@ -194,9 +195,9 @@ module.exports = function(grunt) {
     copy: {
         dist: {
             files: {
-                '<%= dist %>/bootstrap-editable/css/img/' : 'src/editable-form/img/*',
-                '<%= dist %>/jqueryui-editable/css/img/' : 'src/editable-form/img/*',
-                '<%= dist %>/jquery-editable/css/img/' : 'src/editable-form/img/*',
+                '<%= dist %>/bootstrap-editable/img/' : 'src/img/*',
+                '<%= dist %>/jqueryui-editable/img/' : 'src/img/*',
+                '<%= dist %>/jquery-editable/img/' : 'src/img/*',
                  //licences
                 '<%= dist %>/': ['LICENSE-MIT', 'README.md', 'CHANGELOG.txt']
             },
@@ -213,11 +214,11 @@ module.exports = function(grunt) {
             }            
         },
         ui_datepicker: {
-         files: {
+            files: {
              //copy jquery ui datepicker
-             '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**' 
+             '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**'
          }
-       } 
+       }         
     },
  
     uglify: {}

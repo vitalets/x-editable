@@ -94,7 +94,7 @@ $(function () {
         });            
         
         e.editable({
-            source: 'groups.php',
+            source: 'groups.php'
         });
         
         e.click();
@@ -103,7 +103,7 @@ $(function () {
              var p = tip(e);
              
              test_reason = 'cancel'
-             p.find('button[type=button]').click();  //cancel
+             p.find('.editable-cancel').click();  //cancel
              ok(!p.is(':visible'), 'popover closed');
 
              test_reason = 'onblur'            
@@ -147,7 +147,7 @@ $(function () {
         });         
         
         e.editable({
-            source: groups,
+            source: groups
         });
         
         e.click();
@@ -361,10 +361,40 @@ $(function () {
         equal(e.data('editable').value, 1, 'value correct');
         equal(e.text(), groups[1], 'text shown correctly');
         
+        //open editable to check update of input 
+        e.click();
+        var p = tip(e);
+        
+        equal(p.find('select').find('option').length, size, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');          
+        
         e.editable('setValue', 2);
         
         equal(e.data('editable').value, 2, 'new value correct');
         equal(e.text(), groups[2], 'new text shown correctly');
-     });                                
+        equal(p.find('select').val(), e.data('editable').value, 'new selected value correct'); 
+     });     
+     
+     
+     test("`destroy` method", function () {
+        var e = $('<a href="#" data-name="name" data-type="text" data-url="post.php"></a>').appendTo('#qunit-fixture').editable({
+        });
+        
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'container visible');
+        
+        e.editable('destroy');
+        
+        ok(!p.is(':visible'), 'container closed');
+        ok(!e.data('editable'), 'editable instance removed');
+        ok(!e.data('editableContainer'), 'editableContainer instance removed');
+        ok(!e.hasClass('editable'), 'editable class removed');
+        ok(!e.hasClass('editable-click'), 'editable-click class removed');
+        
+        e.click();
+        
+        
+     });                                 
   
 });            

@@ -20,26 +20,27 @@ To create your own input you can inherit from this class.
         **/
        init: function(type, options, defaults) {
            this.type = type;
-           this.options = $.extend({}, defaults, options); 
-           this.$input = null;
-           this.$clear = null;
-           this.error = null;
+           this.options = $.extend({}, defaults, options);
+       },
+       
+       /*
+       this method called before render to init $tpl that is inserted in DOM
+       */
+       prerender: function() {
+           this.$tpl = $(this.options.tpl); //whole tpl as jquery object    
+           this.$input = this.$tpl;         //control itself, can be changed in render method
+           this.$clear = null;              //clear button
+           this.error = null;               //error message, if input cannot be rendered           
        },
        
        /**
         Renders input from tpl. Can return jQuery deferred object.
+        Can be overwritten in child objects
         
         @method render() 
        **/       
        render: function() {
-            this.$input = $(this.options.tpl);
-            if(this.options.inputclass) {
-                this.$input.addClass(this.options.inputclass); 
-            }
-            
-            if (this.options.placeholder) {
-                this.$input.attr('placeholder', this.options.placeholder);
-            }   
+
        }, 
 
        /**
@@ -76,7 +77,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts string received from server into value.
+        Converts string received from server into value. Usually from `data-value` attribute.
         
         @method str2value(str) 
         @param {string} str
@@ -87,7 +88,7 @@ To create your own input you can inherit from this class.
        }, 
        
        /**
-        Converts value for submitting to server
+        Converts value for submitting to server. Result can be string or object.
         
         @method value2submit(value) 
         @param {mixed} value
@@ -148,7 +149,25 @@ To create your own input you can inherit from this class.
        **/       
        autosubmit: function() {
         
+       },
+       
+       // -------- helper functions --------
+       setClass: function() {
+           if(this.options.inputclass) {
+               this.$input.addClass(this.options.inputclass); 
+           } 
+       },
+       
+       setAttr: function(attr) {
+           if (this.options[attr]) {
+               this.$input.attr(attr, this.options[attr]);
+           } 
+       },
+       
+       option: function(key, value) {
+            this.options[key] = value;
        }
+       
     };
         
     AbstractInput.defaults = {  

@@ -6,7 +6,7 @@
 (function ($) {
     
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'poshytip',
         innerCss: 'div.tip-inner',
         
@@ -20,20 +20,41 @@
             });            
             
             this.call(this.containerOptions);
-            
-            var $content = $('<div>')
-              .append($('<label>').text(this.options.title || this.$element.data( "title") || this.$element.data( "originalTitle")))
-              .append(this.initForm());            
-              
-            this.call('update', $content);                         
         },        
         
-        innerShow: function () {
-            this.$form.editableform('render');
+        /*
+        Overwrite totally show() method as poshytip requires content is set before show 
+        */
+        show: function (closeAll) {
+            this.$element.addClass('editable-open');
+            if(closeAll !== false) {
+                //close all open containers (except this)
+                this.closeOthers(this.$element[0]);  
+            }            
+            
+            //render form
+            this.$form = $('<div>');
+            this.renderForm();             
+          
+            var $label = $('<label>').text(this.options.title || this.$element.data( "title") || this.$element.data( "originalTitle")),
+                $content = $('<div>').append($label).append(this.$form);           
+          
+            this.call('update', $content);
             this.call('show');
+            
             this.tip().addClass('editable-container');
             this.$form.data('editableform').input.activate();
-        },        
+        },     
+        
+        /* hide */
+        innerHide: function () {
+            this.call('hide');       
+        },
+        
+        /* destroy */
+        innerDestroy: function() {
+            this.call('destroy');
+        },             
          
         setPosition: function() {
             this.container().refresh(false);

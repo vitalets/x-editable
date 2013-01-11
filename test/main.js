@@ -19,13 +19,25 @@ require(["loader", jqurl], function(loader) {
     function() {
         //disable effects
         $.fx.off = true;
-        $.support.transition = false;           
+        $.support.transition = false;
+        $.fn.editable.defaults.mode = params.c === 'inline' ? 'inline' : 'popup';           
         
         QUnit.load();
         QUnit.start();
     });
     
     function addTests(config) {
+        var custom;
+        
+        switch(params.f) {
+            case 'bootstrap':
+              custom = ['test/unit/datefield', 'test/unit/date', 'test/unit/wysihtml5'];
+              break;
+               
+            default:  
+              custom = ['test/unit/dateuifield', 'test/unit/dateui'];
+        }
+        
         var tests = [
             'test/mocks',
             'test/unit/common',
@@ -33,12 +45,36 @@ require(["loader", jqurl], function(loader) {
             'test/unit/textarea',
             'test/unit/select',
             'test/unit/checklist',
-            (params.f === 'bootstrap') ?  'test/unit/date' :  'test/unit/dateui',            
-            'test/unit/api'
+            'test/unit/combodate'
        ];
+       tests = tests.concat(custom);
+       tests.push('test/unit/api');
        
        for(var i=0; i<tests.length-1; i++) {
           config.shim[tests[i+1]] = [tests[i]]; 
        }
     }
 });
+
+
+// implement JSON.stringify serialization for IE7
+var JSON = JSON || {};
+JSON.stringify = JSON.stringify || function (obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+        // simple data type
+        if (t == "string") obj = '"'+obj+'"';
+        return String(obj);
+    }
+    else {
+        // recurse array or object
+        var n, v, json = [], arr = (obj && obj.constructor == Array);
+        for (n in obj) {
+            v = obj[n]; t = typeof(v);
+            if (t == "string") v = '"'+v+'"';
+            else if (t == "object" && v !== null) v = JSON.stringify(v);
+            json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+};

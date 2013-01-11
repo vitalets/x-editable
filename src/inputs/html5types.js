@@ -120,18 +120,9 @@ Number
     $.extend(NumberInput.prototype, {
          render: function () {
             NumberInput.superclass.render.call(this);
-
-            if (this.options.min !== null) {
-                this.$input.attr('min', this.options.min);
-            } 
-            
-            if (this.options.max !== null) {
-                this.$input.attr('max', this.options.max);
-            } 
-            
-            if (this.options.step !== null) {
-                this.$input.attr('step', this.options.step);
-            }                         
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');
         }
     });     
     NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
@@ -155,29 +146,19 @@ Range (inherit from number)
     $.fn.editableutils.inherit(Range, $.fn.editabletypes.number);
     $.extend(Range.prototype, {
         render: function () {
-            this.$input = $(this.options.tpl);
-            var $slider = this.$input.filter('input');
-            if(this.options.inputclass) {
-                $slider.addClass(this.options.inputclass); 
-            }
-            if (this.options.min !== null) {
-                $slider.attr('min', this.options.min);
-            } 
+            this.$input = this.$tpl.filter('input');
             
-            if (this.options.max !== null) {
-                $slider.attr('max', this.options.max);
-            } 
+            this.setClass();
+            this.setAttr('min');
+            this.setAttr('max');
+            this.setAttr('step');           
             
-            if (this.options.step !== null) {
-                $slider.attr('step', this.options.step);
-            }             
-            
-            $slider.on('input', function(){
+            this.$input.on('input', function(){
                 $(this).siblings('output').text($(this).val()); 
             });  
         },
         activate: function() {
-            this.$input.filter('input').focus();
+            this.$input.focus();
         }         
     });
     Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {

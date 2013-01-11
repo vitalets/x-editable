@@ -30,6 +30,8 @@ $(function(){
 
     $.extend(Select.prototype, {
         renderList: function() {
+            this.$input.empty();
+            
             if(!$.isArray(this.sourceData)) {
                 return;
             }
@@ -37,6 +39,8 @@ $(function(){
             for(var i=0; i<this.sourceData.length; i++) {
                 this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
+            
+            this.setClass();
             
             //enter submit
             this.$input.on('keydown.editable', function (e) {
@@ -47,11 +51,14 @@ $(function(){
         },
        
         value2htmlFinal: function(value, element) {
-            var text = '', item = this.itemByVal(value);
-            if(item) {
-                text = item.text;
+            var text = '', 
+                items = $.fn.editableutils.itemsByValue(value, this.sourceData);
+                
+            if(items.length) {
+                text = items[0].text;
             }
-            Select.superclass.constructor.superclass.value2html(text, element);   
+            
+            $(element).text(text);
         },
         
         autosubmit: function() {

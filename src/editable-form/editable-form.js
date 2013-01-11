@@ -15,24 +15,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         if(!this.options.scope) {
             this.options.scope = this;
         }
-        this.initInput();
+        //nothing shown after init
     };
 
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            var TypeConstructor, typeOptions;
-
-            //create input of specified type
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
-                return; 
-            }          
-
+            //take input from options (as it is created in editable-element)
+            this.input = this.options.input;
+            
+            //set initial value
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {
@@ -47,47 +39,49 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @method render
         **/        
         render: function() {
+            //init loader
             this.$loading = $($.fn.editableform.loading);        
             this.$div.empty().append(this.$loading);
-            this.showLoading();
             
             //init form template and buttons
-            this.initTemplate(); 
+            this.initTemplate();
             if(this.options.showbuttons) {
                 this.initButtons();
             } else {
                 this.$form.find('.editable-buttons').remove();
             }
 
+            //show loading state
+            this.showLoading();            
+            
             /**        
             Fired when rendering starts
             @event rendering 
             @param {Object} event event object
             **/            
             this.$div.triggerHandler('rendering');
+            
+            //init input
+            this.initInput();
+            
+            //append input to form
+            this.input.prerender();
+            this.$form.find('div.editable-input').append(this.input.$tpl);            
 
+            //append form to container
+            this.$div.append(this.$form);
+            
             //render input
             $.when(this.input.render())
             .then($.proxy(function () {
-                //input
-                this.$form.find('div.editable-input').append(this.input.$input);
-
-                //automatically submit inputs when no buttons shown
+                //setup input to submit automatically when no buttons shown
                 if(!this.options.showbuttons) {
                     this.input.autosubmit(); 
                 }
-                
-                //"clear" link
-                if(this.input.$clear) {
-                    this.$form.find('div.editable-input').append($('<div class="editable-clear">').append(this.input.$clear));  
-                }                
-
-                //append form to container
-                this.$div.append(this.$form);
                  
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-
+                
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);
@@ -111,6 +105,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('rendered');                
 
                 this.showForm();
+                
+                //call postrender method to perform actions required visibility of form
+                if(this.input.postrender) {
+                    this.input.postrender();
+                }                
             }, this));
         },
         cancel: function() {   
@@ -122,11 +121,17 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$div.triggerHandler('cancel');
         },
         showLoading: function() {
-            var w;
+            var w, h;
             if(this.$form) {
-                //set loading size equal to form 
-                this.$loading.width(this.$form.outerWidth());
-                this.$loading.height(this.$form.outerHeight());
+                //set loading size equal to form
+                w = this.$form.outerWidth();
+                h = this.$form.outerHeight(); 
+                if(w) {
+                    this.$loading.width(w);
+                }
+                if(h) {
+                    this.$loading.height(h);
+                }
                 this.$form.hide();
             } else {
                 //stretch loading to fill container width
@@ -154,14 +159,23 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
         error: function(msg) {
             var $group = this.$form.find('.control-group'),
-            $block = this.$form.find('.editable-error-block');
+                $block = this.$form.find('.editable-error-block'),
+                lines;
 
             if(msg === false) {
                 $group.removeClass($.fn.editableform.errorGroupClass);
                 $block.removeClass($.fn.editableform.errorBlockClass).empty().hide(); 
             } else {
+                //convert newline to <br> for more pretty error display
+                if(msg) {
+                    lines = msg.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        lines[i] = $('<div>').text(lines[i]).html();
+                    }
+                    msg = lines.join('<br>');
+                }
                 $group.addClass($.fn.editableform.errorGroupClass);
-                $block.addClass($.fn.editableform.errorBlockClass).text(msg).show();
+                $block.addClass($.fn.editableform.errorBlockClass).html(msg).show();
             }
         },
 
@@ -294,10 +308,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         },
 
         option: function(key, value) {
-            this.options[key] = value;
+            if(key in this.options) {
+                this.options[key] = value;
+            }
+            
             if(key === 'value') {
                 this.setValue(value);
             }
+            
+            //do not pass option to input as it is passed in editable-element
         },
 
         setValue: function(value, convertStr) {
@@ -306,6 +325,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             } else {
                 this.value = value;
             }
+            
+            //if form is visible, update input
+            if(this.$form && this.$form.is(':visible')) {
+                this.input.value2input(this.value);
+            }            
         }               
     };
 
@@ -367,7 +391,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         url: function(params) {
             if(params.value === 'abc') {
                 var d = new $.Deferred;
-                return d.reject('field cannot be "abc"'); //returning error via deferred object
+                return d.reject('error message'); //returning error via deferred object
             } else {
                 someModel.set(params.name, params.value); //save data in some js model
             }
@@ -458,21 +482,21 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         /**
         Additional options for ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
-
+        
         @property ajaxOptions 
         @type object
         @default null
         @since 1.1.1        
+        @example 
+        ajaxOptions: {
+            type: 'put',
+            dataType: 'json'
+        }        
         **/        
         ajaxOptions: null,
         /**
         Whether to show buttons or not.  
-        Form without buttons can be auto-submitted by input or by onblur = 'submit'.
-        @example 
-        ajaxOptions: {
-            method: 'PUT',
-            dataType: 'xml'
-        }
+        Form without buttons is auto-submitted.
 
         @property showbuttons 
         @type boolean

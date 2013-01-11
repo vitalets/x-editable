@@ -1,13 +1,19 @@
 $(function () {         
    
-   var dpg, f = 'dd.mm.yyyy';
+   var dpg, f = 'dd.mm.yyyy', mode;
    
    module("date", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.datepicker.DPGlobal;
             $.support.transition = false;
-        }
+            mode = $.fn.editable.defaults.mode;
+            $.fn.editable.defaults.mode = 'popup';
+        },
+        teardown: function() {
+            //restore mode
+            $.fn.editable.defaults.mode = mode;
+        }        
     });
     
     function frmt(date, format) {
@@ -32,30 +38,44 @@ $(function () {
                   equal(settings.data.value, nextD, 'submitted value correct');            
               }
           });
-       
-        equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
-            
-        e.click();
-        var p = tip(e);
-        ok(p.find('.datepicker').is(':visible'), 'datepicker exists');
-        ok(p.find('.datepicker').find('.datepicker-days').is(':visible'), 'datepicker days visible');        
-        
-        equal(frmt(e.data('editable').value, f), d, 'day set correct');
-        ok(p.find('td.day.active').is(':visible'), 'active day is visible');
-        equal(p.find('td.day.active').text(), 15, 'day shown correct');
-        equal(p.find('th.dow').eq(0).text(), 'Mo', 'weekStart correct');
 
-        //set new day
-        p.find('td.day.active').next().click();
-        p.find('form').submit();
-    
-        setTimeout(function() {          
-           ok(!p.is(':visible'), 'popover closed')
-           equal(frmt(e.data('editable').value, f), nextD, 'new date saved to value')
-           equal(e.text(), nextD, 'new text shown')            
-           e.remove();    
-           start();  
-        }, timeout); 
+        //testing func, run twice!
+        var func = function() {
+            var df = $.Deferred();
+            equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
+                
+            e.click();
+            var p = tip(e);
+            ok(p.find('.datepicker').is(':visible'), 'datepicker exists');
+            equal(p.find('.datepicker').length, 1, 'datepicker single');
+            ok(p.find('.datepicker').find('.datepicker-days').is(':visible'), 'datepicker days visible');        
+            
+            equal(frmt(e.data('editable').value, f), d, 'day set correct');
+            ok(p.find('td.day.active').is(':visible'), 'active day is visible');
+            equal(p.find('td.day.active').text(), 15, 'day shown correct');
+            equal(p.find('th.dow').eq(0).text(), 'Mo', 'weekStart correct');
+
+            //set new day
+            p.find('td.day.active').next().click();
+            p.find('form').submit();
+        
+            setTimeout(function() {          
+               ok(!p.is(':visible'), 'popover closed');
+               equal(frmt(e.data('editable').value, f), nextD, 'new date saved to value');
+               equal(e.text(), nextD, 'new text shown');
+               df.resolve();            
+            }, timeout);
+            
+            return df.promise();
+        };
+        
+        $.when(func()).then(function() {
+           e.editable('setValue', d, true);
+           $.when(func()).then(function() {
+              e.remove();    
+              start();  
+           });
+        });
         
      });  
      
@@ -109,10 +129,7 @@ $(function () {
      test("viewformat, init by value", function () {
         var dview = '15/05/1984',
             d = '1984-05-15',
-            e = $('<a href="#" data-type="date" data-pk="1" data-weekstart="1" data-value="'+d+'"></a>').appendTo('#qunit-fixture').editable({
-                format: 'yyyy-mm-dd',
-                viewformat: 'dd/mm/yyyy'
-            });
+            e = $('<a href="#" data-type="date" data-pk="1" data-format="yyyy-mm-dd" data-viewformat="dd/mm/yyyy"  data-value="'+d+'"></a>').appendTo('#qunit-fixture').editable();
         
         equal(frmt(e.data('editable').value, 'yyyy-mm-dd'), d, 'value correct');
         equal(e.text(), dview, 'text correct');
@@ -127,7 +144,7 @@ $(function () {
         
         equal(p.find('td.day.active').text(), today.getDate(), 'day shown correct');
         
-        p.find('button[type=button]').click();
+        p.find('.editable-cancel').click();
         ok(!p.is(':visible'), 'popover closed');      
       });
       

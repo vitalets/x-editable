@@ -6,7 +6,7 @@
 (function ($) {
 
     //extend methods
-    $.extend($.fn.editableContainer.Constructor.prototype, {
+    $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'popover',
         //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
         innerCss: $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
@@ -15,10 +15,39 @@
             $.extend(this.containerOptions, {
                 trigger: 'manual',
                 selector: false,
-                content: ' '
+                content: ' ',
+                template: $.fn.popover.defaults.template
             });
+            
+            //as template property is used in inputs, hide it from popover
+            var t;
+            if(this.$element.data('template')) {
+               t = this.$element.data('template');
+               this.$element.removeData('template');  
+            } 
+            
             this.call(this.containerOptions);
-        },        
+            
+            if(t) {
+               //restore data('template')
+               this.$element.data('template', t); 
+            }
+        }, 
+        
+        /* show */
+        innerShow: function () {
+            this.call('show');                
+        },  
+        
+        /* hide */
+        innerHide: function () {
+            this.call('hide');       
+        }, 
+        
+        /* destroy */
+        innerDestroy: function() {
+            this.call('destroy');
+        },                               
         
         setContainerOption: function(key, value) {
             this.container().options[key] = value; 
@@ -81,12 +110,5 @@
           /*jshint laxcomma: false*/  
         }            
     });
-
-    //defaults
-    /*
-    $.fn.editableContainer.defaults = $.extend({}, $.fn.popover.defaults, $.fn.editableContainer.defaults, {
-        
-    });
-    */    
 
 }(window.jQuery));

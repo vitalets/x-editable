@@ -15,27 +15,15 @@ Makes editable any HTML element on the page. Applied as jQuery method.
     Editable.prototype = {
         constructor: Editable, 
         init: function () {
-            var TypeConstructor, 
-                isValueByText = false, 
-                doAutotext, 
-                finalize;
+            var isValueByText = false, 
+                doAutotext, finalize;
 
-            //editableContainer must be defined
-            if(!$.fn.editableContainer) {
-                $.error('You must define $.fn.editableContainer via including corresponding file (e.g. editable-popover.js)');
-                return;
-            }    
-                
             //name
             this.options.name = this.options.name || this.$element.attr('id');
              
             //create input of specified type. Input will be used for converting value, not in form
-            if(typeof $.fn.editabletypes[this.options.type] === 'function') {
-                TypeConstructor = $.fn.editabletypes[this.options.type];
-                this.typeOptions = $.fn.editableutils.sliceObj(this.options, $.fn.editableutils.objectKeys(TypeConstructor.defaults));
-                this.input = new TypeConstructor(this.typeOptions);
-            } else {
-                $.error('Unknown type: '+ this.options.type);
+            this.input = $.fn.editableutils.createInput(this.options);
+            if(!this.input) {
                 return; 
             }            
 
@@ -96,8 +84,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                               
                @event init 
                @param {Object} event event object
-               @param {Object} editable editable instance
+               @param {Object} editable editable instance (as here it cannot accessed via data('editable'))
                @since 1.2.0
+               @example
+               $('#username').on('init', function(e, editable) {
+                   alert('initialized ' + editable.options.name);
+               });
                **/                  
                 this.$element.triggerHandler('init', this);
             }, this));
@@ -108,18 +100,20 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Can call custom display method from options.
         Can return deferred object.
         @method render()
+        @param {mixed} response server response (if exist) to pass into display function
         */          
-        render: function() {
+        render: function(response) {
             //do not display anything
             if(this.options.display === false) {
                 return;
             }
+            
             //if it is input with source, we pass callback in third param to be called when source is loaded
             if(this.input.options.hasOwnProperty('source')) {
-                return this.input.value2html(this.value, this.$element[0], this.options.display); 
+                return this.input.value2html(this.value, this.$element[0], this.options.display, response); 
             //if display method defined --> use it    
             } else if(typeof this.options.display === 'function') {
-                return this.options.display.call(this.$element[0], this.value);
+                return this.options.display.call(this.$element[0], this.value, response);
             //else use input's original value2html() method    
             } else {
                 return this.input.value2html(this.value, this.$element[0]); 
@@ -189,12 +183,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             //disabled
             if(key === 'disabled') {
-                if(value) {
-                    this.disable();
-                } else {
-                    this.enable();
-                }
-                return;
+               return value ? this.disable() : this.enable();
             } 
             
             //value
@@ -206,6 +195,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                 this.container.option(key, value);  
             }
+             
+            //pass option to input directly (as it points to the same in form)
+            if(this.input.option) {
+                this.input.option(key, value);
+            }
+            
         },              
         
         /*
@@ -247,7 +242,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //init editableContainer: popover, tooltip, inline, etc..
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
-                    value: this.value
+                    value: this.value,
+                    input: this.input //pass input to form (as it is already created)
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on("save.internal", $.proxy(this.save, this));
@@ -294,8 +290,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.$element.removeClass('editable-unsaved');
             }
             
-           // this.hide();
-            this.setValue(params.newValue);
+            this.setValue(params.newValue, false, params.response);
             
             /**        
             Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
@@ -307,13 +302,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @param {Object} params.response ajax response
             @example
             $('#username').on('save', function(e, params) {
-                //assuming server response: '{success: true}'
-                var pk = $(this).data('editable').options.pk;
-                if(params.response && params.response.success) {
-                    alert('value: ' + params.newValue + ' with pk: ' + pk + ' saved!');
-                } else {
-                    alert('error!'); 
-                } 
+                alert('Saved value: ' + params.newValue);
             });
             **/
             //event itself is triggered by editableContainer. Description here is only for documentation              
@@ -331,7 +320,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @param {mixed} value new value 
         @param {boolean} convertStr whether to convert value from string to internal format
         **/         
-        setValue: function(value, convertStr) {
+        setValue: function(value, convertStr, response) {
             if(convertStr) {
                 this.value = this.input.str2value(value);
             } else {
@@ -340,7 +329,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                 this.container.option('value', this.value);
             }
-            $.when(this.render())
+            $.when(this.render(response))
             .then($.proxy(function() {
                 this.handleEmpty();
             }, this));
@@ -354,7 +343,28 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.activate(); 
             }
-        }
+        },
+        
+        /**
+        Removes editable feature from element
+        @method destroy()
+        **/        
+        destroy: function() {
+            if(this.container) {
+               this.container.destroy(); 
+            }
+
+            if(this.options.toggle !== 'manual') {
+                this.$element.removeClass('editable-click');
+                this.$element.off(this.options.toggle + '.editable');
+            } 
+            
+            this.$element.off("save.internal");
+            
+            this.$element.removeClass('editable');
+            this.$element.removeClass('editable-open');
+            this.$element.removeData('editable');
+        }        
     };
 
     /* EDITABLE PLUGIN DEFINITION
@@ -540,7 +550,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/          
         autotext: 'auto', 
         /**
-        Initial value of input. Taken from <code>data-value</code> or element's text.
+        Initial value of input. If not set, taken from element's text.
 
         @property value 
         @type mixed
@@ -549,10 +559,21 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         value: null,
         /**
         Callback to perform custom displaying of value in element's text.  
-        If <code>null</code>, default input's value2html() will be called.  
-        If <code>false</code>, no displaying methods will be called, element's text will no change.  
+        If `null`, default input's display used.  
+        If `false`, no displaying methods will be called, element's text will never change.  
         Runs under element's scope.  
-        Second parameter __sourceData__ is passed for inputs with source (select, checklist).
+        _Parameters:_  
+        
+        * `value` current value to be displayed
+        * `response` server response (if display called after ajax submit), since 1.4.0
+         
+        For **inputs with source** (select, checklist) parameters are different:  
+          
+        * `value` current value to be displayed
+        * `sourceData` array of items for current input (e.g. dropdown items) 
+        * `response` server response (if display called after ajax submit), since 1.4.0
+                  
+        To get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.
         
         @property display 
         @type function|boolean
@@ -560,8 +581,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.2.0
         @example
         display: function(value, sourceData) {
-            var escapedValue = $('<div>').text(value).html();
-            $(this).html('<b>'+escapedValue+'</b>');
+           //display checklist as comma-separated values
+           var html = [],
+               checked = $.fn.editableutils.itemsByValue(value, sourceData);
+               
+           if(checked.length) {
+               $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+               $(this).html(html.join(', '));
+           } else {
+               $(this).empty(); 
+           }
         }
         **/          
         display: null

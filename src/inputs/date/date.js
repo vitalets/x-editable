@@ -1,7 +1,9 @@
 /**
 Bootstrap-datepicker.  
-Description and examples: http://vitalets.github.com/bootstrap-datepicker.  
-For localization you can include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
+For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+and set `language` option.  
+Since 1.4.0 date has different appearance in **popup** and **inline** modes. 
 
 @class date
 @extends abstractinput
@@ -25,45 +27,52 @@ $(function(){
 
     var Date = function (options) {
         this.init('date', options, Date.defaults);
-        
-        //set popular options directly from settings or data-* attributes
-        var directOptions =  $.fn.editableutils.sliceObj(this.options, ['format']);
-
-        //overriding datepicker config (as by default jQuery extend() is not recursive)
-        this.options.datepicker = $.extend({}, Date.defaults.datepicker, directOptions, options.datepicker);
-
-        //by default viewformat equals to format
-        if(!this.options.viewformat) {
-            this.options.viewformat = this.options.datepicker.format;
-        }  
-        
-        //language
-        this.options.datepicker.language = this.options.datepicker.language || 'en'; 
-        
-        //store DPglobal
-        this.dpg = $.fn.datepicker.DPGlobal; 
-        
-        //store parsed formats
-        this.parsedFormat = this.dpg.parseFormat(this.options.datepicker.format);
-        this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);
+        this.initPicker(options, Date.defaults);
     };
 
     $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
     
     $.extend(Date.prototype, {
+        initPicker: function(options, defaults) {
+            //'format' is set directly from settings or data-* attributes
+
+            //by default viewformat equals to format
+            if(!this.options.viewformat) {
+                this.options.viewformat = this.options.format;
+            }
+            
+            //overriding datepicker config (as by default jQuery extend() is not recursive)
+            //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
+            this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
+                format: this.options.viewformat
+            });
+            
+            //language
+            this.options.datepicker.language = this.options.datepicker.language || 'en'; 
+
+            //store DPglobal
+            this.dpg = $.fn.datepicker.DPGlobal; 
+
+            //store parsed formats
+            this.parsedFormat = this.dpg.parseFormat(this.options.format);
+            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);            
+        },
+        
         render: function () {
-            Date.superclass.render.call(this);
             this.$input.datepicker(this.options.datepicker);
-                        
+            
+            //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
                     e.preventDefault();
                     e.stopPropagation();
                     this.clear();
                 }, this));
-            }
+                
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+            }                
         },
-
+        
         value2html: function(value, element) {
             var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
             Date.superclass.value2html(text, element); 
@@ -117,12 +126,12 @@ $(function(){
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div></div>',
+        tpl:'<div class="editable-date well"></div>',
         /**
         @property inputclass 
-        @default editable-date well
+        @default null
         **/         
-        inputclass: 'editable-date well',
+        inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  

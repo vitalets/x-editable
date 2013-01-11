@@ -9,12 +9,16 @@ Applied as jQuery method.
 **/
 (function ($) {
 
-    var EditableContainer = function (element, options) {
+    var Popup = function (element, options) {
         this.init(element, options);
     };
+    
+    var Inline = function (element, options) {
+        this.init(element, options);
+    };    
 
     //methods
-    EditableContainer.prototype = {
+    Popup.prototype = {
         containerName: null, //tbd in child class
         innerCss: null, //tbd in child class
         init: function(element, options) {
@@ -22,6 +26,10 @@ Applied as jQuery method.
             //todo: what is in priority: data or js?
             this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableutils.getConfigData(this.$element), options);         
             this.splitOptions();
+            
+            //set scope of form callbacks to element
+            this.formOptions.scope = this.$element[0]; 
+            
             this.initContainer();
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
@@ -29,7 +37,7 @@ Applied as jQuery method.
                 this.destroy();
             }, this)); 
             
-            //attach document handlers (once)
+            //attach document handler to close containers on click / escape
             if(!$(document).data('editable-handlers-attached')) {
                 //close all on escape
                 $(document).on('keyup.editable', function (e) {
@@ -41,15 +49,22 @@ Applied as jQuery method.
 
                 //close containers when click outside
                 $(document).on('click.editable', function(e) {
-                    var $target = $(e.target);
+                    var $target = $(e.target), i,
+                        exclude_classes = ['.editable-container', 
+                                           '.ui-datepicker-header', 
+                                           '.modal-backdrop', 
+                                           '.bootstrap-wysihtml5-insert-image-modal', 
+                                           '.bootstrap-wysihtml5-insert-link-modal'];
                     
-                    //if click inside some editableContainer --> no nothing  
-                    if($target.is('.editable-container') || $target.parents('.editable-container').length || $target.parents('.ui-datepicker-header').length) {                
-                        return;
-                    } else {
-                        //close all open containers (except one)
-                        EditableContainer.prototype.closeOthers(e.target);
+                    //if click inside one of exclude classes --> no nothing
+                    for(i=0; i<exclude_classes.length; i++) {
+                         if($target.is(exclude_classes[i]) || $target.parents(exclude_classes[i]).length) {
+                             return;
+                         }
                     }
+                      
+                    //close all open containers (except one - target)
+                    Popup.prototype.closeOthers(e.target);
                 });
                 
                 $(document).data('editable-handlers-attached', true);
@@ -61,6 +76,7 @@ Applied as jQuery method.
             this.containerOptions = {};
             this.formOptions = {};
             var cDef = $.fn[this.containerName].defaults;
+            //keys defined in container defaults go to container, others go to form
             for(var k in this.options) {
               if(k in cDef) {
                  this.containerOptions[k] = this.options[k];
@@ -70,18 +86,34 @@ Applied as jQuery method.
             }
         },
         
+        /*
+        Returns jquery object of container
+        @method tip()
+        */         
+        tip: function() {
+            return this.container() ? this.container().$tip : null;
+        },
+
+        /* returns container object */
+        container: function() {
+            return this.$element.data(this.containerName); 
+        },
+
+        call: function() {
+            this.$element[this.containerName].apply(this.$element, arguments); 
+        },        
+        
         initContainer: function(){
             this.call(this.containerOptions);
         },
 
-        initForm: function() {
-            this.formOptions.scope = this.$element[0]; //set scope of form callbacks to element
-            this.$form = $('<div>')
+        renderForm: function() {
+            this.$form
             .editableform(this.formOptions)
             .on({
-                save: $.proxy(this.save, this),
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this),
-                nochange: $.proxy(function(){ this.hide('nochange'); }, this),
+                save: $.proxy(this.save, this), //click on submit button (value changed)
+                nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
@@ -98,31 +130,16 @@ Applied as jQuery method.
                     **/                      
                     this.$element.triggerHandler('shown');
                 }, this) 
-            });
-            return this.$form;
+            })
+            .editableform('render');
         },        
-
-        /*
-        Returns jquery object of container
-        @method tip()
-        */         
-        tip: function() {
-            return this.container().$tip;
-        },
-
-        container: function() {
-            return this.$element.data(this.containerName); 
-        },
-
-        call: function() {
-            this.$element[this.containerName].apply(this.$element, arguments); 
-        },
 
         /**
         Shows container with form
         @method show()
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-        **/          
+        **/
+        /* Note: poshytip owerwrites this method totally! */          
         show: function (closeAll) {
             this.$element.addClass('editable-open');
             if(closeAll !== false) {
@@ -130,16 +147,37 @@ Applied as jQuery method.
                 this.closeOthers(this.$element[0]);  
             }
             
+            //show container itself
             this.innerShow();
-        },
-        
-        /* internal show method. To be overwritten in child classes */
-        innerShow: function () {
-            this.call('show');                
             this.tip().addClass('editable-container');
-            this.initForm();
-            this.tip().find(this.innerCss).empty().append(this.$form);     
-            this.$form.editableform('render');            
+
+            /*
+            Currently, form is re-rendered on every show. 
+            The main reason is that we dont know, what container will do with content when closed:
+            remove(), detach() or just hide().
+            
+            Detaching form itself before hide and re-insert before show is good solution, 
+            but visually it looks ugly, as container changes size before hide.  
+            */             
+            
+            //if form already exist - delete previous data 
+            if(this.$form) {
+                //todo: destroy prev data!
+                //this.$form.destroy();
+            }
+
+            this.$form = $('<div>');
+            
+            //insert form into container body
+            if(this.tip().is(this.innerCss)) {
+                //for inline container
+                this.tip().append(this.$form); 
+            } else {
+                this.tip().find(this.innerCss).append(this.$form);
+            } 
+            
+            //render form
+            this.renderForm();
         },
 
         /**
@@ -151,8 +189,10 @@ Applied as jQuery method.
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
                 return;
             }
+            
             this.$element.removeClass('editable-open');   
             this.innerHide();
+            
             /**        
             Fired when container was hidden. It occurs on both save or cancel.
 
@@ -170,9 +210,14 @@ Applied as jQuery method.
             this.$element.triggerHandler('hidden', reason);   
         },
         
+        /* internal show method. To be overwritten in child classes */
+        innerShow: function () {
+             
+        },        
+        
         /* internal hide method. To be overwritten in child classes */
         innerHide: function () {
-            this.call('hide');       
+    
         },        
         
         /**
@@ -181,7 +226,7 @@ Applied as jQuery method.
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/          
         toggle: function(closeAll) {
-            if(this.tip && this.tip().is(':visible')) {
+            if(this.container() && this.tip() && this.tip().is(':visible')) {
                 this.hide();
             } else {
                 this.show(closeAll);
@@ -249,8 +294,16 @@ Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
-            this.call('destroy');
+            this.hide();
+            this.innerDestroy();
+            this.$element.off('destroyed');
+            this.$element.removeData('editableContainer');
         },
+        
+        /* to be overwritten in child classes */
+        innerDestroy: function() {
+            
+        }, 
         
         /*
         Closes other containers except one related to passed element. 
@@ -310,11 +363,12 @@ Applied as jQuery method.
         return this.each(function () {
             var $this = $(this),
             dataKey = 'editableContainer', 
-            data = $this.data(dataKey), 
-            options = typeof option === 'object' && option;
+            data = $this.data(dataKey),
+            options = typeof option === 'object' && option,
+            Constructor = (options.mode === 'inline') ? Inline : Popup;             
 
             if (!data) {
-                $this.data(dataKey, (data = new EditableContainer(this, options)));
+                $this.data(dataKey, (data = new Constructor(this, options)));
             }
 
             if (typeof option === 'string') { //call method 
@@ -323,8 +377,9 @@ Applied as jQuery method.
         });
     };     
 
-    //store constructor
-    $.fn.editableContainer.Constructor = EditableContainer;
+    //store constructors
+    $.fn.editableContainer.Popup = Popup;
+    $.fn.editableContainer.Inline = Inline;
 
     //defaults
     $.fn.editableContainer.defaults = {
@@ -363,7 +418,25 @@ Applied as jQuery method.
         @default 'cancel'
         @since 1.1.1
         **/        
-        onblur: 'cancel'
+        onblur: 'cancel',
+        
+        /**
+        Animation speed (inline mode)
+        @property anim 
+        @type string
+        @default 'fast'
+        **/        
+        anim: 'fast',
+        
+        /**
+        Mode of editable, can be `popup` or `inline` 
+        
+        @property mode 
+        @type string         
+        @default 'popup'
+        @since 1.4.0        
+        **/        
+        mode: 'popup'        
     };
 
     /* 

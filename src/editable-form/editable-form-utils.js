@@ -88,19 +88,22 @@
             return newObj;
         },
 
-        /**
-        * exclude complex objects from $.data() before pass to config
+        /*
+        exclude complex objects from $.data() before pass to config
         */
         getConfigData: function($element) {
             var data = {};
             $.each($element.data(), function(k, v) {
-                if(typeof v !== 'object' || (v && typeof v === 'object' && v.constructor === Object)) {
+                if(typeof v !== 'object' || (v && typeof v === 'object' && (v.constructor === Object || v.constructor === Array))) {
                     data[k] = v;
                 }
             });
             return data;
         },
 
+        /*
+         returns keys of object
+        */
         objectKeys: function(o) {
             if (Object.keys) {
                 return Object.keys(o);  
@@ -124,6 +127,78 @@
        **/
        escape: function(str) {
            return $('<div>').text(str).html();
-       }           
+       },
+       
+       /*
+        returns array items from sourceData having value property equal or inArray of 'value'
+       */
+       itemsByValue: function(value, sourceData) {
+           if(!sourceData || value === null) {
+               return [];
+           }
+           
+           //convert to array
+           if(!$.isArray(value)) {
+               value = [value];
+           }
+                      
+           /*jslint eqeq: true*/           
+           var result = $.grep(sourceData, function(o){
+               return $.grep(value, function(v){ return v == o.value; }).length;
+           });
+           /*jslint eqeq: false*/
+           
+           return result;
+       },
+       
+       /*
+       Returns input by options: type, mode. 
+       */
+       createInput: function(options) {
+           var TypeConstructor, typeOptions, input,
+           type = options.type;
+
+           //`date` is some kind of virtual type that is transformed to one of exact types
+           //depending on mode and core lib
+           if(type === 'date') {
+               //inline
+               if(options.mode === 'inline') {
+                   if($.fn.editabletypes.datefield) {
+                       type = 'datefield';
+                   } else if($.fn.editabletypes.dateuifield) {
+                       type = 'dateuifield';
+                   }
+               //popup
+               } else {
+                   if($.fn.editabletypes.date) {
+                       type = 'date';
+                   } else if($.fn.editabletypes.dateui) {
+                       type = 'dateui';
+                   }
+               }
+               
+               //if type still `date` and not exist in types, replace with `combodate` that is base input
+               if(type === 'date' && !$.fn.editabletypes.date) {
+                   type = 'combodate';
+               } 
+           }
+
+           //change wysihtml5 to textarea for jquery UI and plain versions
+           if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {
+               type = 'textarea';
+           }
+
+           //create input of specified type. Input will be used for converting value, not in form
+           if(typeof $.fn.editabletypes[type] === 'function') {
+               TypeConstructor = $.fn.editabletypes[type];
+               typeOptions = this.sliceObj(options, this.objectKeys(TypeConstructor.defaults));
+               input = new TypeConstructor(typeOptions);
+               return input;
+           } else {
+               $.error('Unknown type: '+ type);
+               return false; 
+           }  
+       }            
+       
     };      
 }(window.jQuery));

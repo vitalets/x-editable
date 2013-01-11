@@ -20,13 +20,18 @@ define(function () {
                     init: function(require) {
                         loadCss(require.toUrl("./editable-container.css")); 
                     }                  
-                },   
+                },  
+                
+                //inline container
+                'containers/editable-inline': ['containers/editable-container'],                
+                 
                 'element/editable-element': {
                     deps: ['require'], //here should be dynamically added container
                     init: function(require) {
                         loadCss(require.toUrl("./editable-element.css")); 
                     }                         
                 },
+                //default inputs
                 'editable-form/editable-form': {
                     deps: ['require',
                     'inputs/text',
@@ -34,6 +39,7 @@ define(function () {
                     'inputs/select',
                     'inputs/checklist',
                     'inputs/html5types',
+                    'inputs/combodate/combodate',
                     'inputs-ext/address/address'],
                     init: function(require) {
                         loadCss(require.toUrl("./editable-form.css")); 
@@ -45,9 +51,12 @@ define(function () {
                 'inputs/text': ['inputs/abstract'],
                 'inputs/textarea': ['inputs/abstract'],
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
-                'inputs/html5types': ['inputs/text'],   
+                'inputs/html5types': ['inputs/text'], 
+                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],  
 
-                //bootstrap
+                /*
+                 bootstrap
+                */
                 'bootstrap/js/bootstrap': {
                     deps: ['require'],
                     init: function(require) {
@@ -55,11 +64,12 @@ define(function () {
                     }                
                 },
                 'editable-form/editable-form-bootstrap': [
-                'editable-form/editable-form', 
-                'bootstrap/js/bootstrap'
+                    'editable-form/editable-form', 
+                    'bootstrap/js/bootstrap'
                 ],
-                'containers/editable-popover': ['containers/editable-container', 
-                'bootstrap/js/bootstrap'
+                'containers/editable-popover': [
+                    'containers/editable-inline', 
+                    'bootstrap/js/bootstrap'
                 ],
                 'inputs/date/date': {
                     deps: ['require', 
@@ -71,7 +81,25 @@ define(function () {
                     }
                 },
 
-                //jqueryui
+                //wysihtml5
+                'inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min': ['inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min'],
+                'inputs-ext/wysihtml5/wysihtml5': {
+                    deps: ['require', 
+                    'bootstrap/js/bootstrap',
+                    'inputs/abstract', 
+                    'inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min'],
+                    init: function(require) {
+                        loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css")); 
+                        //loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/wysiwyg-color.css")); 
+                    }
+                },
+                
+                //datefield
+                'inputs/date/datefield': ['inputs/date/date'],
+
+                /*
+                 jqueryui
+                */
                 'jqueryui/js/jquery-ui-1.9.1.custom': {
                     deps: ['require'],
                     init: function(require) {
@@ -79,19 +107,22 @@ define(function () {
                     }                
                 },  
                 'editable-form/editable-form-jqueryui': [
-                'editable-form/editable-form', 
-                'jqueryui/js/jquery-ui-1.9.1.custom'
+                    'editable-form/editable-form', 
+                    'jqueryui/js/jquery-ui-1.9.1.custom'
                 ],            
-                'containers/editable-tooltip': ['containers/editable-container', 
-                'jqueryui/js/jquery-ui-1.9.1.custom'
+                'containers/editable-tooltip': [
+                    'containers/editable-inline', 
+                    'jqueryui/js/jquery-ui-1.9.1.custom'
                 ],                      
                 'inputs/dateui/dateui': ['inputs/abstract'],
+                'inputs/dateui/dateuifield': ['inputs/dateui/dateui'],
 
-                //plain
-                //'inputs/dateui/dateui': ['inputs/abstract', 'inputs/date/bootstrap-datepicker/js/bootstrap-datepicker'],
+                /*
+                 plain
+                */
                 'containers/editable-poshytip': [ 
-                'containers/editable-container', 
-                'poshytip/jquery.poshytip'
+                    'containers/editable-inline', 
+                    'poshytip/jquery.poshytip'
                 ],
                 'poshytip/jquery.poshytip': {
                     deps: ['require'],
@@ -105,9 +136,7 @@ define(function () {
                         loadCss(require.toUrl("../css/redmond/jquery-ui-1.9.1.custom.css")); 
                     } 
                 },
-
-                //inline container
-                'containers/editable-inline': ['containers/editable-container'],
+                                         
 
                 //inputs-ext
                 'inputs-ext/address/address': {
@@ -124,19 +153,20 @@ define(function () {
             
             if(f === 'bootstrap') { 
                 //bootstrap
-                shim['editable-form/editable-form'].deps.push('inputs/date/date');
+                shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
+                shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
-                shim['element/editable-element'].deps.push(c === 'popup' ? 'containers/editable-popover' : 'containers/editable-inline');
+                shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {
                 //jqueryui
-                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateui');
+                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-jqueryui');
-                shim['element/editable-element'].deps.push(c === 'popup' ? 'containers/editable-tooltip' : 'containers/editable-inline');
+                shim['element/editable-element'].deps.push('containers/editable-tooltip');
             } else {    
                 //plain
-                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateui');
+                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
                 shim['inputs/dateui/dateui'].push('inputs/dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom');
-                shim['element/editable-element'].deps.push(c === 'popup' ? 'containers/editable-poshytip' : 'containers/editable-inline');        
+                shim['element/editable-element'].deps.push('containers/editable-poshytip');        
             }            
             
             
