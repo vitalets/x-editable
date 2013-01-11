@@ -40,8 +40,6 @@ $(function () {
                 equal(p.find('iframe').length, 1, 'iframe single');
                 ok(p.find('.wysihtml5-toolbar').length, 'toolbar shown');
 
-                equal(p.find('textarea').val().toLowerCase(), v1.toLowerCase(), 'textrea val correct');
-                
                 var iframe = document.querySelectorAll('.wysihtml5-sandbox'),
                     $c = $(iframe[0]).contents().find('body');
                
