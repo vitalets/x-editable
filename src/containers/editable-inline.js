@@ -49,6 +49,8 @@
         
         destroy: function() {
             this.tip().remove();
+            this.$element.off('destroyed');
+            this.$element.removeData('editableContainer');            
         } 
     });
 

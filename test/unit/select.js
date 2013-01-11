@@ -656,33 +656,35 @@ $(function () {
 
         setTimeout(function() {
         
-        e.click();
-        var p = tip(e); 
-       
-        equal(p.find('select').find('option').length, size, 'options loaded');
-        equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;       
-        
-        p.find('.editable-cancel').click(); 
-        ok(!p.is(':visible'), 'popover was closed');
-        
-        $.mockjax({
-            url: 'groups1.php',
-            responseText: {a: 1, 2: 2}
-        });        
-                
-        //set new source
-        e.editable('option', 'source', 'groups1.php');
-        e.click();
+            e.click();
+            var p = tip(e); 
+           
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;       
+            
+            p.find('.editable-cancel').click(); 
+            ok(!p.is(':visible'), 'popover was closed');
+            
+            $.mockjax({
+                url: 'groups1.php',
+                responseText: [{value: 'a', text: 1}, {value: 'b', text: 2}]
+            });        
+                    
+            //set new source
+            e.editable('option', 'source', 'groups1.php');
+            e.click();
          
-        setTimeout(function() {
+            setTimeout(function() {
+                p = tip(e); 
                 ok(p.find('select').length, 'select exists');
                 equal(p.find('select').find('option').length, 2, 'new options loaded');
-                equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+                equal(p.find('select').val(), 'a', 'selected value correct') ;
                 p.find('.editable-cancel').click(); 
                 ok(!p.is(':visible'), 'popover was closed');
                 e.remove();    
                 start();  
             }, timeout);
+            
         }, timeout);                                                  
     });           
      
