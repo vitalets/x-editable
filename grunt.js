@@ -212,7 +212,13 @@ module.exports = function(grunt) {
             options: {
                basePath: 'inputs-ext'
             }            
-        }
+        },
+        ui_datepicker: {
+            files: {
+             //copy jquery ui datepicker
+             '<%= dist %>/jquery-editable/jquery-ui-datepicker/' : 'src/inputs/dateui/jquery-ui-datepicker/**'
+         }
+       }         
     },
  
     uglify: {}

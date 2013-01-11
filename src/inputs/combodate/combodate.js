@@ -1,19 +1,19 @@
 /**
-Combodate input - dropdown date and time picker.  
-Based on [combodate](http://vitalets.github.com/combodate) plugin.
-To use it you should manually include [momentjs](http://momentjs.com). 
+Combodate input - dropdown date and time picker.    
+Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).   
 Allows to enter:
 
 * only date
 * only time 
 * datetime  
 
-Please note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.
-Internally value stored as Moment js object 
+Please note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.  
+Internally value stored as momentjs object. 
 
 @class combodate
 @extends abstractinput
 @final
+@since 1.4.0
 @example
 <a href="#" id="dob" data-type="combodate" data-pk="1" data-url="/post" data-value="1984-05-15" data-original-title="Select date"></a>
 <script>

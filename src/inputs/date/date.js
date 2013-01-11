@@ -2,7 +2,8 @@
 Bootstrap-datepicker.  
 Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
 For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
-and set `language` option.
+and set `language` option.  
+Since 1.4.0 date has different appearance in **popup** and **inline** modes. 
 
 @class date
 @extends abstractinput
