@@ -20,17 +20,14 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         if(!this.options.scope) {
             this.options.scope = this;
         }
-        this.initInput();
+        //nothing shown after init
     };
 
     EditableForm.prototype = {
         constructor: EditableForm,
         initInput: function() {  //called once
-            //create input of specified type
-            this.input = $.fn.editableutils.createInput(this.options);
-            if(!this.input) {
-                return; 
-            }             
+            //take input from options (as it is created in editable-element)
+            this.input = this.options.input;
             
             //set initial value
             this.value = this.input.str2value(this.options.value); 
@@ -59,6 +56,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$form.find('.editable-buttons').remove();
             }
 
+            //show loading state
+            this.showLoading();            
+            
             /**        
             Fired when rendering starts
             @event rendering 
@@ -66,10 +66,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             **/            
             this.$div.triggerHandler('rendering');
             
-            //show loading state
-            this.showLoading();
+            //init input
+            this.initInput();
             
             //append input to form
+            this.input.prerender();
             this.$form.find('div.editable-input').append(this.input.$tpl);            
 
             //append form to container
@@ -110,9 +111,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 this.showForm();
                 
-                //call shown method to perform actions required form to be shown
-                if(this.input.shown) {
-                    this.input.shown();
+                //call postrender method to perform actions required visibility of form
+                if(this.input.postrender) {
+                    this.input.postrender();
                 }                
             }, this));
         },
@@ -312,10 +313,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         },
 
         option: function(key, value) {
-            this.options[key] = value;
+            if(key in this.options) {
+                this.options[key] = value;
+            }
+            
             if(key === 'value') {
                 this.setValue(value);
             }
+            
+            //do not pass option to input as it is passed in editable-element
         },
 
         setValue: function(value, convertStr) {
@@ -324,6 +330,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             } else {
                 this.value = value;
             }
+            
+            //if form is visible, update input
+            if(this.$form && this.$form.is(':visible')) {
+                this.input.value2input(this.value);
+            }            
         }               
     };
 
@@ -634,19 +645,22 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             return newObj;
         },
 
-        /**
-        * exclude complex objects from $.data() before pass to config
+        /*
+        exclude complex objects from $.data() before pass to config
         */
         getConfigData: function($element) {
             var data = {};
             $.each($element.data(), function(k, v) {
-                if(typeof v !== 'object' || (v && typeof v === 'object' && v.constructor === Object)) {
+                if(typeof v !== 'object' || (v && typeof v === 'object' && (v.constructor === Object || v.constructor === Array))) {
                     data[k] = v;
                 }
             });
             return data;
         },
 
+        /*
+         returns keys of object
+        */
         objectKeys: function(o) {
             if (Object.keys) {
                 return Object.keys(o);  
@@ -711,13 +725,18 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                    } else if($.fn.editabletypes.dateuifield) {
                        type = 'dateuifield';
                    }
-                   //popup
+               //popup
                } else {
                    if($.fn.editabletypes.date) {
                        type = 'date';
                    } else if($.fn.editabletypes.dateui) {
                        type = 'dateui';
                    }
+               }
+               
+               //if type still `date` and not exist in types, replace with `combodate` that is base input
+               if(type === 'date' && !$.fn.editabletypes.date) {
+                   type = 'combodate';
                } 
            }
 
@@ -769,6 +788,10 @@ Applied as jQuery method.
             //todo: what is in priority: data or js?
             this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableutils.getConfigData(this.$element), options);         
             this.splitOptions();
+            
+            //set scope of form callbacks to element
+            this.formOptions.scope = this.$element[0]; 
+            
             this.initContainer();
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
@@ -776,7 +799,7 @@ Applied as jQuery method.
                 this.destroy();
             }, this)); 
             
-            //attach document handlers (once)
+            //attach document handler to close containers on click / escape
             if(!$(document).data('editable-handlers-attached')) {
                 //close all on escape
                 $(document).on('keyup.editable', function (e) {
@@ -802,7 +825,7 @@ Applied as jQuery method.
                          }
                     }
                       
-                    //close all open containers (except one)
+                    //close all open containers (except one - target)
                     Popup.prototype.closeOthers(e.target);
                 });
                 
@@ -815,6 +838,7 @@ Applied as jQuery method.
             this.containerOptions = {};
             this.formOptions = {};
             var cDef = $.fn[this.containerName].defaults;
+            //keys defined in container defaults go to container, others go to form
             for(var k in this.options) {
               if(k in cDef) {
                  this.containerOptions[k] = this.options[k];
@@ -824,18 +848,34 @@ Applied as jQuery method.
             }
         },
         
+        /*
+        Returns jquery object of container
+        @method tip()
+        */         
+        tip: function() {
+            return this.container() ? this.container().$tip : null;
+        },
+
+        /* returns container object */
+        container: function() {
+            return this.$element.data(this.containerName); 
+        },
+
+        call: function() {
+            this.$element[this.containerName].apply(this.$element, arguments); 
+        },        
+        
         initContainer: function(){
             this.call(this.containerOptions);
         },
 
-        initForm: function() {
-            this.formOptions.scope = this.$element[0]; //set scope of form callbacks to element
-            this.$form = $('<div>')
+        renderForm: function() {
+            this.$form
             .editableform(this.formOptions)
             .on({
-                save: $.proxy(this.save, this),
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this),
-                nochange: $.proxy(function(){ this.hide('nochange'); }, this),
+                save: $.proxy(this.save, this), //click on submit button (value changed)
+                nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 rendered: $.proxy(function(){
@@ -852,31 +892,16 @@ Applied as jQuery method.
                     **/                      
                     this.$element.triggerHandler('shown');
                 }, this) 
-            });
-            return this.$form;
+            })
+            .editableform('render');
         },        
-
-        /*
-        Returns jquery object of container
-        @method tip()
-        */         
-        tip: function() {
-            return this.container().$tip;
-        },
-
-        container: function() {
-            return this.$element.data(this.containerName); 
-        },
-
-        call: function() {
-            this.$element[this.containerName].apply(this.$element, arguments); 
-        },
 
         /**
         Shows container with form
         @method show()
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
-        **/          
+        **/
+        /* Note: poshytip owerwrites this method totally! */          
         show: function (closeAll) {
             this.$element.addClass('editable-open');
             if(closeAll !== false) {
@@ -884,16 +909,37 @@ Applied as jQuery method.
                 this.closeOthers(this.$element[0]);  
             }
             
+            //show container itself
             this.innerShow();
-        },
-        
-        /* internal show method. To be overwritten in child classes */
-        innerShow: function () {
-            this.call('show');                
             this.tip().addClass('editable-container');
-            this.initForm();
-            this.tip().find(this.innerCss).empty().append(this.$form);     
-            this.$form.editableform('render');            
+
+            /*
+            Currently, form is re-rendered on every show. 
+            The main reason is that we dont know, what container will do with content when closed:
+            remove(), detach() or just hide().
+            
+            Detaching form itself before hide and re-insert before show is good solution, 
+            but visually it looks ugly, as container changes size before hide.  
+            */             
+            
+            //if form already exist - delete previous data 
+            if(this.$form) {
+                //todo: destroy prev data!
+                //this.$form.destroy();
+            }
+
+            this.$form = $('<div>');
+            
+            //insert form into container body
+            if(this.tip().is(this.innerCss)) {
+                //for inline container
+                this.tip().append(this.$form); 
+            } else {
+                this.tip().find(this.innerCss).append(this.$form);
+            } 
+            
+            //render form
+            this.renderForm();
         },
 
         /**
@@ -905,8 +951,10 @@ Applied as jQuery method.
             if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
                 return;
             }
+            
             this.$element.removeClass('editable-open');   
             this.innerHide();
+            
             /**        
             Fired when container was hidden. It occurs on both save or cancel.
 
@@ -924,9 +972,14 @@ Applied as jQuery method.
             this.$element.triggerHandler('hidden', reason);   
         },
         
+        /* internal show method. To be overwritten in child classes */
+        innerShow: function () {
+             
+        },        
+        
         /* internal hide method. To be overwritten in child classes */
         innerHide: function () {
-            this.call('hide');       
+    
         },        
         
         /**
@@ -935,7 +988,7 @@ Applied as jQuery method.
         @param {boolean} closeAll Whether to close all other editable containers when showing this one. Default true.
         **/          
         toggle: function(closeAll) {
-            if(this.tip && this.tip().is(':visible')) {
+            if(this.container() && this.tip() && this.tip().is(':visible')) {
                 this.hide();
             } else {
                 this.show(closeAll);
@@ -1003,8 +1056,16 @@ Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
-            this.call('destroy');
+            this.hide();
+            this.innerDestroy();
+            this.$element.off('destroyed');
+            this.$element.removeData('editableContainer');
         },
+        
+        /* to be overwritten in child classes */
+        innerDestroy: function() {
+            
+        }, 
         
         /*
         Closes other containers except one related to passed element. 
@@ -1164,46 +1225,41 @@ Applied as jQuery method.
     //extend methods
     $.extend($.fn.editableContainer.Inline.prototype, $.fn.editableContainer.Popup.prototype, {
         containerName: 'editableform',
-        innerCss: null,
+        innerCss: '.editable-inline',
                  
         initContainer: function(){
-            //no init for container
-            //only convert anim to miliseconds (int)
+            //container is <span> element
+            this.$tip = $('<span></span>').addClass('editable-inline');
+            
+            //convert anim to miliseconds (int)
             if(!this.options.anim) {
                 this.options.anim = 0;
             }         
         },
         
         splitOptions: function() {
+            //all options are passed to form
             this.containerOptions = {};
             this.formOptions = this.options;
         },
         
         tip: function() {
-           return this.$form; 
+           return this.$tip; 
         },
         
         innerShow: function () {
             this.$element.hide();
-            
-            if(this.$form) {
-                this.$form.remove();
-            }
-            
-            this.initForm();
-            this.tip().addClass('editable-container').addClass('editable-inline');            
-            this.$form.insertAfter(this.$element);
-            this.$form.show(this.options.anim);
-            this.$form.editableform('render');
+            this.tip().insertAfter(this.$element).show();
         }, 
         
         innerHide: function () {
-            this.$form.hide(this.options.anim, $.proxy(function() {
+            this.$tip.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
+                this.tip().empty().remove();
             }, this)); 
         },
         
-        destroy: function() {
+        innerDestroy: function() {
             this.tip().remove();
         } 
     });
@@ -1394,12 +1450,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             //disabled
             if(key === 'disabled') {
-                if(value) {
-                    this.disable();
-                } else {
-                    this.enable();
-                }
-                return;
+               return value ? this.disable() : this.enable();
             } 
             
             //value
@@ -1411,6 +1462,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                 this.container.option(key, value);  
             }
+             
+            //pass option to input directly (as it points to the same in form)
+            if(this.input.option) {
+                this.input.option(key, value);
+            }
+            
         },              
         
         /*
@@ -1452,7 +1509,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //init editableContainer: popover, tooltip, inline, etc..
             if(!this.container) {
                 var containerOptions = $.extend({}, this.options, {
-                    value: this.value
+                    value: this.value,
+                    input: this.input //pass input to form (as it is already created)
                 });
                 this.$element.editableContainer(containerOptions);
                 this.$element.on("save.internal", $.proxy(this.save, this));
@@ -1552,7 +1610,28 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.activate(); 
             }
-        }
+        },
+        
+        /**
+        Removes editable feature from element
+        @method destroy()
+        **/        
+        destroy: function() {
+            if(this.container) {
+               this.container.destroy(); 
+            }
+
+            if(this.options.toggle !== 'manual') {
+                this.$element.removeClass('editable-click');
+                this.$element.off(this.options.toggle + '.editable');
+            } 
+            
+            this.$element.off("save.internal");
+            
+            this.$element.removeClass('editable');
+            this.$element.removeClass('editable-open');
+            this.$element.removeData('editable');
+        }        
     };
 
     /* EDITABLE PLUGIN DEFINITION
@@ -1809,10 +1888,16 @@ To create your own input you can inherit from this class.
        init: function(type, options, defaults) {
            this.type = type;
            this.options = $.extend({}, defaults, options);
+       },
+       
+       /*
+       this method called before render to init $tpl that is inserted in DOM
+       */
+       prerender: function() {
            this.$tpl = $(this.options.tpl); //whole tpl as jquery object    
            this.$input = this.$tpl;         //control itself, can be changed in render method
            this.$clear = null;              //clear button
-           this.error = null;               //error message, if input cannot be rendered
+           this.error = null;               //error message, if input cannot be rendered           
        },
        
        /**
@@ -1939,11 +2024,16 @@ To create your own input you can inherit from this class.
                this.$input.addClass(this.options.inputclass); 
            } 
        },
+       
        setAttr: function(attr) {
            if (this.options[attr]) {
                this.$input.attr(attr, this.options[attr]);
            } 
-       }       
+       },
+       
+       option: function(key, value) {
+            this.options[key] = value;
+       }
        
     };
         
@@ -1997,8 +2087,6 @@ List - abstract class for inputs that have source option loaded from js array or
             var deferred = $.Deferred();
 
             this.error = null;
-            this.sourceData = null;
-            this.prependData = null;
             this.onSourceReady(function () {
                 this.renderList();
                 deferred.resolve();
@@ -2216,7 +2304,17 @@ List - abstract class for inputs that have source option loaded from js array or
                 });  
             }
             return result;
-        }
+        },
+        
+        option: function(key, value) {
+            this.options[key] = value;
+            if(key === 'source') {
+                this.sourceData = null;
+            }
+            if(key === 'prepend') {
+                this.prependData = null;
+            }            
+        }        
 
     });      
 
@@ -2313,7 +2411,7 @@ $(function(){
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
                this.$input.after(this.$clear)
-                          .css('padding-right', 25)
+                          .css('padding-right', 20)
                           .keyup($.proxy(this.toggleClear, this))
                           .parent().css('position', 'relative');
                           
@@ -2324,7 +2422,7 @@ $(function(){
            }            
         },
         
-        shown: function() {
+        postrender: function() {
             if(this.$clear) {
                 //can position clear button only here, when form is shown and height can be calculated
                 var h = this.$input.outerHeight() || 20,
@@ -2394,7 +2492,8 @@ Textarea input
 $(function(){
     $('#comments').editable({
         url: '/post',
-        title: 'Enter comments'
+        title: 'Enter comments',
+        rows: 10
     });
 });
 </script>
@@ -2522,12 +2621,14 @@ $(function(){
 
     $.extend(Select.prototype, {
         renderList: function() {
+            this.$input.empty();
+            
             if(!$.isArray(this.sourceData)) {
                 return;
             }
 
             for(var i=0; i<this.sourceData.length; i++) {
-                this.$tpl.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
+                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
             }
             
             this.setClass();
@@ -2603,6 +2704,9 @@ $(function(){
     $.extend(Checklist.prototype, {
         renderList: function() {
             var $label, $div;
+            
+            this.$tpl.empty();
+            
             if(!$.isArray(this.sourceData)) {
                 return;
             }
@@ -2887,6 +2991,592 @@ Range (inherit from number)
     });
     $.fn.editabletypes.range = Range;
 }(window.jQuery));
+/**
+* Combodate - 1.0.0
+* Dropdown date and time picker.
+* Converts text input into dropdowns to pick day, month, year, hour, minute and second.
+* Uses momentjs as datetime library http://momentjs.com.
+* For i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang 
+*
+* Author: Vitaliy Potapov
+* Project page: http://github.com/vitalets/combodate
+* Copyright (c) 2012 Vitaliy Potapov. Released under MIT License.
+**/
+(function ($) {
+
+    var Combodate = function (element, options) {
+        this.$element = $(element);
+        if(!this.$element.is('input')) {
+            $.error('Combodate should be applied to INPUT element');
+            return;
+        }
+        this.options = $.extend({}, $.fn.combodate.defaults, options, this.$element.data());
+        this.init();  
+     };
+
+    Combodate.prototype = {
+        constructor: Combodate, 
+        init: function () {
+            this.map = {
+                //key   regexp    moment.method
+                day:    ['D',    'date'], 
+                month:  ['M',    'month'], 
+                year:   ['Y',    'year'], 
+                hour:   ['[Hh]', 'hours'],
+                minute: ['m',    'minutes'], 
+                second: ['s',    'seconds'],
+                ampm:   ['[Aa]', ''] 
+            };
+            
+            this.$widget = $('<span class="combodate"></span>').html(this.getTemplate());
+                      
+            this.initCombos();
+            
+            //update original input on change 
+            this.$widget.on('change', 'select', $.proxy(function(){
+                this.$element.val(this.getValue());
+            }, this));
+            
+            this.$widget.find('select').css('width', 'auto');
+                                       
+            //hide original input and insert widget                                       
+            this.$element.hide().after(this.$widget);
+            
+            //set initial value
+            this.setValue(this.$element.val() || this.options.value);
+        },
+        
+        /*
+         Replace tokens in template with <select> elements 
+        */         
+        getTemplate: function() {
+            var tpl = this.options.template;
+
+            //first pass
+            $.each(this.map, function(k, v) {
+                v = v[0]; 
+                var r = new RegExp(v+'+'),
+                    token = v.length > 1 ? v.substring(1, 2) : v;
+                    
+                tpl = tpl.replace(r, '{'+token+'}');
+            });
+
+            //replace spaces with &nbsp;
+            tpl = tpl.replace(/ /g, '&nbsp;');
+
+            //second pass
+            $.each(this.map, function(k, v) {
+                v = v[0];
+                var token = v.length > 1 ? v.substring(1, 2) : v;
+                    
+                tpl = tpl.replace('{'+token+'}', '<select class="'+k+'"></select>');
+            });   
+
+            return tpl;
+        },
+        
+        /*
+         Initialize combos that presents in template 
+        */        
+        initCombos: function() {
+            var that = this;
+            $.each(this.map, function(k, v) {
+               var $c = that.$widget.find('.'+k), f, items;
+               if($c.length) {
+                   that['$'+k] = $c; //set properties like this.$day, this.$month etc.
+                   f = 'fill' + k.charAt(0).toUpperCase() + k.slice(1); //define method name to fill items, e.g `fillDays`
+                   items = that[f](); 
+                   that['$'+k].html(that.renderItems(items));
+               }
+            }); 
+        },
+        
+        /*
+         Initialize items of combos. Handles `firstItem` option 
+        */
+        initItems: function(key) {
+            var values = [];
+            if(this.options.firstItem === 'name') {
+                var header = typeof moment.relativeTime[key] === 'function' ? moment.relativeTime[key](1, true, key, false) : moment.relativeTime[key];
+                //take last entry (see momentjs lang files structure) 
+                header = header.split(' ').reverse()[0];                
+                values.push(['', header]);
+            } else if(this.options.firstItem === 'empty') {
+                values.push(['', '']);
+            }
+            return values;
+        },        
+        
+        /*
+        render items to string of <option> tags
+        */
+        renderItems: function(items) {
+            var str = [];
+            for(var i=0; i<items.length; i++) {
+                str.push('<option value="'+items[i][0]+'">'+items[i][1]+'</option>');                
+            }
+            return str.join("\n");
+        },        
+
+        /*
+        fill day
+        */
+        fillDay: function() {
+            var items = this.initItems('d'), name, i,
+                twoDigit = this.options.template.indexOf('DD') !== -1;
+                
+            for(i=1; i<=31; i++) {
+                name = twoDigit ? this.leadZero(i) : i;
+                items.push([i, name]);
+            }
+            return items;        
+        },
+        
+        /*
+        fill month
+        */
+        fillMonth: function() {
+            var items = this.initItems('M'), name, i, 
+                longNames = this.options.template.indexOf('MMMM') !== -1,
+                shortNames = this.options.template.indexOf('MMM') !== -1,
+                twoDigit = this.options.template.indexOf('MM') !== -1;
+                
+            for(i=0; i<=11; i++) {
+                if(longNames) {
+                    name = moment.months[i];
+                } else if(shortNames) {
+                    name = moment.monthsShort[i];
+                } else if(twoDigit) {
+                    name = this.leadZero(i+1);
+                } else {
+                    name = i+1;
+                }
+                items.push([i, name]);
+            } 
+            return items;
+        },  
+        
+        /*
+        fill year
+        */
+        fillYear: function() {
+            var items = this.initItems('y'), name, i, 
+                longNames = this.options.template.indexOf('YYYY') !== -1;
+
+            for(i=this.options.maxYear; i>=this.options.minYear; i--) {
+                name = longNames ? i : (i+'').substring(2);
+                items.push([i, name]);
+            }    
+            return items;              
+        },    
+        
+        /*
+        fill hour
+        */
+        fillHour: function() {
+            var items = this.initItems('h'), name, i,
+                h12 = this.options.template.indexOf('h') !== -1,
+                h24 = this.options.template.indexOf('H') !== -1,
+                twoDigit = this.options.template.toLowerCase().indexOf('hh') !== -1,
+                max = h12 ? 12 : 23;
+                
+            for(i=0; i<=max; i++) {
+                name = twoDigit ? this.leadZero(i) : i;
+                items.push([i, name]);
+            } 
+            return items;                 
+        },    
+        
+        /*
+        fill minute
+        */
+        fillMinute: function() {
+            var items = this.initItems('m'), name, i,
+                twoDigit = this.options.template.indexOf('mm') !== -1;
+
+            for(i=0; i<=59; i+= this.options.minuteStep) {
+                name = twoDigit ? this.leadZero(i) : i;
+                items.push([i, name]);
+            }    
+            return items;              
+        },  
+        
+        /*
+        fill second
+        */
+        fillSecond: function() {
+            var items = this.initItems('s'), name, i,
+                twoDigit = this.options.template.indexOf('ss') !== -1;
+
+            for(i=0; i<=59; i+= this.options.secondStep) {
+                name = twoDigit ? this.leadZero(i) : i;
+                items.push([i, name]);
+            }    
+            return items;              
+        },  
+        
+        /*
+        fill ampm
+        */
+        fillAmpm: function() {
+            var ampmL = this.options.template.indexOf('a') !== -1,
+                ampmU = this.options.template.indexOf('A') !== -1,            
+                items = [
+                    ['am', ampmL ? 'am' : 'AM'],
+                    ['pm', ampmL ? 'pm' : 'PM']
+                ];
+            return items;                              
+        },                                       
+        
+        /*
+         Returns current date value. 
+         If format not specified - `options.format` used.
+         If format = `null` - Moment object returned.
+        */
+        getValue: function(format) {
+            var dt, values = {}, 
+                that = this,
+                notSelected = false;
+                
+            //getting selected values    
+            $.each(this.map, function(k, v) {
+                if(k === 'ampm') {
+                    return;
+                }
+                var def = k === 'day' ? 1 : 0;
+                  
+                values[k] = that['$'+k] ? parseInt(that['$'+k].val(), 10) : def; 
+                
+                if(isNaN(values[k])) {
+                   notSelected = true;
+                   return false; 
+                }
+            });
+            
+            //if at least one visible combo not selected - return empty string
+            if(notSelected) {
+               return '';
+            }
+            
+            //convert hours if 12h format
+            if(this.$ampm) {
+               values.hour = this.$ampm.val() === 'am' ? values.hour : values.hour+12;
+               if(values.hour === 24) {
+                   values.hour = 0;
+               }  
+            }    
+            
+            dt = moment([values.year, values.month, values.day, values.hour, values.minute, values.second]);
+            
+            //highlight invalid date
+            this.highlight(dt);
+                              
+            format = format === undefined ? this.options.format : format;
+            if(format === null) {
+               return dt.isValid() ? dt : null; 
+            } else {
+               return dt.isValid() ? dt.format(format) : ''; 
+            }           
+        },
+        
+        setValue: function(value) {
+            if(!value) {
+                return;
+            }
+            
+            var dt = typeof value === 'string' ? moment(value, this.options.format) : moment(value),
+                that = this,
+                values = {};
+            
+            if(dt.isValid()) {
+                 //read values from date object
+                 $.each(this.map, function(k, v) {
+                     if(k === 'ampm') {
+                         return; 
+                     }
+                     values[k] = dt[v[1]]();
+                 });
+               
+               if(this.$ampm) {
+                   if(values.hour > 12) {
+                       values.hour -= 12;
+                       values.ampm = 'pm';
+                   } else {
+                       values.ampm = 'am';                  
+                   } 
+               }
+               
+               $.each(values, function(k, v) {
+                   if(that['$'+k]) {
+                       that['$'+k].val(v);                       
+                   }
+               });
+               
+               this.$element.val(dt.format(this.options.format));
+            }
+        },
+        
+        /*
+         highlight combos if date is invalid
+        */
+        highlight: function(dt) {
+            if(!dt.isValid()) {
+                if(this.options.errorClass) {
+                    this.$widget.addClass(this.options.errorClass);
+                } else {
+                    //store original border color
+                    if(!this.borderColor) {
+                        this.borderColor = this.$widget.find('select').css('border-color'); 
+                    }
+                    this.$widget.find('select').css('border-color', 'red');
+                } 
+            } else {
+                if(this.options.errorClass) {
+                    this.$widget.removeClass(this.options.errorClass);
+                } else {
+                    this.$widget.find('select').css('border-color', this.borderColor);
+                }  
+            }
+        },
+        
+        leadZero: function(v) {
+            return v <= 9 ? '0' + v : v; 
+        },
+        
+        destroy: function() {
+            this.$widget.remove();
+            this.$element.removeData('combodate').show();
+        }
+        
+        //todo: clear method        
+    };
+
+    $.fn.combodate = function ( option ) {
+        var d, args = Array.apply(null, arguments);
+        args.shift();
+
+        //getValue returns date as string / object (not jQuery object)
+        if(option === 'getValue' && this.length && (d = this.eq(0).data('combodate'))) {
+          return d.getValue.apply(d, args);
+        }        
+        
+        return this.each(function () {
+            var $this = $(this),
+            data = $this.data('combodate'),
+            options = typeof option == 'object' && option;
+            if (!data) {
+                $this.data('combodate', (data = new Combodate(this, options)));
+            }
+            if (typeof option == 'string' && typeof data[option] == 'function') {
+                data[option].apply(data, args);
+            }
+        });
+    };  
+    
+    $.fn.combodate.defaults = {
+         //in this format value stored in original input
+        format: 'DD-MM-YYYY HH:mm',      
+        //in this format items in dropdowns are displayed
+        template: 'D / MMM / YYYY   H : mm',
+        //initial value, can be `new Date()`    
+        value: null,                       
+        minYear: 1970,
+        maxYear: 2015,
+        minuteStep: 5,
+        secondStep: 1,
+        firstItem: 'empty', //'name', 'empty', 'none'
+        errorClass: null
+    };
+
+}(window.jQuery));
+/**
+Combodate input - dropdown date and time picker.  
+Based on [combodate](http://vitalets.github.com/combodate) plugin.
+To use it you should manually include [momentjs](http://momentjs.com). 
+Allows to enter:
+
+* only date
+* only time 
+* datetime  
+
+Please note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.
+Internally value stored as Moment js object 
+
+@class combodate
+@extends abstractinput
+@final
+@example
+<a href="#" id="dob" data-type="combodate" data-pk="1" data-url="/post" data-value="1984-05-15" data-original-title="Select date"></a>
+<script>
+$(function(){
+    $('#dob').editable({
+        format: 'YYYY-MM-DD',    
+        viewformat: 'YYYY-MM-DD',    
+        template: 'D / MMMM / YYYY',    
+        combodate: {
+                minYear: 2000,
+                maxYear: 2015,
+                minuteStep: 1
+           }
+        }
+    });
+});
+</script>
+**/
+
+/*global moment*/
+
+(function ($) {
+
+    var Constructor = function (options) {
+        this.init('combodate', options, Constructor.defaults);
+        
+        //by default viewformat equals to format
+        if(!this.options.viewformat) {
+            this.options.viewformat = this.options.format;
+        }        
+        
+        //overriding combodate config (as by default jQuery extend() is not recursive)
+        this.options.combodate = $.extend({}, Constructor.defaults.combodate, options.combodate, {
+            format: this.options.format,
+            template: this.options.template
+        });
+    };
+
+    $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);    
+    
+    $.extend(Constructor.prototype, {
+        render: function () {
+            this.$input.combodate(this.options.combodate);
+            
+            //"clear" link
+            /*
+            if(this.options.clear) {
+                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+                
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+            } 
+            */               
+        },
+        
+        value2html: function(value, element) {
+            var text = value ? value.format(this.options.viewformat) : '';
+            $(element).text(text); 
+        },
+
+        html2value: function(html) {
+            return html ? moment(html, this.options.viewformat) : null;
+        },   
+        
+        value2str: function(value) {
+            return value ? value.format(this.options.format) : '';
+       }, 
+       
+       str2value: function(str) {
+           return str ? moment(str, this.options.format) : null;
+       }, 
+       
+       value2submit: function(value) {
+           return this.value2str(value);
+       },                    
+
+       value2input: function(value) {
+           this.$input.combodate('setValue', value);
+       },
+        
+       input2value: function() { 
+           return this.$input.combodate('getValue', null);
+       },       
+       
+       activate: function() {
+           this.$input.siblings('.combodate').find('select').eq(0).focus();
+       },
+       
+       /*
+       clear:  function() {
+          this.$input.data('datepicker').date = null;
+          this.$input.find('.active').removeClass('active');
+       },
+       */
+       
+       autosubmit: function() {
+           
+       }
+
+    });
+    
+    Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        /**
+        @property tpl 
+        @default <input type="text">
+        **/         
+        tpl:'<input type="text">',
+        /**
+        @property inputclass 
+        @default null
+        **/         
+        inputclass: null,
+        /**
+        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+        See list of tokens in [momentjs docs](http://momentjs.com/docs/#/parsing/string-format)  
+        
+        @property format 
+        @type string
+        @default YYYY-MM-DD
+        **/         
+        format:'YYYY-MM-DD',
+        /**
+        Format used for displaying date. Also applied when converting date from element's text on init.   
+        If not specified equals to `format`.
+        
+        @property viewformat 
+        @type string
+        @default null
+        **/          
+        viewformat: null,        
+        /**
+        Template used for displaying dropdowns.
+        
+        @property template 
+        @type string
+        @default D / MMM / YYYY
+        **/          
+        template: 'D / MMM / YYYY',  
+        /**
+        Configuration of combodate.
+        Full list of options: http://vitalets.github.com/combodate/#docs
+        
+        @property datepicker 
+        @type object
+        @default {
+            weekStart: 0,
+            startView: 0,
+            autoclose: false
+        }
+        **/
+        combodate: {
+        }
+        
+        /*
+        (not implemented yet)
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+        
+        @property clear 
+        @type boolean|string
+        @default 'x clear'         
+        */
+        //clear: '&times; clear'
+    });   
+
+    $.fn.editabletypes.combodate = Constructor;
+
+}(window.jQuery));
+
 /*
 Editableform based on jQuery UI
 */
@@ -2960,24 +3650,22 @@ Editableform based on jQuery UI
         },         
         
         tip: function() {
-            return this.container()._find(this.container().element);
+            return this.container() ? this.container()._find(this.container().element) : null;
         },
         
         innerShow: function() {
             this.call('open');
-            this.tip().addClass('editable-container');
-            
-            this.initForm(); 
-            this.tip().find(this.innerCss)
-                .empty()
-                .append($('<label>').text(this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle")))
-                .append(this.$form);      
-            this.$form.editableform('render');             
+            var label = this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle"); 
+            this.tip().find(this.innerCss).empty().append($('<label>').text(label));
         },  
         
         innerHide: function() {
             this.call('close'); 
         },
+        
+        innerDestroy: function() {
+            /* tooltip destroys itself on hide */
+        },         
         
         setPosition: function() {
             this.tip().position( $.extend({
@@ -3015,11 +3703,8 @@ Editableform based on jQuery UI
            }
            
            this.containerOptions.position = pos;
-        },
-        
-        destroy: function() {
-           //jqueryui tooltip destroys itself
-        }                 
+        }
+                
     });
     
 }(window.jQuery));

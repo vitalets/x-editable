@@ -4,6 +4,14 @@ X-editable changelog
 
 Version 1.4.0 wip
 ----------------------------
+[enh] jquery-ui datepicker excluded from `plain` jquery build (vitalets) 
+[enh] added new input type: combodate (vitalets) 
+[bug #68] allow arrays for data attributes (adimitrov) 
+[enh] setValue method updates input if form is open (vitalets) 
+[enh] select: chnage source via option method, see #61 (vitalets) 
+[bug] select: source loaded twice if sourceCache = false (vitalets) 
+[enh] added `destroy` method, see #61 (vitalets) 
+[enh] textarea: added `rows` property (vitalets) 
 [enh #60] added wysihtml5 input (vitalets) 
 [enh] added IOS-style clear button for text inputs (vitalets) 
 [enh] date inputs changed in inline mode (vitalets) 

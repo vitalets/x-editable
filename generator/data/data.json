@@ -63,6 +63,22 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js": {
+            "name": "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "..\\lib\\src\\inputs\\combodate\\combodate.js": {
+            "name": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "modules": {},
+            "classes": {
+                "combodate": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs\\date\\date.js": {
             "name": "..\\lib\\src\\inputs\\date\\date.js",
             "modules": {},
@@ -95,15 +111,6 @@
             "modules": {},
             "classes": {
                 "dateuifield": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js": {
-            "name": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "modules": {},
-            "classes": {
-                "wysihtml5": 1
             },
             "fors": {},
             "namespaces": {}
@@ -224,6 +231,23 @@
                 "editableContainer"
             ]
         },
+        "combodate": {
+            "name": "combodate",
+            "shortname": "combodate",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 1,
+            "description": "Combodate input - dropdown date and time picker.  \nBased on [combodate](http://vitalets.github.com/combodate) plugin.\nTo use it you should manually include [momentjs](http://momentjs.com). \nAllows to enter:\n\n* only date\n* only time \n* datetime  \n\nPlease note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.\nInternally value stored as Moment js object",
+            "extends": "abstractinput",
+            "final": 1,
+            "example": [
+                "\n<a href=\"#\" id=\"dob\" data-type=\"combodate\" data-pk=\"1\" data-url=\"/post\" data-value=\"1984-05-15\" data-original-title=\"Select date\"></a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'YYYY-MM-DD',    \n        viewformat: 'YYYY-MM-DD',    \n        template: 'D / MMMM / YYYY',    \n        combodate: {\n                minYear: 2000,\n                maxYear: 2015,\n                minuteStep: 1\n           }\n        }\n    });\n});\n</script>"
+            ]
+        },
         "date": {
             "name": "date",
             "shortname": "date",
@@ -285,24 +309,6 @@
             "description": "jQuery UI datefield input - modification for inline mode.\nShows normal <input type=\"text\"> and binds popup datepicker.  \nAutomatically shown in inline mode.",
             "extends": "dateui",
             "since": "1.4.0"
-        },
-        "wysihtml5": {
-            "name": "wysihtml5",
-            "shortname": "wysihtml5",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 1,
-            "description": "Bootstrap wysihtml5 editor.   \nTo use it you should **manually** include required js and css files.\n\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/bootstrap-wysihtml5.css\"></link>  \n    <script src=\"js/wysihtml5-0.3.0.js\"></script>  \n    <script src=\"js/bootstrap-wysihtml5.js\"></script>  \n\nYou can download these files from https://github.com/jhollingworth/bootstrap-wysihtml5",
-            "extends": "abstractinput",
-            "final": 1,
-            "since": "1.4.0",
-            "example": [
-                "\n<div id=\"comments\" data-type=\"wysihtml5\" data-pk=\"1\"><h2>awesome</h2> comment!</div>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments'\n    });\n});\n</script>"
-            ]
         },
         "abstractinput": {
             "name": "abstractinput",
@@ -416,14 +422,14 @@
             "extends": "abstractinput",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"comments\" data-type=\"textarea\" data-pk=\"1\">awesome comment!</a>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments'\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"comments\" data-type=\"textarea\" data-pk=\"1\">awesome comment!</a>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments',\n        rows: 10\n    });\n});\n</script>"
             ]
         }
     },
     "classitems": [
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 99,
+            "line": 120,
             "description": "Fired when container is shown and form is rendered (for select will wait for loading dropdown options)",
             "itemtype": "event",
             "name": "shown",
@@ -441,7 +447,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 132,
+            "line": 137,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
@@ -456,7 +462,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 156,
+            "line": 183,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -471,7 +477,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 167,
+            "line": 196,
             "description": "Fired when container was hidden. It occurs on both save or cancel.",
             "itemtype": "event",
             "name": "hidden",
@@ -494,7 +500,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 189,
+            "line": 223,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -509,7 +515,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 212,
+            "line": 246,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance",
             "itemtype": "event",
             "name": "save",
@@ -544,7 +550,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 234,
+            "line": 268,
             "description": "Sets new option",
             "itemtype": "method",
             "name": "option(key, value)",
@@ -564,7 +570,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 258,
+            "line": 292,
             "description": "Destroys the container instance",
             "itemtype": "method",
             "name": "destroy()",
@@ -572,7 +578,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 294,
+            "line": 336,
             "description": "Activates input of visible container (e.g. set focus)",
             "itemtype": "method",
             "name": "activate()",
@@ -580,7 +586,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 306,
+            "line": 348,
             "description": "jQuery method to initialize editableContainer.",
             "itemtype": "method",
             "name": "$().editableContainer(options)",
@@ -598,7 +604,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 344,
+            "line": 386,
             "description": "Initial value of form input",
             "itemtype": "property",
             "name": "value",
@@ -610,7 +616,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 353,
+            "line": 395,
             "description": "Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.",
             "itemtype": "property",
             "name": "placement",
@@ -620,7 +626,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 361,
+            "line": 403,
             "description": "Whether to hide container on save/cancel.",
             "itemtype": "property",
             "name": "autohide",
@@ -632,7 +638,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 370,
+            "line": 412,
             "description": "Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  \nSetting <code>ignore</code> allows to have several containers open.",
             "itemtype": "property",
             "name": "onblur",
@@ -643,7 +649,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 381,
+            "line": 423,
             "description": "Animation speed (inline mode)",
             "itemtype": "property",
             "name": "anim",
@@ -653,7 +659,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 389,
+            "line": 431,
             "description": "Mode of editable, can be `popup` or `inline`",
             "itemtype": "property",
             "name": "mode",
@@ -676,7 +682,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-popover.js",
-            "line": 27,
+            "line": 56,
             "description": "move popover to new position. This function mainly copied from bootstrap-popover.",
             "class": "editableform"
         },
@@ -688,7 +694,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-poshytip.js",
-            "line": 82,
+            "line": 103,
             "description": "Poshytip fix: disable incorrect table display\nsee https://github.com/vadikom/poshytip/issues/7",
             "class": "editableform"
         },
@@ -730,19 +736,13 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 91,
-            "description": "exclude complex objects from $.data() before pass to config",
-            "class": "editableform"
-        },
-        {
-            "file": "..\\lib\\src\\editable-form\\editable-form-utils.js",
-            "line": 122,
+            "line": 125,
             "description": "method to escape html.",
             "class": "editableform"
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 39,
+            "line": 36,
             "description": "Renders editableform",
             "itemtype": "method",
             "name": "render",
@@ -765,7 +765,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 99,
+            "line": 100,
             "description": "Fired when form is rendered",
             "itemtype": "event",
             "name": "rendered",
@@ -780,7 +780,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 115,
+            "line": 116,
             "description": "Fired when form was cancelled by user",
             "itemtype": "event",
             "name": "cancel",
@@ -795,7 +795,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 151,
+            "line": 152,
             "description": "Fired when form is shown",
             "itemtype": "event",
             "name": "show",
@@ -810,7 +810,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 199,
+            "line": 200,
             "description": "Fired when value not changed but form is submitted. Requires savenochange = false.",
             "itemtype": "event",
             "name": "nochange",
@@ -825,7 +825,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 236,
+            "line": 237,
             "description": "Fired when form is submitted",
             "itemtype": "event",
             "name": "save",
@@ -860,7 +860,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 364,
+            "line": 375,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
@@ -870,7 +870,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 372,
+            "line": 383,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
@@ -883,7 +883,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 390,
+            "line": 401,
             "description": "Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  \nIf defined as <code>function</code> - returned object **overwrites** original ajax data.",
             "example": [
                 "\nparams: function(params) {\n    //originally params contain pk, name and value\n    params.a = 1;\n    return params;\n}"
@@ -896,7 +896,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 405,
+            "line": 416,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -906,7 +906,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 413,
+            "line": 424,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dynamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -916,7 +916,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 422,
+            "line": 433,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -926,7 +926,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 431,
+            "line": 442,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -936,7 +936,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 440,
+            "line": 451,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -949,7 +949,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 454,
+            "line": 465,
             "description": "Success callback. Called when value successfully sent on server and **response status = 200**.  \nUseful to work with json response. For example, if your backend response can be <code>{success: true}</code>\nor <code>{success: false, msg: \"server error\"}</code> you can check it inside this callback.  \nIf it returns **string** - means error occured and string is shown as error message.  \nIf it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  \nOtherwise newValue simply rendered into element.",
             "itemtype": "property",
             "name": "success",
@@ -962,7 +962,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 471,
+            "line": 482,
             "description": "Additional options for ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
             "itemtype": "property",
             "name": "ajaxOptions",
@@ -976,7 +976,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 486,
+            "line": 497,
             "description": "Whether to show buttons or not.  \nForm without buttons is auto-submitted.",
             "itemtype": "property",
             "name": "showbuttons",
@@ -987,7 +987,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 496,
+            "line": 507,
             "description": "Scope for callback methods (success, validate).  \nIf <code>null</code> means editableform instance itself.",
             "itemtype": "property",
             "name": "scope",
@@ -1000,7 +1000,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 507,
+            "line": 518,
             "description": "Whether to save or cancel value when it was not changed but form was submitted",
             "itemtype": "property",
             "name": "savenochange",
@@ -1082,7 +1082,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 231,
+            "line": 232,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
@@ -1097,7 +1097,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 257,
+            "line": 259,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -1105,7 +1105,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 267,
+            "line": 269,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -1120,7 +1120,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 293,
+            "line": 295,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance",
             "itemtype": "event",
             "name": "save",
@@ -1155,7 +1155,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 315,
+            "line": 317,
             "description": "Sets new value of editable",
             "itemtype": "method",
             "name": "setValue(value, convertStr)",
@@ -1175,7 +1175,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 336,
+            "line": 338,
             "description": "Activates input of visible container (e.g. set focus)",
             "itemtype": "method",
             "name": "activate()",
@@ -1183,7 +1183,15 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 350,
+            "line": 348,
+            "description": "Removes editable feature from element",
+            "itemtype": "method",
+            "name": "destroy()",
+            "class": "editable"
+        },
+        {
+            "file": "..\\lib\\src\\element\\editable-element.js",
+            "line": 373,
             "description": "jQuery method to initialize editable element.",
             "itemtype": "method",
             "name": "$().editable(options)",
@@ -1201,7 +1209,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 366,
+            "line": 389,
             "description": "Runs client-side validation for all matched editables",
             "itemtype": "method",
             "name": "validate()",
@@ -1216,7 +1224,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 388,
+            "line": 411,
             "description": "Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned",
             "itemtype": "method",
             "name": "getValue()",
@@ -1231,7 +1239,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 409,
+            "line": 432,
             "description": "This method collects values from several editable elements and submit them all to server.   \nInternally it runs client-side validation for all fields and submits only in case of success.  \nSee <a href=\"#newrecord\">creating new records</a> for details.",
             "itemtype": "method",
             "name": "submit(options)",
@@ -1277,7 +1285,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 477,
+            "line": 500,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code> and more",
             "itemtype": "property",
             "name": "type",
@@ -1287,7 +1295,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 485,
+            "line": 508,
             "description": "Sets disabled state of editable",
             "itemtype": "property",
             "name": "disabled",
@@ -1297,7 +1305,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 493,
+            "line": 516,
             "description": "How to toggle editable. Can be <code>click|dblclick|mouseenter|manual</code>.   \nWhen set to <code>manual</code> you should manually call <code>show/hide</code> methods of editable.    \n**Note**: if you call <code>show</code> or <code>toggle</code> inside **click** handler of some DOM element, \nyou need to apply <code>e.stopPropagation()</code> because containers are being closed on any click on document.",
             "example": [
                 "\n$('#edit-button').click(function(e) {\n    e.stopPropagation();\n    $('#username').editable('toggle');\n});"
@@ -1310,7 +1318,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 510,
+            "line": 533,
             "description": "Text shown when element is empty.",
             "itemtype": "property",
             "name": "emptytext",
@@ -1320,7 +1328,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 518,
+            "line": 541,
             "description": "Allows to automatically set element's text based on it's value. Can be <code>auto|always|never</code>. Useful for select and date.\nFor example, if dropdown list is <code>{1: 'a', 2: 'b'}</code> and element's value set to <code>1</code>, it's html will be automatically set to <code>'a'</code>.  \n<code>auto</code> - text will be automatically set only if element is empty.  \n<code>always|never</code> - always(never) try to set element's text.",
             "itemtype": "property",
             "name": "autotext",
@@ -1330,7 +1338,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 529,
+            "line": 552,
             "description": "Initial value of input. If not set, taken from element's text.",
             "itemtype": "property",
             "name": "value",
@@ -1340,7 +1348,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 537,
+            "line": 560,
             "description": "Callback to perform custom displaying of value in element's text.  \nIf `null`, default input's display used.  \nIf `false`, no displaying methods will be called, element's text will never change.  \nRuns under element's scope.  \n_Parameters:_  \n\n* `value` current value to be displayed\n* `response` server response (if display called after ajax submit), since 1.4.0\n \nFor **inputs with source** (select, checklist) parameters are different:  \n  \n* `value` current value to be displayed\n* `sourceData` array of items for current input (e.g. dropdown items) \n* `response` server response (if display called after ajax submit), since 1.4.0\n          \nTo get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.",
             "itemtype": "property",
             "name": "display",
@@ -1351,6 +1359,68 @@
                 "\ndisplay: function(value, sourceData) {\n   //display checklist as comma-separated values\n   var html = [],\n       checked = $.fn.editableutils.itemsByValue(value, sourceData);\n       \n   if(checked.length) {\n       $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });\n       $(this).html(html.join(', '));\n   } else {\n       $(this).empty(); \n   }\n}"
             ],
             "class": "editable"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js",
+            "line": 1,
+            "description": "Combodate - 1.0.1\nDropdown date and time picker.\nConverts text input into dropdowns to pick day, month, year, hour, minute and second.\nUses momentjs as datetime library http://momentjs.com.\nFor i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang \n\nAuthor: Vitaliy Potapov\nProject page: http://github.com/vitalets/combodate\nCopyright (c) 2012 Vitaliy Potapov. Released under MIT License.",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 122,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<input type=\"text\">",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 127,
+            "itemtype": "property",
+            "name": "inputclass",
+            "default": "null",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 132,
+            "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nSee list of tokens in [momentjs docs](http://momentjs.com/docs/#/parsing/string-format)",
+            "itemtype": "property",
+            "name": "format",
+            "type": "string",
+            "default": "YYYY-MM-DD",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 141,
+            "description": "Format used for displaying date. Also applied when converting date from element's text on init.   \nIf not specified equals to `format`.",
+            "itemtype": "property",
+            "name": "viewformat",
+            "type": "string",
+            "default": "null",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 150,
+            "description": "Template used for displaying dropdowns.",
+            "itemtype": "property",
+            "name": "template",
+            "type": "string",
+            "default": "D / MMM / YYYY",
+            "class": "combodate"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
+            "line": 158,
+            "description": "Configuration of combodate.\nFull list of options: http://vitalets.github.com/combodate/#docs",
+            "itemtype": "property",
+            "name": "datepicker",
+            "type": "object",
+            "default": "{\n    weekStart: 0,\n    startView: 0,\n    autoclose: false\n}",
+            "class": "combodate"
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
@@ -1496,52 +1566,6 @@
             "class": "dateuifield"
         },
         {
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 89,
-            "itemtype": "property",
-            "name": "tpl",
-            "default": "<textarea></textarea>",
-            "class": "wysihtml5"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 94,
-            "itemtype": "property",
-            "name": "inputclass",
-            "default": "null",
-            "class": "wysihtml5"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 99,
-            "description": "Placeholder attribute of input. Shown when input is empty.",
-            "itemtype": "property",
-            "name": "placeholder",
-            "type": "string",
-            "default": "null",
-            "class": "wysihtml5"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 107,
-            "description": "Number of rows in textarea",
-            "itemtype": "property",
-            "name": "rows",
-            "type": "integer",
-            "default": "10",
-            "class": "wysihtml5"
-        },
-        {
-            "file": "..\\lib\\src\\inputs\\wysihtml5\\wysihtml5.js",
-            "line": 115,
-            "description": "Wysihtml5 defaut options.  \nSee https://github.com/jhollingworth/bootstrap-wysihtml5#options",
-            "itemtype": "property",
-            "name": "wysihtml5",
-            "type": "object",
-            "default": "{stylesheets: false}",
-            "class": "wysihtml5"
-        },
-        {
             "file": "..\\lib\\src\\inputs\\abstract.js",
             "line": 16,
             "description": "Initializes input",
@@ -1551,7 +1575,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 30,
+            "line": 36,
             "description": "Renders input from tpl. Can return jQuery deferred object.\nCan be overwritten in child objects",
             "itemtype": "method",
             "name": "render()",
@@ -1559,7 +1583,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 40,
+            "line": 46,
             "description": "Sets element's html by value.",
             "itemtype": "method",
             "name": "value2html(value, element)",
@@ -1579,7 +1603,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 51,
+            "line": 57,
             "description": "Converts element's html to value",
             "itemtype": "method",
             "name": "html2value(html)",
@@ -1598,7 +1622,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 62,
+            "line": 68,
             "description": "Converts value to string (for internal compare). For submitting to server used value2submit().",
             "itemtype": "method",
             "name": "value2str(value)",
@@ -1617,7 +1641,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 73,
+            "line": 79,
             "description": "Converts string received from server into value. Usually from `data-value` attribute.",
             "itemtype": "method",
             "name": "str2value(str)",
@@ -1636,7 +1660,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 84,
+            "line": 90,
             "description": "Converts value for submitting to server. Result can be string or object.",
             "itemtype": "method",
             "name": "value2submit(value)",
@@ -1655,7 +1679,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 95,
+            "line": 101,
             "description": "Sets value of input.",
             "itemtype": "method",
             "name": "value2input(value)",
@@ -1670,7 +1694,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 105,
+            "line": 111,
             "description": "Returns value of input. Value can be object (e.g. datepicker)",
             "itemtype": "method",
             "name": "input2value()",
@@ -1678,7 +1702,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 114,
+            "line": 120,
             "description": "Activates input. For text it sets focus.",
             "itemtype": "method",
             "name": "activate()",
@@ -1686,7 +1710,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 125,
+            "line": 131,
             "description": "Creates input.",
             "itemtype": "method",
             "name": "clear()",
@@ -1694,19 +1718,19 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 134,
+            "line": 140,
             "description": "method to escape html.",
             "class": "abstractinput"
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 141,
+            "line": 147,
             "description": "attach handler to automatically submit form when value changed (useful when buttons not shown)",
             "class": "abstractinput"
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 163,
+            "line": 174,
             "description": "HTML template of input. Normally you should not change it.",
             "itemtype": "property",
             "name": "tpl",
@@ -1716,7 +1740,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 171,
+            "line": 182,
             "description": "CSS class automatically applied to input",
             "itemtype": "property",
             "name": "inputclass",
@@ -1726,7 +1750,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\abstract.js",
-            "line": 179,
+            "line": 190,
             "description": "Name attribute of input",
             "itemtype": "property",
             "name": "name",
@@ -1736,7 +1760,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 123,
+            "line": 126,
             "itemtype": "property",
             "name": "tpl",
             "default": "<div></div>",
@@ -1744,7 +1768,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 129,
+            "line": 132,
             "itemtype": "property",
             "name": "inputclass",
             "type": "string",
@@ -1753,8 +1777,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\checklist.js",
-            "line": 136,
-            "description": "Separator of values when reading from 'data-value' string",
+            "line": 139,
+            "description": "Separator of values when reading from `data-value` attribute",
             "itemtype": "property",
             "name": "separator",
             "type": "string",
@@ -1771,13 +1795,13 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 201,
+            "line": 199,
             "description": "convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",
             "class": "list"
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 244,
+            "line": 252,
             "description": "Source data for list.  \nIf **array** - it should be in format: `[{value: 1, text: \"text1\"}, {...}]`  \nFor compability, object format is also supported: `{\"1\": \"text1\", \"2\": \"text2\" ...}` but it does not guarantee elements order.\n\nIf **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.\n  \nIf **function**, it should return data in format above (since 1.4.0).",
             "itemtype": "property",
             "name": "source",
@@ -1787,7 +1811,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 258,
+            "line": 266,
             "description": "Data automatically prepended to the beginning of dropdown list.",
             "itemtype": "property",
             "name": "prepend",
@@ -1797,7 +1821,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 266,
+            "line": 274,
             "description": "Error message when list cannot be loaded (e.g. ajax error)",
             "itemtype": "property",
             "name": "sourceError",
@@ -1807,7 +1831,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 274,
+            "line": 282,
             "description": "if <code>true</code> and source is **string url** - results will be cached for fields with the same source and name.  \nUsefull for editable grids.",
             "itemtype": "property",
             "name": "sourceCache",
@@ -1818,7 +1842,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 70,
+            "line": 72,
             "itemtype": "property",
             "name": "tpl",
             "default": "<select></select>",
@@ -1826,7 +1850,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 86,
+            "line": 88,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"text\">",
@@ -1834,7 +1858,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 91,
+            "line": 93,
             "description": "Placeholder attribute of input. Shown when input is empty.",
             "itemtype": "property",
             "name": "placeholder",
@@ -1844,7 +1868,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 100,
+            "line": 102,
             "description": "Whether to show `clear` button",
             "itemtype": "property",
             "name": "clear",
@@ -1854,7 +1878,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 76,
+            "line": 78,
             "itemtype": "property",
             "name": "tpl",
             "default": "<textarea></textarea>",
@@ -1862,7 +1886,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 81,
+            "line": 83,
             "itemtype": "property",
             "name": "inputclass",
             "default": "input-large",
@@ -1870,51 +1894,61 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\textarea.js",
-            "line": 86,
+            "line": 88,
             "description": "Placeholder attribute of input. Shown when input is empty.",
             "itemtype": "property",
             "name": "placeholder",
             "type": "string",
             "default": "null",
             "class": "textarea"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\textarea.js",
+            "line": 96,
+            "description": "Number of rows in textarea",
+            "itemtype": "property",
+            "name": "rows",
+            "type": "integer",
+            "default": "7",
+            "class": "textarea"
         }
     ],
     "warnings": [
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\containers\\editable-container.js:306"
+            "line": " ..\\lib\\src\\containers\\editable-container.js:348"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\element\\editable-element.js:350"
+            "line": " ..\\lib\\src\\element\\editable-element.js:373"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:366"
+            "line": " ..\\lib\\src\\element\\editable-element.js:389"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:388"
+            "line": " ..\\lib\\src\\element\\editable-element.js:411"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\element\\editable-element.js:409"
+            "line": " ..\\lib\\src\\element\\editable-element.js:432"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:51"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:57"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:62"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:68"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:73"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:79"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:84"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:90"
         },
         {
             "message": "Missing item type\nEditable Inline \n---------------------",
@@ -1926,7 +1960,7 @@
         },
         {
             "message": "Missing item type\nmove popover to new position. This function mainly copied from bootstrap-popover.",
-            "line": " ..\\lib\\src\\containers\\editable-popover.js:27"
+            "line": " ..\\lib\\src\\containers\\editable-popover.js:56"
         },
         {
             "message": "Missing item type\nEditable Poshytip \n---------------------\nrequires jquery.poshytip.js",
@@ -1934,7 +1968,7 @@
         },
         {
             "message": "Missing item type\nPoshytip fix: disable incorrect table display\nsee https://github.com/vadikom/poshytip/issues/7",
-            "line": " ..\\lib\\src\\containers\\editable-poshytip.js:82"
+            "line": " ..\\lib\\src\\containers\\editable-poshytip.js:103"
         },
         {
             "message": "Missing item type\nEditable jQuery UI Tooltip \n---------------------\nrequires jquery ui 1.9.x",
@@ -1961,24 +1995,24 @@
             "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:59"
         },
         {
-            "message": "Missing item type\nexclude complex objects from $.data() before pass to config",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:91"
+            "message": "Missing item type\nmethod to escape html.",
+            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:125"
+        },
+        {
+            "message": "Missing item type\nCombodate - 1.0.1\nDropdown date and time picker.\nConverts text input into dropdowns to pick day, month, year, hour, minute and second.\nUses momentjs as datetime library http://momentjs.com.\nFor i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang \n\nAuthor: Vitaliy Potapov\nProject page: http://github.com/vitalets/combodate\nCopyright (c) 2012 Vitaliy Potapov. Released under MIT License.",
+            "line": " ..\\lib\\src\\inputs\\combodate\\lib\\combodate.js:1"
         },
         {
             "message": "Missing item type\nmethod to escape html.",
-            "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:122"
-        },
-        {
-            "message": "Missing item type\nmethod to escape html.",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:134"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:140"
         },
         {
             "message": "Missing item type\nattach handler to automatically submit form when value changed (useful when buttons not shown)",
-            "line": " ..\\lib\\src\\inputs\\abstract.js:141"
+            "line": " ..\\lib\\src\\inputs\\abstract.js:147"
         },
         {
             "message": "Missing item type\nconvert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]",
-            "line": " ..\\lib\\src\\inputs\\list.js:201"
+            "line": " ..\\lib\\src\\inputs\\list.js:199"
         }
     ]
 }

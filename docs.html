@@ -109,6 +109,8 @@
                   <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                      
+                      <li><a href="#combodate">combodate</a></li>
+                     
                       <li><a href="#text">text</a></li>
                      
                       <li><a href="#textarea">textarea</a></li>
@@ -122,8 +124,6 @@
                       <li><a href="#html5types">html5types</a></li>
                      
                       <li><a href="#checklist">checklist</a></li>
-                     
-                      <li><a href="#wysihtml5">wysihtml5</a></li>
                      
                   </ul>
                 </li>
@@ -201,7 +201,7 @@ Open your page and click on element. Enter new value and submit form. It will se
     pk:    1            //primary key (record id)
     value: &#x27;superuser!&#x27; //new value
 }</pre>
-This library has nothing to do with server-side part: you can write it on any language you prefer. The main is response.<br>
+This library has no limitation to server-side part: you can write it on any language you prefer. The main is response.<br>
 If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
 If <strong>status != 200</strong> form remains open and <i>responseText</i> is shown as error message.<br>
 Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
@@ -592,6 +592,18 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
         </tr> 
        
         <tr>
+            <td>destroy()</td>
+            <td>
+<i>none</i>
+
+</td>
+            <td>Removes editable feature from element
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>disable()</td>
             <td>
 <i>none</i>
@@ -939,6 +951,8 @@ See <a href="#newrecord">creating new records</a> for details.
             </p> 
             <ul>
             
+            <li>combodate</li>
+            
             <li>text</li>
             
             <li>textarea</li>
@@ -952,12 +966,155 @@ See <a href="#newrecord">creating new records</a> for details.
             <li>html5types</li>
             
             <li>checklist</li>
-            
-            <li>wysihtml5 <sup><span class="label label-success">new</span></sup></li>
                    
             </ul>
         </section> 
                    
+        
+         <section id="combodate">
+            <h2>combodate</h2>
+            <p><p>Combodate input - dropdown date and time picker.<br>Based on <a href="http://vitalets.github.com/combodate">combodate</a> plugin.
+To use it you should manually include <a href="http://momentjs.com">momentjs</a>. 
+Allows to enter:
+
+</p>
+<ul>
+<li>only date</li>
+<li>only time </li>
+<li>datetime  </li>
+</ul>
+<p>Please note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.
+Internally value stored as Moment js object</p>
+
+               
+            </p>
+            <ul class="nav nav-tabs" id="combodate-tabs">
+    <li class="active"><a href="#combodate-options" data-toggle="tab">Options</a></li>
+    <li><a href="#combodate-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="combodate-options">
+      <p>All options can be defined as <code>data-*</code> attributes.
+
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl</td>
+            <td>string</td>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>format</td>
+            <td>string</td>
+            <td>YYYY-MM-DD</td>
+            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+See list of tokens in <a href="http://momentjs.com/docs/#/parsing/string-format">momentjs docs</a></p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code>.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>template</td>
+            <td>string</td>
+            <td>D / MMM / YYYY</td>
+            <td><p>Template used for displaying dropdowns.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>datepicker</td>
+            <td>object</td>
+            <td>{
+    weekStart: 0,
+    startView: 0,
+    autoclose: false
+}</td>
+            <td><p>Configuration of combodate.
+Full list of options: <a href="http://vitalets.github.com/combodate/#docs">http://vitalets.github.com/combodate/#docs</a></p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Name attribute of input</p>
+
+            
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="combodate-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;dob&quot; data-type=&quot;combodate&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-value=&quot;1984-05-15&quot; data-original-title=&quot;Select date&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#dob&#x27;).editable({
+        format: &#x27;YYYY-MM-DD&#x27;,    
+        viewformat: &#x27;YYYY-MM-DD&#x27;,    
+        template: &#x27;D / MMMM / YYYY&#x27;,    
+        combodate: {
+                minYear: 2000,
+                maxYear: 2015,
+                minuteStep: 1
+           }
+        }
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
         
          <section id="text">
             <h2>text</h2>
@@ -1119,6 +1276,17 @@ $(function(){
         </tr> 
        
         <tr>
+            <td>rows</td>
+            <td>integer</td>
+            <td>7</td>
+            <td><p>Number of rows in textarea</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>name</td>
             <td>string</td>
             <td>null</td>
@@ -1138,7 +1306,8 @@ $(function(){
 $(function(){
     $(&#x27;#comments&#x27;).editable({
         url: &#x27;/post&#x27;,
-        title: &#x27;Enter comments&#x27;
+        title: &#x27;Enter comments&#x27;,
+        rows: 10
     });
 });
 &lt;/script&gt;</pre>
@@ -1708,7 +1877,7 @@ Internally value stored as javascript array of values.</p>
             <td>separator</td>
             <td>string</td>
             <td>&#x27;,&#x27;</td>
-            <td><p>Separator of values when reading from &#39;data-value&#39; string</p>
+            <td><p>Separator of values when reading from <code>data-value</code> attribute</p>
 
             
             
@@ -1791,122 +1960,6 @@ $(function(){
               {value: 3, text: &#x27;option3&#x27;}
            ]
         }
-    });
-});
-&lt;/script&gt;</pre>
-    </div>
-</div>
-            </section>
-        
-         <section id="wysihtml5">
-            <h2>wysihtml5 <sup><span class="label label-success">new</span></sup></h2>
-            <p><p>Bootstrap wysihtml5 editor.<br>To use it you should <strong>manually</strong> include required js and css files.
-
-</p>
-<pre><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/bootstrap-wysihtml5.css&quot;&gt;&lt;/link&gt;  
-&lt;script src=&quot;js/wysihtml5-0.3.0.js&quot;&gt;&lt;/script&gt;  
-&lt;script src=&quot;js/bootstrap-wysihtml5.js&quot;&gt;&lt;/script&gt;  </code></pre>
-<p>You can download these files from <a href="https://github.com/jhollingworth/bootstrap-wysihtml5">https://github.com/jhollingworth/bootstrap-wysihtml5</a></p>
-
-               <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.4.0</span></div>
-            </p>
-            <ul class="nav nav-tabs" id="wysihtml5-tabs">
-    <li class="active"><a href="#wysihtml5-options" data-toggle="tab">Options</a></li>
-    <li><a href="#wysihtml5-example" data-toggle="tab">Example</a></li>
-</ul>
-
-<div class="tab-content">
-    <div class="tab-pane active" id="wysihtml5-options">
-      <p>All options can be defined as <code>data-*</code> attributes.
-
-</p>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 15%;">Name</th>
-            <th style="width: 15%;">Type</th>
-            <th style="width: 15%;">Default</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-            <td>tpl</td>
-            <td>string</td>
-            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>CSS class automatically applied to input</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>placeholder</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Placeholder attribute of input. Shown when input is empty.</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>rows</td>
-            <td>integer</td>
-            <td>10</td>
-            <td><p>Number of rows in textarea</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>wysihtml5</td>
-            <td>object</td>
-            <td>{stylesheets: false}</td>
-            <td><p>Wysihtml5 defaut options.<br>See <a href="https://github.com/jhollingworth/bootstrap-wysihtml5#options">https://github.com/jhollingworth/bootstrap-wysihtml5#options</a></p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            
-            </td>
-        </tr> 
-                                    
-    </tbody>
-</table>
-    </div>
-    <div class="tab-pane" id="wysihtml5-example">
-     <pre class="prettyprint linenums">&lt;div id=&quot;comments&quot; data-type=&quot;wysihtml5&quot; data-pk=&quot;1&quot;&gt;&lt;h2&gt;awesome&lt;/h2&gt; comment!&lt;/div&gt;
-&lt;script&gt;
-$(function(){
-    $(&#x27;#comments&#x27;).editable({
-        url: &#x27;/post&#x27;,
-        title: &#x27;Enter comments&#x27;
     });
 });
 &lt;/script&gt;</pre>
