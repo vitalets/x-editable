@@ -82,12 +82,12 @@ define(function () {
                 },
 
                 //wysihtml5
-                'inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min': ['inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min'],
-                'inputs/wysihtml5/wysihtml5': {
+                'inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min': ['inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min'],
+                'inputs-ext/wysihtml5/wysihtml5': {
                     deps: ['require', 
                     'bootstrap/js/bootstrap',
                     'inputs/abstract', 
-                    'inputs/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min'],
+                    'inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min'],
                     init: function(require) {
                         loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css")); 
                         //loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/wysiwyg-color.css")); 
@@ -120,7 +120,6 @@ define(function () {
                 /*
                  plain
                 */
-                //'inputs/dateui/dateui': ['inputs/abstract', 'inputs/date/bootstrap-datepicker/js/bootstrap-datepicker'],
                 'containers/editable-poshytip': [ 
                     'containers/editable-inline', 
                     'poshytip/jquery.poshytip'
@@ -155,7 +154,7 @@ define(function () {
             if(f === 'bootstrap') { 
                 //bootstrap
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
-                shim['editable-form/editable-form'].deps.push('inputs/wysihtml5/wysihtml5');
+                shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {
@@ -165,7 +164,7 @@ define(function () {
                 shim['element/editable-element'].deps.push('containers/editable-tooltip');
             } else {    
                 //plain
-                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateui');
+                shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
                 shim['inputs/dateui/dateui'].push('inputs/dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom');
                 shim['element/editable-element'].deps.push('containers/editable-poshytip');        
             }            

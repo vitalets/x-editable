@@ -29,6 +29,10 @@ function getFiles() {
         jquery: {
             form: [],
             container: [containers+'editable-poshytip.js'],
+            inputs: [
+               inputs+'dateui/dateui.js',
+               inputs+'dateui/dateuifield.js'
+            ],            
             css: []
         }      
     };

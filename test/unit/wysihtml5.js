@@ -60,7 +60,7 @@ $(function () {
                         equal(e.html().toLowerCase().replace(/\s*\n(?!\r)/g, ""), v2.toLowerCase(), 'new text shown'); 
                         df.resolve();  
                     }, timeout);                       
-                }, 800);
+                }, 1000);
             }, 1000);  
             
             return df.promise();

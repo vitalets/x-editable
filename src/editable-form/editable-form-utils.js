@@ -168,13 +168,18 @@
                    } else if($.fn.editabletypes.dateuifield) {
                        type = 'dateuifield';
                    }
-                   //popup
+               //popup
                } else {
                    if($.fn.editabletypes.date) {
                        type = 'date';
                    } else if($.fn.editabletypes.dateui) {
                        type = 'dateui';
                    }
+               }
+               
+               //if type still `date` and not exist in types, replace with `combodate` that is base input
+               if(type === 'date' && !$.fn.editabletypes.date) {
+                   type = 'combodate';
                } 
            }
 
