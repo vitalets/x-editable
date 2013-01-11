@@ -11,7 +11,10 @@
         <title>X-editable Demo</title>
 
         <script src="assets/jquery/jquery-1.8.2.min.js"></script>  
-        <script src="assets/mockjax/jquery.mockjax.js"></script> 
+        <script src="assets/mockjax/jquery.mockjax.js"></script>
+        
+        <!-- momentjs --> 
+        <script src="assets/momentjs/moment.min.js"></script> 
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
@@ -111,42 +114,52 @@
                 <tbody> 
                     <tr>         
                         <td width="15%">Username</td>
-                        <td width="45%"><a href="#" id="username" data-type="text" data-pk="1" data-name="username" data-original-title="Enter username">superuser</a></td>
+                        <td width="45%"><a href="#" id="username" data-type="text" data-pk="1" data-original-title="Enter username">superuser</a></td>
                         <td width="40%"><span class="muted">Simple text field</span></td>
                     </tr>
                     <tr>         
                         <td>First name</td>
-                        <td><a href="#" id="firstname" data-type="text" data-pk="1" data-name="firstname" data-placement="right" data-placeholder="Required" data-original-title="Enter your firstname">John</a></td>
+                        <td><a href="#" id="firstname" data-type="text" data-pk="1" data-placement="right" data-placeholder="Required" data-original-title="Enter your firstname">John</a></td>
                         <td><span class="muted">Required text field, try to submit empty string</span></td>
                     </tr>  
                     <tr>         
                         <td>Last name</td>
-                        <td><a href="#" id="lastname" data-type="text" data-pk="1" data-name="lastname" data-original-title="Enter your lastname"></a></td>
+                        <td><a href="#" id="lastname" data-type="text" data-pk="1" data-original-title="Enter your lastname"></a></td>
                         <td><span class="muted">Originally empty text field</span></td>
                     </tr>  
                     <tr>         
                         <td>Sex</td>
-                        <td><a href="#" id="sex" data-type="select" data-name="sex" data-pk="1" data-value="" data-original-title="Select sex"></a></td>
+                        <td><a href="#" id="sex" data-type="select" data-pk="1" data-value="" data-original-title="Select sex"></a></td>
                         <td><span class="muted">Select, loaded from js array. Custom display</span></td>
                     </tr>
                     <tr>         
                         <td>Group</td>
-                        <td><a href="#" id="group" data-type="select" data-name="group" data-pk="1" data-value="5" data-source="/groups" data-original-title="Select group">Admin</a></td>
+                        <td><a href="#" id="group" data-type="select" data-pk="1" data-value="5" data-source="/groups" data-original-title="Select group">Admin</a></td>
                         <td><span class="muted">Select, loaded from server. <strong>No buttons</strong> mode</span></td>
                     </tr> 
                     <tr>         
                         <td>Status</td>
-                        <td><a href="#" id="status" data-type="select" data-name="status" data-pk="1" data-value="0" data-source="/status" data-original-title="Select status">Active</a></td>
+                        <td><a href="#" id="status" data-type="select" data-pk="1" data-value="0" data-source="/status" data-original-title="Select status">Active</a></td>
                         <td><span class="muted">Error when loading list items</span></td>
                     </tr>       
                     <tr>         
-                        <td>Date of birth</td>
-                        <td><a href="#" id="dob" data-type="date" data-viewformat="dd.mm.yyyy" data-pk="1" data-name="dob" data-original-title="Select Date of birth">15.05.1984</a></td>
-                        <td><span class="muted">Date field, format dd.mm.yyyy</span></td>
+                        <td>Plan vacation?</td>
+                        <td><a href="#" id="vacation" data-type="date" data-viewformat="dd.mm.yyyy" data-pk="1" data-original-title="When you want vacation to start?">25.02.2013</a></td>
+                        <td><span class="muted">Datepicker</span></td>
+                    </tr>
+                    <tr>         
+                        <td>Date of birth <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="dob" data-type="combodate" data-value="1984-05-15" data-format="YYYY-MM-DD" data-viewformat="DD/MM/YYYY" data-template="D / MMM / YYYY" data-pk="1"  data-original-title="Select Date of birth"></a></td>
+                        <td><span class="muted">Date field</span></td>
                     </tr> 
                     <tr>         
+                        <td>Setup event <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1"  data-original-title="Setup event date and time"></a></td>
+                        <td><span class="muted">Datetime field</span></td>
+                    </tr>                     
+                    <tr>         
                         <td>Comments</td>
-                        <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-name="comments" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
+                        <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
                         <td><span class="muted">Textarea. Submit by ctrl+enter</span></td>
                     </tr>                                     
                     <tr>         

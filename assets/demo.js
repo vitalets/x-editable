@@ -49,7 +49,16 @@ $(function(){
        showbuttons: false 
     });   
 
-    $('#dob').editable();      
+    $('#vacation').editable();  
+        
+    $('#dob').editable();
+          
+    $('#event').editable({
+        placement: 'right',
+        combodate: {
+            firstItem: 'name'
+        }
+    });      
     
     $('#comments').editable({
         showbuttons: true

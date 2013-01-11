@@ -90,7 +90,8 @@
 
 /* set exact width of textarea to fit buttons toolbar */
 .editable-wysihtml5 {
-    width: 566px;  
+    width: 566px; 
+    height: 250px; 
 }
 
 /* clear button shown as link in date inputs */
