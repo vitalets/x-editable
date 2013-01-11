@@ -63,13 +63,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js": {
-            "name": "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "..\\lib\\src\\inputs\\combodate\\combodate.js": {
             "name": "..\\lib\\src\\inputs\\combodate\\combodate.js",
             "modules": {},
@@ -177,6 +170,15 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js": {
+            "name": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "modules": {},
+            "classes": {
+                "wysihtml5": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -241,11 +243,12 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
             "line": 1,
-            "description": "Combodate input - dropdown date and time picker.  \nBased on [combodate](http://vitalets.github.com/combodate) plugin.\nTo use it you should manually include [momentjs](http://momentjs.com). \nAllows to enter:\n\n* only date\n* only time \n* datetime  \n\nPlease note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.\nInternally value stored as Moment js object",
+            "description": "Combodate input - dropdown date and time picker.    \nBased on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).\n\n    <script src=\"js/moment.min.js\"></script>\n   \nAllows to input:\n\n* only date\n* only time \n* both date and time  \n\nPlease note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.  \nInternally value stored as `momentjs` object.",
             "extends": "abstractinput",
             "final": 1,
+            "since": "1.4.0",
             "example": [
-                "\n<a href=\"#\" id=\"dob\" data-type=\"combodate\" data-pk=\"1\" data-url=\"/post\" data-value=\"1984-05-15\" data-original-title=\"Select date\"></a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'YYYY-MM-DD',    \n        viewformat: 'YYYY-MM-DD',    \n        template: 'D / MMMM / YYYY',    \n        combodate: {\n                minYear: 2000,\n                maxYear: 2015,\n                minuteStep: 1\n           }\n        }\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"dob\" data-type=\"combodate\" data-pk=\"1\" data-url=\"/post\" data-value=\"1984-05-15\" data-original-title=\"Select date\"></a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'YYYY-MM-DD',    \n        viewformat: 'DD.MM.YYYY',    \n        template: 'D / MMMM / YYYY',    \n        combodate: {\n                minYear: 2000,\n                maxYear: 2015,\n                minuteStep: 1\n           }\n        }\n    });\n});\n</script>"
             ]
         },
         "date": {
@@ -258,7 +261,7 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\date\\date.js",
             "line": 1,
-            "description": "Bootstrap-datepicker.  \nDescription and examples: https://github.com/eternicode/bootstrap-datepicker.  \nFor **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales\nand set `language` option.",
+            "description": "Bootstrap-datepicker.  \nDescription and examples: https://github.com/eternicode/bootstrap-datepicker.  \nFor **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales\nand set `language` option.  \nSince 1.4.0 date has different appearance in **popup** and **inline** modes.",
             "extends": "abstractinput",
             "final": 1,
             "example": [
@@ -423,6 +426,24 @@
             "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"comments\" data-type=\"textarea\" data-pk=\"1\">awesome comment!</a>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments',\n        rows: 10\n    });\n});\n</script>"
+            ]
+        },
+        "wysihtml5": {
+            "name": "wysihtml5",
+            "shortname": "wysihtml5",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "line": 1,
+            "description": "Bootstrap wysihtml5 editor. Based on [bootstrap-wysihtml5](https://github.com/jhollingworth/bootstrap-wysihtml5).  \nYou should include this input **manually** with dependent js and css files from `inputs-ext` directory.\n\n    <link href=\"js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css\" rel=\"stylesheet\" type=\"text/css\"></link>  \n    <script src=\"js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js\"></script>  \n    <script src=\"js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js\"></script>  \n    <script src=\"js/inputs-ext/wysihtml5/wysihtml5.js\"></script>",
+            "extends": "abstractinput",
+            "final": 1,
+            "since": "1.4.0",
+            "example": [
+                "\n<div id=\"comments\" data-type=\"wysihtml5\" data-pk=\"1\"><h2>awesome</h2> comment!</div>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments'\n    });\n});\n</script>"
             ]
         }
     },
@@ -1361,14 +1382,8 @@
             "class": "editable"
         },
         {
-            "file": "..\\lib\\src\\inputs\\combodate\\lib\\combodate.js",
-            "line": 1,
-            "description": "Combodate - 1.0.1\nDropdown date and time picker.\nConverts text input into dropdowns to pick day, month, year, hour, minute and second.\nUses momentjs as datetime library http://momentjs.com.\nFor i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang \n\nAuthor: Vitaliy Potapov\nProject page: http://github.com/vitalets/combodate\nCopyright (c) 2012 Vitaliy Potapov. Released under MIT License.",
-            "class": "combodate"
-        },
-        {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 122,
+            "line": 125,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"text\">",
@@ -1376,7 +1391,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 127,
+            "line": 130,
             "itemtype": "property",
             "name": "inputclass",
             "default": "null",
@@ -1384,7 +1399,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 132,
+            "line": 135,
             "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nSee list of tokens in [momentjs docs](http://momentjs.com/docs/#/parsing/string-format)",
             "itemtype": "property",
             "name": "format",
@@ -1394,7 +1409,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 141,
+            "line": 144,
             "description": "Format used for displaying date. Also applied when converting date from element's text on init.   \nIf not specified equals to `format`.",
             "itemtype": "property",
             "name": "viewformat",
@@ -1404,8 +1419,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 150,
-            "description": "Template used for displaying dropdowns.",
+            "line": 153,
+            "description": "Template used for displaying dropdowns. Defines which droppdowns will be shown.",
             "itemtype": "property",
             "name": "template",
             "type": "string",
@@ -1414,17 +1429,17 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
-            "line": 158,
+            "line": 161,
             "description": "Configuration of combodate.\nFull list of options: http://vitalets.github.com/combodate/#docs",
             "itemtype": "property",
-            "name": "datepicker",
+            "name": "combodate",
             "type": "object",
-            "default": "{\n    weekStart: 0,\n    startView: 0,\n    autoclose: false\n}",
+            "default": "null",
             "class": "combodate"
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 124,
+            "line": 125,
             "itemtype": "property",
             "name": "tpl",
             "default": "<div></div>",
@@ -1432,7 +1447,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 129,
+            "line": 130,
             "itemtype": "property",
             "name": "inputclass",
             "default": "null",
@@ -1440,7 +1455,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 134,
+            "line": 135,
             "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nPossible tokens are: <code>d, dd, m, mm, yy, yyyy</code>",
             "itemtype": "property",
             "name": "format",
@@ -1450,7 +1465,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 143,
+            "line": 144,
             "description": "Format used for displaying date. Also applied when converting date from element's text on init.   \nIf not specified equals to <code>format</code>",
             "itemtype": "property",
             "name": "viewformat",
@@ -1460,7 +1475,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 152,
+            "line": 153,
             "description": "Configuration of datepicker.\nFull list of options: http://vitalets.github.com/bootstrap-datepicker",
             "itemtype": "property",
             "name": "datepicker",
@@ -1470,7 +1485,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\date\\date.js",
-            "line": 169,
+            "line": 170,
             "description": "Text shown as clear date button. \nIf <code>false</code> clear button will not be rendered.",
             "itemtype": "property",
             "name": "clear",
@@ -1911,6 +1926,42 @@
             "type": "integer",
             "default": "7",
             "class": "textarea"
+        },
+        {
+            "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "line": 86,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<textarea></textarea>",
+            "class": "wysihtml5"
+        },
+        {
+            "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "line": 91,
+            "itemtype": "property",
+            "name": "inputclass",
+            "default": "editable-wysihtml5",
+            "class": "wysihtml5"
+        },
+        {
+            "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "line": 96,
+            "description": "Placeholder attribute of input. Shown when input is empty.",
+            "itemtype": "property",
+            "name": "placeholder",
+            "type": "string",
+            "default": "null",
+            "class": "wysihtml5"
+        },
+        {
+            "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
+            "line": 104,
+            "description": "Wysihtml5 default options.  \nSee https://github.com/jhollingworth/bootstrap-wysihtml5#options",
+            "itemtype": "property",
+            "name": "wysihtml5",
+            "type": "object",
+            "default": "{stylesheets: false}",
+            "class": "wysihtml5"
         }
     ],
     "warnings": [
@@ -1997,10 +2048,6 @@
         {
             "message": "Missing item type\nmethod to escape html.",
             "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:125"
-        },
-        {
-            "message": "Missing item type\nCombodate - 1.0.1\nDropdown date and time picker.\nConverts text input into dropdowns to pick day, month, year, hour, minute and second.\nUses momentjs as datetime library http://momentjs.com.\nFor i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang \n\nAuthor: Vitaliy Potapov\nProject page: http://github.com/vitalets/combodate\nCopyright (c) 2012 Vitaliy Potapov. Released under MIT License.",
-            "line": " ..\\lib\\src\\inputs\\combodate\\lib\\combodate.js:1"
         },
         {
             "message": "Missing item type\nmethod to escape html.",

@@ -112,7 +112,17 @@ function loadContext() {
    /* 
    ----------------------------- inputs -----------------
    */ 
-    var inputs_order = ['text', 'textarea', 'select', 'date', 'dateui', 'html5types', 'checklist', 'wysihtml5'];
+    var inputs_order = [
+                        'text', 
+                        'textarea', 
+                        'select', 
+                        'date', 
+                        'dateui', 
+                        'combodate', 
+                        'html5types', 
+                        'checklist', 
+                        'wysihtml5'
+                       ];
     
     //inputs
     var inputs = _.chain(classes)
@@ -161,7 +171,7 @@ function mergeDefaults(o, parent) {
     _.each(parent.property, function(prop) {
         if(prop.access === 'private') return;
         
-        //find property with the same name
+        //find property with the same name in o 
         var exist = _.find(o.property, function(p) { return p.name === prop.name; });
 
         //merge property to original class
@@ -171,4 +181,10 @@ function mergeDefaults(o, parent) {
             o.property.push(prop); 
         }
     });
+    
+    /*
+    if(o.name == 'combodate') {
+       console.log(o.property); 
+    } 
+    */   
 }

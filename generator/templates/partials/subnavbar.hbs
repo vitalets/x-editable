@@ -23,13 +23,16 @@
 
 <script>
     $(function () {
+    
         $('body').scrollspy({
             target: '#subnav',
             offset: 100
         });
-        
+    
+        //update scrollspy when clicking on navbar
         $('#subnav a').mousedown(function(){
              $('body').scrollspy('refresh');
         });
+     
     });
 </script>

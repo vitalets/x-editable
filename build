@@ -3,7 +3,8 @@ startdir=$(pwd)
 if [ $(expr match $1 ".*data.*") -gt 0 ] 
 then
   inputs=..\\lib\\src\\inputs
-  yuidoc -p -o generator/data -x $inputs\\dateui\\jquery-ui-datepicker,..\\lib\\src\\inputs-ext,$inputs\\wysihtml5\\bootstrap-wysihtml5-0.0.2  ../lib/src
+  ext=..\\lib\\src\\inputs-ext
+  yuidoc -p -o generator/data -x $inputs\\dateui\\jquery-ui-datepicker,$ext\\address,$ext\\wysihtml5\\bootstrap-wysihtml5-0.0.2,$inputs\\combodate\\lib  ../lib/src
 fi
 
 if [ $(expr match $1 ".*dist.*") -gt 0 ] 
