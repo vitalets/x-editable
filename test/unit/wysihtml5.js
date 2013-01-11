@@ -58,8 +58,8 @@ $(function () {
                         equal(e.html().toLowerCase().replace(/\s*\n(?!\r)/g, ""), v2.toLowerCase(), 'new text shown'); 
                         df.resolve();  
                     }, timeout);                       
-                }, 1000);
-            }, 1000);  
+                }, 500);
+            }, 500);  
             
             return df.promise();
         };
