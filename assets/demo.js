@@ -23,8 +23,6 @@ $(function(){
         }
     });
     
-    $('#lastname').editable();
-
     $('#sex').editable({
         prepend: "not selected",
         source: [
