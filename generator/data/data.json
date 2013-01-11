@@ -1420,7 +1420,7 @@
         {
             "file": "..\\lib\\src\\inputs\\combodate\\combodate.js",
             "line": 153,
-            "description": "Template used for displaying dropdowns. Defines which droppdowns will be shown.",
+            "description": "Template used for displaying dropdowns.",
             "itemtype": "property",
             "name": "template",
             "type": "string",

@@ -3390,28 +3390,31 @@ Range (inherit from number)
 
 }(window.jQuery));
 /**
-Combodate input - dropdown date and time picker.  
-Based on [combodate](http://vitalets.github.com/combodate) plugin.
-To use it you should manually include [momentjs](http://momentjs.com). 
-Allows to enter:
+Combodate input - dropdown date and time picker.    
+Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).
+
+    <script src="js/moment.min.js"></script>
+   
+Allows to input:
 
 * only date
 * only time 
-* datetime  
+* both date and time  
 
-Please note, that format is taken from momentjs and not compatible with bootstrap-datepicker / jquery UI datepicker.
-Internally value stored as Moment js object 
+Please note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.  
+Internally value stored as `momentjs` object. 
 
 @class combodate
 @extends abstractinput
 @final
+@since 1.4.0
 @example
 <a href="#" id="dob" data-type="combodate" data-pk="1" data-url="/post" data-value="1984-05-15" data-original-title="Select date"></a>
 <script>
 $(function(){
     $('#dob').editable({
         format: 'YYYY-MM-DD',    
-        viewformat: 'YYYY-MM-DD',    
+        viewformat: 'DD.MM.YYYY',    
         template: 'D / MMMM / YYYY',    
         combodate: {
                 minYear: 2000,
@@ -3550,16 +3553,11 @@ $(function(){
         Configuration of combodate.
         Full list of options: http://vitalets.github.com/combodate/#docs
         
-        @property datepicker 
+        @property combodate 
         @type object
-        @default {
-            weekStart: 0,
-            startView: 0,
-            autoclose: false
-        }
+        @default null
         **/
-        combodate: {
-        }
+        combodate: null
         
         /*
         (not implemented yet)
@@ -3716,7 +3714,8 @@ Editableform based on Twitter Bootstrap
 Bootstrap-datepicker.  
 Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
 For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
-and set `language` option.
+and set `language` option.  
+Since 1.4.0 date has different appearance in **popup** and **inline** modes. 
 
 @class date
 @extends abstractinput
