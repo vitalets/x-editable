@@ -106,9 +106,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
                 this.showForm();
                 
-                //call shown method to perform actions required form to be shown
-                if(this.input.shown) {
-                    this.input.shown();
+                //call postrender method to perform actions required visibility of form
+                if(this.input.postrender) {
+                    this.input.postrender();
                 }                
             }, this));
         },
@@ -315,10 +315,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if(key === 'value') {
                 this.setValue(value);
             }
-            //pass to input
-//            if(this.input && this.input.option) {
-//                this.input.option(key, value);
-//            }
+            
+            //do not pass option to input as it is passed in editable-element
         },
 
         setValue: function(value, convertStr) {

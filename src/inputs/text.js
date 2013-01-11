@@ -55,7 +55,7 @@ $(function(){
            }            
         },
         
-        shown: function() {
+        postrender: function() {
             if(this.$clear) {
                 //can position clear button only here, when form is shown and height can be calculated
                 var h = this.$input.outerHeight() || 20,
