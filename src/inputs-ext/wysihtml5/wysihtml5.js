@@ -42,15 +42,13 @@ $(function(){
             this.$input.attr('id', 'textarea_'+(new Date()).getTime());
 
             this.setClass();
-            this.setAttr('rows');            
             this.setAttr('placeholder');            
-
             
             //resolve deffered when widget loaded
             $.extend(this.options.wysihtml5, {
                 events: {
                   load: function() {
-                     deferred.resolve();
+                      deferred.resolve();
                   }  
                 }
             });
@@ -90,12 +88,12 @@ $(function(){
         @property tpl
         @default <textarea></textarea>
         **/
-        tpl:'<textarea class="editable-wysihtml5"></textarea>',
+        tpl:'<textarea></textarea>',
         /**
         @property inputclass
-        @default null
+        @default editable-wysihtml5
         **/
-        inputclass: null,
+        inputclass: 'editable-wysihtml5',
         /**
         Placeholder attribute of input. Shown when input is empty.
 
@@ -104,14 +102,6 @@ $(function(){
         @default null
         **/
         placeholder: null,
-        /**
-        Number of rows in textarea
-
-        @property rows
-        @type integer
-        @default 10
-        **/        
-        rows: 10,
         /**
         Wysihtml5 default options.  
         See https://github.com/jhollingworth/bootstrap-wysihtml5#options
