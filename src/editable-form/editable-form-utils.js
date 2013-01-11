@@ -88,8 +88,8 @@
             return newObj;
         },
 
-        /**
-        * exclude complex objects from $.data() before pass to config
+        /*
+        exclude complex objects from $.data() before pass to config
         */
         getConfigData: function($element) {
             var data = {};
@@ -101,6 +101,9 @@
             return data;
         },
 
+        /*
+         returns keys of object
+        */
         objectKeys: function(o) {
             if (Object.keys) {
                 return Object.keys(o);  
