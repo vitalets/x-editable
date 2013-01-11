@@ -1,14 +1,17 @@
 /**
 Combodate input - dropdown date and time picker.    
-Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).   
-Allows to enter:
+Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).
+
+    <script src="js/moment.min.js"></script>
+   
+Allows to input:
 
 * only date
 * only time 
-* datetime  
+* both date and time  
 
 Please note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.  
-Internally value stored as momentjs object. 
+Internally value stored as `momentjs` object. 
 
 @class combodate
 @extends abstractinput
@@ -20,7 +23,7 @@ Internally value stored as momentjs object.
 $(function(){
     $('#dob').editable({
         format: 'YYYY-MM-DD',    
-        viewformat: 'YYYY-MM-DD',    
+        viewformat: 'DD.MM.YYYY',    
         template: 'D / MMMM / YYYY',    
         combodate: {
                 minYear: 2000,
@@ -159,16 +162,11 @@ $(function(){
         Configuration of combodate.
         Full list of options: http://vitalets.github.com/combodate/#docs
         
-        @property datepicker 
+        @property combodate 
         @type object
-        @default {
-            weekStart: 0,
-            startView: 0,
-            autoclose: false
-        }
+        @default null
         **/
-        combodate: {
-        }
+        combodate: null
         
         /*
         (not implemented yet)

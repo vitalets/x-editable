@@ -1,12 +1,11 @@
 /**
-Bootstrap wysihtml5 editor.   
-To use it you should **manually** include required js and css files.
+Bootstrap wysihtml5 editor. Based on [bootstrap-wysihtml5](https://github.com/jhollingworth/bootstrap-wysihtml5).  
+You should include this input **manually** with dependent js and css files from `inputs-ext` directory.
 
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-wysihtml5.css"></link>  
-    <script src="js/wysihtml5-0.3.0.js"></script>  
-    <script src="js/bootstrap-wysihtml5.js"></script>  
-
-You can download these files from https://github.com/jhollingworth/bootstrap-wysihtml5
+    <link href="js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" type="text/css"></link>  
+    <script src="js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js"></script>  
+    <script src="js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"></script>  
+    <script src="js/inputs-ext/wysihtml5/wysihtml5.js"></script>  
 
 @class wysihtml5
 @extends abstractinput
