@@ -72,7 +72,7 @@ $(function(){
        
        //set checked on required checkboxes
        value2input: function(value) {
-            this.$input.removeAttr('checked');
+            this.$input.prop('checked', false);
             if($.isArray(value) && value.length) {
                this.$input.each(function(i, el) {
                    var $el = $(el);
@@ -81,7 +81,7 @@ $(function(){
                        /*jslint eqeq: true*/
                        if($el.val() == val) {
                        /*jslint eqeq: false*/                           
-                           $el.attr('checked', 'checked');
+                           $el.prop('checked', true);
                        }
                    });
                }); 

@@ -2,6 +2,11 @@ X-editable changelog
 =============================
 
 
+Version 1.4.1 wip
+----------------------------
+[enh] checklist: set checked via prop instead of attr (vitalets) 
+
+
 Version 1.4.0 Jan 11, 2013
 ----------------------------
 [enh] added new input type: combodate (vitalets) 
