@@ -52,7 +52,8 @@ define(function () {
                 'inputs/textarea': ['inputs/abstract'],
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
                 'inputs/html5types': ['inputs/text'], 
-                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],  
+                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],
+                'inputs/typeahead': ['inputs/list'],  
 
                 /*
                  bootstrap
@@ -155,6 +156,7 @@ define(function () {
                 //bootstrap
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
                 shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
+                shim['editable-form/editable-form'].deps.push('inputs/typeahead');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {

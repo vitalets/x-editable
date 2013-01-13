@@ -144,7 +144,7 @@ List - abstract class for inputs that have source option loaded from js array or
                     }, this)
                 });
             } else { //options as json/array/function
-                if (typeof this.options.source === 'function') {
+                if ($.isFunction(this.options.source)) {
                    this.sourceData = this.makeArray(this.options.source());
                 } else {
                    this.sourceData = this.makeArray(this.options.source);
