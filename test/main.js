@@ -31,7 +31,11 @@ require(["loader", jqurl], function(loader) {
         
         switch(params.f) {
             case 'bootstrap':
-              custom = ['test/unit/datefield', 'test/unit/date', 'test/unit/wysihtml5'];
+              custom = ['test/unit/datefield', 
+                        'test/unit/date', 
+                        'test/unit/wysihtml5',
+                        'test/unit/typeahead'
+                        ];
               break;
                
             default:  

@@ -89,8 +89,8 @@ $(function(){
         },
         
         /*
-         if in sourceData values <> texts, put typeahead in "objects" mode: 
-         user must pick some value from list
+         if in sourceData values <> texts, typeahead in "objects" mode: 
+         user must pick some value from list, otherwise `null` returned.
          if all values == texts put typeahead in "strings" mode:
          anything what entered is submited.
         */        
