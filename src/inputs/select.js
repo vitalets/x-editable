@@ -31,14 +31,21 @@ $(function(){
     $.extend(Select.prototype, {
         renderList: function() {
             this.$input.empty();
-            
-            if(!$.isArray(this.sourceData)) {
-                return;
-            }
 
-            for(var i=0; i<this.sourceData.length; i++) {
-                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
-            }
+            var fillItems = function($el, data) {
+                if($.isArray(data)) {
+                    for(var i=0; i<data.length; i++) {
+                        if(data[i].children) {
+                           $el.append(fillItems($('<optgroup>', {label: data[i].text}), data[i].children)); 
+                        } else {
+                           $el.append($('<option>', {value: data[i].value}).text(data[i].text)); 
+                        }
+                    }
+                }
+                return $el;
+            };        
+
+            fillItems(this.$input, this.sourceData);
             
             this.setClass();
             

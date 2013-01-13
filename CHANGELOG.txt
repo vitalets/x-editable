@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.1 wip
 ----------------------------
+[enh] select: support of OPTGROUP via `children` key in source (vitalets) 
 [enh] checklist: set checked via prop instead of attr (vitalets) 
 
 

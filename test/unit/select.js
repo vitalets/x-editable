@@ -689,6 +689,43 @@ $(function () {
             }, timeout);
             
         }, timeout);                                                  
-    });           
+    });  
+    
+    asyncTest("optgroup", function () {
+         var
+         selected = 2, 
+         e = $('<a href="#" data-type="select" data-value="'+selected+'" data-url="post.php"></a>').appendTo(fx).editable({
+             pk: 1,
+             source: [
+                 {text: 'groups', children: groups},
+                 {value: 'v1', text: 't1', children: ['a', 'b', 'c']},
+                 {value: 'v2', text: 't2'}
+             ]
+        });
+
+        equal(e.text(), groups[selected], 'text shown'); 
+                                  
+        e.click();
+        var p = tip(e);
+        ok(p.is(':visible'), 'container visible');
+        ok(p.find('select').length, 'select exists');
+        equal(p.find('select').find('option').length, size + 3 + 1, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');
+
+        equal(p.find('select').find('optgroup').length, 2, 'optgroup loaded');
+        equal(p.find('select').find('optgroup').eq(0).children().length, size, 'optgroup items ok');
+        
+        selected = 'a';
+        p.find('select').val(selected);
+        p.find('form').submit(); 
+         
+         setTimeout(function() {
+               ok(!p.is(':visible'), 'popover closed')
+               equal(e.data('editable').value, selected, 'new value saved')
+               equal(e.text(), 'a', 'new text shown') 
+               e.remove();    
+               start();  
+         }, timeout);                              
+    });               
      
 });

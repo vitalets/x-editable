@@ -136,17 +136,28 @@
            if(!sourceData || value === null) {
                return [];
            }
-           
-           //convert to array
-           if(!$.isArray(value)) {
-               value = [value];
-           }
                       
-           /*jslint eqeq: true*/           
-           var result = $.grep(sourceData, function(o){
-               return $.grep(value, function(v){ return v == o.value; }).length;
+           var isValArray = $.isArray(value),
+           result = [], 
+           that = this;
+
+           $.each(sourceData, function(i, o) {
+               if(o.children) {
+                   result = result.concat(that.itemsByValue(value, o.children));
+               } else {
+                   /*jslint eqeq: true*/
+                   if(isValArray) {
+                       if($.grep(value, function(v){ return v == o.value; }).length) {
+                           result.push(o); 
+                       }
+                   } else {
+                       if(value == o.value) {
+                           result.push(o); 
+                       }
+                   }
+                   /*jslint eqeq: false*/
+               }
            });
-           /*jslint eqeq: false*/
            
            return result;
        },
