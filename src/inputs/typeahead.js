@@ -49,13 +49,17 @@ $(function(){
 
     $.extend(Constructor.prototype, {
         renderList: function() {
+            this.$input = this.$tpl.is('input') ? this.$tpl : this.$tpl.find('input[type="text"]');
+            
+            //set source of typeahead
             this.options.typeahead.source = this.sourceData;
             
+            //apply typeahead
             this.$input.typeahead(this.options.typeahead);
             
             //attach own render method
             this.$input.data('typeahead').render = $.proxy(this.typeaheadRender, this.$input.data('typeahead'));
-            
+
             this.renderClear();
             this.setClass();
             this.setAttr('placeholder');
