@@ -119,6 +119,8 @@
                          
                           <li><a href="#wysihtml5">wysihtml5</a></li>
                          
+                          <li><a href="#typeahead">typeahead</a></li>
+                         
                       </ul>
                     </li>
                     <li><a href="#global">global templates</a></li>
@@ -160,13 +162,14 @@ Main attributes you should define are:
 <li><code>type</code> - type of input (text, textarea, select, etc)</li>
 <li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
 <li><code>pk</code> - primary key of record to be updated (ID in db). If pk is <i>empty</i>, value will be saved on page, but not sent to server. See also <code>send</code> option</li>
-<li><code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
+<li><code>id</code> or <code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
 <li><code>value</code> - initial value. Usefull for select, where value is integer key of text to be shown. If <i>empty</i> - will be taken from element html contents</li>
 </ul>
 <br>
 </li>
 <li>Setup editable mode: <strong>inline</strong> or <strong>popup</strong> (default)
-<pre class="prettyprint linenums">$.fn.editable.defaults.mode = &#x27;inline&#x27;;</pre>
+<pre class="prettyprint linenums">//turn to inline mode
+$.fn.editable.defaults.mode = &#x27;inline&#x27;;</pre>
 </li>
 <li>Apply <strong>editable()</strong> method to these elements
 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).editable();</pre>                                               
@@ -955,6 +958,8 @@ See <a href="#newrecord">creating new records</a> for details.
             <li>checklist</li>
             
             <li>wysihtml5</li>
+            
+            <li>typeahead <sup><span class="label label-success">new</span></sup></li>
                    
             </ul>
         </section> 
@@ -1201,13 +1206,16 @@ $(function(){
             <td>source</td>
             <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}, ...]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
 
 </p>
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).
+
+</p>
+<p>Since 1.4.1 key <code>children</code> supported to render OPTGROUP (for <strong>select</strong> input only).<br><code>[{text: &quot;group1&quot;, children: [{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}]}, ...]</code></p>
 
             
             
@@ -1240,7 +1248,7 @@ $(function(){
             <td>sourceCache</td>
             <td>boolean</td>
             <td>true</td>
-            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
 
             
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
@@ -1874,13 +1882,16 @@ Internally value stored as javascript array of values.</p>
             <td>source</td>
             <td>string | array | object | function</td>
             <td>null</td>
-            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {...}]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}, ...]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
 
 </p>
 <p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
 
 </p>
-<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).
+
+</p>
+<p>Since 1.4.1 key <code>children</code> supported to render OPTGROUP (for <strong>select</strong> input only).<br><code>[{text: &quot;group1&quot;, children: [{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}]}, ...]</code></p>
 
             
             
@@ -1913,7 +1924,7 @@ Internally value stored as javascript array of values.</p>
             <td>sourceCache</td>
             <td>boolean</td>
             <td>true</td>
-            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source and name.<br>Usefull for editable grids.</p>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
 
             
             <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
@@ -2051,6 +2062,171 @@ $(function(){
     $(&#x27;#comments&#x27;).editable({
         url: &#x27;/post&#x27;,
         title: &#x27;Enter comments&#x27;
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
+         <section id="typeahead">
+            <h2>typeahead <sup><span class="label label-success">new</span></sup></h2>
+            <p><p>Typeahead input (bootstrap only). Based on Twitter Bootstrap <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a>.<br>Depending on <code>source</code> format typeahead operates in two modes:
+
+</p>
+<ul>
+<li><p><strong>strings</strong>:<br>When <code>source</code> defined as array of strings, e.g. <code>[&#39;text1&#39;, &#39;text2&#39;, &#39;text3&#39; ...]</code>.<br>User can submit one of these strings or any text entered in input (even if it is not matching source).</p>
+</li>
+<li><p><strong>objects</strong>:<br>When <code>source</code> defined as array of objects, e.g. <code>[{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}, ...]</code>.<br>User can submit only values that are in source (otherwise <code>null</code> is submitted). This is more like <em>dropdown</em> behavior.</p>
+</li>
+</ul>
+
+               <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
+            </p>
+            <ul class="nav nav-tabs" id="typeahead-tabs">
+    <li class="active"><a href="#typeahead-options" data-toggle="tab">Options</a></li>
+    <li><a href="#typeahead-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="typeahead-options">
+      <p>All options can be defined as <code>data-*</code> attributes.
+
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl</td>
+            <td>string</td>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>typeahead</td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of typeahead. <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">Full list of options</a>.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>clear</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Whether to show <code>clear</code> button</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>source</td>
+            <td>string | array | object | function</td>
+            <td>null</td>
+            <td><p>Source data for list.<br>If <strong>array</strong> - it should be in format: <code>[{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}, ...]</code><br>For compability, object format is also supported: <code>{&quot;1&quot;: &quot;text1&quot;, &quot;2&quot;: &quot;text2&quot; ...}</code> but it does not guarantee elements order.
+
+</p>
+<p>If <strong>string</strong> - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also <code>sourceCache</code> option.
+
+</p>
+<p>If <strong>function</strong>, it should return data in format above (since 1.4.0).
+
+</p>
+<p>Since 1.4.1 key <code>children</code> supported to render OPTGROUP (for <strong>select</strong> input only).<br><code>[{text: &quot;group1&quot;, children: [{value: 1, text: &quot;text1&quot;}, {value: 2, text: &quot;text2&quot;}]}, ...]</code></p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>prepend</td>
+            <td>string | array | object | function</td>
+            <td>false</td>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>sourceError</td>
+            <td>string</td>
+            <td>Error when loading list</td>
+            <td><p>Error message when list cannot be loaded (e.g. ajax error)</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>sourceCache</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
+
+            
+            <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div>
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>input-medium</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Name attribute of input</p>
+
+            
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="typeahead-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;typeahead&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-original-title=&quot;Input country&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#country&#x27;).editable({
+        value: &#x27;ru&#x27;,    
+        source: [
+              {value: &#x27;gb&#x27;, text: &#x27;Great Britain&#x27;},
+              {value: &#x27;us&#x27;, text: &#x27;United States&#x27;},
+              {value: &#x27;ru&#x27;, text: &#x27;Russia&#x27;}
+           ]
+        }
     });
 });
 &lt;/script&gt;</pre>

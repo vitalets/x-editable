@@ -27,13 +27,14 @@ Main attributes you should define are:
 <li><code>type</code> - type of input (text, textarea, select, etc)</li>
 <li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
 <li><code>pk</code> - primary key of record to be updated (ID in db). If pk is <i>empty</i>, value will be saved on page, but not sent to server. See also <code>send</code> option</li>
-<li><code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
+<li><code>id</code> or <code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
 <li><code>value</code> - initial value. Usefull for select, where value is integer key of text to be shown. If <i>empty</i> - will be taken from element html contents</li>
 </ul>
 <br>
 </li>
 <li>Setup editable mode: <strong>inline</strong> or <strong>popup</strong> (default)
 {{#source}}
+//turn to inline mode
 $.fn.editable.defaults.mode = 'inline'; 
 {{/source}}
 </li>

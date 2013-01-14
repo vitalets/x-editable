@@ -171,6 +171,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\typeahead.js": {
+            "name": "..\\lib\\src\\inputs\\typeahead.js",
+            "modules": {},
+            "classes": {
+                "typeahead": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js": {
             "name": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",
             "modules": {},
@@ -426,6 +435,24 @@
             "final": 1,
             "example": [
                 "\n<a href=\"#\" id=\"comments\" data-type=\"textarea\" data-pk=\"1\">awesome comment!</a>\n<script>\n$(function(){\n    $('#comments').editable({\n        url: '/post',\n        title: 'Enter comments',\n        rows: 10\n    });\n});\n</script>"
+            ]
+        },
+        "typeahead": {
+            "name": "typeahead",
+            "shortname": "typeahead",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\typeahead.js",
+            "line": 1,
+            "description": "Typeahead input (bootstrap only). Based on Twitter Bootstrap [typeahead](http://twitter.github.com/bootstrap/javascript.html#typeahead).  \nDepending on `source` format typeahead operates in two modes:\n\n* **strings**:  \n  When `source` defined as array of strings, e.g. `['text1', 'text2', 'text3' ...]`.  \n  User can submit one of these strings or any text entered in input (even if it is not matching source).\n  \n* **objects**:  \n  When `source` defined as array of objects, e.g. `[{value: 1, text: \"text1\"}, {value: 2, text: \"text2\"}, ...]`.  \n  User can submit only values that are in source (otherwise `null` is submitted). This is more like *dropdown* behavior.",
+            "extends": "list",
+            "since": "1.4.1",
+            "final": 1,
+            "example": [
+                "\n<a href=\"#\" id=\"country\" data-type=\"typeahead\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Input country\"></a>\n<script>\n$(function(){\n    $('#country').editable({\n        value: 'ru',    \n        source: [\n              {value: 'gb', text: 'Great Britain'},\n              {value: 'us', text: 'United States'},\n              {value: 'ru', text: 'Russia'}\n           ]\n        }\n    });\n});\n</script>"
             ]
         },
         "wysihtml5": {
@@ -1816,8 +1843,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 252,
-            "description": "Source data for list.  \nIf **array** - it should be in format: `[{value: 1, text: \"text1\"}, {...}]`  \nFor compability, object format is also supported: `{\"1\": \"text1\", \"2\": \"text2\" ...}` but it does not guarantee elements order.\n\nIf **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.\n  \nIf **function**, it should return data in format above (since 1.4.0).",
+            "line": 262,
+            "description": "Source data for list.  \nIf **array** - it should be in format: `[{value: 1, text: \"text1\"}, {value: 2, text: \"text2\"}, ...]`  \nFor compability, object format is also supported: `{\"1\": \"text1\", \"2\": \"text2\" ...}` but it does not guarantee elements order.\n\nIf **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.\n  \nIf **function**, it should return data in format above (since 1.4.0).\n\nSince 1.4.1 key `children` supported to render OPTGROUP (for **select** input only).  \n`[{text: \"group1\", children: [{value: 1, text: \"text1\"}, {value: 2, text: \"text2\"}]}, ...]`",
             "itemtype": "property",
             "name": "source",
             "type": "string | array | object | function",
@@ -1826,7 +1853,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 266,
+            "line": 280,
             "description": "Data automatically prepended to the beginning of dropdown list.",
             "itemtype": "property",
             "name": "prepend",
@@ -1836,7 +1863,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 274,
+            "line": 288,
             "description": "Error message when list cannot be loaded (e.g. ajax error)",
             "itemtype": "property",
             "name": "sourceError",
@@ -1846,8 +1873,8 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\list.js",
-            "line": 282,
-            "description": "if <code>true</code> and source is **string url** - results will be cached for fields with the same source and name.  \nUsefull for editable grids.",
+            "line": 296,
+            "description": "if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    \nUsefull for editable column in grid to prevent extra requests.",
             "itemtype": "property",
             "name": "sourceCache",
             "type": "boolean",
@@ -1857,7 +1884,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select.js",
-            "line": 72,
+            "line": 79,
             "itemtype": "property",
             "name": "tpl",
             "default": "<select></select>",
@@ -1865,7 +1892,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 88,
+            "line": 90,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"text\">",
@@ -1873,7 +1900,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 93,
+            "line": 95,
             "description": "Placeholder attribute of input. Shown when input is empty.",
             "itemtype": "property",
             "name": "placeholder",
@@ -1883,7 +1910,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\text.js",
-            "line": 102,
+            "line": 104,
             "description": "Whether to show `clear` button",
             "itemtype": "property",
             "name": "clear",
@@ -1926,6 +1953,34 @@
             "type": "integer",
             "default": "7",
             "class": "textarea"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\typeahead.js",
+            "line": 192,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<input type=\"text\">",
+            "class": "typeahead"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\typeahead.js",
+            "line": 197,
+            "description": "Configuration of typeahead. [Full list of options](http://twitter.github.com/bootstrap/javascript.html#typeahead).",
+            "itemtype": "property",
+            "name": "typeahead",
+            "type": "object",
+            "default": "null",
+            "class": "typeahead"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\typeahead.js",
+            "line": 205,
+            "description": "Whether to show `clear` button",
+            "itemtype": "property",
+            "name": "clear",
+            "type": "boolean",
+            "default": "true",
+            "class": "typeahead"
         },
         {
             "file": "..\\lib\\src\\inputs-ext\\wysihtml5\\wysihtml5.js",

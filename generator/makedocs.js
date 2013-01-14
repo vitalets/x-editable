@@ -121,7 +121,8 @@ function loadContext() {
                         'combodate', 
                         'html5types', 
                         'checklist', 
-                        'wysihtml5'
+                        'wysihtml5',
+                        'typeahead'
                        ];
     
     //inputs
