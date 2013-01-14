@@ -17,12 +17,12 @@
 
         <!-- in docs page include bootstrap-editable for creating new record example -->
         
-        <!-- mockjax -->
-        <script src="assets/mockjax/jquery.mockjax.js"></script>
-        
-        <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
-<!--        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.js"></script>-->
-        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+            <!-- mockjax -->
+            <script src="assets/mockjax/jquery.mockjax.js"></script>
+            
+            <link href="assets/x-editable/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+            <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.js"></script>
+    <!--        <script src="assets/x-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>-->
         
         
         <!-- main css -->  
@@ -33,8 +33,7 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="index.html" class="brand"><img style="position: relative; right: -16px; margin-top: -21px" src="assets/img/santa_hat_24.png">X-editable</a>
-            <!--<a href="index.html" class="brand"><img style="position: relative; right: -13px; margin-top: -23px" src="assets/img/santa_hat_16.png">X-editable</a>-->
+            <a href="index.html" class="brand">X-editable</a>
             <ul class="nav">
                 <li><a href="index.html">Home</a></li>
                 <li><a target="_blank" href="demo.html">Demo</a></li>
@@ -45,7 +44,7 @@
            
             <div style="padding-top: 10px;">
             <!-- twitter -->
-<div class="pull-right" style="width: 320px;">
+<div class="pull-right" style="width: 90px; margin-right: 20%">
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vitalets.github.com/x-editable" data-via="xeditable">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>            
 </div>
@@ -54,18 +53,6 @@
 <div class="pull-right" style="width: 90px">
 <div id="fb-root"></div>
 <script>
-
-/*
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-*/
-
-//new
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -73,7 +60,6 @@
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=558710054143871";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
 </script>
 <div style="vertical-align:top;zoom:1;*display:inline" class="fb-like" data-href="http://vitalets.github.com/x-editable" data-send="false" data-layout="button_count" data-width1="450" data-show-faces="false"></div>
 </div>
@@ -95,66 +81,59 @@
     </div>
 </div> 
 
-
-        <div class="container">
         
-            
-<div id="subnav" class="navbar navbar navbar-fixed-top" style="margin-top: 40px">
+        
+            <div id="subnav" class="navbar navbar-fixed-top" style="margin-top: 40px">
     <div class="navbar-inner">
         <div class="container">
-            <ul class="nav">
-                <li><a href="#gettingstarted">getting started</a></li>
-                <li><a href="#editable">$().editable</a></li>
-                <li class="dropdown">
-                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                     
-                      <li><a href="#text">text</a></li>
-                     
-                      <li><a href="#textarea">textarea</a></li>
-                     
-                      <li><a href="#select">select</a></li>
-                     
-                      <li><a href="#date">date</a></li>
-                     
-                      <li><a href="#dateui">dateui</a></li>
-                     
-                      <li><a href="#combodate">combodate</a></li>
-                     
-                      <li><a href="#html5types">html5types</a></li>
-                     
-                      <li><a href="#checklist">checklist</a></li>
-                     
-                      <li><a href="#wysihtml5">wysihtml5</a></li>
-                     
-                  </ul>
-                </li>
-                <li><a href="#global">global templates</a></li>
-                <li><a href="#newrecord">creating new record</a></li>
-                <li><a href="#backend">backend samples</a></li>
-                <li><a href="#diagram">class diagram</a></li>                
-            </ul>
+        
+            <!-- button show when collapse --> 
+<!--            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="float: left">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>  -->      
+        
+                <ul class="nav">
+                    <li><a href="#gettingstarted">getting started</a></li>
+                    <li><a href="#editable">$().editable</a></li>
+                    <li class="dropdown">
+                      <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                         
+                          <li><a href="#text">text</a></li>
+                         
+                          <li><a href="#textarea">textarea</a></li>
+                         
+                          <li><a href="#select">select</a></li>
+                         
+                          <li><a href="#date">date</a></li>
+                         
+                          <li><a href="#dateui">dateui</a></li>
+                         
+                          <li><a href="#combodate">combodate</a></li>
+                         
+                          <li><a href="#html5types">html5types</a></li>
+                         
+                          <li><a href="#checklist">checklist</a></li>
+                         
+                          <li><a href="#wysihtml5">wysihtml5</a></li>
+                         
+                      </ul>
+                    </li>
+                    <li><a href="#global">global templates</a></li>
+                    <li><a href="#newrecord">creating new record</a></li>
+                    <li><a href="#backend">backend samples</a></li>
+                    <li><a href="#diagram">class diagram</a></li>                
+                </ul>
         </div>  
     </div>
 </div>
+        
 
-<script>
-    $(function () {
-    
-        $('body').scrollspy({
-            target: '#subnav',
-            offset: 100
-        });
-    
-        //update scrollspy when clicking on navbar
-        $('#subnav a').mousedown(function(){
-             $('body').scrollspy('refresh');
-        });
-     
-    });
-</script>
-
-<div class="row">
+        <div class="container">
+        
+            <div class="row">
     <div class="span12">
         <section id="gettingstarted">
             <h1>Getting started</h1> 
