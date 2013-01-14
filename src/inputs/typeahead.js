@@ -1,19 +1,29 @@
 /**
-Typeahead input (bootstrap only)
+Typeahead input (bootstrap only). Based on Twitter Bootstrap [typeahead](http://twitter.github.com/bootstrap/javascript.html#typeahead).  
+Depending on `source` format typeahead operates in two modes:
+
+* **strings**:  
+  When `source` defined as array of strings, e.g. `['text1', 'text2', 'text3' ...]`.  
+  User can submit one of these strings or any text entered in input (even if it is not matching source).
+  
+* **objects**:  
+  When `source` defined as array of objects, e.g. `[{value: 1, text: "text1"}, {value: 2, text: "text2"}, ...]`.  
+  User can submit only values that are in source (otherwise `null` is submitted). This is more like *dropdown* behavior.
 
 @class typeahead
 @extends list
+@since 1.4.1
 @final
 @example
 <a href="#" id="country" data-type="typeahead" data-pk="1" data-url="/post" data-original-title="Input country"></a>
 <script>
 $(function(){
     $('#country').editable({
-        value: 2,    
+        value: 'ru',    
         source: [
-              {value: 1, text: 'Active'},
-              {value: 2, text: 'Blocked'},
-              {value: 3, text: 'Deleted'}
+              {value: 'gb', text: 'Great Britain'},
+              {value: 'us', text: 'United States'},
+              {value: 'ru', text: 'Russia'}
            ]
         }
     });
@@ -185,7 +195,7 @@ $(function(){
         **/         
         tpl:'<input type="text">',
         /**
-        Configuration of typeahead.[Possible options](http://twitter.github.com/bootstrap/javascript.html#typeahead).
+        Configuration of typeahead. [Full list of options](http://twitter.github.com/bootstrap/javascript.html#typeahead).
         
         @property typeahead 
         @type object
