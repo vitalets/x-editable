@@ -123,6 +123,7 @@ $(function(){
         /*
           Typeahead option methods used as defaults
         */
+        /*jshint eqeqeq:false, curly: false, laxcomma: true*/
         matcher: function (item) {
             return $.fn.typeahead.Constructor.prototype.matcher.call(this, item.text);
         },
@@ -131,16 +132,16 @@ $(function(){
             , caseSensitive = []
             , caseInsensitive = []
             , item
-            , text
+            , text;
 
             while (item = items.shift()) {
-                text = item.text
-                if (!text.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
-                else if (~text.indexOf(this.query)) caseSensitive.push(item)
-                else caseInsensitive.push(item)
+                text = item.text;
+                if (!text.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item);
+                else if (~text.indexOf(this.query)) caseSensitive.push(item);
+                else caseInsensitive.push(item);
             }
 
-            return beginswith.concat(caseSensitive, caseInsensitive)
+            return beginswith.concat(caseSensitive, caseInsensitive);
         },
         highlighter: function (item) {
             return $.fn.typeahead.Constructor.prototype.highlighter.call(this, item.text);
@@ -149,7 +150,8 @@ $(function(){
             item = this.$menu.find('.active').data('item');
             this.$element.data('value', item.value);
             return item.text;
-        },        
+        },  
+   
         
         /*
           Overwrite typeahead's render method to store objects.
@@ -159,19 +161,20 @@ $(function(){
           This function just store item in via jQuery data() method instead of attr('data-value')
         */        
         typeaheadRender: function (items) {
-            var that = this
+            var that = this;
 
             items = $(items).map(function (i, item) {
 //                i = $(that.options.item).attr('data-value', item)
-                i = $(that.options.item).data('item', item)
-                i.find('a').html(that.highlighter(item))
-                return i[0]
-            })
+                i = $(that.options.item).data('item', item);
+                i.find('a').html(that.highlighter(item));
+                return i[0];
+            });
 
-            items.first().addClass('active')
-            this.$menu.html(items)
-            return this
+            items.first().addClass('active');
+            this.$menu.html(items);
+            return this;
         }
+        /*jshint eqeqeq: true, curly: true, laxcomma: false*/  
         
     });      
 
