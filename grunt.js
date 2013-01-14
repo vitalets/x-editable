@@ -14,7 +14,9 @@ function getFiles() {
             inputs: [
                 inputs+'date/date.js', 
                 inputs+'date/datefield.js', 
-                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js'], 
+                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                inputs+'typeahead.js'
+                ], 
             css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
         },  
         jqueryui: {
