@@ -1,4 +1,4 @@
-/*! X-editable - v1.4.0 
+/*! X-editable - v1.4.1 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
@@ -693,17 +693,28 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
            if(!sourceData || value === null) {
                return [];
            }
-           
-           //convert to array
-           if(!$.isArray(value)) {
-               value = [value];
-           }
                       
-           /*jslint eqeq: true*/           
-           var result = $.grep(sourceData, function(o){
-               return $.grep(value, function(v){ return v == o.value; }).length;
+           var isValArray = $.isArray(value),
+           result = [], 
+           that = this;
+
+           $.each(sourceData, function(i, o) {
+               if(o.children) {
+                   result = result.concat(that.itemsByValue(value, o.children));
+               } else {
+                   /*jslint eqeq: true*/
+                   if(isValArray) {
+                       if($.grep(value, function(v){ return v == o.value; }).length) {
+                           result.push(o); 
+                       }
+                   } else {
+                       if(value == o.value) {
+                           result.push(o); 
+                       }
+                   }
+                   /*jslint eqeq: false*/
+               }
            });
-           /*jslint eqeq: false*/
            
            return result;
        },
@@ -2214,7 +2225,7 @@ List - abstract class for inputs that have source option loaded from js array or
                     }, this)
                 });
             } else { //options as json/array/function
-                if (typeof this.options.source === 'function') {
+                if ($.isFunction(this.options.source)) {
                    this.sourceData = this.makeArray(this.options.source());
                 } else {
                    this.sourceData = this.makeArray(this.options.source);
@@ -2270,35 +2281,45 @@ List - abstract class for inputs that have source option loaded from js array or
         * convert data to array suitable for sourceData, e.g. [{value: 1, text: 'abc'}, {...}]
         */
         makeArray: function(data) {
-            var count, obj, result = [], iterateEl;
+            var count, obj, result = [], item, iterateItem;
             if(!data || typeof data === 'string') {
                 return null; 
             }
 
             if($.isArray(data)) { //array
-                iterateEl = function (k, v) {
+                /* 
+                   function to iterate inside item of array if item is object.
+                   Caclulates count of keys in item and store in obj. 
+                */
+                iterateItem = function (k, v) {
                     obj = {value: k, text: v};
                     if(count++ >= 2) {
-                        return false;// exit each if object has more than one value
+                        return false;// exit from `each` if item has more than one key.
                     }
                 };
             
                 for(var i = 0; i < data.length; i++) {
-                    if(typeof data[i] === 'object') {
-                        count = 0;
-                        $.each(data[i], iterateEl);
-                        if(count === 1) {
+                    item = data[i]; 
+                    if(typeof item === 'object') {
+                        count = 0; //count of keys inside item
+                        $.each(item, iterateItem);
+                        //case: [{val1: 'text1'}, {val2: 'text2} ...]
+                        if(count === 1) { 
                             result.push(obj); 
-                        } else if(count > 1 && data[i].hasOwnProperty('value') && data[i].hasOwnProperty('text')) {
-                            result.push(data[i]);
-                        } else {
-                            //data contains incorrect objects
+                            //case: [{value: 1, text: 'text1'}, {value: 2, text: 'text2'}, ...]
+                        } else if(count > 1) {
+                            //removed check of existance: item.hasOwnProperty('value') && item.hasOwnProperty('text')
+                            if(item.children) {
+                                item.children = this.makeArray(item.children);   
+                            }
+                            result.push(item);
                         }
                     } else {
-                        result.push({value: data[i], text: data[i]}); 
+                        //case: ['text1', 'text2' ...]
+                        result.push({value: item, text: item}); 
                     }
                 }
-            } else {  //object
+            } else {  //case: {val1: 'text1', val2: 'text2, ...}
                 $.each(data, function (k, v) {
                     result.push({value: k, text: v});
                 });  
@@ -2321,12 +2342,16 @@ List - abstract class for inputs that have source option loaded from js array or
     List.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         Source data for list.  
-        If **array** - it should be in format: `[{value: 1, text: "text1"}, {...}]`  
+        If **array** - it should be in format: `[{value: 1, text: "text1"}, {value: 2, text: "text2"}, ...]`  
         For compability, object format is also supported: `{"1": "text1", "2": "text2" ...}` but it does not guarantee elements order.
         
         If **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.
           
         If **function**, it should return data in format above (since 1.4.0).
+        
+        Since 1.4.1 key `children` supported to render OPTGROUPs (select input only).  
+        Example `[{text: "group1", children: [{value: 1, text: "text1"}, {value: 2, text: "text2"}]}, ...]`. 
+
 		
         @property source 
         @type string | array | object | function
@@ -2415,10 +2440,7 @@ $(function(){
                           .keyup($.proxy(this.toggleClear, this))
                           .parent().css('position', 'relative');
                           
-               this.$clear.click($.proxy(function(){
-                   this.$clear.hide();
-                   this.$input.val('').focus();
-               }, this));                       
+               this.$clear.click($.proxy(this.clear, this));                       
            }            
         },
         
@@ -2448,7 +2470,12 @@ $(function(){
             } else {
                 this.$clear.hide();
             } 
-        }  
+        },
+        
+        clear: function() {
+           this.$clear.hide();
+           this.$input.val('').focus();
+        }          
     });
 
     Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
@@ -2622,14 +2649,21 @@ $(function(){
     $.extend(Select.prototype, {
         renderList: function() {
             this.$input.empty();
-            
-            if(!$.isArray(this.sourceData)) {
-                return;
-            }
 
-            for(var i=0; i<this.sourceData.length; i++) {
-                this.$input.append($('<option>', {value: this.sourceData[i].value}).text(this.sourceData[i].text)); 
-            }
+            var fillItems = function($el, data) {
+                if($.isArray(data)) {
+                    for(var i=0; i<data.length; i++) {
+                        if(data[i].children) {
+                           $el.append(fillItems($('<optgroup>', {label: data[i].text}), data[i].children)); 
+                        } else {
+                           $el.append($('<option>', {value: data[i].value}).text(data[i].text)); 
+                        }
+                    }
+                }
+                return $el;
+            };        
+
+            fillItems(this.$input, this.sourceData);
             
             this.setClass();
             
@@ -2744,7 +2778,7 @@ $(function(){
        
        //set checked on required checkboxes
        value2input: function(value) {
-            this.$input.removeAttr('checked');
+            this.$input.prop('checked', false);
             if($.isArray(value) && value.length) {
                this.$input.each(function(i, el) {
                    var $el = $(el);
@@ -2753,7 +2787,7 @@ $(function(){
                        /*jslint eqeq: true*/
                        if($el.val() == val) {
                        /*jslint eqeq: false*/                           
-                           $el.attr('checked', 'checked');
+                           $el.prop('checked', true);
                        }
                    });
                }); 
