@@ -40,7 +40,8 @@ define(function () {
                     'inputs/checklist',
                     'inputs/html5types',
                     'inputs/combodate/combodate',
-                    'inputs-ext/address/address'],
+                    'inputs-ext/address/address',
+                    'inputs/select2/select2'],
                     init: function(require) {
                         loadCss(require.toUrl("./editable-form.css")); 
                     }      
@@ -94,6 +95,17 @@ define(function () {
                         //loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/wysiwyg-color.css")); 
                     }
                 },
+                
+                //select2
+                'inputs/select2/select2': {
+                    deps: ['require', 
+                    'inputs/select2/lib/select2',
+                    'inputs/abstract'], 
+                    init: function(require) {
+                        loadCss(require.toUrl("./lib/select2.css")); 
+                    }
+                },                
+                
                 
                 //datefield
                 'inputs/date/datefield': ['inputs/date/date'],

@@ -35,7 +35,7 @@ $(function(){
     var Constructor = function (options) {
         this.init('typeahead', options, Constructor.defaults);
         
-        //overriding combodate config (as by default jQuery extend() is not recursive)
+        //overriding objects in config (as by default jQuery extend() is not recursive)
         this.options.typeahead = $.extend({}, Constructor.defaults.typeahead, {
             //set default methods for typeahead to work with objects
             matcher: this.matcher,  
