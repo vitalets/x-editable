@@ -164,6 +164,7 @@ module.exports = function(grunt) {
               'src/inputs/date/*.js',
               'src/inputs/dateui/*.js',
               'src/inputs/combodate/*.js',
+              'src/inputs/select2/*.js',
               
               'src/inputs-ext/address/*.js',
               'src/inputs-ext/wysihtml5/*.js'

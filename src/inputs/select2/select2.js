@@ -26,22 +26,30 @@ $(function(){
     var Constructor = function (options) {
         this.init('select2', options, Constructor.defaults);
         
+        var mixin = {
+            placeholder:  options.placeholder
+        };
+        
+        if(options.select2 && options.select2.tags) {
+            
+        }
+       /*
+        if(!(options.select2 && options.select2.tags)) {
+            mixin.data = options.source; 
+            mixin.initSelection = function (element, callback) {
+                //see https://github.com/ivaynberg/select2/issues/710
+                var data = [];
+                $.each(this.data, function(k, v) {
+                    if(v.id ==  element.val()) {
+                        data.push(v);
+                    } 
+                });
+                callback(data);
+            }; 
+        }
+      */     
         //overriding objects in config (as by default jQuery extend() is not recursive)
-        this.options.select2 = $.extend({}, Constructor.defaults.select2, {
-            data:  options.source,
-            placeholder:  options.placeholder,
-            initSelection : function (element, callback) {
-                    //see https://github.com/ivaynberg/select2/issues/710
-                    var data; 
-                    $.each(this.data, function(k, v) {
-                       if(v.id ==  element.val()) {
-                           data = v;
-                           return false;
-                       } 
-                    });
-                    callback(data);
-            }            
-        }, options.select2);
+        this.options.select2 = $.extend({}, Constructor.defaults.select2, mixin, options.select2);
     };
 
     $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
@@ -51,16 +59,43 @@ $(function(){
             this.setClass();
             //apply select2
             this.$input.select2(this.options.select2);
+            
+            if(this.options.select2.tags) {
+               this.$input.on('change', function() {
+                   //trigger resize of editableform to re-position container
+                   $(this).closest('form').parent().triggerHandler('resize');
+               }); 
+            }            
+            
         },
        
        value2html: function(value, element) {
+           var text = '', data;
            if(this.$input) { //when submitting form 
-               $(element).text(this.$input.select2('data').text);
+               data = this.$input.select2('data');
            } else { //on init (autotext)
-               //todo: here select2 instance not created yet and data may be even not loaded.
-               //but we can check data property of select and if it exist find text
-               $(element).text('');
+               //here select2 instance not created yet and data may be even not loaded.
+               //but we can check data/tags property of select and if it exist lookup text
+               if(this.options.select2.tags) {
+                   data = value;
+               } else if(this.options.select2.data) {
+                   data = $.fn.editableutils.itemsByValue(value, this.options.select2.data, 'id');   
+               }
            }
+           
+           if($.isArray(data)) {
+               //collect selected data and show with separator
+               text = [];
+               $.each(data, function(k, v){
+                   text.push(v && typeof v === 'object' ? v.text : v); 
+               });                   
+           } else if(data) {
+               text = data.text;  
+           }
+
+           text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
+           
+           $(element).text(text);
        },       
         
        html2value: function(html) {
@@ -68,14 +103,30 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           this.$input.select2('val', value);
-//           this.$input.val(value);
+//           this.$input.val(value).select2('val', value);
+           this.$input.val(value).trigger('change');
        },
        
        input2value: function() { 
            return this.$input.select2('val');
 //           return this.$input.val();
-       }                       
+       },
+
+       str2value: function(str) {
+            if(typeof str !== 'string') {
+                return str;
+            }
+            var val, i, l,
+                separator = this.options.select2.separator || $.fn.select2.defaults.separator;
+            if (str === null || str.length < 1) {
+                return null;
+            }
+            val = str.split(separator);
+            for (i = 0, l = val.length; i < l; i = i + 1) {
+                val[i] = $.trim(val[i]);
+            }
+            return val;
+       }        
         
     });      
 
@@ -105,7 +156,15 @@ $(function(){
         Source data for select. It will be assigned to select2 `data` property and kept just for convenience.
         Please note, that format is different from simple `select` input.  
         **/
-        source: null        
+        source: null,
+        /**
+        Separator used to display tags. 
+        
+        @property viewseparator 
+        @type string
+        @default ', '        
+        **/
+        viewseparator: ', '        
     });
 
     $.fn.editabletypes.select2 = Constructor;      

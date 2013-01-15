@@ -25,6 +25,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.input = this.options.input;
             
             //set initial value
+            //todo: may be add check: typeof str === 'string' ? 
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {

@@ -132,10 +132,12 @@
        /*
         returns array items from sourceData having value property equal or inArray of 'value'
        */
-       itemsByValue: function(value, sourceData) {
+       itemsByValue: function(value, sourceData, valueProp) {
            if(!sourceData || value === null) {
                return [];
            }
+           
+           valueProp = valueProp || 'value';
                       
            var isValArray = $.isArray(value),
            result = [], 
@@ -147,11 +149,11 @@
                } else {
                    /*jslint eqeq: true*/
                    if(isValArray) {
-                       if($.grep(value, function(v){ return v == o.value; }).length) {
+                       if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? o[valueProp] : o); }).length) {
                            result.push(o); 
                        }
                    } else {
-                       if(value == o.value) {
+                       if(value == (o && typeof o === 'object' ? o[valueProp] : o)) {
                            result.push(o); 
                        }
                    }
