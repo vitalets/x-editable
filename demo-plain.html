@@ -15,6 +15,10 @@
         
         <!-- momentjs --> 
         <script src="assets/momentjs/moment.min.js"></script> 
+        
+        <!-- select2 --> 
+        <link href="assets/select2/select2.css" rel="stylesheet">
+        <script src="assets/select2/select2.js"></script>         
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
@@ -93,7 +97,7 @@
                     </select>
                 </label>
                            
-                <label style="margin-left: 30px">Display:
+                <label style="margin-left: 30px">Mode:
                     <select name="c" id="c">
                         <option value="popup">Popup</option>
                         <option value="inline">Inline</option>
@@ -145,12 +149,12 @@
                     <tr>         
                         <td>Date of birth</td>
                         <td><a href="#" id="dob" data-type="combodate" data-value="1984-05-15" data-format="YYYY-MM-DD" data-viewformat="DD/MM/YYYY" data-template="D / MMM / YYYY" data-pk="1"  data-original-title="Select Date of birth"></a></td>
-                        <td><span class="muted">Date field</span></td>
+                        <td><span class="muted">Date field (combodate)</span></td>
                     </tr> 
                     <tr>         
                         <td>Setup event</td>
                         <td><a href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1"  data-original-title="Setup event date and time"></a></td>
-                        <td><span class="muted">Datetime field</span></td>
+                        <td><span class="muted">Datetime field (combodate)</span></td>
                     </tr>                     
                     <tr>         
                         <td>Comments</td>
@@ -165,6 +169,18 @@
                         <td><a href="#" id="fruits" data-type="checklist" data-value="2,3" data-original-title="Select fruits"></a></td>
                         <td><span class="muted">Checklist</span></td>
                     </tr>
+
+                    <tr>         
+                        <td>Tags <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="tags" data-type="select2" data-pk="1" data-original-title="Enter tags">html, javascript</a></td>
+                        <td><span class="muted">Select2 (tags mode)</span></td>
+                    </tr>                    
+
+                    <tr>         
+                        <td>Country <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="country" data-type="select2" data-pk="1" data-value="BS" data-original-title="Select country"></a></td>
+                        <td><span class="muted">Select2 (dropdown mode)</span></td>
+                    </tr>  
                     
                     <tr>         
                         <td>Address</td>
@@ -201,7 +217,7 @@ WYSIWYG means What You See Is What You Get.
                     <li><a href="http://jsfiddle.net/xBB5x/63" target="_blank">editable column in table</a></li>
                     <li><a href="http://jsfiddle.net/xBB5x/64" target="_blank">MVC pattern in editable interface</a></li>
                     <li><a href="http://jsfiddle.net/xBB5x/194" target="_blank">Change buttons style</a></li>
-                    <li><a href="http://jsfiddle.net/xBB5x/278" target="_blank">Render server response into element</a></li>
+                    <li><a href="http://jsfiddle.net/xBB5x/278" target="_blank">Display server response as element's text</a></li>
                 </ul>
                 <p>If you'd like to share some usefull jsFiddle, please feel free to <a href="mailto:noginsk@rambler.ru">contact me</a>.</p>
             </div>

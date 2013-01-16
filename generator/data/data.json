@@ -108,6 +108,22 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\select2\\lib\\select2.js": {
+            "name": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "..\\lib\\src\\inputs\\select2\\select2.js": {
+            "name": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "modules": {},
+            "classes": {
+                "select2": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs\\abstract.js": {
             "name": "..\\lib\\src\\inputs\\abstract.js",
             "modules": {},
@@ -322,6 +338,24 @@
             "extends": "dateui",
             "since": "1.4.0"
         },
+        "select2": {
+            "name": "select2",
+            "shortname": "select2",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 1,
+            "description": "Select2 input. Based on https://github.com/ivaynberg/select2.",
+            "extends": "abstractinput",
+            "since": "1.4.1",
+            "final": 1,
+            "example": [
+                "\n<a href=\"#\" id=\"country\" data-type=\"select2\" data-pk=\"1\" data-value=\"ru\" data-url=\"/post\" data-original-title=\"Select country\"></a>\n<script>\n$(function(){\n    $('#country').editable({\n        source: [\n              {id: 'gb', text: 'Great Britain'},\n              {id: 'us', text: 'United States'},\n              {id: 'ru', text: 'Russia'}\n           ],\n        select2: {\n           multiple: true\n        }\n    });\n});\n</script>"
+            ]
+        },
         "abstractinput": {
             "name": "abstractinput",
             "shortname": "abstractinput",
@@ -477,7 +511,7 @@
     "classitems": [
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 120,
+            "line": 121,
             "description": "Fired when container is shown and form is rendered (for select will wait for loading dropdown options)",
             "itemtype": "event",
             "name": "shown",
@@ -495,7 +529,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 137,
+            "line": 138,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
@@ -510,7 +544,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 183,
+            "line": 184,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -525,7 +559,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 196,
+            "line": 197,
             "description": "Fired when container was hidden. It occurs on both save or cancel.",
             "itemtype": "event",
             "name": "hidden",
@@ -548,7 +582,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 223,
+            "line": 224,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -563,7 +597,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 246,
+            "line": 247,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance",
             "itemtype": "event",
             "name": "save",
@@ -598,7 +632,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 268,
+            "line": 269,
             "description": "Sets new option",
             "itemtype": "method",
             "name": "option(key, value)",
@@ -618,7 +652,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 292,
+            "line": 293,
             "description": "Destroys the container instance",
             "itemtype": "method",
             "name": "destroy()",
@@ -626,7 +660,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 336,
+            "line": 337,
             "description": "Activates input of visible container (e.g. set focus)",
             "itemtype": "method",
             "name": "activate()",
@@ -634,7 +668,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 348,
+            "line": 349,
             "description": "jQuery method to initialize editableContainer.",
             "itemtype": "method",
             "name": "$().editableContainer(options)",
@@ -652,7 +686,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 386,
+            "line": 387,
             "description": "Initial value of form input",
             "itemtype": "property",
             "name": "value",
@@ -664,7 +698,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 395,
+            "line": 396,
             "description": "Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.",
             "itemtype": "property",
             "name": "placement",
@@ -674,7 +708,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 403,
+            "line": 404,
             "description": "Whether to hide container on save/cancel.",
             "itemtype": "property",
             "name": "autohide",
@@ -686,7 +720,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 412,
+            "line": 413,
             "description": "Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  \nSetting <code>ignore</code> allows to have several containers open.",
             "itemtype": "property",
             "name": "onblur",
@@ -697,7 +731,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 423,
+            "line": 424,
             "description": "Animation speed (inline mode)",
             "itemtype": "property",
             "name": "anim",
@@ -707,7 +741,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 431,
+            "line": 432,
             "description": "Mode of editable, can be `popup` or `inline`",
             "itemtype": "property",
             "name": "mode",
@@ -790,7 +824,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 36,
+            "line": 37,
             "description": "Renders editableform",
             "itemtype": "method",
             "name": "render",
@@ -798,7 +832,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 57,
+            "line": 58,
             "description": "Fired when rendering starts",
             "itemtype": "event",
             "name": "rendering",
@@ -813,7 +847,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 100,
+            "line": 101,
             "description": "Fired when form is rendered",
             "itemtype": "event",
             "name": "rendered",
@@ -828,7 +862,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 116,
+            "line": 117,
             "description": "Fired when form was cancelled by user",
             "itemtype": "event",
             "name": "cancel",
@@ -843,7 +877,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 152,
+            "line": 153,
             "description": "Fired when form is shown",
             "itemtype": "event",
             "name": "show",
@@ -858,7 +892,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 200,
+            "line": 201,
             "description": "Fired when value not changed but form is submitted. Requires savenochange = false.",
             "itemtype": "event",
             "name": "nochange",
@@ -873,7 +907,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 237,
+            "line": 238,
             "description": "Fired when form is submitted",
             "itemtype": "event",
             "name": "save",
@@ -908,7 +942,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 375,
+            "line": 376,
             "description": "Type of input. Can be <code>text|textarea|select|date|checklist</code>",
             "itemtype": "property",
             "name": "type",
@@ -918,7 +952,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 383,
+            "line": 384,
             "description": "Url for submit, e.g. <code>'/post'</code>  \nIf function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.",
             "itemtype": "property",
             "name": "url",
@@ -931,7 +965,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 401,
+            "line": 402,
             "description": "Additional params for submit. If defined as <code>object</code> - it is **appended** to original ajax data (pk, name and value).  \nIf defined as <code>function</code> - returned object **overwrites** original ajax data.",
             "example": [
                 "\nparams: function(params) {\n    //originally params contain pk, name and value\n    params.a = 1;\n    return params;\n}"
@@ -944,7 +978,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 416,
+            "line": 417,
             "description": "Name of field. Will be submitted on server. Can be taken from <code>id</code> attribute",
             "itemtype": "property",
             "name": "name",
@@ -954,7 +988,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 424,
+            "line": 425,
             "description": "Primary key of editable object (e.g. record id in database). For composite keys use object, e.g. <code>{id: 1, lang: 'en'}</code>.\nCan be calculated dynamically via function.",
             "itemtype": "property",
             "name": "pk",
@@ -964,7 +998,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 433,
+            "line": 434,
             "description": "Initial value. If not defined - will be taken from element's content.\nFor __select__ type should be defined (as it is ID of shown text).",
             "itemtype": "property",
             "name": "value",
@@ -974,7 +1008,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 442,
+            "line": 443,
             "description": "Strategy for sending data on server. Can be <code>auto|always|never</code>.\nWhen 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.",
             "itemtype": "property",
             "name": "send",
@@ -984,7 +1018,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 451,
+            "line": 452,
             "description": "Function for client-side validation. If returns string - means validation not passed and string showed as error.",
             "itemtype": "property",
             "name": "validate",
@@ -997,7 +1031,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 465,
+            "line": 466,
             "description": "Success callback. Called when value successfully sent on server and **response status = 200**.  \nUseful to work with json response. For example, if your backend response can be <code>{success: true}</code>\nor <code>{success: false, msg: \"server error\"}</code> you can check it inside this callback.  \nIf it returns **string** - means error occured and string is shown as error message.  \nIf it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  \nOtherwise newValue simply rendered into element.",
             "itemtype": "property",
             "name": "success",
@@ -1010,7 +1044,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 482,
+            "line": 483,
             "description": "Additional options for ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
             "itemtype": "property",
             "name": "ajaxOptions",
@@ -1024,7 +1058,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 497,
+            "line": 498,
             "description": "Whether to show buttons or not.  \nForm without buttons is auto-submitted.",
             "itemtype": "property",
             "name": "showbuttons",
@@ -1035,7 +1069,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 507,
+            "line": 508,
             "description": "Scope for callback methods (success, validate).  \nIf <code>null</code> means editableform instance itself.",
             "itemtype": "property",
             "name": "scope",
@@ -1048,7 +1082,7 @@
         },
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
-            "line": 518,
+            "line": 519,
             "description": "Whether to save or cancel value when it was not changed but form was submitted",
             "itemtype": "property",
             "name": "savenochange",
@@ -1608,6 +1642,300 @@
             "class": "dateuifield"
         },
         {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 117,
+            "description": "Compares equality of a and b taking into account that a and b may be strings, in which case localeCompare is used",
+            "params": [
+                {
+                    "name": "a",
+                    "description": ""
+                },
+                {
+                    "name": "b",
+                    "description": ""
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 131,
+            "description": "Splits the string into an array of values, trimming each value. An empty array is returned for nulls or empty\nstrings",
+            "params": [
+                {
+                    "name": "string",
+                    "description": ""
+                },
+                {
+                    "name": "separator",
+                    "description": ""
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 169,
+            "description": "filters mouse events so an event is fired only if the mouse moved.\n\nfilters out mouse events that occur when mouse is stationary but\nthe elements under the pointer are scrolled.",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 184,
+            "description": "Debounces a function. Returns a function that calls the original fn function only if no invocations have been made\nwithin the last quietMillis milliseconds.",
+            "params": [
+                {
+                    "name": "quietMillis",
+                    "description": "number of milliseconds to wait before invoking fn"
+                },
+                {
+                    "name": "fn",
+                    "description": "function to be debounced"
+                },
+                {
+                    "name": "ctx",
+                    "description": "object to be used as this reference within fn"
+                }
+            ],
+            "return": {
+                "description": "debounced version of fn"
+            },
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 205,
+            "description": "A simple implementation of a thunk",
+            "params": [
+                {
+                    "name": "formula",
+                    "description": "function used to lazily initialize the thunk"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 269,
+            "description": "Produces an ajax-based query function",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "object containing configuration paramters",
+                    "props": [
+                        {
+                            "name": "transport",
+                            "description": "function that will be used to execute the ajax request. must be compatible with parameters supported by $.ajax"
+                        },
+                        {
+                            "name": "url",
+                            "description": "url for the data"
+                        },
+                        {
+                            "name": "data",
+                            "description": "a function(searchTerm, pageNumber, context) that should return an object containing query string parameters for the above url."
+                        },
+                        {
+                            "name": "dataType",
+                            "description": "request data type: ajax, jsonp, other datatatypes supported by jQuery's $.ajax function or the transport function if specified"
+                        },
+                        {
+                            "name": "traditional",
+                            "description": "a boolean flag that should be true if you wish to use the traditional style of param serialization for the ajax request"
+                        },
+                        {
+                            "name": "quietMillis",
+                            "description": "(optional) milliseconds to wait before making the ajaxRequest, helps debounce the ajax function if invoked too often"
+                        },
+                        {
+                            "name": "results",
+                            "description": "a function(remoteData, pageNumber) that converts data returned form the remote request to the format expected by Select2.\n     The expected format is an object containing the following keys:\n     results array of objects that will be used as choices\n     more (optional) boolean indicating whether there are more results available\n     Example: ,{id:2, text:'Blue'}], more:true}",
+                            "type": "Results:[id:1, text:'Red'"
+                        }
+                    ]
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 324,
+            "description": "Produces a query function that works with a local array",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "object containing configuration parameters. The options parameter can either be an array or an\nobject.\n\nIf the array form is used it is assumed that it contains objects with 'id' and 'text' keys.\n\nIf the object form is used ti is assumed that it contains 'data' and 'text' keys. The 'data' key should contain\nan array of objects that will be used as choices. These objects must contain at least an 'id' key. The 'text'\nkey can either be a String in which case it is expected that each element in the 'data' array has a key with the\nvalue of 'text' which will be used to match choices. Alternatively, text can be a function(item) that can extract\nthe text."
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 408,
+            "description": "Checks if the formatter function should be used.\n\nThrows an error if it is not a function. Returns true if it should be used,\nfalse if no formatting should be performed.",
+            "params": [
+                {
+                    "name": "formatter",
+                    "description": ""
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 438,
+            "description": "Default tokenizer. This function uses breaks the input on substring match of any string from the\nopts.tokenSeparators array and uses opts.createSearchChoice to create the choice object. Both of those\ntwo options have to be defined in order for the tokenizer to work.",
+            "params": [
+                {
+                    "name": "input",
+                    "description": "text user has typed so far or pasted into the search field"
+                },
+                {
+                    "name": "selection",
+                    "description": "currently selected choices"
+                },
+                {
+                    "name": "selectCallback",
+                    "description": "function(choice) callback tho add the choice to selection"
+                },
+                {
+                    "name": "opts",
+                    "description": "select2's opts"
+                }
+            ],
+            "return": {
+                "description": "undefined/null to leave the current input unchanged, or a string to change the input to the returned value"
+            },
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 491,
+            "description": "blurs any Select2 container that has focus when an element outside them was clicked or received focus\n\nalso takes care of clicks on label tags that point to the source element",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 520,
+            "description": "Creates a new class",
+            "params": [
+                {
+                    "name": "superClass",
+                    "description": ""
+                },
+                {
+                    "name": "methods",
+                    "description": ""
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 808,
+            "description": "Monitor the original element for changes and update select2 accordingly",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 820,
+            "description": "Triggers the change event on the source element",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 941,
+            "description": "Opens the dropdown",
+            "return": {
+                "description": "whether or not dropdown was opened. This method will return false if, for example,\nthe dropdown is already open, or if the 'open' event listener on the element called preventDefault().",
+                "type": "Boolean"
+            },
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 957,
+            "description": "Performs the opening of the dropdown",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 1166,
+            "description": "Default tokenizer function which does nothing",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 1173,
+            "params": [
+                {
+                    "name": "initial",
+                    "description": "whether or not this is the call to this method right after the dropdown has been opened"
+                }
+            ],
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 1319,
+            "description": "Get the desired width for the container element.  This is\nderived first from option `width` passed to select2, then\nthe inline 'style' on the original element, and finally\nfalls back to the jQuery calculated element width.",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\lib\\select2.js",
+            "line": 1594,
+            "description": "Sets selection based on source element's value",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 145,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<input type=\"hidden\">",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 150,
+            "description": "Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).",
+            "itemtype": "property",
+            "name": "select2",
+            "type": "object",
+            "default": "null",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 158,
+            "description": "Placeholder attribute of select",
+            "itemtype": "property",
+            "name": "placeholder",
+            "type": "string",
+            "default": "null",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 166,
+            "description": "Source data for select. It will be assigned to select2 `data` property and kept just for convenience.\nPlease note, that format is different from simple `select` input.",
+            "class": "select2"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\select2\\select2.js",
+            "line": 171,
+            "description": "Separator used to display tags.",
+            "itemtype": "property",
+            "name": "viewseparator",
+            "type": "string",
+            "default": "', '",
+            "class": "select2"
+        },
+        {
             "file": "..\\lib\\src\\inputs\\abstract.js",
             "line": 16,
             "description": "Initializes input",
@@ -1956,7 +2284,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\typeahead.js",
-            "line": 192,
+            "line": 196,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"text\">",
@@ -1964,7 +2292,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\typeahead.js",
-            "line": 197,
+            "line": 201,
             "description": "Configuration of typeahead. [Full list of options](http://twitter.github.com/bootstrap/javascript.html#typeahead).",
             "itemtype": "property",
             "name": "typeahead",
@@ -1974,7 +2302,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\typeahead.js",
-            "line": 205,
+            "line": 209,
             "description": "Whether to show `clear` button",
             "itemtype": "property",
             "name": "clear",
@@ -2022,7 +2350,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\containers\\editable-container.js:348"
+            "line": " ..\\lib\\src\\containers\\editable-container.js:349"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -2103,6 +2431,86 @@
         {
             "message": "Missing item type\nmethod to escape html.",
             "line": " ..\\lib\\src\\editable-form\\editable-form-utils.js:125"
+        },
+        {
+            "message": "Missing item type\nCompares equality of a and b taking into account that a and b may be strings, in which case localeCompare is used",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:117"
+        },
+        {
+            "message": "Missing item type\nSplits the string into an array of values, trimming each value. An empty array is returned for nulls or empty\nstrings",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:131"
+        },
+        {
+            "message": "Missing item type\nfilters mouse events so an event is fired only if the mouse moved.\n\nfilters out mouse events that occur when mouse is stationary but\nthe elements under the pointer are scrolled.",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:169"
+        },
+        {
+            "message": "Missing item type\nDebounces a function. Returns a function that calls the original fn function only if no invocations have been made\nwithin the last quietMillis milliseconds.",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:184"
+        },
+        {
+            "message": "Missing item type\nA simple implementation of a thunk",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:205"
+        },
+        {
+            "message": "Missing item type\nProduces an ajax-based query function",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:269"
+        },
+        {
+            "message": "Missing item type\nProduces a query function that works with a local array",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:324"
+        },
+        {
+            "message": "Missing item type\nChecks if the formatter function should be used.\n\nThrows an error if it is not a function. Returns true if it should be used,\nfalse if no formatting should be performed.",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:408"
+        },
+        {
+            "message": "Missing item type\nDefault tokenizer. This function uses breaks the input on substring match of any string from the\nopts.tokenSeparators array and uses opts.createSearchChoice to create the choice object. Both of those\ntwo options have to be defined in order for the tokenizer to work.",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:438"
+        },
+        {
+            "message": "Missing item type\nblurs any Select2 container that has focus when an element outside them was clicked or received focus\n\nalso takes care of clicks on label tags that point to the source element",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:491"
+        },
+        {
+            "message": "Missing item type\nCreates a new class",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:520"
+        },
+        {
+            "message": "Missing item type\nMonitor the original element for changes and update select2 accordingly",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:808"
+        },
+        {
+            "message": "Missing item type\nTriggers the change event on the source element",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:820"
+        },
+        {
+            "message": "Missing item type\nOpens the dropdown",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:941"
+        },
+        {
+            "message": "Missing item type\nPerforms the opening of the dropdown",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:957"
+        },
+        {
+            "message": "Missing item type\nDefault tokenizer function which does nothing",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:1166"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:1173"
+        },
+        {
+            "message": "Missing item type\nGet the desired width for the container element.  This is\nderived first from option `width` passed to select2, then\nthe inline 'style' on the original element, and finally\nfalls back to the jQuery calculated element width.",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:1319"
+        },
+        {
+            "message": "Missing item type\nSets selection based on source element's value",
+            "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:1594"
+        },
+        {
+            "message": "Missing item type\nSource data for select. It will be assigned to select2 `data` property and kept just for convenience.\nPlease note, that format is different from simple `select` input.",
+            "line": " ..\\lib\\src\\inputs\\select2\\select2.js:166"
         },
         {
             "message": "Missing item type\nmethod to escape html.",

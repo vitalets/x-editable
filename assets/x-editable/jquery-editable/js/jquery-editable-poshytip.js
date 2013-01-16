@@ -30,6 +30,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.input = this.options.input;
             
             //set initial value
+            //todo: may be add check: typeof str === 'string' ? 
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {
@@ -689,10 +690,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
        /*
         returns array items from sourceData having value property equal or inArray of 'value'
        */
-       itemsByValue: function(value, sourceData) {
+       itemsByValue: function(value, sourceData, valueProp) {
            if(!sourceData || value === null) {
                return [];
            }
+           
+           valueProp = valueProp || 'value';
                       
            var isValArray = $.isArray(value),
            result = [], 
@@ -704,11 +707,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                } else {
                    /*jslint eqeq: true*/
                    if(isValArray) {
-                       if($.grep(value, function(v){ return v == o.value; }).length) {
+                       if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? o[valueProp] : o); }).length) {
                            result.push(o); 
                        }
                    } else {
-                       if(value == o.value) {
+                       if(value == (o && typeof o === 'object' ? o[valueProp] : o)) {
                            result.push(o); 
                        }
                    }
@@ -889,6 +892,7 @@ Applied as jQuery method.
                 cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
                 show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
+                resize: $.proxy(this.setPosition, this), //this allows to re-position container when form size is changed 
                 rendered: $.proxy(function(){
                     /**        
                     Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
@@ -2349,8 +2353,8 @@ List - abstract class for inputs that have source option loaded from js array or
           
         If **function**, it should return data in format above (since 1.4.0).
         
-        Since 1.4.1 key `children` supported to render OPTGROUPs (select input only).  
-        Example `[{text: "group1", children: [{value: 1, text: "text1"}, {value: 2, text: "text2"}]}, ...]`. 
+        Since 1.4.1 key `children` supported to render OPTGROUP (for **select** input only).  
+        `[{text: "group1", children: [{value: 1, text: "text1"}, {value: 2, text: "text2"}]}, ...]` 
 
 		
         @property source 
@@ -2375,8 +2379,8 @@ List - abstract class for inputs that have source option loaded from js array or
         **/          
         sourceError: 'Error when loading list',
         /**
-        if <code>true</code> and source is **string url** - results will be cached for fields with the same source and name.  
-        Usefull for editable grids.
+        if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
+        Usefull for editable column in grid to prevent extra requests.
         
         @property sourceCache 
         @type boolean
@@ -3024,6 +3028,189 @@ Range (inherit from number)
         inputclass: 'input-medium'
     });
     $.fn.editabletypes.range = Range;
+}(window.jQuery));
+/**
+Select2 input. Based on https://github.com/ivaynberg/select2.  
+
+@class select2
+@extends abstractinput
+@since 1.4.1
+@final
+@example
+<a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-original-title="Select country"></a>
+<script>
+$(function(){
+    $('#country').editable({
+        source: [
+              {id: 'gb', text: 'Great Britain'},
+              {id: 'us', text: 'United States'},
+              {id: 'ru', text: 'Russia'}
+           ],
+        select2: {
+           multiple: true
+        }
+    });
+});
+</script>
+**/
+(function ($) {
+
+    var Constructor = function (options) {
+        this.init('select2', options, Constructor.defaults);
+       
+        options.select2 = options.select2 || {};
+        
+        var that = this, 
+            mixin = {
+               placeholder:  options.placeholder
+            };
+       
+       //detect whether it is multi-valued
+       this.isMultiple = options.select2.tags || options.select2.multiple;
+       
+       //if not `tags` mode, we need define init set data from source
+       if(!options.select2.tags) {
+            if(options.source) {
+                mixin.data = options.source;
+            } 
+
+            //this function can be defaulted in seletc2. See https://github.com/ivaynberg/select2/issues/710
+            mixin.initSelection = function (element, callback) {
+                var val = that.str2value(element.val()),
+                    data = $.fn.editableutils.itemsByValue(val, mixin.data, 'id');
+                
+                //for single-valued mode should not use array. Take first element instead.
+                if($.isArray(data) && data.length && !that.isMultiple) {
+                   data = data[0]; 
+                }
+                                    
+                callback(data);
+            }; 
+        }
+           
+        //overriding objects in config (as by default jQuery extend() is not recursive)
+        this.options.select2 = $.extend({}, Constructor.defaults.select2, mixin, options.select2);
+    };
+
+    $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
+
+    $.extend(Constructor.prototype, {
+        render: function() {
+            this.setClass();
+            //apply select2
+            this.$input.select2(this.options.select2);
+
+            //trigger resize of editableform to re-position container in multi-valued mode           
+            if(this.isMultiple) {
+               this.$input.on('change', function() {
+                   $(this).closest('form').parent().triggerHandler('resize');
+               }); 
+            }            
+            
+        },
+       
+       value2html: function(value, element) {
+           var text = '', data;
+           if(this.$input) { //when submitting form 
+               data = this.$input.select2('data');
+           } else { //on init (autotext)
+               //here select2 instance not created yet and data may be even not loaded.
+               //we can check data/tags property of select config and if exist lookup text
+               if(this.options.select2.tags) {
+                   data = value;
+               } else if(this.options.select2.data) {
+                   data = $.fn.editableutils.itemsByValue(value, this.options.select2.data, 'id');   
+               }
+           }
+           
+           if($.isArray(data)) {
+               //collect selected data and show with separator
+               text = [];
+               $.each(data, function(k, v){
+                   text.push(v && typeof v === 'object' ? v.text : v); 
+               });                   
+           } else if(data) {
+               text = data.text;  
+           }
+
+           text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
+           
+           $(element).text(text);
+       },       
+        
+       html2value: function(html) {
+           return this.options.select2.tags ? this.str2value(html, this.options.viewseparator) : null;
+       }, 
+       
+       value2input: function(value) {
+           this.$input.val(value).trigger('change');
+       },
+       
+       input2value: function() { 
+           return this.$input.select2('val');
+       },
+
+       str2value: function(str, separator) {
+            if(typeof str !== 'string' || !this.isMultiple) {
+                return str;
+            }
+            
+            separator = separator || this.options.select2.separator || $.fn.select2.defaults.separator;
+            
+            var val, i, l;
+                
+            if (str === null || str.length < 1) {
+                return null;
+            }
+            val = str.split(separator);
+            for (i = 0, l = val.length; i < l; i = i + 1) {
+                val[i] = $.trim(val[i]);
+            }
+            
+            return val;
+       }        
+        
+    });      
+
+    Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        /**
+        @property tpl 
+        @default <input type="hidden">
+        **/         
+        tpl:'<input type="hidden">',
+        /**
+        Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).
+        
+        @property select2 
+        @type object
+        @default null
+        **/
+        select2: null,
+        /**
+        Placeholder attribute of select
+
+        @property placeholder 
+        @type string
+        @default null
+        **/             
+        placeholder: null,
+        /**
+        Source data for select. It will be assigned to select2 `data` property and kept just for convenience.
+        Please note, that format is different from simple `select` input.  
+        **/
+        source: null,
+        /**
+        Separator used to display tags. 
+        
+        @property viewseparator 
+        @type string
+        @default ', '        
+        **/
+        viewseparator: ', '        
+    });
+
+    $.fn.editabletypes.select2 = Constructor;      
+    
 }(window.jQuery));
 /**
 * Combodate - 1.0.1
