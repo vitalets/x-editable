@@ -252,6 +252,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     input: this.input //pass input to form (as it is already created)
                 });
                 this.$element.editableContainer(containerOptions);
+                //listen `save` event 
                 this.$element.on("save.internal", $.proxy(this.save, this));
                 this.container = this.$element.data('editableContainer'); 
             } else if(this.container.tip().is(':visible')) {
@@ -289,13 +290,29 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         * called when form was submitted
         */          
         save: function(e, params) {
-            //if url is not user's function and value was not sent to server and value changed --> mark element with unsaved css. 
-            if(typeof this.options.url !== 'function' && this.options.display !== false && params.response === undefined && this.input.value2str(this.value) !== this.input.value2str(params.newValue)) { 
-                this.$element.addClass('editable-unsaved');
-            } else {
-                this.$element.removeClass('editable-unsaved');
+            //mark element with unsaved class if needed
+            if(this.options.unsavedclass) {
+                /*
+                 Add unsaved css to element if:
+                  - url is not user's function 
+                  - value was not sent to server
+                  - params.response === undefined, that means data was not sent
+                  - value changed 
+                */
+                var sent = false;
+                sent = sent || typeof this.options.url === 'function';
+                sent = sent || this.options.display === false; 
+                sent = sent || params.response !== undefined; 
+                sent = sent || (this.options.savenochange && this.input.value2str(this.value) !== this.input.value2str(params.newValue)); 
+                
+                if(sent) {
+                    this.$element.removeClass(this.options.unsavedclass); 
+                } else {
+                    this.$element.addClass(this.options.unsavedclass);                    
+                }
             }
             
+            //set new value
             this.setValue(params.newValue, false, params.response);
             
             /**        
@@ -608,7 +625,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default editable-empty
         @since 1.4.1
         **/        
-        emptyclass: 'editable-empty'
+        emptyclass: 'editable-empty',
+        /**
+        Css class applied when value was stored but not sent to server (`pk` is empty or `send = 'never'`).  
+        You may set it to `null` if you work with editables locally and submit them together.  
+
+        @property unsavedclass 
+        @type string
+        @default editable-unsaved
+        @since 1.4.1
+        **/        
+        unsavedclass: 'editable-unsaved'        
     };
     
 }(window.jQuery));
