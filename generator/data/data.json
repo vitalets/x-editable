@@ -348,7 +348,7 @@
             "extension_for": [],
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
             "line": 1,
-            "description": "Select2 input. Based on https://github.com/ivaynberg/select2.",
+            "description": "Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  \nPlease see [original docs](http://ivaynberg.github.com/select2) for detailed description and options.",
             "extends": "abstractinput",
             "since": "1.4.1",
             "final": 1,
@@ -1893,7 +1893,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 145,
+            "line": 146,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"hidden\">",
@@ -1901,7 +1901,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 150,
+            "line": 151,
             "description": "Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).",
             "itemtype": "property",
             "name": "select2",
@@ -1911,7 +1911,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 158,
+            "line": 159,
             "description": "Placeholder attribute of select",
             "itemtype": "property",
             "name": "placeholder",
@@ -1921,13 +1921,17 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 166,
-            "description": "Source data for select. It will be assigned to select2 `data` property and kept just for convenience.\nPlease note, that format is different from simple `select` input.",
+            "line": 167,
+            "description": "Source data for select. It will be assigned to select2 `data` property and kept here just for convenience.\nPlease note, that format is different from simple `select` input: use 'id' instead of 'value'.\nE.g. `[{id: 1, text: \"text1\"}, {id: 2, text: \"text2\"}, ...]`.",
+            "itemtype": "property",
+            "name": "source",
+            "type": "array",
+            "default": "null",
             "class": "select2"
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 171,
+            "line": 177,
             "description": "Separator used to display tags.",
             "itemtype": "property",
             "name": "viewseparator",
@@ -2507,10 +2511,6 @@
         {
             "message": "Missing item type\nSets selection based on source element's value",
             "line": " ..\\lib\\src\\inputs\\select2\\lib\\select2.js:1594"
-        },
-        {
-            "message": "Missing item type\nSource data for select. It will be assigned to select2 `data` property and kept just for convenience.\nPlease note, that format is different from simple `select` input.",
-            "line": " ..\\lib\\src\\inputs\\select2\\select2.js:166"
         },
         {
             "message": "Missing item type\nmethod to escape html.",

@@ -122,7 +122,8 @@ function loadContext() {
                         'html5types', 
                         'checklist', 
                         'wysihtml5',
-                        'typeahead'
+                        'typeahead',
+                        'select2'
                        ];
     
     //inputs

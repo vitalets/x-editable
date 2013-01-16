@@ -101,8 +101,6 @@
                       <a data-toggle="dropdown" class="dropdown-toggle" href="#">inputs <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                          
-                          <li><a href="#select2">select2</a></li>
-                         
                           <li><a href="#text">text</a></li>
                          
                           <li><a href="#textarea">textarea</a></li>
@@ -122,6 +120,8 @@
                           <li><a href="#wysihtml5">wysihtml5</a></li>
                          
                           <li><a href="#typeahead">typeahead</a></li>
+                         
+                          <li><a href="#select2">select2</a></li>
                          
                       </ul>
                     </li>
@@ -943,8 +943,6 @@ See <a href="#newrecord">creating new records</a> for details.
             </p> 
             <ul>
             
-            <li>select2 <sup><span class="label label-success">new</span></sup></li>
-            
             <li>text</li>
             
             <li>textarea</li>
@@ -964,126 +962,12 @@ See <a href="#newrecord">creating new records</a> for details.
             <li>wysihtml5</li>
             
             <li>typeahead <sup><span class="label label-success">new</span></sup></li>
+            
+            <li>select2 <sup><span class="label label-success">new</span></sup></li>
                    
             </ul>
         </section> 
                    
-        
-         <section id="select2">
-            <h2>select2 <sup><span class="label label-success">new</span></sup></h2>
-            <p><p>Select2 input. Based on <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.</p>
-
-               <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
-            </p>
-            <ul class="nav nav-tabs" id="select2-tabs">
-    <li class="active"><a href="#select2-options" data-toggle="tab">Options</a></li>
-    <li><a href="#select2-example" data-toggle="tab">Example</a></li>
-</ul>
-
-<div class="tab-content">
-    <div class="tab-pane active" id="select2-options">
-      <p>All options can be defined as <code>data-*</code> attributes.
-
-</p>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th style="width: 15%;">Name</th>
-            <th style="width: 15%;">Type</th>
-            <th style="width: 15%;">Default</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-            <td>tpl</td>
-            <td>string</td>
-            <td>&lt;input type=&quot;hidden&quot;&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>select2</td>
-            <td>object</td>
-            <td>null</td>
-            <td><p>Configuration of select2. <a href="http://ivaynberg.github.com/select2">Full list of options</a>.</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>placeholder</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Placeholder attribute of select</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>viewseparator</td>
-            <td>string</td>
-            <td>&#x27;, &#x27;</td>
-            <td><p>Separator used to display tags.</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass</td>
-            <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
-
-            
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name</td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            
-            </td>
-        </tr> 
-                                    
-    </tbody>
-</table>
-    </div>
-    <div class="tab-pane" id="select2-example">
-     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;select2&quot; data-pk=&quot;1&quot; data-value=&quot;ru&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select country&quot;&gt;&lt;/a&gt;
-&lt;script&gt;
-$(function(){
-    $(&#x27;#country&#x27;).editable({
-        source: [
-              {id: &#x27;gb&#x27;, text: &#x27;Great Britain&#x27;},
-              {id: &#x27;us&#x27;, text: &#x27;United States&#x27;},
-              {id: &#x27;ru&#x27;, text: &#x27;Russia&#x27;}
-           ],
-        select2: {
-           multiple: true
-        }
-    });
-});
-&lt;/script&gt;</pre>
-    </div>
-</div>
-            </section>
         
          <section id="text">
             <h2>text</h2>
@@ -2346,6 +2230,135 @@ $(function(){
               {value: &#x27;us&#x27;, text: &#x27;United States&#x27;},
               {value: &#x27;ru&#x27;, text: &#x27;Russia&#x27;}
            ]
+        }
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
+         <section id="select2">
+            <h2>select2 <sup><span class="label label-success">new</span></sup></h2>
+            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original docs</a> for detailed description and options.</p>
+
+               <div style="text-align: right"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
+            </p>
+            <ul class="nav nav-tabs" id="select2-tabs">
+    <li class="active"><a href="#select2-options" data-toggle="tab">Options</a></li>
+    <li><a href="#select2-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="select2-options">
+      <p>All options can be defined as <code>data-*</code> attributes.
+
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl</td>
+            <td>string</td>
+            <td>&lt;input type=&quot;hidden&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>select2</td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of select2. <a href="http://ivaynberg.github.com/select2">Full list of options</a>.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>placeholder</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Placeholder attribute of select</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>source</td>
+            <td>array</td>
+            <td>null</td>
+            <td><p>Source data for select. It will be assigned to select2 <code>data</code> property and kept here just for convenience.
+Please note, that format is different from simple <code>select</code> input: use &#39;id&#39; instead of &#39;value&#39;.
+E.g. <code>[{id: 1, text: &quot;text1&quot;}, {id: 2, text: &quot;text2&quot;}, ...]</code>.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewseparator</td>
+            <td>string</td>
+            <td>&#x27;, &#x27;</td>
+            <td><p>Separator used to display tags.</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass</td>
+            <td>string</td>
+            <td>input-medium</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Name attribute of input</p>
+
+            
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="select2-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;select2&quot; data-pk=&quot;1&quot; data-value=&quot;ru&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select country&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#country&#x27;).editable({
+        source: [
+              {id: &#x27;gb&#x27;, text: &#x27;Great Britain&#x27;},
+              {id: &#x27;us&#x27;, text: &#x27;United States&#x27;},
+              {id: &#x27;ru&#x27;, text: &#x27;Russia&#x27;}
+           ],
+        select2: {
+           multiple: true
         }
     });
 });
