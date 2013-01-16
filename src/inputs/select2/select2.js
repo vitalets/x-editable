@@ -108,7 +108,7 @@ $(function(){
        },       
         
        html2value: function(html) {
-           return this.options.select2.tags ? this.str2value(html) : null;
+           return this.options.select2.tags ? this.str2value(html, this.options.viewseparator) : null;
        }, 
        
        value2input: function(value) {
@@ -119,13 +119,13 @@ $(function(){
            return this.$input.select2('val');
        },
 
-       str2value: function(str) {
+       str2value: function(str, separator) {
             if(typeof str !== 'string' || !this.isMultiple) {
                 return str;
             }
             
             var val, i, l,
-                separator = this.options.select2.separator || $.fn.select2.defaults.separator;
+                separator = separator || this.options.select2.separator || $.fn.select2.defaults.separator;
             if (str === null || str.length < 1) {
                 return null;
             }

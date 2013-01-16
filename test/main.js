@@ -49,7 +49,8 @@ require(["loader", jqurl], function(loader) {
             'test/unit/textarea',
             'test/unit/select',
             'test/unit/checklist',
-            'test/unit/combodate'
+            'test/unit/combodate',
+            'test/unit/select2'
        ];
        tests = tests.concat(custom);
        tests.push('test/unit/api');
