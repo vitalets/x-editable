@@ -127,7 +127,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         enable: function() {
             this.options.disabled = false;
             this.$element.removeClass('editable-disabled');
-            this.handleEmpty();
+            this.handleEmpty(this.isEmpty);
             if(this.options.toggle !== 'manual') {
                 if(this.$element.attr('tabindex') === '-1') {    
                     this.$element.removeAttr('tabindex');                                
@@ -143,7 +143,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.options.disabled = true; 
             this.hide();           
             this.$element.addClass('editable-disabled');
-            this.handleEmpty();
+            this.handleEmpty(this.isEmpty);
             //do not stop focus on this element
             this.$element.attr('tabindex', -1);                
         },
@@ -204,27 +204,33 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         },              
         
         /*
-        * set emptytext if element is empty (reverse: remove emptytext if needed)
+        * set emptytext if element is empty
         */
-        handleEmpty: function () {
+        handleEmpty: function (isEmpty) {
             //do not handle empty if we do not display anything
             if(this.options.display === false) {
                 return;
             }
             
-            var emptyClass = 'editable-empty';
+            this.isEmpty = isEmpty !== undefined ? isEmpty : $.trim(this.$element.text()) === '';           
+            
             //emptytext shown only for enabled
             if(!this.options.disabled) {
-                if ($.trim(this.$element.text()) === '') {
-                    this.$element.addClass(emptyClass).text(this.options.emptytext);
-                } else {
-                    this.$element.removeClass(emptyClass);
+                if (this.isEmpty) {
+                    this.$element.text(this.options.emptytext);
+                    if(this.options.emptyclass) {
+                        this.$element.addClass(this.options.emptyclass);
+                    }
+                } else if(this.options.emptyclass) {
+                    this.$element.removeClass(this.options.emptyclass);
                 }
             } else {
                 //below required if element disable property was changed
-                if(this.$element.hasClass(emptyClass)) {
+                if(this.isEmpty) {
                     this.$element.empty();
-                    this.$element.removeClass(emptyClass);
+                    if(this.options.emptyclass) {
+                        this.$element.removeClass(this.options.emptyclass);
+                    }
                 }
             }
         },        
@@ -381,7 +387,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         url: '/post',
         pk: 1
     });
-    **/    
+    **/
     $.fn.editable = function (option) {
         //special API methods returning non-jquery object
         var result = {}, args = arguments, datakey = 'editable';
@@ -398,7 +404,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
               username: "username is required",
               fullname: "fullname should be minimum 3 letters length"
             }
-            **/             
+            **/
             case 'validate':
                 this.each(function () {
                     var $this = $(this), data = $this.data(datakey), error;
@@ -419,7 +425,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             username: "superuser",
             fullname: "John"
             }
-            **/               
+            **/
             case 'getValue':
                 this.each(function () {
                     var $this = $(this), data = $this.data(datakey);
@@ -438,11 +444,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @param {object} options 
             @param {object} options.url url to submit data 
             @param {object} options.data additional data to submit
-            @param {object} options.ajaxOptions additional ajax options            
+            @param {object} options.ajaxOptions additional ajax options
             @param {function} options.error(obj) error handler 
             @param {function} options.success(obj,config) success handler
             @returns {Object} jQuery object
-            **/            
+            **/
             case 'submit':  //collects value, validate and submit to server for creating new record
                 var config = arguments[1] || {},
                 $elems = this,
@@ -593,7 +599,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
            }
         }
         **/          
-        display: null
+        display: null,
+        /**
+        Css class applied when editable text is empty.
+
+        @property emptyclass 
+        @type string
+        @default editable-empty
+        @since 1.4.1
+        **/        
+        emptyclass: 'editable-empty'
     };
     
 }(window.jQuery));

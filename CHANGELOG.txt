@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.1 wip
 ----------------------------
+[enh] new option `emptyclass` to set css class when element is empty (vitalets) 
 [enh #59] select2 input (vitalets) 
 [enh #17] typeahead input (vitalets) 
 [enh] select: support of OPTGROUP via `children` key in source (vitalets) 

@@ -7,19 +7,6 @@ $(function () {
        }
    });
       
-     test("if element originally empty: emptytext should be shown and input should contain ''", function () {
-        var  emptytext = 'empty!',
-             e = $('<a href="#" id="a">  </a>').appendTo('#qunit-fixture').editable({emptytext: emptytext});
-       
-        equal(e.text(), emptytext, 'emptytext shown on init');
-             
-        e.click();
-        var p = tip(e);
-        equal(p.find('input[type="text"]').val(), '', 'input val is empty string')
-        p.find('.editable-cancel').click(); 
-        ok(!p.is(':visible'), 'popover was removed')    
-     })   
-      
      test("option 'placeholder'", function () {
         var  e = $('<a href="#" id="a" data-placeholder="abc"> </a>').appendTo('#qunit-fixture').editable();
             

@@ -545,5 +545,50 @@
         ok(p.is(':visible'), 'inline visible visible');
         ok(p.hasClass('editable-inline'), 'has inline class');
     }); 
+    
+     test("emptytext, emptyclass", function () {
+        var  emptytext = 'empty!',
+             emptyclass = 'abc',
+             e = $('<a href="#" id="a">  </a>').appendTo('#qunit-fixture').editable({
+                 emptytext: emptytext,
+                 emptyclass: emptyclass,
+                 send: 'never'
+             });
+       
+        equal(e.text(), emptytext, 'emptytext shown on init');
+        ok(e.hasClass(emptyclass), 'emptyclass added');
+             
+        e.click();
+        var p = tip(e);
+        equal(p.find('input[type="text"]').val(), '', 'input val is empty string');
+//        p.find('.editable-cancel').click();
+        //set non-empty value  
+        p.find('input[type="text"]').val('abc');
+        p.find('form').submit();
+        
+        ok(!p.is(':visible'), 'popover was removed');
+        ok(e.text() != emptytext, 'emptytext not shown');
+        ok(!e.hasClass(emptyclass), 'emptyclass removed');
+        
+        e.click();
+        p = tip(e);
+        p.find('input[type="text"]').val('');
+        p.find('form').submit();
+        
+        ok(!p.is(':visible'), 'popover was removed');
+        equal(e.text(), emptytext, 'emptytext shown');
+        ok(e.hasClass(emptyclass), 'emptyclass added');
+        
+        e.editable('disable');
+        equal(e.text(), '', 'emptytext removed');
+        ok(!e.hasClass(emptyclass), 'emptyclass removed');
+        
+        e.editable('enable');            
+        e.editable('enable');
+         
+        equal(e.text(), emptytext, 'emptytext shown');
+        ok(e.hasClass(emptyclass), 'emptyclass added');                     
+   });  
+    
           
 }(jQuery));  
