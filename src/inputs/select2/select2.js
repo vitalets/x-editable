@@ -6,16 +6,17 @@ Select2 input. Based on https://github.com/ivaynberg/select2.
 @since 1.4.1
 @final
 @example
-<a href="#" id="country" data-type="select2" data-pk="1" data-url="/post" data-original-title="Select country"></a>
+<a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-original-title="Select country"></a>
 <script>
 $(function(){
     $('#country').editable({
-        value: 'ru',    
         source: [
-              {value: 'gb', text: 'Great Britain'},
-              {value: 'us', text: 'United States'},
-              {value: 'ru', text: 'Russia'}
-           ]
+              {id: 'gb', text: 'Great Britain'},
+              {id: 'us', text: 'United States'},
+              {id: 'ru', text: 'Russia'}
+           ],
+        select2: {
+           multiple: true
         }
     });
 });
@@ -25,29 +26,37 @@ $(function(){
 
     var Constructor = function (options) {
         this.init('select2', options, Constructor.defaults);
+       
+        options.select2 = options.select2 || {};
         
-        var mixin = {
-            placeholder:  options.placeholder
-        };
-        
-        if(options.select2 && options.select2.tags) {
-            
-        }
-       /*
-        if(!(options.select2 && options.select2.tags)) {
-            mixin.data = options.source; 
+        var that = this, 
+            mixin = {
+               placeholder:  options.placeholder
+            };
+       
+       //detect whether it is multi-valued
+       this.isMultiple = options.select2.tags || options.select2.multiple;
+       
+       //if not `tags` mode, we need define init set data from source
+       if(!options.select2.tags) {
+            if(options.source) {
+                mixin.data = options.source;
+            } 
+
+            //this function can be defaulted in seletc2. See https://github.com/ivaynberg/select2/issues/710
             mixin.initSelection = function (element, callback) {
-                //see https://github.com/ivaynberg/select2/issues/710
-                var data = [];
-                $.each(this.data, function(k, v) {
-                    if(v.id ==  element.val()) {
-                        data.push(v);
-                    } 
-                });
+                var val = that.str2value(element.val()),
+                    data = $.fn.editableutils.itemsByValue(val, mixin.data, 'id');
+                
+                //for single-valued mode should not use array. Take first element instead.
+                if($.isArray(data) && data.length && !that.isMultiple) {
+                   data = data[0]; 
+                }
+                                    
                 callback(data);
             }; 
         }
-      */     
+           
         //overriding objects in config (as by default jQuery extend() is not recursive)
         this.options.select2 = $.extend({}, Constructor.defaults.select2, mixin, options.select2);
     };
@@ -59,10 +68,10 @@ $(function(){
             this.setClass();
             //apply select2
             this.$input.select2(this.options.select2);
-            
-            if(this.options.select2.tags) {
+
+            //trigger resize of editableform to re-position container in multi-valued mode           
+            if(this.isMultiple) {
                this.$input.on('change', function() {
-                   //trigger resize of editableform to re-position container
                    $(this).closest('form').parent().triggerHandler('resize');
                }); 
             }            
@@ -75,7 +84,7 @@ $(function(){
                data = this.$input.select2('data');
            } else { //on init (autotext)
                //here select2 instance not created yet and data may be even not loaded.
-               //but we can check data/tags property of select and if it exist lookup text
+               //we can check data/tags property of select config and if exist lookup text
                if(this.options.select2.tags) {
                    data = value;
                } else if(this.options.select2.data) {
@@ -99,23 +108,22 @@ $(function(){
        },       
         
        html2value: function(html) {
-           return null;
+           return this.options.select2.tags ? this.str2value(html) : null;
        }, 
        
        value2input: function(value) {
-//           this.$input.val(value).select2('val', value);
            this.$input.val(value).trigger('change');
        },
        
        input2value: function() { 
            return this.$input.select2('val');
-//           return this.$input.val();
        },
 
        str2value: function(str) {
-            if(typeof str !== 'string') {
+            if(typeof str !== 'string' || !this.isMultiple) {
                 return str;
             }
+            
             var val, i, l,
                 separator = this.options.select2.separator || $.fn.select2.defaults.separator;
             if (str === null || str.length < 1) {
@@ -125,6 +133,7 @@ $(function(){
             for (i = 0, l = val.length; i < l; i = i + 1) {
                 val[i] = $.trim(val[i]);
             }
+            
             return val;
        }        
         
