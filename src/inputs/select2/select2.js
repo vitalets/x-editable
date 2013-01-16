@@ -124,8 +124,10 @@ $(function(){
                 return str;
             }
             
-            var val, i, l,
-                separator = separator || this.options.select2.separator || $.fn.select2.defaults.separator;
+            separator = separator || this.options.select2.separator || $.fn.select2.defaults.separator;
+            
+            var val, i, l;
+                
             if (str === null || str.length < 1) {
                 return null;
             }
