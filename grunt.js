@@ -54,6 +54,7 @@ function getFiles() {
     inputs+'select.js',    
     inputs+'checklist.js',
     inputs+'html5types.js',
+    inputs+'select2/select2.js',
     inputs+'combodate/lib/combodate.js', 
     inputs+'combodate/combodate.js'    
     ]; 
