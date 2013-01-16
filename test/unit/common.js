@@ -546,6 +546,16 @@
         ok(p.hasClass('editable-inline'), 'has inline class');
     }); 
     
+     test("option 'inputclass'", function () {
+        var  e = $('<a href="#" id="a" data-inputclass="span4"> </a>').appendTo('#qunit-fixture').editable();
+            
+        e.click();
+        var p = tip(e);
+        ok(p.find('input[type=text]').hasClass('span4'), 'class set correctly');
+        p.find('.editable-cancel').click(); 
+        ok(!p.is(':visible'), 'popover was removed');
+      });      
+    
      test("emptytext, emptyclass", function () {
         var  emptytext = 'empty!',
              emptyclass = 'abc',
@@ -589,6 +599,50 @@
         equal(e.text(), emptytext, 'emptytext shown');
         ok(e.hasClass(emptyclass), 'emptyclass added');                     
    });  
+   
+    asyncTest("submit to url defined as function", function () {
+        expect(10);
+        var newText = 'qwe',
+            pass = false;
+            //should be called even without pk!
+            e = $('<a href="#" data-pk1="1" id="a"></a>').appendTo(fx).editable({
+            url: function(params) {
+               ok(this === e[0], 'scope is ok');
+               ok(params.value, newText, 'new text passed in users function');
+               if(!pass) {
+                   var d = new $.Deferred;
+                   return d.reject('my error');
+               }
+            }
+        });
+        
+        e.click();                       
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit();
+        
+        setTimeout(function() {
+           ok(p.is(':visible'), 'popover visible');
+           equal(p.find('.editable-error-block').text(), 'my error', 'error shown correctly');  
+             
+           pass = true;
+           newText = 'dfgd';
+           p.find('input').val(newText);
+           p.find('form').submit();           
+           
+           setTimeout(function() {  
+               ok(!p.is(':visible'), 'popover closed');
+               equal(e.text(), newText, 'element text ok');
+               ok(!e.hasClass($.fn.editable.defaults.unsavedclass), 'no unsaved class');
+                       
+               e.remove();    
+               start();
+           }, timeout);                 
+        }, timeout);           
+        
+   });     
     
           
 }(jQuery));  
