@@ -1,5 +1,6 @@
 /**
-Select2 input. Based on https://github.com/ivaynberg/select2.  
+Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
+Please see [original docs](http://ivaynberg.github.com/select2) for detailed description and options.  
 
 @class select2
 @extends abstractinput
@@ -164,8 +165,13 @@ $(function(){
         **/             
         placeholder: null,
         /**
-        Source data for select. It will be assigned to select2 `data` property and kept just for convenience.
-        Please note, that format is different from simple `select` input.  
+        Source data for select. It will be assigned to select2 `data` property and kept here just for convenience.
+        Please note, that format is different from simple `select` input: use 'id' instead of 'value'.
+        E.g. `[{id: 1, text: "text1"}, {id: 2, text: "text2"}, ...]`.  
+        
+        @property source 
+        @type array
+        @default null        
         **/
         source: null,
         /**
