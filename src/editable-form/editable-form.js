@@ -384,18 +384,25 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         type: 'text',
         /**
         Url for submit, e.g. <code>'/post'</code>  
-        If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
+        If function - it will be called instead of ajax. Function should return deferred object to run fail/done callbacks.
 
         @property url 
         @type string|function
         @default null
         @example
         url: function(params) {
+            var d = new $.Deferred;
             if(params.value === 'abc') {
-                var d = new $.Deferred;
                 return d.reject('error message'); //returning error via deferred object
             } else {
-                someModel.set(params.name, params.value); //save data in some js model
+                //async saving data in js model
+                someModel.asyncSaveMethod({
+                   ..., 
+                   success: function(){
+                      d.resolve();
+                   }
+                }); 
+                return d.promise();
             }
         } 
         **/        
