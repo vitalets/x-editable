@@ -23,8 +23,8 @@ Applied as jQuery method.
         innerCss: null, //tbd in child class
         init: function(element, options) {
             this.$element = $(element);
-            //todo: what is in priority: data or js?
-            this.options = $.extend({}, $.fn.editableContainer.defaults, $.fn.editableutils.getConfigData(this.$element), options);         
+            //since 1.4.1 container do not use data-* directly as they already merged into options.
+            this.options = $.extend({}, $.fn.editableContainer.defaults, options);         
             this.splitOptions();
             
             //set scope of form callbacks to element

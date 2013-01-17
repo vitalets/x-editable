@@ -8,8 +8,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
     var Editable = function (element, options) {
         this.$element = $(element);
-        this.options = $.extend({}, $.fn.editable.defaults, $.fn.editableutils.getConfigData(this.$element), options);  
-        this.init();
+        //data-* has more priority over js options: because dynamically created elements may change data-* 
+        this.options = $.extend({}, $.fn.editable.defaults, options, $.fn.editableutils.getConfigData(this.$element));  
+        if(this.options.selector) {
+            this.initLive();
+        } else {
+            this.init();
+        }
     };
 
     Editable.prototype = {
@@ -52,8 +57,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');
                 this.$element.on(this.options.toggle + '.editable', $.proxy(function(e){
+                    //prevent following link
                     e.preventDefault();
-                    //stop propagation not required anymore because in document click handler it checks event target
+                    
+                    //stop propagation not required because in document click handler it checks event target
                     //e.stopPropagation();
                     
                     if(this.options.toggle === 'mouseenter') {
@@ -95,6 +102,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }, this));
         },
 
+        /*
+         Initializes parent element for live editables 
+        */
+        initLive: function() {
+           //store selector 
+           var selector = this.options.selector;
+           //modify options for child elements
+           this.options.selector = false; 
+           this.options.autotext = 'never';
+           //listen toggle events
+           this.$element.on(this.options.toggle + '.editable', selector, $.proxy(function(e){
+               var $target = $(e.target);
+               if(!$target.data('editable')) {
+                   $target.editable(this.options).trigger(e);
+               }
+           }, this)); 
+        },
+        
         /*
         Renders value into element's text.
         Can call custom display method from options.
@@ -622,8 +647,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
         @property emptyclass 
         @type string
+        @since 1.4.1        
         @default editable-empty
-        @since 1.4.1
         **/        
         emptyclass: 'editable-empty',
         /**
@@ -632,10 +657,35 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
         @property unsavedclass 
         @type string
+        @since 1.4.1        
         @default editable-unsaved
-        @since 1.4.1
         **/        
-        unsavedclass: 'editable-unsaved'        
+        unsavedclass: 'editable-unsaved',
+        /**
+        If a css selector is provided, editable will be delegated to the specified targets.  
+        Usefull for dynamically generated DOM elements.  
+        **Please note**, that delegated targets can't use `emptytext` and `autotext` options, 
+        as they are initialized after first click.    
+
+        @property selector 
+        @type string
+        @since 1.4.1        
+        @default null
+        @example
+        <div id="user">
+          <a href="#" data-name="username" data-type="text" title="Username">awesome</a>
+          <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" title="Group">Operator</a>
+        </div>     
+        
+        <script>
+        $('#user').editable({
+            selector: 'a',
+            url: '/post',
+            pk: 1
+        });
+        </script>
+        **/         
+        selector: null        
     };
     
 }(window.jQuery));

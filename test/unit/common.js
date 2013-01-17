@@ -155,13 +155,13 @@
         ok(!p.is(':visible'), 'popover1 closed');
         ok(!p2.is(':visible'), 'popover2 closed');
      });  
-     
+    
      test("onblur: submit", function () {
         var oldValue = 'abc',
             newValue = 'cde',
-            e = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="a">'+oldValue+'</a>').appendTo('#qunit-fixture').editable({
+            e = $('<a href="#" data-type="text" data-pk="1" id="a">'+oldValue+'</a>').appendTo('#qunit-fixture').editable({
                onblur: 'submit',
-               url: function() {}
+               send: 'never'
             }),  
             e2 = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();  
         
@@ -179,7 +179,7 @@
         $('#qunit-fixture').click();
         ok(!p.is(':visible'), 'popover1 closed');
         equal(e.data('editable').value, newValue, 'new value saved');
-        
+
         //click on another editable                                                              
         e.click();
         p = tip(e);
@@ -644,5 +644,57 @@
         
    });     
     
+     test("`selector` option", function () {
+        var parent = $('<div><a href="#" id="a" data-type="text">123</a></div>').appendTo('#qunit-fixture').editable({
+            selector: 'a',
+            url: 'post.php',
+            source: groups
+        }),
+        b = $('<a href="#" id="b" data-type="select" data-value="1"></a>'),
+        e = $('#a'),
+        selected = 2;
+       
+        ok(!e.hasClass('editable'), 'no editable class applied');
+       
+        e.click();                       
+        var p = tip(e); 
+        
+        ok(e.hasClass('editable'), 'editable class applied');                    
+        ok(e.data('editable'), 'data(editable) ok');                    
+        ok(!e.data('editable').selector, 'selector cleared');
+        equal(e.data('editable').options.url, 'post.php', 'url ok');
+        equal(e.data('editable').options.type, 'text', 'type text ok');
+                            
+        ok(p.is(':visible'), 'popover visible');
+        ok(p.find('input[type=text]').length, 'input exists');
+        equal(p.find('input[type=text]').val(), '123', 'input contain correct value');
+
+        //dynamically add second element
+        b.appendTo(parent);
+        e = b; 
+               
+        e.click();
+        ok(!p.is(':visible'), 'first popover closed');
+        
+        ok(e.data('editable'), 'data(editable) ok');                    
+        ok(!e.data('editable').selector, 'selector cleared');
+        equal(e.data('editable').options.url, 'post.php', 'url ok');
+        equal(e.data('editable').options.type, 'select', 'type select ok');        
+        
+        p = tip(e); 
+        ok(p.is(':visible'), 'second popover visible');
+        
+        ok(p.find('select').length, 'select exists');
+        equal(p.find('select').find('option').length, size, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');        
+        
+        p.find('select').val(selected);
+        p.find('form').submit(); 
+
+        ok(!p.is(':visible'), 'popover closed');
+        equal(e.data('editable').value, selected, 'new value saved');
+        equal(e.text(), groups[selected], 'new text shown'); 
+    });    
+   
           
 }(jQuery));  
