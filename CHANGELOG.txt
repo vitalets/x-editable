@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.1 wip
 ----------------------------
+[enh #62] new option `selector` to work with delegated targets (vitalets) 
 [enh] new option `unsavedclass` to set css class when value was not sent to server (vitalets) 
 [enh] new option `emptyclass` to set css class when element is empty (vitalets) 
 [enh #59] select2 input (vitalets) 
