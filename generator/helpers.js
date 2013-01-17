@@ -37,7 +37,7 @@ Handlebars.registerHelper('source', function(options) {
 //since
 Handlebars.registerHelper('since', function() {
     if(this.since) {
-       return new Handlebars.SafeString('<div style="text-align: right"><span class="muted" style="font-size: 0.8em">since '+ this.since +'</span></div>');
+       return new Handlebars.SafeString('<div style="text-align: left"><span class="muted" style="font-size: 0.8em">since '+ this.since +'</span></div>');
     }
 });
 

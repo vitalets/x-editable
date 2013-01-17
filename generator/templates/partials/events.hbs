@@ -9,7 +9,7 @@
     <tbody>
       {{#each event}}
         <tr>
-            <td>{{name}}{{new ../project.version}}</td>
+            <td>{{name}}{{new ../project.version}} {{since}}</td>
             <td>{{#with params}}{{>params}}{{/with}}</td>
             <td>{{{description}}}
             {{#if example}}
@@ -17,7 +17,6 @@
                     {{{example}}}
                 {{/source}}
             {{/if}}
-            {{since}}
             </td>
         </tr> 
        {{/each}}                             

@@ -13,7 +13,7 @@
     <tbody>
       {{#each property}}
         <tr>
-            <td>{{name}}{{new ../project.version}}</td>
+            <td>{{name}}{{new ../project.version}} {{since}}</td>
             <td>{{type}}</td>
             <td>{{default}}</td>
             <td>{{md description}}
@@ -22,7 +22,6 @@
                     {{{example}}}
                 {{/source}}
             {{/if}}
-            {{since}}
             </td>
         </tr> 
        {{/each}}                             
