@@ -133,8 +133,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
             
-            //if it is input with source, we pass callback in third param to be called when source is loaded
-            if(this.input.options.hasOwnProperty('source')) {
+            //if input has `value2htmlFinal` method, we pass callback in third param to be called when source is loaded
+            if(this.input.value2htmlFinal) {
                 return this.input.value2html(this.value, this.$element[0], this.options.display, response); 
             //if display method defined --> use it    
             } else if(typeof this.options.display === 'function') {

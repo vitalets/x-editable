@@ -104,7 +104,7 @@ $(function(){
            }
 
            text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
-           
+
            $(element).text(text);
        },       
         

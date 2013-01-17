@@ -243,7 +243,6 @@ Applied as jQuery method.
         },
 
         save: function(e, params) {
-            this.hide('save');
             /**        
             Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
@@ -264,6 +263,9 @@ Applied as jQuery method.
             });
             **/             
             this.$element.triggerHandler('save', params);
+            
+            //hide must be after trigger, as saving value may require methods od plugin, applied to input
+            this.hide('save');
         },
 
         /**
