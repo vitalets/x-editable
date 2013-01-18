@@ -73,7 +73,7 @@ $(function(){
                 return;
             }
             
-            if(this.$input.val()) {
+            if(this.$input.val().length) {
                 this.$clear.show();
             } else {
                 this.$clear.hide();
