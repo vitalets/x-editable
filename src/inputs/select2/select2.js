@@ -1,7 +1,11 @@
 /**
 Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
 Please see [original docs](http://ivaynberg.github.com/select2) for detailed description and options.  
+You should manually include select2 distributive:  
 
+    <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
+    <script src="select2/select2.js"></script>  
+    
 @class select2
 @extends abstractinput
 @since 1.4.1
