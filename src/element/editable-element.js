@@ -662,10 +662,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/        
         unsavedclass: 'editable-unsaved',
         /**
-        If a css selector is provided, editable will be delegated to the specified targets.  
+        If selector is provided, editable will be delegated to the specified targets.  
         Usefull for dynamically generated DOM elements.  
-        **Please note**, that delegated targets can't use `emptytext` and `autotext` options, 
-        as they are initialized after first click.    
+        **Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options, 
+        as they actually become editable only after first click.  
+        You should manually set class `editable-click` to these elements.  
+        Also, if element originally empty you should add class `editable-empty`, set `data-value=""` and write emptytext into element:
 
         @property selector 
         @type string
@@ -673,8 +675,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default null
         @example
         <div id="user">
-          <a href="#" data-name="username" data-type="text" title="Username">awesome</a>
-          <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" title="Group">Operator</a>
+          <!-- empty -->
+          <a href="#" data-name="username" data-type="text" class="editable-click editable-empty" data-value="" title="Username">Empty</a>
+          <!-- non-empty -->
+          <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" class="editable-click" title="Group">Operator</a>
         </div>     
         
         <script>
