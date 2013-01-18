@@ -48,10 +48,7 @@ $(function(){
                           .keyup($.proxy(this.toggleClear, this))
                           .parent().css('position', 'relative');
                           
-               this.$clear.click($.proxy(function(){
-                   this.$clear.hide();
-                   this.$input.val('').focus();
-               }, this));                       
+               this.$clear.click($.proxy(this.clear, this));                       
            }            
         },
         
@@ -76,12 +73,17 @@ $(function(){
                 return;
             }
             
-            if(this.$input.val()) {
+            if(this.$input.val().length) {
                 this.$clear.show();
             } else {
                 this.$clear.hide();
             } 
-        }  
+        },
+        
+        clear: function() {
+           this.$clear.hide();
+           this.$input.val('').focus();
+        }          
     });
 
     Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {

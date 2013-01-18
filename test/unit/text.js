@@ -7,19 +7,6 @@ $(function () {
        }
    });
       
-     test("if element originally empty: emptytext should be shown and input should contain ''", function () {
-        var  emptytext = 'empty!',
-             e = $('<a href="#" id="a">  </a>').appendTo('#qunit-fixture').editable({emptytext: emptytext});
-       
-        equal(e.text(), emptytext, 'emptytext shown on init');
-             
-        e.click();
-        var p = tip(e);
-        equal(p.find('input[type="text"]').val(), '', 'input val is empty string')
-        p.find('.editable-cancel').click(); 
-        ok(!p.is(':visible'), 'popover was removed')    
-     })   
-      
      test("option 'placeholder'", function () {
         var  e = $('<a href="#" id="a" data-placeholder="abc"> </a>').appendTo('#qunit-fixture').editable();
             
@@ -29,16 +16,6 @@ $(function () {
         p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');
       });   
-      
-     test("option 'inputclass'", function () {
-        var  e = $('<a href="#" id="a" data-inputclass="span4"> </a>').appendTo('#qunit-fixture').editable();
-            
-        e.click();
-        var p = tip(e);
-        ok(p.find('input[type=text]').hasClass('span4'), 'class set correctly');
-        p.find('.editable-cancel').click(); 
-        ok(!p.is(':visible'), 'popover was removed');
-      });           
      
      asyncTest("should load correct value and save new entered text (and value)", function () {
         var  v = 'ab<b>"',
@@ -242,35 +219,6 @@ $(function () {
         }, timeout);             
         
       });            
-                   
-      
-     asyncTest("submit to url defined as function", function () {
-        expect(4);
-        var newText = 'qwe',
-            //should be called even without pk!
-            e = $('<a href="#" data-pk1="1" id="a"></a>').appendTo(fx).editable({
-            url: function(params) {
-               ok(this === e[0], 'scope is ok');
-               ok(params.value, newText, 'new text passed in users function');
-               var d = new $.Deferred;
-               return d.reject('my error');
-            }
-        });
-        
-        e.click();                       
-        var p = tip(e);
-
-        ok(p.find('input[type=text]').length, 'input exists')
-        p.find('input').val(newText);
-        p.find('form').submit();
-        
-        setTimeout(function() {
-           equal(p.find('.editable-error-block').text(), 'my error', 'error shown correctly');                  
-           e.remove();    
-           start();  
-        }, timeout);           
-        
-     });  
      
      asyncTest("should show emptytext if entered text is empty", function () {
             var emptytext = 'blabla',
@@ -364,13 +312,14 @@ $(function () {
             ok(!p.is(':visible'), 'popover was removed');
             equal(e.data('editable').value, newText, 'new text saved to value');
             equal(e.text(), newText, 'new text shown');
-            ok(e.hasClass('editable-unsaved'), 'has class editable-unsaved');
+            ok(e.hasClass($.fn.editable.defaults.unsavedclass), 'has class editable-unsaved');
       });
       
      test("send = 'never'. if pk defined --> should save new entered text and value, but no ajax", function () {
             var e = $('<a href="#" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable({
                pk: 123, 
-               send: 'never'
+               send: 'never',
+               unsavedclass: 'qq'
             }),
             newText = 'cde';
 
@@ -383,7 +332,7 @@ $(function () {
             ok(!p.is(':visible'), 'popover was removed');
             equal(e.data('editable').value, newText, 'new text saved to value');
             equal(e.text(), newText, 'new text shown');
-            ok(e.hasClass('editable-unsaved'), 'has class editable-unsaved');
+            ok(e.hasClass('qq'), 'has class editable-unsaved');
       });  
 
       test("if name not defined --> should be taken from id", function () {
@@ -436,6 +385,7 @@ $(function () {
            ok(!p.is(':visible'), 'popover was removed');
            ok(!e.text().length, 'element still empty, new value was not displayed');  
            equal(e.data('editable').value, newText, 'new text saved to value');
+           ok(!e.hasClass($.fn.editable.defaults.unsavedclass), 'no unsaved css');
            e.remove();    
            start();  
         }, timeout);             

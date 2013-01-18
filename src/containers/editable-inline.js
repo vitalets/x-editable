@@ -38,12 +38,14 @@
         innerHide: function () {
             this.$tip.hide(this.options.anim, $.proxy(function() {
                 this.$element.show();
-                this.tip().empty().remove();
+                this.innerDestroy();
             }, this)); 
         },
         
         innerDestroy: function() {
-            this.tip().remove();
+            if(this.tip()) {
+                this.tip().empty().remove();
+            }
         } 
     });
 

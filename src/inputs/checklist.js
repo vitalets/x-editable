@@ -42,8 +42,7 @@ $(function(){
             for(var i=0; i<this.sourceData.length; i++) {
                 $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
-                                           value: this.sourceData[i].value, 
-                                           name: this.options.name
+                                           value: this.sourceData[i].value 
                                      }))
                                      .append($('<span>').text(' '+this.sourceData[i].text));
                 
@@ -72,7 +71,7 @@ $(function(){
        
        //set checked on required checkboxes
        value2input: function(value) {
-            this.$input.removeAttr('checked');
+            this.$input.prop('checked', false);
             if($.isArray(value) && value.length) {
                this.$input.each(function(i, el) {
                    var $el = $(el);
@@ -81,7 +80,7 @@ $(function(){
                        /*jslint eqeq: true*/
                        if($el.val() == val) {
                        /*jslint eqeq: false*/                           
-                           $el.attr('checked', 'checked');
+                           $el.prop('checked', true);
                        }
                    });
                }); 

@@ -155,13 +155,13 @@
         ok(!p.is(':visible'), 'popover1 closed');
         ok(!p2.is(':visible'), 'popover2 closed');
      });  
-     
+    
      test("onblur: submit", function () {
         var oldValue = 'abc',
             newValue = 'cde',
-            e = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="a">'+oldValue+'</a>').appendTo('#qunit-fixture').editable({
+            e = $('<a href="#" data-type="text" data-pk="1" id="a">'+oldValue+'</a>').appendTo('#qunit-fixture').editable({
                onblur: 'submit',
-               url: function() {}
+               send: 'never'
             }),  
             e2 = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();  
         
@@ -179,7 +179,7 @@
         $('#qunit-fixture').click();
         ok(!p.is(':visible'), 'popover1 closed');
         equal(e.data('editable').value, newValue, 'new value saved');
-        
+
         //click on another editable                                                              
         e.click();
         p = tip(e);
@@ -545,5 +545,156 @@
         ok(p.is(':visible'), 'inline visible visible');
         ok(p.hasClass('editable-inline'), 'has inline class');
     }); 
+    
+     test("option 'inputclass'", function () {
+        var  e = $('<a href="#" id="a" data-inputclass="span4"> </a>').appendTo('#qunit-fixture').editable();
+            
+        e.click();
+        var p = tip(e);
+        ok(p.find('input[type=text]').hasClass('span4'), 'class set correctly');
+        p.find('.editable-cancel').click(); 
+        ok(!p.is(':visible'), 'popover was removed');
+      });      
+    
+     test("emptytext, emptyclass", function () {
+        var  emptytext = 'empty!',
+             emptyclass = 'abc',
+             e = $('<a href="#" id="a">  </a>').appendTo('#qunit-fixture').editable({
+                 emptytext: emptytext,
+                 emptyclass: emptyclass,
+                 send: 'never'
+             });
+       
+        equal(e.text(), emptytext, 'emptytext shown on init');
+        ok(e.hasClass(emptyclass), 'emptyclass added');
+             
+        e.click();
+        var p = tip(e);
+        equal(p.find('input[type="text"]').val(), '', 'input val is empty string');
+//        p.find('.editable-cancel').click();
+        //set non-empty value  
+        p.find('input[type="text"]').val('abc');
+        p.find('form').submit();
+        
+        ok(!p.is(':visible'), 'popover was removed');
+        ok(e.text() != emptytext, 'emptytext not shown');
+        ok(!e.hasClass(emptyclass), 'emptyclass removed');
+        
+        e.click();
+        p = tip(e);
+        p.find('input[type="text"]').val('');
+        p.find('form').submit();
+        
+        ok(!p.is(':visible'), 'popover was removed');
+        equal(e.text(), emptytext, 'emptytext shown');
+        ok(e.hasClass(emptyclass), 'emptyclass added');
+        
+        e.editable('disable');
+        equal(e.text(), '', 'emptytext removed');
+        ok(!e.hasClass(emptyclass), 'emptyclass removed');
+        
+        e.editable('enable');            
+        e.editable('enable');
+         
+        equal(e.text(), emptytext, 'emptytext shown');
+        ok(e.hasClass(emptyclass), 'emptyclass added');                     
+   });  
+   
+    asyncTest("submit to url defined as function", function () {
+        expect(10);
+        var newText = 'qwe',
+            pass = false;
+            //should be called even without pk!
+            e = $('<a href="#" data-pk1="1" id="a"></a>').appendTo(fx).editable({
+            url: function(params) {
+               ok(this === e[0], 'scope is ok');
+               ok(params.value, newText, 'new text passed in users function');
+               if(!pass) {
+                   var d = new $.Deferred;
+                   return d.reject('my error');
+               }
+            }
+        });
+        
+        e.click();                       
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit();
+        
+        setTimeout(function() {
+           ok(p.is(':visible'), 'popover visible');
+           equal(p.find('.editable-error-block').text(), 'my error', 'error shown correctly');  
+             
+           pass = true;
+           newText = 'dfgd';
+           p.find('input').val(newText);
+           p.find('form').submit();           
+           
+           setTimeout(function() {  
+               ok(!p.is(':visible'), 'popover closed');
+               equal(e.text(), newText, 'element text ok');
+               ok(!e.hasClass($.fn.editable.defaults.unsavedclass), 'no unsaved class');
+                       
+               e.remove();    
+               start();
+           }, timeout);                 
+        }, timeout);           
+        
+   });     
+    
+     test("`selector` option", function () {
+        var parent = $('<div><a href="#" id="a" data-type="text">123</a></div>').appendTo('#qunit-fixture').editable({
+            selector: 'a',
+            url: 'post.php',
+            source: groups
+        }),
+        b = $('<a href="#" id="b" data-type="select" data-value="1"></a>'),
+        e = $('#a'),
+        selected = 2;
+       
+        ok(!e.hasClass('editable'), 'no editable class applied');
+       
+        e.click();                       
+        var p = tip(e); 
+        
+        ok(e.hasClass('editable'), 'editable class applied');                    
+        ok(e.data('editable'), 'data(editable) ok');                    
+        ok(!e.data('editable').selector, 'selector cleared');
+        equal(e.data('editable').options.url, 'post.php', 'url ok');
+        equal(e.data('editable').options.type, 'text', 'type text ok');
+                            
+        ok(p.is(':visible'), 'popover visible');
+        ok(p.find('input[type=text]').length, 'input exists');
+        equal(p.find('input[type=text]').val(), '123', 'input contain correct value');
+
+        //dynamically add second element
+        b.appendTo(parent);
+        e = b; 
+               
+        e.click();
+        ok(!p.is(':visible'), 'first popover closed');
+        
+        ok(e.data('editable'), 'data(editable) ok');                    
+        ok(!e.data('editable').selector, 'selector cleared');
+        equal(e.data('editable').options.url, 'post.php', 'url ok');
+        equal(e.data('editable').options.type, 'select', 'type select ok');        
+        
+        p = tip(e); 
+        ok(p.is(':visible'), 'second popover visible');
+        
+        ok(p.find('select').length, 'select exists');
+        equal(p.find('select').find('option').length, size, 'options loaded');
+        equal(p.find('select').val(), e.data('editable').value, 'selected value correct');        
+        
+        p.find('select').val(selected);
+        p.find('form').submit(); 
+
+        ok(!p.is(':visible'), 'popover closed');
+        equal(e.data('editable').value, selected, 'new value saved');
+        equal(e.text(), groups[selected], 'new text shown'); 
+    });    
+   
           
 }(jQuery));  

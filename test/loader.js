@@ -40,7 +40,8 @@ define(function () {
                     'inputs/checklist',
                     'inputs/html5types',
                     'inputs/combodate/combodate',
-                    'inputs-ext/address/address'],
+                    'inputs-ext/address/address',
+                    'inputs/select2/select2'],
                     init: function(require) {
                         loadCss(require.toUrl("./editable-form.css")); 
                     }      
@@ -52,7 +53,8 @@ define(function () {
                 'inputs/textarea': ['inputs/abstract'],
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
                 'inputs/html5types': ['inputs/text'], 
-                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],  
+                'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],
+                'inputs/typeahead': ['inputs/list'],  
 
                 /*
                  bootstrap
@@ -93,6 +95,17 @@ define(function () {
                         //loadCss(require.toUrl("./bootstrap-wysihtml5-0.0.2/wysiwyg-color.css")); 
                     }
                 },
+                
+                //select2
+                'inputs/select2/select2': {
+                    deps: ['require', 
+                    'inputs/select2/lib/select2',
+                    'inputs/abstract'], 
+                    init: function(require) {
+                        loadCss(require.toUrl("./lib/select2.css")); 
+                    }
+                },                
+                
                 
                 //datefield
                 'inputs/date/datefield': ['inputs/date/date'],
@@ -155,6 +168,7 @@ define(function () {
                 //bootstrap
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
                 shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
+                shim['editable-form/editable-form'].deps.push('inputs/typeahead');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
                 shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {

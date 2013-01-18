@@ -11,7 +11,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
     var EditableForm = function (div, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
-        this.$div = $(div); //div, containing form. Not form tag! Not editable-element.
+        this.$div = $(div); //div, containing form. Not form tag. Not editable-element.
         if(!this.options.scope) {
             this.options.scope = this;
         }
@@ -25,6 +25,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.input = this.options.input;
             
             //set initial value
+            //todo: may be add check: typeof str === 'string' ? 
             this.value = this.input.str2value(this.options.value); 
         },
         initTemplate: function() {
@@ -227,6 +228,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 }     
                 
                 //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
+                //it is usefull if you want to chnage value in url-function
                 if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
                     newValue = res.newValue;
                 }                            
@@ -382,18 +384,25 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         type: 'text',
         /**
         Url for submit, e.g. <code>'/post'</code>  
-        If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.
+        If function - it will be called instead of ajax. Function should return deferred object to run fail/done callbacks.
 
         @property url 
         @type string|function
         @default null
         @example
         url: function(params) {
+            var d = new $.Deferred;
             if(params.value === 'abc') {
-                var d = new $.Deferred;
                 return d.reject('error message'); //returning error via deferred object
             } else {
-                someModel.set(params.name, params.value); //save data in some js model
+                //async saving data in js model
+                someModel.asyncSaveMethod({
+                   ..., 
+                   success: function(){
+                      d.resolve();
+                   }
+                }); 
+                return d.promise();
             }
         } 
         **/        
