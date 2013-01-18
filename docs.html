@@ -219,7 +219,7 @@ Container is attached to element only for <strong>positioning</strong>. You can 
 <div class="tab-content">
     <div class="tab-pane active" id="editable-options">
         <p>All options can be defined as <code>data-*</code> attributes.
-Please, see also <a href="#inputs">input dependent options</a>.
+Additionally, you can set <a href="#inputs">input dependent options</a>.
 </p>
 <table class="table table-bordered table-striped">
     <thead>
@@ -514,15 +514,22 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>url </td>
             <td>string|function</td>
             <td>null</td>
-            <td><p>Url for submit, e.g. <code>&#39;/post&#39;</code><br>If function - it will be called instead of ajax. Function can return deferred object to run fail/done callbacks.</p>
+            <td><p>Url for submit, e.g. <code>&#39;/post&#39;</code><br>If function - it will be called instead of ajax. Function should return deferred object to run fail/done callbacks.</p>
 
             
                 <pre class="prettyprint linenums">url: function(params) {
+    var d = new $.Deferred;
     if(params.value === &#x27;abc&#x27;) {
-        var d = new $.Deferred;
         return d.reject(&#x27;error message&#x27;); //returning error via deferred object
     } else {
-        someModel.set(params.name, params.value); //save data in some js model
+        //async saving data in js model
+        someModel.asyncSaveMethod({
+           ..., 
+           success: function(){
+              d.resolve();
+           }
+        }); 
+        return d.promise();
     }
 }</pre>
             
@@ -1040,16 +1047,6 @@ See <a href="#newrecord">creating new records</a> for details.
             
             </td>
         </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            </td>
-        </tr> 
                                     
     </tbody>
 </table>
@@ -1130,16 +1127,6 @@ $(function(){
             <td>integer</td>
             <td>7</td>
             <td><p>Number of rows in textarea</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>
@@ -1254,16 +1241,6 @@ $(function(){
             <td>string</td>
             <td>input-medium</td>
             <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>
@@ -1385,16 +1362,6 @@ If <code>false</code> clear button will not be rendered.</p>
             
             </td>
         </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            </td>
-        </tr> 
                                     
     </tbody>
 </table>
@@ -1506,16 +1473,6 @@ Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jq
             <td>&#x27;x clear&#x27;</td>
             <td><p>Text shown as clear date button. 
 If <code>false</code> clear button will not be rendered.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>
@@ -1642,16 +1599,6 @@ Full list of options: <a href="http://vitalets.github.com/combodate/#docs">http:
             
             </td>
         </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            </td>
-        </tr> 
                                     
     </tbody>
 </table>
@@ -1751,16 +1698,6 @@ Following types are supported:
             <td>string</td>
             <td>input-medium</td>
             <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>
@@ -1889,16 +1826,6 @@ Internally value stored as javascript array of values.</p>
             
             </td>
         </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            </td>
-        </tr> 
                                     
     </tbody>
 </table>
@@ -1990,16 +1917,6 @@ $(function(){
             <td>object</td>
             <td>{stylesheets: false}</td>
             <td><p>Wysihtml5 default options.<br>See <a href="https://github.com/jhollingworth/bootstrap-wysihtml5#options">https://github.com/jhollingworth/bootstrap-wysihtml5#options</a></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>
@@ -2145,16 +2062,6 @@ $(function(){
             
             </td>
         </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
-
-            
-            </td>
-        </tr> 
                                     
     </tbody>
 </table>
@@ -2180,7 +2087,11 @@ $(function(){
         
          <section id="select2">
             <h2>select2 <sup><span class="label label-success">new</span></sup></h2>
-            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original docs</a> for detailed description and options.</p>
+            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original docs</a> for detailed description and options.<br>You should manually include select2 distributive:  
+
+</p>
+<pre><code>&lt;link href=&quot;select2/select2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
+&lt;script src=&quot;select2/select2.js&quot;&gt;&lt;/script&gt;</code></pre>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
             </p>
@@ -2262,16 +2173,6 @@ E.g. <code>[{id: 1, text: &quot;text1&quot;}, {id: 2, text: &quot;text2&quot;}, 
             <td>string</td>
             <td>input-medium</td>
             <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>name </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Name attribute of input</p>
 
             
             </td>

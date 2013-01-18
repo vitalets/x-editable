@@ -116,21 +116,6 @@
 .editable-clear-x:hover {
    opacity: 1;
 }
-
-/*
-.editable-clear-x1 {
-   background: url('../img/clear.png') center center no-repeat;
-   display: inline-block;
-   zoom: 1; 
-   *display: inline;    
-   width: 13px;    
-   height: 13px;
-   vertical-align: middle;
-   position: relative;    
-   margin-left: -20px;
-}
-*/
-
 .editable-container {
     max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
 }  

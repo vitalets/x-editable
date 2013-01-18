@@ -4,7 +4,7 @@ if [ $(expr match $1 ".*data.*") -gt 0 ]
 then
   inputs=..\\lib\\src\\inputs
   ext=..\\lib\\src\\inputs-ext
-  yuidoc -p -o generator/data -x $inputs\\dateui\\jquery-ui-datepicker,$ext\\address,$ext\\wysihtml5\\bootstrap-wysihtml5-0.0.2,$inputs\\combodate\\lib  ../lib/src
+  yuidoc -p -o generator/data -x $inputs\\dateui\\jquery-ui-datepicker,$ext\\address,$ext\\wysihtml5\\bootstrap-wysihtml5-0.0.2,$inputs\\combodate\\lib,$inputs\\select2\\lib  ../lib/src
 fi
 
 if [ $(expr match $1 ".*dist.*") -gt 0 ] 
