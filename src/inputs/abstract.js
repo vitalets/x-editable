@@ -186,15 +186,7 @@ To create your own input you can inherit from this class.
         @type string
         @default input-medium
         **/         
-        inputclass: 'input-medium',
-        /**
-        Name attribute of input
-
-        @property name 
-        @type string
-        @default null
-        **/         
-        name: null
+        inputclass: 'input-medium'
     };
     
     $.extend($.fn.editabletypes, {abstractinput: AbstractInput});
