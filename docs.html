@@ -418,13 +418,15 @@ Can be calculated dynamically via function.</p>
             <td>selector <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
             <td>string</td>
             <td>null</td>
-            <td><p>If a css selector is provided, editable will be delegated to the specified targets.<br>Usefull for dynamically generated DOM elements.<br><strong>Please note</strong>, that delegated targets can&#39;t use <code>emptytext</code> and <code>autotext</code> options, 
-as they are initialized after first click.</p>
+            <td><p>If selector is provided, editable will be delegated to the specified targets.<br>Usefull for dynamically generated DOM elements.<br><strong>Please note</strong>, that delegated targets can&#39;t be initialized with <code>emptytext</code> and <code>autotext</code> options, 
+as they actually become editable only after first click.<br>You should manually set class <code>editable-click</code> to these elements.<br>Also, if element originally empty you should add class <code>editable-empty</code>, set <code>data-value=&quot;&quot;</code> and write emptytext into element:</p>
 
             
                 <pre class="prettyprint linenums">&lt;div id=&quot;user&quot;&gt;
-  &lt;a href=&quot;#&quot; data-name=&quot;username&quot; data-type=&quot;text&quot; title=&quot;Username&quot;&gt;awesome&lt;/a&gt;
-  &lt;a href=&quot;#&quot; data-name=&quot;group&quot; data-type=&quot;select&quot; data-source=&quot;/groups&quot; data-value=&quot;1&quot; title=&quot;Group&quot;&gt;Operator&lt;/a&gt;
+  &lt;!-- empty --&gt;
+  &lt;a href=&quot;#&quot; data-name=&quot;username&quot; data-type=&quot;text&quot; class=&quot;editable-click editable-empty&quot; data-value=&quot;&quot; title=&quot;Username&quot;&gt;Empty&lt;/a&gt;
+  &lt;!-- non-empty --&gt;
+  &lt;a href=&quot;#&quot; data-name=&quot;group&quot; data-type=&quot;select&quot; data-source=&quot;/groups&quot; data-value=&quot;1&quot; class=&quot;editable-click&quot; title=&quot;Group&quot;&gt;Operator&lt;/a&gt;
 &lt;/div&gt;     
 
 &lt;script&gt;

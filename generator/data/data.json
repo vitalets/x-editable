@@ -1460,14 +1460,14 @@
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
             "line": 664,
-            "description": "If a css selector is provided, editable will be delegated to the specified targets.  \nUsefull for dynamically generated DOM elements.  \n**Please note**, that delegated targets can't use `emptytext` and `autotext` options, \nas they are initialized after first click.",
+            "description": "If selector is provided, editable will be delegated to the specified targets.  \nUsefull for dynamically generated DOM elements.  \n**Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options, \nas they actually become editable only after first click.  \nYou should manually set class `editable-click` to these elements.  \nAlso, if element originally empty you should add class `editable-empty`, set `data-value=\"\"` and write emptytext into element:",
             "itemtype": "property",
             "name": "selector",
             "type": "string",
             "since": "1.4.1",
             "default": "null",
             "example": [
-                "\n<div id=\"user\">\n  <a href=\"#\" data-name=\"username\" data-type=\"text\" title=\"Username\">awesome</a>\n  <a href=\"#\" data-name=\"group\" data-type=\"select\" data-source=\"/groups\" data-value=\"1\" title=\"Group\">Operator</a>\n</div>     \n\n<script>\n$('#user').editable({\n    selector: 'a',\n    url: '/post',\n    pk: 1\n});\n</script>"
+                "\n<div id=\"user\">\n  <!-- empty -->\n  <a href=\"#\" data-name=\"username\" data-type=\"text\" class=\"editable-click editable-empty\" data-value=\"\" title=\"Username\">Empty</a>\n  <!-- non-empty -->\n  <a href=\"#\" data-name=\"group\" data-type=\"select\" data-source=\"/groups\" data-value=\"1\" class=\"editable-click\" title=\"Group\">Operator</a>\n</div>     \n\n<script>\n$('#user').editable({\n    selector: 'a',\n    url: '/post',\n    pk: 1\n});\n</script>"
             ],
             "class": "editable"
         },
