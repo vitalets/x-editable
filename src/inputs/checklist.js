@@ -42,8 +42,7 @@ $(function(){
             for(var i=0; i<this.sourceData.length; i++) {
                 $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
-                                           value: this.sourceData[i].value, 
-                                           name: this.options.name
+                                           value: this.sourceData[i].value 
                                      }))
                                      .append($('<span>').text(' '+this.sourceData[i].text));
                 
