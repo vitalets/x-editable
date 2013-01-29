@@ -42,7 +42,7 @@ $(function(){
        //detect whether it is multi-valued
        this.isMultiple = options.select2.tags || options.select2.multiple;
        
-       //if not `tags` mode, we need define init set data from source
+       //if not `tags` mode, we need define initSelection to set data from source
        if(!options.select2.tags) {
             if(options.source) {
                 mixin.data = options.source;
@@ -79,9 +79,8 @@ $(function(){
                this.$input.on('change', function() {
                    $(this).closest('form').parent().triggerHandler('resize');
                }); 
-            }            
-            
-        },
+            } 
+       },
        
        value2html: function(value, element) {
            var text = '', data;
