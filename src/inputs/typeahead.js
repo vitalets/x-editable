@@ -25,7 +25,6 @@ $(function(){
               {value: 'us', text: 'United States'},
               {value: 'ru', text: 'Russia'}
            ]
-        }
     });
 });
 </script>
@@ -57,8 +56,11 @@ $(function(){
             //apply typeahead
             this.$input.typeahead(this.options.typeahead);
             
-            //attach own render method
-            this.$input.data('typeahead').render = $.proxy(this.typeaheadRender, this.$input.data('typeahead'));
+            //patch some methods in typeahead
+            var ta = this.$input.data('typeahead');
+            ta.render = $.proxy(this.typeaheadRender, ta);
+            ta.select = $.proxy(this.typeaheadSelect, ta);
+            ta.move = $.proxy(this.typeaheadMove, ta);
 
             this.renderClear();
             this.setClass();
@@ -161,7 +163,6 @@ $(function(){
             return $.fn.typeahead.Constructor.prototype.highlighter.call(this, item.text);
         },
         updater: function (item) {
-            item = this.$menu.find('.active').data('item');
             this.$element.data('value', item.value);
             return item.text;
         },  
@@ -172,7 +173,7 @@ $(function(){
           There are a lot of disscussion in bootstrap repo on this point and still no result.
           See https://github.com/twitter/bootstrap/issues/5967 
           
-          This function just store item in via jQuery data() method instead of attr('data-value')
+          This function just store item via jQuery data() method instead of attr('data-value')
         */        
         typeaheadRender: function (items) {
             var that = this;
@@ -184,10 +185,56 @@ $(function(){
                 return i[0];
             });
 
-            items.first().addClass('active');
+            //add option to disable autoselect of first line
+            //see https://github.com/twitter/bootstrap/pull/4164 
+            if (this.options.autoSelect) {
+              items.first().addClass('active');
+            }
             this.$menu.html(items);
             return this;
+        },
+       
+        //add option to disable autoselect of first line
+        //see https://github.com/twitter/bootstrap/pull/4164         
+        typeaheadSelect: function () {
+          var val = this.$menu.find('.active').data('item')
+          if(this.options.autoSelect || val){
+            this.$element
+            .val(this.updater(val))
+            .change()
+          }
+          return this.hide()
+        },
+        
+        /*
+         if autoSelect = false and nothing matched we need extra press onEnter that is not convinient.
+         This patch fixes it.
+        */
+        typeaheadMove: function (e) {
+          if (!this.shown) return
+
+          switch(e.keyCode) {
+            case 9: // tab
+            case 13: // enter
+            case 27: // escape
+              if (!this.$menu.find('.active').length) return
+              e.preventDefault()
+              break
+
+            case 38: // up arrow
+              e.preventDefault()
+              this.prev()
+              break
+
+            case 40: // down arrow
+              e.preventDefault()
+              this.next()
+              break
+          }
+
+          e.stopPropagation()
         }
+        
         /*jshint eqeqeq: true, curly: true, laxcomma: false*/  
         
     });      
