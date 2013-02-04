@@ -15,7 +15,6 @@ $(function(){
               {value: 2, text: 'Blocked'},
               {value: 3, text: 'Deleted'}
            ]
-        }
     });
 });
 </script>
