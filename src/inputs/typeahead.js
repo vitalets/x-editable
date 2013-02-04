@@ -139,7 +139,7 @@ $(function(){
         /*
           Typeahead option methods used as defaults
         */
-        /*jshint eqeqeq:false, curly: false, laxcomma: true*/
+        /*jshint eqeqeq:false, curly: false, laxcomma: true, asi: true*/
         matcher: function (item) {
             return $.fn.typeahead.Constructor.prototype.matcher.call(this, item.text);
         },
@@ -235,7 +235,7 @@ $(function(){
           e.stopPropagation()
         }
         
-        /*jshint eqeqeq: true, curly: true, laxcomma: false*/  
+        /*jshint eqeqeq: true, curly: true, laxcomma: false, asi: false*/  
         
     });      
 
