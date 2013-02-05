@@ -96,9 +96,34 @@
         <hr>
 
         <h3>Data is not submitted to server! Why?</h3>
-        <p>The most possible reason is that you have empty <code>pk</code> option.<br> 
+        <p>The most possible reason is that you have empty <code>pk</code> or <code>url</code> options.<br> 
         If you want to submit data without pk please set <code>send</code> option to <code>"always"</code>.   
         </p>
+        <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
+        <hr>
+
+        <h3>How to submit data in JSON format or rename submit variables?</h3>
+        <p>You should use <code>params</code> option defined as a function:</p> 
+        <pre>
+//submit in JSON format        
+$('#field').editable({
+  ...        
+  params: function(params) {
+    return JSON.stringify(params);  //note: for older browsers you mey need json2.js from json.org
+  }
+});  
+
+//rename submit variables        
+$('#field').editable({
+  ...        
+  params: function(params) {
+    var data = {};
+    data['id'] = params.pk;
+    data[params.name] = params.value;
+    return data;
+  }
+}); 
+</pre>
         <hr>
         
         <h3>How to create my own widgets?</h3>

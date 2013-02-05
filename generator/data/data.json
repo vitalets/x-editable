@@ -516,7 +516,7 @@
                 }
             ],
             "example": [
-                "\n$('#username').on('shown', function() {\n     var $tip = $(this).data('editableContainer').tip();\n     $tip.find('input').val('overwriting value of input..');\n});                     "
+                "\n$('#username').on('shown', function() {\n    var editable = $(this).data('editable');\n    editable.input.$input.val('overwriting value of input..');\n});                     "
             ],
             "class": "editableContainer"
         },
@@ -1414,7 +1414,10 @@
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
             "line": 600,
-            "description": "Initial value of input. If not set, taken from element's text.",
+            "description": "Initial value of input. If not set, taken from element's text.  \nNote, that if element's text is empty - it is automatically generated from value and can be customized (see `autotext` option).  \nFor example, to display currency sign:",
+            "example": [
+                "\n<a id=\"price\" data-type=\"text\" data-value=\"100\"></a>\n<script>\n$('#price').editable({\n    ...\n    display: function(value) {\n      $(this).text(value + '$');\n    } \n}) \n</script>"
+            ],
             "itemtype": "property",
             "name": "value",
             "type": "mixed",
@@ -1423,7 +1426,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 608,
+            "line": 620,
             "description": "Callback to perform custom displaying of value in element's text.  \nIf `null`, default input's display used.  \nIf `false`, no displaying methods will be called, element's text will never change.  \nRuns under element's scope.  \n_Parameters:_  \n\n* `value` current value to be displayed\n* `response` server response (if display called after ajax submit), since 1.4.0\n \nFor **inputs with source** (select, checklist) parameters are different:  \n  \n* `value` current value to be displayed\n* `sourceData` array of items for current input (e.g. dropdown items) \n* `response` server response (if display called after ajax submit), since 1.4.0\n          \nTo get currently selected items use `$.fn.editableutils.itemsByValue(value, sourceData)`.",
             "itemtype": "property",
             "name": "display",
@@ -1437,7 +1440,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 645,
+            "line": 657,
             "description": "Css class applied when editable text is empty.",
             "itemtype": "property",
             "name": "emptyclass",
@@ -1448,7 +1451,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 654,
+            "line": 666,
             "description": "Css class applied when value was stored but not sent to server (`pk` is empty or `send = 'never'`).  \nYou may set it to `null` if you work with editables locally and submit them together.",
             "itemtype": "property",
             "name": "unsavedclass",
@@ -1459,7 +1462,7 @@
         },
         {
             "file": "..\\lib\\src\\element\\editable-element.js",
-            "line": 664,
+            "line": 676,
             "description": "If selector is provided, editable will be delegated to the specified targets.  \nUsefull for dynamically generated DOM elements.  \n**Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options, \nas they actually become editable only after first click.  \nYou should manually set class `editable-click` to these elements.  \nAlso, if element originally empty you should add class `editable-empty`, set `data-value=\"\"` and write emptytext into element:",
             "itemtype": "property",
             "name": "selector",
@@ -1672,7 +1675,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 150,
+            "line": 149,
             "itemtype": "property",
             "name": "tpl",
             "default": "<input type=\"hidden\">",
@@ -1680,7 +1683,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 155,
+            "line": 154,
             "description": "Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).",
             "itemtype": "property",
             "name": "select2",
@@ -1690,7 +1693,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 163,
+            "line": 162,
             "description": "Placeholder attribute of select",
             "itemtype": "property",
             "name": "placeholder",
@@ -1700,7 +1703,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 171,
+            "line": 170,
             "description": "Source data for select. It will be assigned to select2 `data` property and kept here just for convenience.\nPlease note, that format is different from simple `select` input: use 'id' instead of 'value'.\nE.g. `[{id: 1, text: \"text1\"}, {id: 2, text: \"text2\"}, ...]`.",
             "itemtype": "property",
             "name": "source",
@@ -1710,7 +1713,7 @@
         },
         {
             "file": "..\\lib\\src\\inputs\\select2\\select2.js",
-            "line": 181,
+            "line": 180,
             "description": "Separator used to display tags.",
             "itemtype": "property",
             "name": "viewseparator",

@@ -318,7 +318,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
         </tr> 
        
         <tr>
-            <td>emptyclass <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
+            <td>emptyclass <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
             <td>string</td>
             <td>editable-empty</td>
             <td><p>Css class applied when editable text is empty.</p>
@@ -415,7 +415,7 @@ Can be calculated dynamically via function.</p>
         </tr> 
        
         <tr>
-            <td>selector <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
+            <td>selector <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
             <td>string</td>
             <td>null</td>
             <td><p>If selector is provided, editable will be delegated to the specified targets.<br>Usefull for dynamically generated DOM elements.<br><strong>Please note</strong>, that delegated targets can&#39;t be initialized with <code>emptytext</code> and <code>autotext</code> options, 
@@ -503,7 +503,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
         </tr> 
        
         <tr>
-            <td>unsavedclass <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
+            <td>unsavedclass <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div></td>
             <td>string</td>
             <td>editable-unsaved</td>
             <td><p>Css class applied when value was stored but not sent to server (<code>pk</code> is empty or <code>send = &#39;never&#39;</code>).<br>You may set it to <code>null</code> if you work with editables locally and submit them together.</p>
@@ -558,8 +558,18 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>value </td>
             <td>mixed</td>
             <td>element&#x27;s text</td>
-            <td><p>Initial value of input. If not set, taken from element&#39;s text.</p>
+            <td><p>Initial value of input. If not set, taken from element&#39;s text.<br>Note, that if element&#39;s text is empty - it is automatically generated from value and can be customized (see <code>autotext</code> option).<br>For example, to display currency sign:</p>
 
+            
+                <pre class="prettyprint linenums">&lt;a id=&quot;price&quot; data-type=&quot;text&quot; data-value=&quot;100&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(&#x27;#price&#x27;).editable({
+    ...
+    display: function(value) {
+      $(this).text(value + &#x27;$&#x27;);
+    } 
+}) 
+&lt;/script&gt;</pre>
             
             </td>
         </tr> 
@@ -930,8 +940,8 @@ See <a href="#newrecord">creating new records</a> for details.
             <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;shown&#x27;, function() {
-     var $tip = $(this).data(&#x27;editableContainer&#x27;).tip();
-     $tip.find(&#x27;input&#x27;).val(&#x27;overwriting value of input..&#x27;);
+    var editable = $(this).data(&#x27;editable&#x27;);
+    editable.input.$input.val(&#x27;overwriting value of input..&#x27;);
 });</pre>
             
             </td>
@@ -975,9 +985,9 @@ See <a href="#newrecord">creating new records</a> for details.
             
             <li>wysihtml5</li>
             
-            <li>typeahead <sup><span class="label label-success">new</span></sup></li>
+            <li>typeahead</li>
             
-            <li>select2 <sup><span class="label label-success">new</span></sup></li>
+            <li>select2</li>
                    
             </ul>
         </section> 
@@ -1942,7 +1952,7 @@ $(function(){
             </section>
         
          <section id="typeahead">
-            <h2>typeahead <sup><span class="label label-success">new</span></sup></h2>
+            <h2>typeahead</h2>
             <p><p>Typeahead input (bootstrap only). Based on Twitter Bootstrap <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a>.<br>Depending on <code>source</code> format typeahead operates in two modes:
 
 </p>
@@ -2088,7 +2098,7 @@ $(function(){
             </section>
         
          <section id="select2">
-            <h2>select2 <sup><span class="label label-success">new</span></sup></h2>
+            <h2>select2</h2>
             <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original docs</a> for detailed description and options.<br>You should manually include select2 distributive:  
 
 </p>
