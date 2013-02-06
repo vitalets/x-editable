@@ -44,8 +44,20 @@ $(function(){
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
                this.$input.after(this.$clear)
-                          .css('padding-right', 20)
-                          .keyup($.proxy(this.toggleClear, this))
+                          .css('padding-right', 24)
+                          .keyup($.proxy(function(e) {
+                              //arrows, enter, tab, etc
+                              if(~$.inArray(e.keyCode, [40,38,9,13,27])) {
+                                return;
+                              }                            
+
+                              clearTimeout(this.t);
+                              var that = this;
+                              this.t = setTimeout(function() {
+                                that.toggleClear(e);
+                              }, 200);
+                              
+                          }, this))
                           .parent().css('position', 'relative');
                           
                this.$clear.click($.proxy(this.clear, this));                       
@@ -71,11 +83,6 @@ $(function(){
         toggleClear: function(e) {
             if(!this.$clear) {
                 return;
-            }
-            
-            //arrows, enter, tab, etc
-            if(~$.inArray(e.keyCode, [40,38,9,13,27])) {
-               return;
             }
             
             var len = this.$input.val().length,
