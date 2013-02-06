@@ -68,14 +68,24 @@ $(function(){
         },
         
         //show / hide clear button
-        toggleClear: function() {
+        toggleClear: function(e) {
             if(!this.$clear) {
                 return;
             }
             
-            if(this.$input.val().length) {
+            //arrows, enter, tab, etc
+            if(~$.inArray(e.keyCode, [40,38,9,13,27])) {
+               return;
+            }
+            
+            var len = this.$input.val().length,
+                visible = this.$clear.is(':visible');
+                 
+            if(len && !visible) {
                 this.$clear.show();
-            } else {
+            } 
+            
+            if(!len && visible) {
                 this.$clear.hide();
             } 
         },
