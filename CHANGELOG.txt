@@ -2,6 +2,12 @@ X-editable changelog
 =============================
 
 
+
+Version 1.4.2 wip
+----------------------------
+[enh #121] add support of momentjs 2.0.0 in combodate (vitalets)
+
+
 Version 1.4.1 Jan 18, 2013
 ----------------------------
 [enh #62] new option `selector` to work with delegated targets (vitalets) 
