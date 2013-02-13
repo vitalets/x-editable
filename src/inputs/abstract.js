@@ -159,7 +159,7 @@ To create your own input you can inherit from this class.
        },
        
        setAttr: function(attr) {
-           if (this.options[attr]) {
+           if (this.options[attr] !== undefined && this.options[attr] !== null) {
                this.$input.attr(attr, this.options[attr]);
            } 
        },
