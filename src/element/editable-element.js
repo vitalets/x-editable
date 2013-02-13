@@ -457,11 +457,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             return result;
 
             /**
-            Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned
+            Returns current values of editable elements.   
+            Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
+            If value of some editable is `null` or `undefined` it is excluded from result object.  
+             
             @method getValue()
             @returns {Object} object of element names and values
             @example
-            $('#username, #fullname').editable('validate');
+            $('#username, #fullname').editable('getValue');
             // possible result:
             {
             username: "superuser",
