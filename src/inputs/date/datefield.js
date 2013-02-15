@@ -69,6 +69,7 @@ Automatically shown in inline mode.
         datepicker: {
             weekStart: 0,
             startView: 0,
+            minViewMode: 0,
             autoclose: true
         }
     });
