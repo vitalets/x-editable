@@ -115,6 +115,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
            this.$element.on(this.options.toggle + '.editable', selector, $.proxy(function(e){
                var $target = $(e.target);
                if(!$target.data('editable')) {
+                   //if delegated element initially empty, we need to clear it's text (that was manually set to `empty` by user)
+                   //see https://github.com/vitalets/x-editable/issues/137 
                    if($target.hasClass(this.options.emptyclass)) {
                       $target.empty();
                    }

@@ -5,6 +5,7 @@ X-editable changelog
 
 Version 1.4.2 wip
 ----------------------------
+[bug #137] fix empty class for delegated element (vitalets)
 [enh #121] add support of momentjs 2.0.0 in combodate (vitalets)
 
 
