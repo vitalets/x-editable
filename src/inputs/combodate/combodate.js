@@ -1,6 +1,6 @@
 /**
 Combodate input - dropdown date and time picker.    
-Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).
+Based on [combodate](http://vitalets.github.com/combodate) plugin (included). To use it you should manually include [momentjs](http://momentjs.com).
 
     <script src="js/moment.min.js"></script>
    

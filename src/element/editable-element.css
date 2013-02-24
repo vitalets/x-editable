@@ -28,3 +28,10 @@ a.editable-click.editable-disabled:hover {
 /*    content: '*'*/
 }
 
+/*see https://github.com/vitalets/x-editable/issues/139 */
+.form-horizontal .editable
+{ 
+    padding-top: 5px;
+    display:inline-block;
+}
+
