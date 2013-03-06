@@ -427,9 +427,9 @@ Applied as jQuery method.
         Animation speed (inline mode)
         @property anim 
         @type string
-        @default 'fast'
+        @default false
         **/        
-        anim: 'fast',
+        anim: false,
         
         /**
         Mode of editable, can be `popup` or `inline` 
