@@ -7,6 +7,8 @@ You should include this input **manually** with dependent js and css files from 
     <script src="js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"></script>  
     <script src="js/inputs-ext/wysihtml5/wysihtml5.js"></script>  
 
+**Note:** It's better to use fresh bootstrap-wysihtml5 from it's [master branch](https://github.com/jhollingworth/bootstrap-wysihtml5/tree/master/src) as there is update for correct image insertion.    
+    
 @class wysihtml5
 @extends abstractinput
 @final

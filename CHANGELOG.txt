@@ -5,6 +5,7 @@ X-editable changelog
 
 Version 1.4.2 wip
 ----------------------------
+[bug #81] wysihtml5: fix inserting image (vitalets)
 [bug] remove $.browser from wysihtml5 input to support jQuery 1.9 (vitalets)
 [bug #142] editable poshytip jquery 1.9+ compatibility (spiderpug)
 [enh #126] Update bootstrap datepicker library and add minViewMode to options (kev360)
