@@ -10,7 +10,8 @@ $(function () {
     asyncTest("should load correct value and save new entered value", function () {
         
         //skip test for ie7 as it is not supported by wysihtml5
-        if($.browser.msie && parseInt($.browser.version, 10) <= 8) {
+        var msieOld = /msie\s*(7|6)/i.test(navigator.userAgent);  
+        if(msieOld) {
            expect(0);
            start();  
            return;

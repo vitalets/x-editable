@@ -604,6 +604,9 @@ $(function () {
              e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
              pk: 1,
              source: groups,
+             ajaxOptions: {
+                dataType: 'json'
+             },             
              display: function(value, sourceData, response) {
                 var els = $.grep(sourceData, function(o) {return o.value == value;});  
                 $(this).text('qq' + els[0].text);

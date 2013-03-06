@@ -1,6 +1,6 @@
 //detect version of jquery from url param, e.g. 'jquery=1.7.2' 
 var jqver = decodeURIComponent((new RegExp('[?|&]' + 'jquery' + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-    jqurl = jqver ? "http://ajax.googleapis.com/ajax/libs/jquery/"+jqver+"/jquery.min.js" : "libs/jquery/jquery-1.8.2.min.js";
+    jqurl = jqver ? "http://ajax.googleapis.com/ajax/libs/jquery/"+jqver+"/jquery.min.js" : "libs/jquery/jquery-1.9.1.min.js";
     
 require(["loader", jqurl], function(loader) {
 
