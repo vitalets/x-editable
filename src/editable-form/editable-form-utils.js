@@ -145,7 +145,7 @@
 
            $.each(sourceData, function(i, o) {
                if(o.children) {
-                   result = result.concat(that.itemsByValue(value, o.children));
+                   result = result.concat(that.itemsByValue(value, o.children, valueProp));
                } else {
                    /*jslint eqeq: true*/
                    if(isValArray) {
