@@ -47,7 +47,8 @@ Applied as jQuery method.
                     }
                 });
 
-                //close containers when click outside
+                //close containers when click outside 
+                //(mousedown could be better than click, it closes everything also on drag drop)
                 $(document).on('click.editable', function(e) {
                     var $target = $(e.target), i,
                         exclude_classes = ['.editable-container', 
