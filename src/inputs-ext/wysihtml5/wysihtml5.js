@@ -35,8 +35,9 @@ $(function(){
 
     $.extend(Wysihtml5.prototype, {
         render: function () {
-            var deferred = $.Deferred();
-
+            var deferred = $.Deferred(),
+            msieOld;
+            
             //generate unique id as it required for wysihtml5
             this.$input.attr('id', 'textarea_'+(new Date()).getTime());
 
@@ -56,9 +57,10 @@ $(function(){
             
             /*
              In IE8 wysihtml5 iframe stays on the same line with buttons toolbar (inside popover).
-             Not pretty but working solution is to add <br>. If you fine better way, please send PR.   
+             The only solution I found is to add <br>. If you fine better way, please send PR.   
             */
-            if($.browser.msie && parseInt($.browser.version, 10) <= 8) {
+            msieOld = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+            if(msieOld) {
                 this.$input.before('<br><br>'); 
             }
             

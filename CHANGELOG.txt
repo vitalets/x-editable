@@ -5,6 +5,9 @@ X-editable changelog
 
 Version 1.4.2 wip
 ----------------------------
+[bug] remove $.browser from wysihtml5 input to support jQuery 1.9 (vitalets)
+[bug #142] editable poshytip jquery 1.9+ compatibility (spiderpug)
+[enh #126] Update bootstrap datepicker library and add minViewMode to options (kev360)
 [enh #150] select2 with showbuttons = false (vitalets)
 [bug #149] datepicker not shown when showbuttons = false (vitalets)
 [bug #133] clear button incorect position due to parent line-height property (vitalets)
