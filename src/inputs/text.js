@@ -55,7 +55,7 @@ $(function(){
                               var that = this;
                               this.t = setTimeout(function() {
                                 that.toggleClear(e);
-                              }, 200);
+                              }, 100);
                               
                           }, this))
                           .parent().css('position', 'relative');
@@ -75,7 +75,7 @@ $(function(){
                    delta = 3; 
                 }
                     
-                this.$clear.css({top: delta, right: delta});
+                this.$clear.css({bottom: delta, right: delta});
             } 
         },
         
