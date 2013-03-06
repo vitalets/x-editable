@@ -48,6 +48,9 @@ $(function(){
             this.options.viewformat = this.options.format;
         }        
         
+        //try parse combodate config defined as json string in data-combodate
+        options.combodate = $.fn.editableutils.tryParseJson(options.combodate, true);
+
         //overriding combodate config (as by default jQuery extend() is not recursive)
         this.options.combodate = $.extend({}, Constructor.defaults.combodate, options.combodate, {
             format: this.options.format,

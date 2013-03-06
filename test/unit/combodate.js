@@ -13,6 +13,20 @@ $(function () {
         }        
     });
     
+    test("combodate options can be defined in data-combodate param", function () {
+        var  e = $('<a href="#" data-type="combodate" data-combodate="{minYear: 2000, maxYear: 2001}" data-pk="1" data-url="/combodate"></a>').appendTo('#qunit-fixture').editable({
+                format: fd,
+                viewformat: vfd,
+                template: fd
+            }),
+            m = moment(vd, vfd);
+       
+        e.click();
+        var p = tip(e); 
+        equal(p.find('.year option').length, 3, 'years applied correct');
+    });
+          
+    
     asyncTest("container should contain combodate and save new value (date)", function () {
         
         var  e = $('<a href="#" data-type="combodate" data-pk="1" data-url="/combodate">'+vd+'</a>').appendTo(fx).editable({
