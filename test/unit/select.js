@@ -453,7 +453,7 @@ $(function () {
          expect(3);
          
          //auto, text->empty, source->array
-         var e = $('<a href="#" data-type="select" data-value="3"></a>').appendTo(sfx).editable({
+         var e = $('<a href="#" data-type="select" data-value="3">  </a>').appendTo(sfx).editable({
                 source: groups,
                 autotext: 'auto'
              }),   

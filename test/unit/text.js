@@ -15,8 +15,9 @@ $(function () {
         equal(p.find('input[type=text]').attr('placeholder'), 'abc', 'placeholder exists');
         p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');
-      });   
-     
+      });
+      
+    
      asyncTest("should load correct value and save new entered text (and value)", function () {
         var  v = 'ab<b>"',
              esc_v = $('<div>').text(v).html(),
