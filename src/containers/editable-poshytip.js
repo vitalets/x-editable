@@ -108,7 +108,7 @@
     var tips = [],
     reBgImage = /^url\(["']?([^"'\)]*)["']?\);?$/i,
     rePNG = /\.png$/i,
-    ie6 = $.browser.msie && $.browser.version == 6;
+    ie6 = !!window.createPopup && document.documentElement.currentStyle.minWidth == 'undefined';
     
     $.Poshytip.prototype.refresh = function(async) {
         if (this.disabled)
