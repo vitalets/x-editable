@@ -151,7 +151,7 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           this.$input.val(value).trigger('change');
+           this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
        },
        
        input2value: function() { 
@@ -176,7 +176,15 @@ $(function(){
             }
             
             return val;
-       }        
+       },
+       
+        autosubmit: function() {
+            this.$input.on('change', function(e, isInitial){
+                if(!isInitial) {
+                  $(this).closest('form').submit();
+                }
+            });
+        }               
         
     });      
 

@@ -5,6 +5,7 @@ X-editable changelog
 
 Version 1.4.2 wip
 ----------------------------
+[enh #150] select2 with showbuttons = false (vitalets)
 [bug #149] datepicker not shown when showbuttons = false (vitalets)
 [bug #133] clear button incorect position due to parent line-height property (vitalets)
 [bug #141] data-value ignored for empty elements (vitalets)
