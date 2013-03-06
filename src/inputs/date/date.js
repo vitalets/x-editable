@@ -171,12 +171,14 @@ $(function(){
         @default {
             weekStart: 0,
             startView: 0,
+            minViewMode: 0,
             autoclose: false
         }
         **/
         datepicker:{
             weekStart: 0,
             startView: 0,
+            minViewMode: 0,
             autoclose: false
         },
         /**
