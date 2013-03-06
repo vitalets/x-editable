@@ -558,7 +558,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>value </td>
             <td>mixed</td>
             <td>element&#x27;s text</td>
-            <td><p>Initial value of input. If not set, taken from element&#39;s text.<br>Note, that if element&#39;s text is empty - it is automatically generated from value and can be customized (see <code>autotext</code> option).<br>For example, to display currency sign:</p>
+            <td><p>Initial value of input. If not set, taken from element&#39;s text.<br>Note, that if element&#39;s text is empty - text is automatically generated from value and can be customized (see <code>autotext</code> option).<br>For example, to display currency sign:</p>
 
             
                 <pre class="prettyprint linenums">&lt;a id=&quot;price&quot; data-type=&quot;text&quot; data-value=&quot;100&quot;&gt;&lt;/a&gt;
@@ -662,9 +662,11 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Returns current values of editable elements. If value is <code>null</code> or <code>undefined</code> it will not be returned
+            <td>Returns current values of editable elements.   
+Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
+If value of some editable is `null` or `undefined` it is excluded from result object.
             
-                <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;validate&#x27;);
+                <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;getValue&#x27;);
 // possible result:
 {
 username: &quot;superuser&quot;,
@@ -1272,7 +1274,6 @@ $(function(){
               {value: 2, text: &#x27;Blocked&#x27;},
               {value: 3, text: &#x27;Deleted&#x27;}
            ]
-        }
     });
 });
 &lt;/script&gt;</pre>
@@ -1513,7 +1514,7 @@ $(function(){
         
          <section id="combodate">
             <h2>combodate</h2>
-            <p><p>Combodate input - dropdown date and time picker.<br>Based on <a href="http://vitalets.github.com/combodate">combodate</a> plugin. To use it you should manually include <a href="http://momentjs.com">momentjs</a>.
+            <p><p>Combodate input - dropdown date and time picker.<br>Based on <a href="http://vitalets.github.com/combodate">combodate</a> plugin (included). To use it you should manually include <a href="http://momentjs.com">momentjs</a>.
 
 </p>
 <pre><code>&lt;script src=&quot;js/moment.min.js&quot;&gt;&lt;/script&gt;</code></pre>
@@ -1853,7 +1854,6 @@ $(function(){
               {value: 2, text: &#x27;option2&#x27;},
               {value: 3, text: &#x27;option3&#x27;}
            ]
-        }
     });
 });
 &lt;/script&gt;</pre>
@@ -2089,7 +2089,6 @@ $(function(){
               {value: &#x27;us&#x27;, text: &#x27;United States&#x27;},
               {value: &#x27;ru&#x27;, text: &#x27;Russia&#x27;}
            ]
-        }
     });
 });
 &lt;/script&gt;</pre>
@@ -2103,7 +2102,8 @@ $(function(){
 
 </p>
 <pre><code>&lt;link href=&quot;select2/select2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
-&lt;script src=&quot;select2/select2.js&quot;&gt;&lt;/script&gt;</code></pre>
+&lt;script src=&quot;select2/select2.js&quot;&gt;&lt;/script&gt;  </code></pre>
+<p><strong>Note:</strong> currently <code>ajax</code> source for select2 is not supported, as it&#39;s not possible to load it in closed select2 state.<br>The solution is to load source manually and assign statically.</p>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
             </p>

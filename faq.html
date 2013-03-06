@@ -102,14 +102,14 @@
         <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
         <hr>
 
-        <h3>How to submit data in JSON format or rename submit variables?</h3>
+        <h3>How to add/rename submit params or submit in stringified JSON format?</h3>
         <p>You should use <code>params</code> option defined as a function:</p> 
         <pre>
 //submit in JSON format        
 $('#field').editable({
   ...        
   params: function(params) {
-    return JSON.stringify(params);  //note: for older browsers you mey need json2.js from json.org
+    return JSON.stringify(params);  //note: for older browsers you may need json2.js from json.org
   }
 });  
 
