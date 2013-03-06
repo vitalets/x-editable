@@ -111,12 +111,24 @@ $(function(){
        },
        
        autosubmit: function() {
+           this.$input.on('mouseup', '.day', function(e){
+               if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
+                 return;
+               }
+               var $form = $(this).closest('form');
+               setTimeout(function() {
+                   $form.submit();
+               }, 200);
+           });
+           //changedate is not suitable as it triggered when showing datepicker. see #149
+           /*
            this.$input.on('changeDate', function(e){
                var $form = $(this).closest('form');
                setTimeout(function() {
                    $form.submit();
                }, 200);
            });
+           */
        }
 
     });
