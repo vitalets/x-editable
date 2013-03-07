@@ -642,12 +642,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         If `null`, default input's display used.  
         If `false`, no displaying methods will be called, element's text will never change.  
         Runs under element's scope.  
-        _Parameters:_  
+        _**Parameters:**_  
         
         * `value` current value to be displayed
         * `response` server response (if display called after ajax submit), since 1.4.0
          
-        For **inputs with source** (select, checklist) parameters are different:  
+        For _inputs with source_ (select, checklist) parameters are different:  
           
         * `value` current value to be displayed
         * `sourceData` array of items for current input (e.g. dropdown items) 
