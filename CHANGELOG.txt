@@ -1,9 +1,7 @@
 X-editable changelog
 =============================
 
-
-
-Version 1.4.2 wip
+Version 1.4.2 Mar 7, 2013
 ----------------------------
 [enh #132] combodate options can be defined via data-combodate json string (vitalets)
 [enh] source defined as function now has scope of element and can return string used as url (vitalets)
