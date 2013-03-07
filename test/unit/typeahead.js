@@ -33,11 +33,14 @@ $(function () {
         ok($input.typeahead, 'typeahead applied to input');
         
         $input.val(newText).keyup();
+        
         ok(p.find('.typeahead.dropdown-menu').is(':visible'), 'dropdown visible');
         
         //select `Admin`
         v = 5;
-        p.find('.typeahead.dropdown-menu').find('.active').click();
+        
+        ok(p.find('.typeahead.dropdown-menu').find('li').length, 'active item exists');
+        p.find('.typeahead.dropdown-menu').find('li').mouseover().click();
         
         equal($input.val(), groups[v], 'input contain correct text');        
         p.find('form').submit(); 
@@ -91,7 +94,7 @@ $(function () {
         
         //select `ab`
         v = 'ab';
-        p.find('.typeahead.dropdown-menu').find('.active').click();
+        p.find('.typeahead.dropdown-menu').find('li').mouseover().click();
         
         equal($input.val(), v, 'input contain correct text');        
         p.find('form').submit(); 

@@ -6,6 +6,9 @@ You should manually include select2 distributive:
     <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
     <script src="select2/select2.js"></script>  
     
+**Note:** currently `ajax` source for select2 is not supported, as it's not possible to load it in closed select2 state.  
+The solution is to load source manually and assign statically.    
+    
 @class select2
 @extends abstractinput
 @since 1.4.1
@@ -35,14 +38,14 @@ $(function(){
         options.select2 = options.select2 || {};
         
         var that = this, 
-            mixin = {
+            mixin = {    //mixin to select2 options
                placeholder:  options.placeholder
             };
        
        //detect whether it is multi-valued
        this.isMultiple = options.select2.tags || options.select2.multiple;
        
-       //if not `tags` mode, we need define init set data from source
+       //if not `tags` mode, we need define initSelection to set data from source
        if(!options.select2.tags) {
             if(options.source) {
                 mixin.data = options.source;
@@ -50,6 +53,23 @@ $(function(){
 
             //this function can be defaulted in seletc2. See https://github.com/ivaynberg/select2/issues/710
             mixin.initSelection = function (element, callback) {
+                //temp: try update results
+                /*
+                if(options.select2 && options.select2.ajax) {
+                  console.log('attached');
+                  var original =  $(element).data('select2').postprocessResults;
+                  console.log(original);
+                  $(element).data('select2').postprocessResults = function(data, initial) {
+                    console.log('postprocess');
+                   // this.element.triggerHandler('loaded', [data]);
+                    original.apply(this, arguments);  
+                  }                  
+
+               //   $(element).on('loaded', function(){console.log('loaded');});
+                  $(element).data('select2').updateResults(true);
+                }
+                */
+              
                 var val = that.str2value(element.val()),
                     data = $.fn.editableutils.itemsByValue(val, mixin.data, 'id');
                 
@@ -74,18 +94,30 @@ $(function(){
             //apply select2
             this.$input.select2(this.options.select2);
 
+            //when data is loaded via ajax, we need to know when it's done
+            if('ajax' in this.options.select2) {
+              /*
+              console.log('attached');
+              var original = this.$input.data('select2').postprocessResults;
+              this.$input.data('select2').postprocessResults = function(data, initial) {
+                  this.element.triggerHandler('loaded', [data]);
+                  original.apply(this, arguments);  
+              }
+              */
+            }
+                         
+
             //trigger resize of editableform to re-position container in multi-valued mode           
             if(this.isMultiple) {
                this.$input.on('change', function() {
                    $(this).closest('form').parent().triggerHandler('resize');
                }); 
-            }            
-            
-        },
+            } 
+       },
        
        value2html: function(value, element) {
            var text = '', data;
-           if(this.$input) { //when submitting form 
+           if(this.$input) { //called when submitting form and select2 already exists 
                data = this.$input.select2('data');
            } else { //on init (autotext)
                //here select2 instance not created yet and data may be even not loaded.
@@ -94,6 +126,8 @@ $(function(){
                    data = value;
                } else if(this.options.select2.data) {
                    data = $.fn.editableutils.itemsByValue(value, this.options.select2.data, 'id');   
+               } else {
+                   //if('ajax' in this.options.select2) {
                }
            }
            
@@ -117,7 +151,7 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           this.$input.val(value).trigger('change');
+           this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
        },
        
        input2value: function() { 
@@ -142,7 +176,15 @@ $(function(){
             }
             
             return val;
-       }        
+       },
+       
+        autosubmit: function() {
+            this.$input.on('change', function(e, isInitial){
+                if(!isInitial) {
+                  $(this).closest('form').submit();
+                }
+            });
+        }               
         
     });      
 

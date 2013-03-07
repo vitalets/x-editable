@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>x-editable</id>
+    <version>1.4.2</version>
+    <authors>Vitaliy Potapov</authors>
+    <owners>Vitaliy Potapov</owners>
+    <licenseUrl>https://github.com/vitalets/x-editable/blob/master/LICENSE-MIT</licenseUrl>
+    <projectUrl>http://vitalets.github.com/x-editable</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</description>
+    <releaseNotes>Added support of jQuery 1.9 and several bugfixes.</releaseNotes>
+    <copyright>Copyright 2012-2013</copyright>
+    <tags>edit-in-place editable bootstrap jquery</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="dist\**" target="\" />
+  </files>  
+</package>

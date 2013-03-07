@@ -80,8 +80,8 @@
         var p = tip(e); 
         ok(p.is(':visible'), 'popover shown');   
 
-        //todo: for jqueryui phantomjs calcs wrong position. Need investigation
-        if(!$.browser.webkit && e.data('editableContainer').containerName !== 'tooltip') {
+        //todo: for jqueryui phantomjs calcs wrong position. Skip this test..
+        if(!/phantom/i.test(navigator.userAgent) && e.data('editableContainer').containerName !== 'tooltip') {
             ok(p.offset().top > e.offset().top, 'placement ok');
         }
         
@@ -276,8 +276,9 @@
       
      test("should not wrap buttons when parent has position:absolute (except ie7)", function () {
         
-        //skip this for: ie7 + bootstrap + popup  
-        if($.browser.msie && parseInt($.browser.version, 10) <= 8 && $.fn.editable.defaults.mode === 'popup' && $.fn.editableContainer.Popup.prototype.containerName === 'popover') {
+        //skip this for: ie7 + bootstrap + popup
+        var msieOld = /msie\s*(8|7|6)/i.test(navigator.userAgent);  
+        if(msieOld && $.fn.editable.defaults.mode === 'popup' && $.fn.editableContainer.Popup.prototype.containerName === 'popover') {
            expect(0);
            return;
         } 

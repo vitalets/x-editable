@@ -7,6 +7,8 @@ You should include this input **manually** with dependent js and css files from 
     <script src="js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"></script>  
     <script src="js/inputs-ext/wysihtml5/wysihtml5.js"></script>  
 
+**Note:** It's better to use fresh bootstrap-wysihtml5 from it's [master branch](https://github.com/jhollingworth/bootstrap-wysihtml5/tree/master/src) as there is update for correct image insertion.    
+    
 @class wysihtml5
 @extends abstractinput
 @final
@@ -35,8 +37,9 @@ $(function(){
 
     $.extend(Wysihtml5.prototype, {
         render: function () {
-            var deferred = $.Deferred();
-
+            var deferred = $.Deferred(),
+            msieOld;
+            
             //generate unique id as it required for wysihtml5
             this.$input.attr('id', 'textarea_'+(new Date()).getTime());
 
@@ -56,9 +59,10 @@ $(function(){
             
             /*
              In IE8 wysihtml5 iframe stays on the same line with buttons toolbar (inside popover).
-             Not pretty but working solution is to add <br>. If you fine better way, please send PR.   
+             The only solution I found is to add <br>. If you fine better way, please send PR.   
             */
-            if($.browser.msie && parseInt($.browser.version, 10) <= 8) {
+            msieOld = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+            if(msieOld) {
                 this.$input.before('<br><br>'); 
             }
             

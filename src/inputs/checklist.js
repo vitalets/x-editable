@@ -16,7 +16,6 @@ $(function(){
               {value: 2, text: 'option2'},
               {value: 3, text: 'option3'}
            ]
-        }
     });
 });
 </script>

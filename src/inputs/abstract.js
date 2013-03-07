@@ -159,7 +159,7 @@ To create your own input you can inherit from this class.
        },
        
        setAttr: function(attr) {
-           if (this.options[attr]) {
+           if (this.options[attr] !== undefined && this.options[attr] !== null) {
                this.$input.attr(attr, this.options[attr]);
            } 
        },
@@ -186,7 +186,10 @@ To create your own input you can inherit from this class.
         @type string
         @default input-medium
         **/         
-        inputclass: 'input-medium'
+        inputclass: 'input-medium',
+        //scope for external methods (e.g. source defined as function)
+        //for internal use only
+        scope: null
     };
     
     $.extend($.fn.editabletypes, {abstractinput: AbstractInput});

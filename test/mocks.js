@@ -5,9 +5,7 @@ $(function () {
     
     $.mockjax({
         url: 'post.php',
-        responseText: {
-            success: true
-        }
+        responseText: '{"success": true}'
     });
 
     $.mockjax({

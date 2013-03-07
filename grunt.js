@@ -106,10 +106,11 @@ module.exports = function(grunt) {
 //module = '&module=select';
 //module = '&module=text';
 
+//test on several jquery versions
  var qunit_testover = [];
  ['bootstrap', 'jqueryui', 'plain'].forEach(function(f){
      ['popup', 'inline'].forEach(function(c){
-         ['1.6.4', '1.7.1', '1.7.2', '1.8.2', '1.8.3'].forEach(function(jqver) {
+         ['1.7.2', '1.8.3', '1.9.1'].forEach(function(jqver) {
              qunit_testover.push('http://localhost:8000/test/index.html?f='+f+'&c='+c+'&jquery='+jqver+module); 
          });
      });

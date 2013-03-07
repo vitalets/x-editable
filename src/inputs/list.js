@@ -70,12 +70,19 @@ List - abstract class for inputs that have source option loaded from js array or
                 error.call(this);
                 return;
             }
+            
+            var source = this.options.source;
+            
+            //run source if it function
+            if ($.isFunction(source)) {
+                source = source.call(this.options.scope);
+            }
 
             //loading from url
-            if (typeof this.options.source === 'string') {
+            if (typeof source === 'string') {
                 //try to get from cache
                 if(this.options.sourceCache) {
-                    var cacheID = this.options.source,
+                    var cacheID = source,
                     cache;
 
                     if (!$(document).data(cacheID)) {
@@ -108,7 +115,7 @@ List - abstract class for inputs that have source option loaded from js array or
                 
                 //loading sourceData from server
                 $.ajax({
-                    url: this.options.source,
+                    url: source,
                     type: 'get',
                     cache: false,
                     dataType: 'json',
@@ -143,12 +150,8 @@ List - abstract class for inputs that have source option loaded from js array or
                         }
                     }, this)
                 });
-            } else { //options as json/array/function
-                if ($.isFunction(this.options.source)) {
-                   this.sourceData = this.makeArray(this.options.source());
-                } else {
-                   this.sourceData = this.makeArray(this.options.source);
-                }
+            } else { //options as json/array
+                this.sourceData = this.makeArray(source);
                     
                 if($.isArray(this.sourceData)) {
                     this.doPrepend();
@@ -165,16 +168,20 @@ List - abstract class for inputs that have source option loaded from js array or
             }
             
             if(!$.isArray(this.prependData)) {
+                //run prepend if it is function (once)
+                if ($.isFunction(this.options.prepend)) {
+                    this.options.prepend = this.options.prepend.call(this.options.scope);
+                }
+              
                 //try parse json in single quotes
                 this.options.prepend = $.fn.editableutils.tryParseJson(this.options.prepend, true);
+                
+                //convert prepend from string to object
                 if (typeof this.options.prepend === 'string') {
                     this.options.prepend = {'': this.options.prepend};
-                }              
-                if (typeof this.options.prepend === 'function') {
-                    this.prependData = this.makeArray(this.options.prepend());
-                } else {
-                    this.prependData = this.makeArray(this.options.prepend);
                 }
+                
+                this.prependData = this.makeArray(this.options.prepend);
             }
 
             if($.isArray(this.prependData) && $.isArray(this.sourceData)) {

@@ -105,11 +105,15 @@ $(function () {
         ok(!p.is(':visible'), 'popover was removed');  
     }); 
     
-     test("load options from function", function () {
+     test("load options from function returning array", function () {
          var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
              pk: 1,
-             prepend: 'prepend',
+             prepend: function() {
+                equal(this, e[0], 'prepend scope is element');
+                return 'prepend'; 
+             },
              source: function() {
+                equal(this, e[0], 'source scope is element');
                 return groups; 
              }
           });
@@ -123,6 +127,40 @@ $(function () {
         p.find('.editable-cancel').click(); 
         ok(!p.is(':visible'), 'popover was removed');  
     });    
+    
+     asyncTest("load options from function returning URL", function () {
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+             pk: 1,
+             //need to disable cache to force request
+             sourceCache: false,             
+             source: function() {
+                equal(this, e[0], 'source scope is element');
+                return 'groups.php'; 
+             }
+          });
+
+        e.click();
+        var p = tip(e); 
+        
+        setTimeout(function() {
+            ok(p.is(':visible'), 'popover visible');
+            ok(p.find('select').length, 'select exists');
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+            p.find('.editable-cancel').click(); 
+            ok(!p.is(':visible'), 'popover was removed');
+            
+            //open second time: items should not dublicate
+            e.click();
+                        
+            ok(p.find('select').length, 'select exists');
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+                          
+            e.remove();    
+            start();  
+        }, timeout);  
+    });      
     
      test("load options from html (single quotes)", function () {
          var e = $('<a href="#" data-type="select" data-value="M" data-source=\'{"L":"Low", "": "None", "M": "Medium", "H": "High"}\'>customer</a>').appendTo('#qunit-fixture').editable({
@@ -453,7 +491,7 @@ $(function () {
          expect(3);
          
          //auto, text->empty, source->array
-         var e = $('<a href="#" data-type="select" data-value="3"></a>').appendTo(sfx).editable({
+         var e = $('<a href="#" data-type="select" data-value="3">  </a>').appendTo(sfx).editable({
                 source: groups,
                 autotext: 'auto'
              }),   
@@ -566,6 +604,9 @@ $(function () {
              e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
              pk: 1,
              source: groups,
+             ajaxOptions: {
+                dataType: 'json'
+             },             
              display: function(value, sourceData, response) {
                 var els = $.grep(sourceData, function(o) {return o.value == value;});  
                 $(this).text('qq' + els[0].text);

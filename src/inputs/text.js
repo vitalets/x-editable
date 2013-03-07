@@ -44,8 +44,20 @@ $(function(){
            if (this.options.clear) {
                this.$clear = $('<span class="editable-clear-x"></span>');
                this.$input.after(this.$clear)
-                          .css('padding-right', 20)
-                          .keyup($.proxy(this.toggleClear, this))
+                          .css('padding-right', 24)
+                          .keyup($.proxy(function(e) {
+                              //arrows, enter, tab, etc
+                              if(~$.inArray(e.keyCode, [40,38,9,13,27])) {
+                                return;
+                              }                            
+
+                              clearTimeout(this.t);
+                              var that = this;
+                              this.t = setTimeout(function() {
+                                that.toggleClear(e);
+                              }, 100);
+                              
+                          }, this))
                           .parent().css('position', 'relative');
                           
                this.$clear.click($.proxy(this.clear, this));                       
@@ -63,19 +75,24 @@ $(function(){
                    delta = 3; 
                 }
                     
-                this.$clear.css({top: delta, right: delta});
+                this.$clear.css({bottom: delta, right: delta});
             } 
         },
         
         //show / hide clear button
-        toggleClear: function() {
+        toggleClear: function(e) {
             if(!this.$clear) {
                 return;
             }
             
-            if(this.$input.val().length) {
+            var len = this.$input.val().length,
+                visible = this.$clear.is(':visible');
+                 
+            if(len && !visible) {
                 this.$clear.show();
-            } else {
+            } 
+            
+            if(!len && visible) {
                 this.$clear.hide();
             } 
         },

@@ -1,6 +1,6 @@
 /**
 Combodate input - dropdown date and time picker.    
-Based on [combodate](http://vitalets.github.com/combodate) plugin. To use it you should manually include [momentjs](http://momentjs.com).
+Based on [combodate](http://vitalets.github.com/combodate) plugin (included). To use it you should manually include [momentjs](http://momentjs.com).
 
     <script src="js/moment.min.js"></script>
    
@@ -48,6 +48,9 @@ $(function(){
             this.options.viewformat = this.options.format;
         }        
         
+        //try parse combodate config defined as json string in data-combodate
+        options.combodate = $.fn.editableutils.tryParseJson(options.combodate, true);
+
         //overriding combodate config (as by default jQuery extend() is not recursive)
         this.options.combodate = $.extend({}, Constructor.defaults.combodate, options.combodate, {
             format: this.options.format,

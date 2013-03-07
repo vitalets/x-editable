@@ -1,6 +1,22 @@
 X-editable changelog
 =============================
 
+Version 1.4.2 Mar 7, 2013
+----------------------------
+[enh #132] combodate options can be defined via data-combodate json string (vitalets)
+[enh] source defined as function now has scope of element and can return string used as url (vitalets)
+[bug #99] select2 with Hierarchical Data (kev360)
+[bug #81] wysihtml5: fix inserting image (vitalets)
+[bug] remove $.browser from wysihtml5 input to support jQuery 1.9 (vitalets)
+[bug #142] editable poshytip jquery 1.9+ compatibility (spiderpug)
+[enh #126] Update bootstrap datepicker library and add minViewMode to options (kev360)
+[enh #150] select2 with showbuttons = false (vitalets)
+[bug #149] datepicker not shown when showbuttons = false (vitalets)
+[bug #133] clear button incorect position due to parent line-height property (vitalets)
+[bug #141] data-value ignored for empty elements (vitalets)
+[bug #137] fix empty class for delegated element (vitalets)
+[enh #121] add support of momentjs 2.0.0 in combodate (vitalets)
+
 
 Version 1.4.1 Jan 18, 2013
 ----------------------------
