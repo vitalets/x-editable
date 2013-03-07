@@ -111,6 +111,9 @@ $(function(){
         @param {mixed} value
        **/         
        value2input: function(value) {
+           if(!value) {
+             return;
+           }
            this.$input.filter('[name="city"]').val(value.city);
            this.$input.filter('[name="street"]').val(value.street);
            this.$input.filter('[name="building"]').val(value.building);

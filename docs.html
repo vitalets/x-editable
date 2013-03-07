@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>X-editable :: In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</title>
         <!-- jquery -->
-        <script src="assets/jquery/jquery-1.8.2.min.js"></script>
+        <script src="assets/jquery/jquery-1.9.1.min.js"></script>
 
         <!-- bootstrap -->
         <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -251,7 +251,7 @@ List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.co
         <tr>
             <td>anim </td>
             <td>string</td>
-            <td>&#x27;fast&#x27;</td>
+            <td>false</td>
             <td><p>Animation speed (inline mode)</p>
 
             
@@ -283,14 +283,14 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
             <td>display <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
             <td>function|boolean</td>
             <td>null</td>
-            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s display used.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will never change.<br>Runs under element&#39;s scope.<br><em>Parameters:</em>  
+            <td><p>Callback to perform custom displaying of value in element&#39;s text.<br>If <code>null</code>, default input&#39;s display used.<br>If <code>false</code>, no displaying methods will be called, element&#39;s text will never change.<br>Runs under element&#39;s scope.<br><em><strong>Parameters:</strong></em>  
 
 </p>
 <ul>
 <li><code>value</code> current value to be displayed</li>
 <li><code>response</code> server response (if display called after ajax submit), since 1.4.0</li>
 </ul>
-<p>For <strong>inputs with source</strong> (select, checklist) parameters are different:  
+<p>For <em>inputs with source</em> (select, checklist) parameters are different:  
 
 </p>
 <ul>
@@ -1356,6 +1356,7 @@ Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
             <td>{
     weekStart: 0,
     startView: 0,
+    minViewMode: 0,
     autoclose: false
 }</td>
             <td><p>Configuration of datepicker.
@@ -1869,7 +1870,8 @@ $(function(){
 <pre><code>&lt;link href=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
 &lt;script src=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js&quot;&gt;&lt;/script&gt;  
 &lt;script src=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js&quot;&gt;&lt;/script&gt;  
-&lt;script src=&quot;js/inputs-ext/wysihtml5/wysihtml5.js&quot;&gt;&lt;/script&gt;</code></pre>
+&lt;script src=&quot;js/inputs-ext/wysihtml5/wysihtml5.js&quot;&gt;&lt;/script&gt;  </code></pre>
+<p><strong>Note:</strong> It&#39;s better to use fresh bootstrap-wysihtml5 from it&#39;s <a href="https://github.com/jhollingworth/bootstrap-wysihtml5/tree/master/src">master branch</a> as there is update for correct image insertion.</p>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.0</span></div>
             </p>
@@ -2403,8 +2405,8 @@ $(&#x27;.myeditable&#x27;).on(&#x27;save.newuser&#x27;, function(){
              <p>X-editable has no limitation to backend side, you can write it on any language you prefer.<br> 
     For easy starting have a look on sample projects below:</p>
 <ul>
-    <li><a href="https://github.com/vitalets/x-editable/tree/gh-pages/backend-samples/php" target="_blank">pure PHP</a></li>
-    <li><a href="https://github.com/vitalets/x-editable/tree/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small class="muted">(thanks to <a href="https://github.com/clouddueling">@clouddueling</a>)</small></li>
+    <li><a href="https://github.com/vitalets/x-editable/tree/gh-pages/backend-samples/php" target="_blank">Pure PHP</a></li>
+    <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small class="muted">(thanks to <a href="https://github.com/clouddueling">@clouddueling</a>)</small></li>
 </ul>
 
 <p class="muted"><small>

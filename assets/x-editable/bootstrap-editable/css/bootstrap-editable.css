@@ -1,4 +1,4 @@
-/*! X-editable - v1.4.1 
+/*! X-editable - v1.4.2 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
@@ -10,6 +10,7 @@
 .editableform .control-group {
     margin-bottom: 0; /* overwrites bootstrap margin */
     white-space: nowrap; /* prevent wrapping buttons on new line */
+    line-height: 20px; /* overwriting bootstrap line-height. See #133 */
 }
 
 .editable-buttons {
@@ -111,6 +112,7 @@
    position: absolute;
    opacity: 0.6;
    z-index: 100;
+
 }
 
 .editable-clear-x:hover {
@@ -165,6 +167,13 @@ a.editable-click.editable-disabled:hover {
 
 .editable-unsaved:after {
 /*    content: '*'*/
+}
+
+/*see https://github.com/vitalets/x-editable/issues/139 */
+.form-horizontal .editable
+{ 
+    padding-top: 5px;
+    display:inline-block;
 }
 
 
@@ -451,6 +460,16 @@ a.editable-click.editable-disabled:hover {
 .datepicker thead tr:first-child th:hover,
 .datepicker tfoot tr:first-child th:hover {
   background: #eeeeee;
+}
+.datepicker .cw {
+  font-size: 10px;
+  width: 12px;
+  padding: 0 2px 0 5px;
+  vertical-align: middle;
+}
+.datepicker thead tr:first-child th.cw {
+  cursor: default;
+  background-color: transparent;
 }
 .input-append.date .add-on i,
 .input-prepend.date .add-on i {

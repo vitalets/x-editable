@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>X-editable :: In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</title>
         <!-- jquery -->
-        <script src="assets/jquery/jquery-1.8.2.min.js"></script>
+        <script src="assets/jquery/jquery-1.9.1.min.js"></script>
 
         <!-- bootstrap -->
         <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -141,19 +141,30 @@
 <div class="row">
     <div class="span4">
         <h2 class="muted">Latest release</h2>
-        <h4>1.4.1 (Jan 18, 2013)</h4>
+        <h4>1.4.2 (Mar 7, 2013)</h4>
 <ul>
-<li>added support of <a href="http://ivaynberg.github.com/select2">select2</a></li>
-<li>added support of <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">bootstrap typeahead</a></li>
-<li>new option <code>selector</code> allowing to work with dynamically created elements</li>
-<li>optgroups in select </li>
-<li>some other <a href="http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt">fixes</a></li>
+<li>added support of jQuery 1.9+</li>
+<li>upgrade to <a href="http://momentjs.com">moment.js 2.0</a></li>
+<li>update bootstrap-datepicker to <a href="https://github.com/eternicode/bootstrap-datepicker">upstream</a></li>
+<li><code>source</code> parameter improved: defined as function it gets scope of element and can return url </li>
+<li>several <a href="http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt">bugfixes</a></li>
 </ul>
+<p>Thanks to community for great support!</p>
 
         <div style="margin-top: 20px">
           <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
           <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a><br>
           <a href="faq.html">Donation</a><br>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center">
+        <p>My project build with X-editable:<br>
+        <a href="http://makematrix.com" target="_blank">
+          <img src="assets/img/makematrix-logo-mini.png"><br>
+          makematrix.com
+        </a>
+        </p>   
+        <p class="muted">I would appreciate your feedback!</p>
         </div>
     </div>
     <div class="span4">
@@ -205,10 +216,12 @@
             <li>more convenient on small forms</li>                            
         </ul>
         <br>
-        <h2 class="muted">Related links</h2>  
+        <h2 class="muted">Related links</h2>
         <ul>
-            <li><a href="http://x-editable.demopage.ru" target="_blank">X-editable for Yii</a></li>
-            <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a></li>
+            <li><a href="http://x-editable.demopage.ru" target="_blank">X-editable for Yii</a> <small>by <a href="https://github.com/vitalets">Vitalets</a></small></li>
+            <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a> <small>by <a href="https://github.com/brianchance">brianchance</a></small></li>
+            <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small>by <a href="https://github.com/clouddueling">Michael Calkins</a></small></li>
+            <li><a href="http://cspeerly.github.com/Simple-ConnectDB" target="_blank">Simple-ConnectDB</a> <small>by <a href="https://github.com/cspeerly">Chuck Speerly</a></small></li>
         </ul>
     </div>
 </div>
