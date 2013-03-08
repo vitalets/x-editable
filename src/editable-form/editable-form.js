@@ -489,7 +489,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/          
         success: null,
         /**
-        Additional options for ajax request.
+        Additional options for submit ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
         
         @property ajaxOptions 
