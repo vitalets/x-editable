@@ -2,9 +2,9 @@ X-editable changelog
 =============================
 
 
-Version 1.4.3 wip
+Version 1.4.3 Mar 8, 2013
 ----------------------------
-[bug #32] upgrade to jQuery UI 1.9+ (vitalets)
+[bug #32] hotfix for jQuery UI 1.9+ (vitalets)
 
 
 Version 1.4.2 Mar 7, 2013
