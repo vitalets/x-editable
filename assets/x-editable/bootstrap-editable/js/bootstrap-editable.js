@@ -1,4 +1,4 @@
-/*! X-editable - v1.4.2 
+/*! X-editable - v1.4.3 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
@@ -494,7 +494,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/          
         success: null,
         /**
-        Additional options for ajax request.
+        Additional options for submit ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
         
         @property ajaxOptions 
@@ -881,7 +881,7 @@ Applied as jQuery method.
 
         /* returns container object */
         container: function() {
-            return this.$element.data(this.containerName); 
+            return this.$element.data(this.containerDataName || this.containerName); 
         },
 
         call: function() {

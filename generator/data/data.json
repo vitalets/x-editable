@@ -1038,7 +1038,7 @@
         {
             "file": "..\\lib\\src\\editable-form\\editable-form.js",
             "line": 491,
-            "description": "Additional options for ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
+            "description": "Additional options for submit ajax request.\nList of values: http://api.jquery.com/jQuery.ajax",
             "itemtype": "property",
             "name": "ajaxOptions",
             "type": "object",
