@@ -1,6 +1,12 @@
 X-editable changelog
 =============================
 
+
+Version 1.4.3 wip
+----------------------------
+[bug #32] upgrade to jQuery UI 1.9+ (vitalets)
+
+
 Version 1.4.2 Mar 7, 2013
 ----------------------------
 [enh #132] combodate options can be defined via data-combodate json string (vitalets)
