@@ -7,7 +7,8 @@
     
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
-        containerName: 'tooltip',
+        containerName: 'tooltip',  //jQuery method, aplying the widget
+        containerDataName: 'uiTooltip', //object name in elements .data() (e.g. uiTooltip for tooltip)
         innerCss: '.ui-tooltip-content', 
         
         //split options on containerOptions and formOptions

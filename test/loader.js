@@ -1,3 +1,6 @@
+/*
+Loads all js files via require.js
+*/
 define(function () {
          
     function loadCss(url) {
@@ -11,7 +14,23 @@ define(function () {
     return {
         loadCss: loadCss,
         getConfig: function (baseUrl) {
-            var params = this.getParams(),
+          
+            var jqueryui_ver = '1.10.1',
+                paths = {
+//                    "bootstrap": "../test/libs/bootstrap221", 
+                    "bootstrap": "../test/libs/bootstrap222", 
+                    
+                  //  "jqueryui": "../test/libs/jquery-ui-"+jqueryui_ver+".custom", 
+                    "jqueryui_js": "../test/libs/jquery-ui-"+jqueryui_ver+".custom/js/jquery-ui-"+jqueryui_ver+".custom", 
+                     
+                    "dateui_js": "inputs/dateui/jquery-ui-datepicker/js/jquery-ui-"+jqueryui_ver+".custom",
+                    
+                    "poshytip": "../test/libs/poshytip",
+                    
+                    "test": "../test" 
+                },          
+          
+                params = this.getParams(),
                 f = params.f, 
                 c = params.c,
                 shim = {
@@ -31,7 +50,9 @@ define(function () {
                         loadCss(require.toUrl("./editable-element.css")); 
                     }                         
                 },
-                //default inputs
+                /*
+                common inputs
+                */
                 'editable-form/editable-form': {
                     deps: ['require',
                     'inputs/text',
@@ -56,9 +77,10 @@ define(function () {
                 'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],
                 'inputs/typeahead': ['inputs/list'],  
 
-                /*
-                 bootstrap
-                */
+
+                /* ------------------------------
+                   bootstrap
+                   ------------------------------ */                 
                 'bootstrap/js/bootstrap': {
                     deps: ['require'],
                     init: function(require) {
@@ -108,33 +130,34 @@ define(function () {
                     }
                 },                
                 
-                
                 //datefield
                 'inputs/date/datefield': ['inputs/date/date'],
 
-                /*
-                 jqueryui
-                */
-                'jqueryui/js/jquery-ui-1.9.1.custom': {
+                /* ------------------------------
+                   jqueryui
+                   ------------------------------ */ 
+                'jqueryui_js': {
                     deps: ['require'],
                     init: function(require) {
-                        loadCss(require.toUrl("../css/redmond/jquery-ui-1.9.1.custom.css")); 
+                        //loadCss(require.toUrl("../css/redmond/jquery-ui-1.10.1.custom.css")); 
+                        loadCss(require.toUrl("../test/libs/jquery-ui-"+jqueryui_ver+".custom/css/redmond/jquery-ui-"+jqueryui_ver+".custom.css")); 
                     }                
                 },  
                 'editable-form/editable-form-jqueryui': [
                     'editable-form/editable-form', 
-                    'jqueryui/js/jquery-ui-1.9.1.custom'
+                    'jqueryui_js'
                 ],            
                 'containers/editable-tooltip': [
                     'containers/editable-inline', 
-                    'jqueryui/js/jquery-ui-1.9.1.custom'
+                    'jqueryui_js'
                 ],                      
                 'inputs/dateui/dateui': ['inputs/abstract'],
                 'inputs/dateui/dateuifield': ['inputs/dateui/dateui'],
 
-                /*
-                 plain
-                */
+
+                /* ------------------------------
+                   plain
+                   ------------------------------ */                 
                 'containers/editable-poshytip': [ 
                     'containers/editable-inline', 
                     'poshytip/jquery.poshytip'
@@ -145,15 +168,18 @@ define(function () {
                         loadCss(require.toUrl("./tip-yellowsimple/tip-yellowsimple.css")); 
                     }                
                 },
-                'inputs/dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom': {
+                'dateui_js': {
                     deps: ['require'],
                     init: function(require) {
-                        loadCss(require.toUrl("../css/redmond/jquery-ui-1.9.1.custom.css")); 
+                        //loadCss(require.toUrl('../css/redmond/jquery-ui-'+jqueryui_ver+'.custom.css')); 
+                        loadCss(require.toUrl('inputs/dateui/jquery-ui-datepicker/css/redmond/jquery-ui-'+jqueryui_ver+'.custom.css')); 
                     } 
                 },
                                          
 
-                //inputs-ext
+                /* ------------------------------
+                   inputs-ext
+                   ------------------------------ */                  
                 'inputs-ext/address/address': {
                     deps: ['require', 'inputs/abstract'],
                     init: function(require) {
@@ -181,7 +207,7 @@ define(function () {
             } else {    
                 //plain
                 shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
-                shim['inputs/dateui/dateui'].push('inputs/dateui/jquery-ui-datepicker/js/jquery-ui-1.9.1.custom');
+                shim['inputs/dateui/dateui'].push('dateui_js');
                 shim['element/editable-element'].deps.push('containers/editable-poshytip');        
             }            
             
@@ -192,13 +218,7 @@ define(function () {
             
             return {
                 baseUrl: baseUrl,
-                paths: {
-//                    "bootstrap": "../test/libs/bootstrap221", 
-                    "bootstrap": "../test/libs/bootstrap222", 
-                    "jqueryui": "../test/libs/jquery-ui-1.9.1.custom", 
-                    "poshytip": "../test/libs/poshytip",
-                    "test": "../test" 
-                },
+                paths: paths,
                 shim: shim
             };  
         },

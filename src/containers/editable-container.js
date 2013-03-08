@@ -97,7 +97,7 @@ Applied as jQuery method.
 
         /* returns container object */
         container: function() {
-            return this.$element.data(this.containerName); 
+            return this.$element.data(this.containerDataName || this.containerName); 
         },
 
         call: function() {
