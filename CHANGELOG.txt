@@ -2,6 +2,11 @@ X-editable changelog
 =============================
 
 
+Version 1.4.4 wip
+----------------------------
+[bug] editable-poshytip on inline mode tries to write in $.Poshytip (vitalets)
+
+
 Version 1.4.3 Mar 8, 2013
 ----------------------------
 [bug #32] hotfix for jQuery UI 1.9+ (vitalets)
