@@ -123,6 +123,19 @@ $(function(){
             $(this).html(html); 
         }         
     });              
+
+    $('#last_seen').editable({
+        url: '/post',
+        type: 'datetime',
+        placement: 'right',
+        validate: function(v) {
+           if(v && v.getDate() == 10) return 'Day cant be 10!';
+        },
+        datetimepicker: {
+           todayBtn: 'linked',
+           weekStart: 1
+        }        
+    });
          
    $('#user .editable').on('hidden', function(e, reason){
         if(reason === 'save' || reason === 'nochange') {
