@@ -78,20 +78,26 @@ $(function(){
         },
         
         value2html: function(value, element) {
-            var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
+            //formatDate works with UTCDate!
+            var text = value ? this.dpg.formatDate(this.toUTC(value), this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
             DateTime.superclass.value2html(text, element); 
         },
 
         html2value: function(html) {
-            return html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : null;
+            //parseDate return utc date!
+            var value = html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : null; 
+            return value ? this.fromUTC(value) : null;
         },   
         
         value2str: function(value) {
-            return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : '';
+            //formatDate works with UTCDate!
+            return value ? this.dpg.formatDate(this.toUTC(value), this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : '';
        }, 
        
        str2value: function(str) {
-           return str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : null;
+           //parseDate return utc date!
+           var value = str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : null;
+           return value ? this.fromUTC(value) : null;
        }, 
        
        value2submit: function(value) {
@@ -99,11 +105,15 @@ $(function(){
        },                    
 
        value2input: function(value) {
-           this.$input.datetimepicker('update', value);
+           if(value) {
+             this.$input.data('datetimepicker').setDate(value);
+           }
        },
         
        input2value: function() { 
-           return this.$input.data('datetimepicker').date;
+           //date may be cleared, in that case getDate() triggers error
+           var dt = this.$input.data('datetimepicker');
+           return dt.date ? dt.getDate() : null;
        },       
        
        activate: function() {
@@ -115,24 +125,22 @@ $(function(){
        },
        
        autosubmit: function() {
-           this.$input.on('mouseup', '.day', function(e){
-               if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
-                 return;
-               }
+           this.$input.on('mouseup', '.minute', function(e){
                var $form = $(this).closest('form');
                setTimeout(function() {
                    $form.submit();
                }, 200);
            });
-           //changedate is not suitable as it triggered when showing datetimepicker. see #149
-           /*
-           this.$input.on('changeDate', function(e){
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
-           */
+       },
+       
+       //convert date from local to utc
+       toUTC: function(value) {
+         return value ? new Date(value.valueOf() - value.getTimezoneOffset() * 60000) : value;  
+       },
+              
+       //convert date from utc to local
+       fromUTC: function(value) {
+         return value ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000) : value;  
        }
 
     });
