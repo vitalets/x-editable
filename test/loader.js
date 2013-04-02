@@ -18,7 +18,8 @@ define(function () {
             var jqueryui_ver = '1.10.1',
                 paths = {
 //                    "bootstrap": "../test/libs/bootstrap221", 
-                    "bootstrap": "../test/libs/bootstrap222", 
+//                    "bootstrap": "../test/libs/bootstrap222", 
+                    "bootstrap": "../test/libs/bootstrap231", 
                     
                   //  "jqueryui": "../test/libs/jquery-ui-"+jqueryui_ver+".custom", 
                     "jqueryui_js": "../test/libs/jquery-ui-"+jqueryui_ver+".custom/js/jquery-ui-"+jqueryui_ver+".custom", 
