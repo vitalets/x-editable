@@ -90,6 +90,24 @@
             "fors": {},
             "namespaces": {}
         },
+        "..\\lib\\src\\inputs\\datetime\\datetime.js": {
+            "name": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "modules": {},
+            "classes": {
+                "datetime": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "..\\lib\\src\\inputs\\datetime\\datetimefield.js": {
+            "name": "..\\lib\\src\\inputs\\datetime\\datetimefield.js",
+            "modules": {},
+            "classes": {
+                "datetimefield": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "..\\lib\\src\\inputs\\dateui\\dateui.js": {
             "name": "..\\lib\\src\\inputs\\dateui\\dateui.js",
             "modules": {},
@@ -299,6 +317,37 @@
             "description": "Bootstrap datefield input - modification for inline mode.\nShows normal <input type=\"text\"> and binds popup datepicker.  \nAutomatically shown in inline mode.",
             "extends": "date",
             "since": "1.4.0"
+        },
+        "datetime": {
+            "name": "datetime",
+            "shortname": "datetime",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 1,
+            "description": "Bootstrap-datetimepicker.  \nBased on [smalot bootstrap-datetimepicker plugin](https://github.com/smalot/bootstrap-datetimepicker). \nBefore usage you should manually include dependent js and css:\n\n    <link href=\"css/bootstrap-datetimepicker.css\" rel=\"stylesheet\" type=\"text/css\"></link> \n    <script src=\"js/bootstrap-datetimepicker.js\"></script>\n \nFor **i18n** you should include js file from here: https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales\nand set `language` option.",
+            "extends": "abstractinput",
+            "final": 1,
+            "since": "1.4.4",
+            "example": [
+                "\n<a href=\"#\" id=\"last_seen\" data-type=\"datetime\" data-pk=\"1\" data-url=\"/post\" title=\"Select date & time\">15/03/2013 12:45</a>\n<script>\n$(function(){\n    $('#last_seen').editable({\n        format: 'yyyy-mm-dd hh:ii',    \n        viewformat: 'dd/mm/yyyy hh:ii',    \n        datetimepicker: {\n                weekStart: 1\n           }\n        }\n    });\n});\n</script>"
+            ]
+        },
+        "datetimefield": {
+            "name": "datetimefield",
+            "shortname": "datetimefield",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\lib\\src\\inputs\\datetime\\datetimefield.js",
+            "line": 1,
+            "description": "Bootstrap datetimefield input - datetime input for inline mode.\nShows normal <input type=\"text\"> and binds popup datetimepicker.  \nAutomatically shown in inline mode.",
+            "extends": "datetime"
         },
         "dateui": {
             "name": "dateui",
@@ -1600,6 +1649,77 @@
             "name": "inputclass",
             "default": "'input-small'",
             "class": "datefield"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 159,
+            "itemtype": "property",
+            "name": "tpl",
+            "default": "<div></div>",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 164,
+            "itemtype": "property",
+            "name": "inputclass",
+            "default": "null",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 169,
+            "description": "Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>\nPossible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>",
+            "itemtype": "property",
+            "name": "format",
+            "type": "string",
+            "default": "yyyy-mm-dd hh:ii",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 179,
+            "description": "Format used for displaying date. Also applied when converting date from element's text on init.   \nIf not specified equals to <code>format</code>",
+            "itemtype": "property",
+            "name": "viewformat",
+            "type": "string",
+            "default": "null",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 188,
+            "description": "Configuration of datetimepicker.\nFull list of options: https://github.com/smalot/bootstrap-datetimepicker",
+            "itemtype": "property",
+            "name": "datetimepicker",
+            "type": "object",
+            "default": "{ }",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetime.js",
+            "line": 200,
+            "description": "Text shown as clear date button. \nIf <code>false</code> clear button will not be rendered.",
+            "itemtype": "property",
+            "name": "clear",
+            "type": "boolean|string",
+            "default": "'x clear'",
+            "class": "datetime"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetimefield.js",
+            "line": 57,
+            "itemtype": "property",
+            "name": "tpl",
+            "class": "datetimefield"
+        },
+        {
+            "file": "..\\lib\\src\\inputs\\datetime\\datetimefield.js",
+            "line": 61,
+            "itemtype": "property",
+            "name": "inputclass",
+            "default": "'input-medium'",
+            "class": "datetimefield"
         },
         {
             "file": "..\\lib\\src\\inputs\\dateui\\dateui.js",

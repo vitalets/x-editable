@@ -58,6 +58,18 @@ $(function(){
         }
     });      
     
+    $('#last_seen').editable({
+        format: 'yyyy-mm-dd hh:ii',    
+        viewformat: 'dd/mm/yyyy hh:ii',
+        validate: function(v) {
+           if(v && v.getDate() == 10) return 'Day cant be 10!';
+        },
+        datetimepicker: {
+           todayBtn: 'linked',
+           weekStart: 1
+        }        
+    });            
+    
     $('#comments').editable({
         showbuttons: true
     }); 

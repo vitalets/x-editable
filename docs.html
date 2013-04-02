@@ -109,6 +109,8 @@
                          
                           <li><a href="#date">date</a></li>
                          
+                          <li><a href="#datetime">datetime</a></li>
+                         
                           <li><a href="#dateui">dateui</a></li>
                          
                           <li><a href="#combodate">combodate</a></li>
@@ -984,6 +986,8 @@ See <a href="#newrecord">creating new records</a> for details.
             
             <li>date</li>
             
+            <li>datetime <sup><span class="label label-success">new</span></sup></li>
+            
             <li>dateui</li>
             
             <li>combodate</li>
@@ -1399,6 +1403,125 @@ $(function(){
         format: &#x27;yyyy-mm-dd&#x27;,    
         viewformat: &#x27;dd/mm/yyyy&#x27;,    
         datepicker: {
+                weekStart: 1
+           }
+        }
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
+         <section id="datetime">
+            <h2>datetime <sup><span class="label label-success">new</span></sup></h2>
+            <p><p>Bootstrap-datetimepicker.<br>Based on <a href="https://github.com/smalot/bootstrap-datetimepicker">smalot bootstrap-datetimepicker plugin</a>. 
+Before usage you should manually include dependent js and css:
+
+</p>
+<pre><code>&lt;link href=&quot;css/bootstrap-datetimepicker.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt; 
+&lt;script src=&quot;js/bootstrap-datetimepicker.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>For <strong>i18n</strong> you should include js file from here: <a href="https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales">https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales</a>
+and set <code>language</code> option.</p>
+
+               <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.4</span></div>
+            </p>
+            <ul class="nav nav-tabs" id="datetime-tabs">
+    <li class="active"><a href="#datetime-options" data-toggle="tab">Options</a></li>
+    <li><a href="#datetime-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="datetime-options">
+      <p>
+Options can be defined via javascript <code>$().editable({...})</code> or via <code>data-*</code> html attributes.<br>
+ 
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>format </td>
+            <td>string</td>
+            <td>yyyy-mm-dd hh:ii</td>
+            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>datetimepicker </td>
+            <td>object</td>
+            <td>{ }</td>
+            <td><p>Configuration of datetimepicker.
+Full list of options: <a href="https://github.com/smalot/bootstrap-datetimepicker">https://github.com/smalot/bootstrap-datetimepicker</a></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>clear </td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
+
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="datetime-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;last_seen&quot; data-type=&quot;datetime&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; title=&quot;Select date &amp; time&quot;&gt;15/03/2013 12:45&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#last_seen&#x27;).editable({
+        format: &#x27;yyyy-mm-dd hh:ii&#x27;,    
+        viewformat: &#x27;dd/mm/yyyy hh:ii&#x27;,    
+        datetimepicker: {
                 weekStart: 1
            }
         }

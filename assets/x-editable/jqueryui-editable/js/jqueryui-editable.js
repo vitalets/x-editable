@@ -1,4 +1,4 @@
-/*! X-editable - v1.4.3 
+/*! X-editable - v1.4.4 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
@@ -761,6 +761,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                    type = 'combodate';
                } 
            }
+           
+           //`datetime` should be datetimefield in 'inline' mode
+           if(type === 'datetime' && options.mode === 'inline') {
+             type = 'datetimefield';  
+           }           
 
            //change wysihtml5 to textarea for jquery UI and plain versions
            if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {

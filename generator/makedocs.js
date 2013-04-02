@@ -117,6 +117,7 @@ function loadContext() {
                         'textarea', 
                         'select', 
                         'date', 
+                        'datetime',
                         'dateui', 
                         'combodate', 
                         'html5types', 

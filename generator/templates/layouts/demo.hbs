@@ -138,7 +138,16 @@
                         <td>Setup event</td>
                         <td><a href="#" id="event" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1"  data-original-title="Setup event date and time"></a></td>
                         <td><span class="muted">Datetime field (combodate)</span></td>
-                    </tr>                     
+                    </tr> 
+                    
+                    {{#if_eq page "demo"}}
+                    <tr>         
+                        <td>Last seen <sup><span class="label label-success">new</span></sup></td>
+                        <td><a href="#" id="last_seen" data-type="datetime" data-pk="1" data-url="/post" data-placement="right" title="Set date & time">15/03/2013 12:45</a></td>
+                        <td><span class="muted">Bootstrap datetime</span></td>
+                    </tr>                       
+                    {{/if_eq}}                     
+                                        
                     <tr>         
                         <td>Comments</td>
                         <td><a href="#" id="comments" data-type="textarea" data-pk="1" data-placeholder="Your comments here..." data-original-title="Enter comments">awesome<br>user!</a></td>
@@ -147,9 +156,9 @@
                     
                     {{#if_eq page "demo"}}
                     <tr>         
-                        <td>Type State <sup><span class="label label-success">new</span></sup></td>
+                        <td>Type State</td>
                         <td><a href="#" id="state" data-type="typeahead" data-pk="1" data-placement="right" data-original-title="Start typing State.."></a></td>
-                        <td><span class="muted">Typeahead (bootstrap only)</span></td>
+                        <td><span class="muted">Bootstrap typeahead</span></td>
                     </tr>                       
                     {{/if_eq}}                     
                                                         
@@ -160,13 +169,13 @@
                     </tr>
 
                     <tr>         
-                        <td>Tags <sup><span class="label label-success">new</span></sup></td>
+                        <td>Tags</td>
                         <td><a href="#" id="tags" data-type="select2" data-pk="1" data-original-title="Enter tags">html, javascript</a></td>
                         <td><span class="muted">Select2 (tags mode)</span></td>
                     </tr>                    
 
                     <tr>         
-                        <td>Country <sup><span class="label label-success">new</span></sup></td>
+                        <td>Country</td>
                         <td><a href="#" id="country" data-type="select2" data-pk="1" data-value="BS" data-original-title="Select country"></a></td>
                         <td><span class="muted">Select2 (dropdown mode)</span></td>
                     </tr>  
