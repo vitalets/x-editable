@@ -34,10 +34,10 @@ Automatically shown in inline mode.
             }, this));
             
         },   
-        
+      
        value2input: function(value) {
-           this.$input.val(value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '');
-           this.$tpl.datepicker('update');
+           this.$input.val(this.value2html(value));
+           this.$tpl.datetimepicker('update');
        },
         
        input2value: function() { 
@@ -62,7 +62,7 @@ Automatically shown in inline mode.
         @property inputclass 
         @default 'input-small'
         **/         
-        inputclass: 'input-small',
+        inputclass: 'input-medium',
         
         /* datetimepicker config */
         datetimepicker:{

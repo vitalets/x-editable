@@ -80,7 +80,11 @@ $(function(){
         value2html: function(value, element) {
             //formatDate works with UTCDate!
             var text = value ? this.dpg.formatDate(this.toUTC(value), this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
-            DateTime.superclass.value2html(text, element); 
+            if(element) {
+                DateTime.superclass.value2html(text, element);
+            } else {
+                return text;
+            } 
         },
 
         html2value: function(html) {
