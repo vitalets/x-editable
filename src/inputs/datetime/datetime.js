@@ -129,7 +129,7 @@ $(function(){
        activate: function() {
        },
        
-       clear:  function() {
+       clear: function() {
           this.$input.data('datetimepicker').date = null;
           this.$input.find('.active').removeClass('active');
           if(!this.options.showbuttons) {

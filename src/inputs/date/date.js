@@ -109,7 +109,7 @@ $(function(){
           this.$input.data('datepicker').date = null;
           this.$input.find('.active').removeClass('active');
           if(!this.options.showbuttons) {
-             this.$input.closest('form').submit(); 
+              this.$input.closest('form').submit(); 
           }
        },
        

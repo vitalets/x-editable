@@ -152,7 +152,8 @@ $(function () {
         var d = '15.05.1984',
             e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date-clear.php">'+d+'</a>').appendTo(fx).editable({
                 format: f,
-                clear: 'abc'
+                clear: 'abc',
+                showbuttons: true
             });
                        
           $.mockjax({
@@ -177,6 +178,7 @@ $(function () {
         //click clear
         clear.click();
         ok(!p.find('td.day.active').length, 'no active day');
+        ok(p.find('.datepicker').is(':visible'), 'datepicker still visible');
 
         p.find('form').submit();
     

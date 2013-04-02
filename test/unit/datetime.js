@@ -166,7 +166,8 @@ $(function () {
         var d = '15.05.1984 16:40',
             e = $('<a href="#" data-type="datetime" data-pk="1" data-url="post-datetime-clear.php">'+d+'</a>').appendTo(fx).editable({
                 format: f,
-                clear: 'abc'
+                clear: 'abc',
+                showbuttons: true
             });
                        
           $.mockjax({
@@ -191,6 +192,7 @@ $(function () {
         //click clear
         clear.click();
         ok(!p.find('td.day.active').length, 'no active day');
+        ok(p.find('.datetimepicker').is(':visible'), 'datetimepicker still visible');
 
         p.find('form').submit();
     
