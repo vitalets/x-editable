@@ -64,6 +64,8 @@ $(function(){
                value = str.split(reg);
            } else if($.isArray(str)) {
                value = str; 
+           } else {
+               value = [str];
            }
            return value;
         },       
