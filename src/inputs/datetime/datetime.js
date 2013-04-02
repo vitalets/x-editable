@@ -1,6 +1,11 @@
 /**
 Bootstrap-datetimepicker.  
-Description and examples: https://github.com/smalot/bootstrap-datetimepicker.  
+Based on [smalot bootstrap-datetimepicker plugin](https://github.com/smalot/bootstrap-datetimepicker). 
+Before usage you should manually include dependent js and css:
+
+    <link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
+    <script src="js/bootstrap-datetimepicker.js"></script>
+ 
 For **i18n** you should include js file from here: https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales
 and set `language` option.  
 
@@ -13,8 +18,8 @@ and set `language` option.
 <script>
 $(function(){
     $('#last_seen').editable({
-        format: 'yyyy-mm-dd hh:ii:ss',    
-        viewformat: 'dd/mm/yyyy hh:ii:ss',    
+        format: 'yyyy-mm-dd hh:ii',    
+        viewformat: 'dd/mm/yyyy hh:ii',    
         datetimepicker: {
                 weekStart: 1
            }
@@ -163,7 +168,7 @@ $(function(){
         inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
+        Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>  
         
         @property format 
         @type string
@@ -186,18 +191,9 @@ $(function(){
         
         @property datetimepicker 
         @type object
-        @default {
-            weekStart: 0,
-            startView: 0,
-            minView: 0,
-            autoclose: false
-        }
+        @default { }
         **/
         datetimepicker:{
-            weekStart: 0,
-            startView: 2, // month
-            maxView: 4, // decade
-            minView: 0,
             todayHighlight: false,
             autoclose: false
         },

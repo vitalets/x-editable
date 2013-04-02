@@ -66,10 +66,6 @@ Automatically shown in inline mode.
         
         /* datetimepicker config */
         datetimepicker:{
-            weekStart: 0,
-            startView: 2, // month
-            maxView: 4, // decade
-            minView: 0,
             todayHighlight: false,
             autoclose: true
         }
