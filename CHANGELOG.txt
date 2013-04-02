@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.4 wip
 ----------------------------
+[enh #188] added bootstrap datetime (adeg, vitalets)
 [bug] editable-poshytip on inline mode tries to write in $.Poshytip (vitalets)
 
 
