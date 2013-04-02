@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.4 wip
 ----------------------------
+[bug #166] clear button forinput type = number (vitalets)
 [bug] checklist don't show checked for single value (vitalets)
 [enh #188] added bootstrap datetime (adeg, vitalets)
 [bug] editable-poshytip on inline mode tries to write in $.Poshytip (vitalets)

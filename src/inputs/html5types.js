@@ -123,7 +123,21 @@ Number
             this.setAttr('min');
             this.setAttr('max');
             this.setAttr('step');
-        }
+        },
+        postrender: function() {
+            if(this.$clear) {
+                //can position clear button only here, when form is shown and height can be calculated
+                var h = this.$input.outerHeight() || 20,
+                    delta = (h - this.$clear.height()) / 2;
+                
+                //workaround for plain-popup  
+                if(delta < 3) {
+                   delta = 3; 
+                }
+                //add 12px to offset right for up/down arrows    
+                this.$clear.css({bottom: delta, right: delta + 12});
+            } 
+        }        
     });     
     NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
         tpl: '<input type="number">',
