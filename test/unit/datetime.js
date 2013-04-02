@@ -162,7 +162,7 @@ $(function () {
         ok(!p.is(':visible'), 'popover closed');      
       });
       
-    asyncTest("clear button", function () {
+    asyncTest("clear button (showbuttons: true)", function () {
         var d = '15.05.1984 16:40',
             e = $('<a href="#" data-type="datetime" data-pk="1" data-url="post-datetime-clear.php">'+d+'</a>').appendTo(fx).editable({
                 format: f,
@@ -210,4 +210,49 @@ $(function () {
         
      });        
 
+     
+    asyncTest("clear button (showbuttons: false)", function () {
+        var d = '15.05.1984 16:40',
+            e = $('<a href="#" data-type="datetime" data-pk="1" data-url="post-datetime-clear1.php">'+d+'</a>').appendTo(fx).editable({
+                format: f,
+                clear: 'abc'
+            });
+                       
+          $.mockjax({
+              url: 'post-datetime-clear1.php',
+              response: function(settings) {
+                  equal(settings.data.value, '', 'submitted value correct');            
+              }
+          });
+       
+        equal(frmt(e.data('editable').value, 'dd.mm.yyyy hh:ii'), d, 'value correct');
+            
+        e.click();
+        var p = tip(e);
+        ok(p.find('.datetimepicker').is(':visible'), 'datetimepicker exists');
+        
+        equal(frmt(e.data('editable').value, f), d, 'day set correct');
+        equal(p.find('td.day.active').text(), 15, 'day shown correct');
+
+        var clear = p.find('.editable-clear a');
+        equal(clear.text(), 'abc', 'clear link shown');
+
+        //click clear
+        clear.click();
+    
+        setTimeout(function() {          
+           ok(!p.is(':visible'), 'popover closed');
+           equal(e.data('editable').value, null, 'null saved to value');
+           equal(e.text(), e.data('editable').options.emptytext, 'empty text shown');
+           
+           //reopen popover
+           e.click();
+           p = tip(e);
+           ok(p.find('.datetimepicker').is(':visible'), 'datetimepicker exists');
+            
+           e.remove();    
+           start();  
+        }, timeout); 
+        
+     });             
 });
