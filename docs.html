@@ -193,11 +193,14 @@ Open your page and click on element. Enter new value and submit form. It will se
     pk:    1            //primary key (record id)
     value: &#x27;superuser!&#x27; //new value
 }</pre>
+<strong>REMOTE changes:</strong><br>
 This library has no limitation to server-side part: you can write it on any language you prefer. The main is response.<br>
 If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
-If <strong>status != 200</strong> form remains open and <i>responseText</i> is shown as error message.<br>
+If <strong>status != 200</strong> form stays open and <i>responseText</i> is shown as error message.<br>
 Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
 For more complex iteraction with server you may use <code>success</code> callback option (e.g. to process json response).<br><br>
+<strong>LOCAL changes:</strong><br>
+To keep changes local you should not specify <code>url</code> or <code>pk</code> options. In that case value will not be sent to server, you can process it in <code>success</code> callback. 
 </li>
 <!--
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
