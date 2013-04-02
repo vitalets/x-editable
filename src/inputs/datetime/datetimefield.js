@@ -1,5 +1,5 @@
 /**
-Bootstrap datetimefield input - modification for inline mode.
+Bootstrap datetimefield input - datetime input for inline mode.
 Shows normal <input type="text"> and binds popup datetimepicker.  
 Automatically shown in inline mode.
 
@@ -60,7 +60,7 @@ Automatically shown in inline mode.
         tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
         /**
         @property inputclass 
-        @default 'input-small'
+        @default 'input-medium'
         **/         
         inputclass: 'input-medium',
         

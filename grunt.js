@@ -16,13 +16,15 @@ function getFiles() {
                 inputs+'date/datefield.js', 
                 inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
                 inputs+'datetime/datetime.js', 
-                inputs+'datetime/datetimefield.js', 
-                inputs+'datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+                inputs+'datetime/datetimefield.js',
+                //don't build datetime lib, should be included manually 
+                //inputs+'datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
                 inputs+'typeahead.js'
                 ], 
             css: [
-                inputs+'date/bootstrap-datepicker/css/datepicker.css',
-                inputs+'datetime/bootstrap-datetimepicker/css/datetimepicker.css'
+                inputs+'date/bootstrap-datepicker/css/datepicker.css'
+               //don't build datetime lib, should be included manually
+               //inputs+'datetime/bootstrap-datetimepicker/css/datetimepicker.css'
                 ]
         },  
         jqueryui: {

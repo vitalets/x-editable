@@ -7,8 +7,9 @@ and set `language` option.
 @class datetime
 @extends abstractinput
 @final
+@since 1.4.4
 @example
-<a href="#" id="last_seen" data-type="datetime" data-pk="1" data-url="/post" data-original-title="Select date & time">15/03/2013 12:45</a>
+<a href="#" id="last_seen" data-type="datetime" data-pk="1" data-url="/post" title="Select date & time">15/03/2013 12:45</a>
 <script>
 $(function(){
     $('#last_seen').editable({
