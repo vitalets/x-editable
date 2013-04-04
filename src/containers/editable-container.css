@@ -1,6 +1,3 @@
-.editable-container {
-    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
-}  
 
 .editable-container.popover {
 /*   width: 300px;*/  /* debug */

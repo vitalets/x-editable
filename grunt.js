@@ -41,6 +41,12 @@ function getFiles() {
                inputs+'dateui/dateui.js',
                inputs+'dateui/dateuifield.js'
             ],            
+            css: [containers+'editable-poshytip.css']
+        },  
+        plain: {
+            form: [],
+            container: [],
+            inputs: [],            
             css: []
         }      
     };
