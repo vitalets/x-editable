@@ -56,7 +56,6 @@ Applied as jQuery method.
                                            '.modal-backdrop', 
                                            '.bootstrap-wysihtml5-insert-image-modal', 
                                            '.bootstrap-wysihtml5-insert-link-modal'
-                                         //  '.select2-drop'
                                            ];
                     
                     //if click inside one of exclude classes --> no nothing
@@ -64,6 +63,13 @@ Applied as jQuery method.
                          if($target.is(exclude_classes[i]) || $target.parents(exclude_classes[i]).length) {
                              return;
                          }
+                    }
+                    
+                    //for some reason FF 20 generates extra event (click) in select2 widget with e.target = document
+                    //we need to filter it via construction below. See https://github.com/vitalets/x-editable/issues/199
+                    //Possibly related to http://stackoverflow.com/questions/10119793/why-does-firefox-react-differently-from-webkit-and-ie-to-click-event-on-selec
+                    if($target.is(document)) {
+                       return; 
                     }
                       
                     //close all open containers (except one - target)
