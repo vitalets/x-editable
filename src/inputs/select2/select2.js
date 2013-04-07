@@ -6,6 +6,10 @@ You should manually include select2 distributive:
     <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
     <script src="select2/select2.js"></script>  
     
+For make it **Bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
+
+    <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>    
+    
 **Note:** currently `ajax` source for select2 is not supported, as it's not possible to load it in closed select2 state.  
 The solution is to load source manually and assign statically.    
     
