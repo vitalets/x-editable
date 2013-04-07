@@ -137,6 +137,7 @@ define(function () {
                     'inputs/abstract'], 
                     init: function(require) {
                         loadCss(require.toUrl("./lib/select2.css")); 
+                        //loadCss(require.toUrl("./lib/select2-bootstrap.css")); 
                     }
                 },                
                 
