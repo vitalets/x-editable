@@ -55,7 +55,9 @@ Applied as jQuery method.
                                            '.ui-datepicker-header', 
                                            '.modal-backdrop', 
                                            '.bootstrap-wysihtml5-insert-image-modal', 
-                                           '.bootstrap-wysihtml5-insert-link-modal'];
+                                           '.bootstrap-wysihtml5-insert-link-modal'
+                                         //  '.select2-drop'
+                                           ];
                     
                     //if click inside one of exclude classes --> no nothing
                     for(i=0; i<exclude_classes.length; i++) {
