@@ -15,9 +15,15 @@ function getFiles() {
                 inputs+'date/date.js', 
                 inputs+'date/datefield.js', 
                 inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                inputs+'datetime/datetime.js', 
+                inputs+'datetime/datetimefield.js', 
+                inputs+'datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
                 inputs+'typeahead.js'
                 ], 
-            css: [inputs+'date/bootstrap-datepicker/css/datepicker.css']
+            css: [
+                inputs+'date/bootstrap-datepicker/css/datepicker.css',
+                inputs+'datetime/bootstrap-datetimepicker/css/datetimepicker.css'
+                ]
         },  
         jqueryui: {
             form: [forms+'editable-form-jqueryui.js'],
@@ -165,6 +171,7 @@ module.exports = function(grunt) {
               'src/inputs/*.js', 
               'src/inputs/date/*.js',
               'src/inputs/dateui/*.js',
+              'src/inputs/datetime/*.js',
               'src/inputs/combodate/*.js',
               'src/inputs/select2/*.js',
               

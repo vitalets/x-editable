@@ -104,6 +104,15 @@ define(function () {
                         loadCss(require.toUrl("./bootstrap-datepicker/css/datepicker.css")); 
                     }
                 },
+                'inputs/datetime/datetime': {
+                    deps: ['require', 
+                    'bootstrap/js/bootstrap',
+                    'inputs/abstract', 
+                    'inputs/datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker'],
+                    init: function(require) {
+                        loadCss(require.toUrl("./bootstrap-datetimepicker/css/datetimepicker.css")); 
+                    }
+                },
 
                 //wysihtml5
 //                'inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min': ['inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min'],
@@ -132,6 +141,9 @@ define(function () {
                 
                 //datefield
                 'inputs/date/datefield': ['inputs/date/date'],
+
+                //datetimefield
+                'inputs/datetime/datetimefield': ['inputs/datetime/datetime'],
 
                 /* ------------------------------
                    jqueryui
@@ -195,6 +207,7 @@ define(function () {
             if(f === 'bootstrap') { 
                 //bootstrap
                 shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
+                shim['editable-form/editable-form'].deps.push('inputs/datetime/datetimefield');
                 shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
                 shim['editable-form/editable-form'].deps.push('inputs/typeahead');
                 shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
