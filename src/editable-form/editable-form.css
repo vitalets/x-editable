@@ -17,8 +17,6 @@
    *display: inline;
 }
 
-
-
 .editable-input {
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
@@ -66,10 +64,18 @@
    color: red;  
 }
 
+/* ---- For specific types ---- */
+
 .editableform .editable-date {
     padding: 0; 
     margin: 0;
     float: left;
+}
+
+/* move datepicker icon to center of add-on button. See https://github.com/vitalets/x-editable/issues/183 */
+.editable-inline .add-on .icon-th {
+   margin-top: 3px;
+   margin-left: 1px; 
 }
 
 
