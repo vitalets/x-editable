@@ -8,7 +8,7 @@ Version 1.4.4 wip
 [enh #176] update to bootstrap 2.3.1 (vitalets)
 [bug #171] clear in date & datetime when showbuttons=false (vitalets)
 [bug #166] clear button for input type=number (vitalets)
-[bug] checklist don't show checked for single value (vitalets)
+[bug #65] checklist don't show checked for single value (vitalets)
 [enh #188] added bootstrap datetime (adeg, vitalets)
 [bug] editable-poshytip on inline mode tries to write in $.Poshytip (vitalets)
 
