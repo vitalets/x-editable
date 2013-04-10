@@ -36,7 +36,13 @@ function getFiles() {
                inputs+'dateui/dateuifield.js'
             ],            
             css: []
-        }      
+        },  
+        inline: {
+            form: [],
+            container: [],
+            inputs: [],            
+            css: []
+        }  
     };
 
     //common js files 

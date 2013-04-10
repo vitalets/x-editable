@@ -1,0 +1,3 @@
+.editable-container {
+    max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
+}  
