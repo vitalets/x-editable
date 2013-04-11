@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.4 wip
 ----------------------------
+[enh #202] allow pk=0 (mdeweerd)
 [enh #183] move datepicker icon to center of button (vitalets)
 [enh] upgrade to select2 3.3.2 (vitalets)
 [enh #176] update to bootstrap 2.3.1 (vitalets)
