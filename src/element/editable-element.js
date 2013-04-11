@@ -5,6 +5,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 @uses editableContainer
 **/
 (function ($) {
+    "use strict";
 
     var Editable = function (element, options) {
         this.$element = $(element);

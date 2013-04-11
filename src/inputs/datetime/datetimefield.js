@@ -8,7 +8,8 @@ Automatically shown in inline mode.
 
 **/
 (function ($) {
-
+    "use strict";
+    
     var DateTimeField = function (options) {
         this.init('datetimefield', options, DateTimeField.defaults);
         this.initPicker(options, DateTimeField.defaults);

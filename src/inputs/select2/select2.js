@@ -35,7 +35,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Constructor = function (options) {
         this.init('select2', options, Constructor.defaults);
        

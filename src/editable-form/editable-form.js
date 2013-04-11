@@ -8,7 +8,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 @uses textarea
 **/
 (function ($) {
-
+    "use strict";
+    
     var EditableForm = function (div, options) {
         this.options = $.extend({}, $.fn.editableform.defaults, options);
         this.$div = $(div); //div, containing form. Not form tag. Not editable-element.

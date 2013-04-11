@@ -4,7 +4,8 @@
 * requires jquery ui 1.9.x 
 */
 (function ($) {
-    
+    "use strict";
+
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'tooltip',  //jQuery method, aplying the widget

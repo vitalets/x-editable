@@ -20,7 +20,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Select = function (options) {
         this.init('select', options, Select.defaults);
     };

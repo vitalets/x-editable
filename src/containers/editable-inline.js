@@ -3,6 +3,7 @@
 * ---------------------
 */
 (function ($) {
+    "use strict";
     
     //copy prototype from EditableContainer
     //extend methods

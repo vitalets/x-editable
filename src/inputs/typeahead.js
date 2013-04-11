@@ -30,7 +30,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Constructor = function (options) {
         this.init('typeahead', options, Constructor.defaults);
         

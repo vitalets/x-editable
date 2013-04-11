@@ -2,6 +2,8 @@
 * EditableForm utilites
 */
 (function ($) {
+    "use strict";
+    
     //utils
     $.fn.editableutils = {
         /**

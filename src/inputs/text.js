@@ -16,6 +16,8 @@ $(function(){
 </script>
 **/
 (function ($) {
+    "use strict";
+    
     var Text = function (options) {
         this.init('text', options, Text.defaults);
     };

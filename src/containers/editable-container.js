@@ -8,6 +8,7 @@ Applied as jQuery method.
 @uses editableform
 **/
 (function ($) {
+    "use strict";
 
     var Popup = function (element, options) {
         this.init(element, options);

@@ -21,7 +21,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Checklist = function (options) {
         this.init('checklist', options, Checklist.defaults);
     };

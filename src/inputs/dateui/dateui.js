@@ -23,7 +23,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var DateUI = function (options) {
         this.init('dateui', options, DateUI.defaults);
         this.initPicker(options, DateUI.defaults);

@@ -4,6 +4,7 @@
 * requires bootstrap-popover.js
 */
 (function ($) {
+    "use strict";
 
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {

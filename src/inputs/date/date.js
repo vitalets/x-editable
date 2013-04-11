@@ -24,7 +24,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Date = function (options) {
         this.init('date', options, Date.defaults);
         this.initPicker(options, Date.defaults);

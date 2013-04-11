@@ -6,7 +6,8 @@ To create your own input you can inherit from this class.
 @class abstractinput
 **/
 (function ($) {
-
+    "use strict";
+    
     //types
     $.fn.editabletypes = {};
     

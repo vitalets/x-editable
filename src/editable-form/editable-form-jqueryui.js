@@ -2,6 +2,7 @@
 Editableform based on jQuery UI
 */
 (function ($) {
+    "use strict";
     
     $.extend($.fn.editableform.Constructor.prototype, {
         initButtons: function() {
