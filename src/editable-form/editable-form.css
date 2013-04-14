@@ -113,7 +113,11 @@
    position: absolute;
    opacity: 0.6;
    z-index: 100;
-
+   
+   top: 50%;
+   right: 5px;
+   margin-top: -7px;
+   
 }
 
 .editable-clear-x:hover {

@@ -136,16 +136,16 @@ Number
         },
         postrender: function() {
             if(this.$clear) {
+                //increase right ffset  for up/down arrows
+                this.$clear.css({right: 24});
+                /*
                 //can position clear button only here, when form is shown and height can be calculated
-                var h = this.$input.outerHeight() || 20,
+                var h = this.$input.outerHeight(true) || 20,
                     delta = (h - this.$clear.height()) / 2;
                 
-                //workaround for plain-popup  
-                if(delta < 3) {
-                   delta = 3; 
-                }
                 //add 12px to offset right for up/down arrows    
-                this.$clear.css({bottom: delta, right: delta + 12});
+                this.$clear.css({top: delta, right: delta + 16});
+                */
             } 
         }        
     });     

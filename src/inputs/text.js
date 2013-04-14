@@ -67,18 +67,17 @@ $(function(){
         },
         
         postrender: function() {
+            /*
+            //now `clear` is positioned via css
             if(this.$clear) {
                 //can position clear button only here, when form is shown and height can be calculated
-                var h = this.$input.outerHeight() || 20,
+//                var h = this.$input.outerHeight(true) || 20,
+                var h = this.$clear.parent().height(),
                     delta = (h - this.$clear.height()) / 2;
-                
-                //workaround for plain-popup  
-                if(delta < 3) {
-                   delta = 3; 
-                }
                     
-                this.$clear.css({bottom: delta, right: delta});
-            } 
+                //this.$clear.css({bottom: delta, right: delta});
+            }
+            */ 
         },
         
         //show / hide clear button
