@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.4 wip
 ----------------------------
+[enh] update to bootstrap-datepicker 1.0.2 (vitalets)
 [enh] update to combodate 1.0.3 with yearDescending and roundTime options (vitalets)
 [enh] add 'use strict' directive (vitalets)
 [enh #202] allow pk=0 (mdeweerd)
