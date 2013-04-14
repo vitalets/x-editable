@@ -22,6 +22,7 @@ Applied as jQuery method.
     Popup.prototype = {
         containerName: null, //tbd in child class
         innerCss: null, //tbd in child class
+        containerClass: 'editable-container editable-popup', //css class applied to container element
         init: function(element, options) {
             this.$element = $(element);
             //since 1.4.1 container do not use data-* directly as they already merged into options.
@@ -115,6 +116,7 @@ Applied as jQuery method.
             return this.$element.data(this.containerDataName || this.containerName); 
         },
 
+        /* call native method of underlying container, e.g. this.$element.popover('method') */ 
         call: function() {
             this.$element[this.containerName].apply(this.$element, arguments); 
         },        
@@ -166,7 +168,7 @@ Applied as jQuery method.
             
             //show container itself
             this.innerShow();
-            this.tip().addClass('editable-container');
+            this.tip().addClass(this.containerClass);
 
             /*
             Currently, form is re-rendered on every show. 
