@@ -383,6 +383,7 @@ $(function () {
         e.click();
         var p = tip(e);
         ok(p.is(':visible'), 'container visible');
+        equal(e.text(), 'Empty', 'emptytext shown');
         
         e.editable('destroy');
         
@@ -392,9 +393,12 @@ $(function () {
         ok(!e.hasClass('editable'), 'editable class removed');
         ok(!e.hasClass('editable-click'), 'editable-click class removed');
         
+        equal(e.text(), '', 'emptytext removed');
+        
+        
+        
         e.click();
-        
-        
+                
      });                                 
   
 });            

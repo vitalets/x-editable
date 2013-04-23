@@ -416,6 +416,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
+            this.disable();
+            
             if(this.container) {
                this.container.destroy(); 
             }
@@ -427,8 +429,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             this.$element.off("save.internal");
             
-            this.$element.removeClass('editable');
-            this.$element.removeClass('editable-open');
+            this.$element.removeClass('editable editable-open editable-disabled');
             this.$element.removeData('editable');
         }        
     };
