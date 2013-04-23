@@ -137,7 +137,9 @@ Applied as jQuery method.
                 resize: $.proxy(this.setPosition, this), //this allows to re-position container when form size is changed 
                 rendered: $.proxy(function(){
                     /**        
-                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options).
+                    **Note:** Bootstrap popover has own `shown` event that now cannot be separated from x-editable's one.
+                    The workaround is to check `arguments.length` that is always `2` for x-editable.                     
                     
                     @event shown 
                     @param {Object} event event object
@@ -147,7 +149,10 @@ Applied as jQuery method.
                         editable.input.$input.val('overwriting value of input..');
                     });                     
                     **/                      
-                    this.$element.triggerHandler('shown');
+                    /*
+                     added second param mainly to distinguish bootstrap's shown event. It's a hotfix that will be solved in 1.5 via namespaced events.  
+                    */
+                    this.$element.triggerHandler('shown', this); 
                 }, this) 
             })
             .editableform('render');
@@ -213,11 +218,13 @@ Applied as jQuery method.
             this.innerHide();
             
             /**        
-            Fired when container was hidden. It occurs on both save or cancel.
+            Fired when container was hidden. It occurs on both save or cancel.  
+            **Note:** Bootstrap popover has own `hidden` event that now cannot be separated from x-editable's one.
+            The workaround is to check `arguments.length` that is always `2` for x-editable. 
 
             @event hidden 
             @param {object} event event object
-            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
+            @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|manual</code>
             @example
             $('#username').on('hidden', function(e, reason) {
                 if(reason === 'save' || reason === 'cancel') {
@@ -226,7 +233,7 @@ Applied as jQuery method.
                 } 
             });            
             **/             
-            this.$element.triggerHandler('hidden', reason);   
+            this.$element.triggerHandler('hidden', reason || 'manual');   
         },
         
         /* internal show method. To be overwritten in child classes */

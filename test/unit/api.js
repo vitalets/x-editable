@@ -85,12 +85,16 @@ $(function () {
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('shown', function(event) {
-             var editable = $(this).data('editable');
-             equal(editable.value, val, 'shown triggered, value correct');
+            //distinguish from native bootstrap popover event
+            if(arguments.length != 2) return;
+            var editable = $(this).data('editable');
+            equal(editable.value, val, 'shown triggered, value correct');
         });
         
         e.on('hidden', function(event, reason) {
-             ok((reason === test_reason) || (test_reason === 'manual' && reason === undefined), 'hidden triggered, reason ok'); 
+            //distinguish from native bootstrap popover event
+            if(arguments.length != 2) return;
+            ok((reason === test_reason) || (test_reason === 'manual' && reason === undefined), 'hidden triggered, reason ok'); 
         });            
         
         e.editable({
@@ -104,28 +108,28 @@ $(function () {
              
              test_reason = 'cancel'
              p.find('.editable-cancel').click();  //cancel
-             ok(!p.is(':visible'), 'popover closed');
+             ok(!p.is(':visible'), 'popover closed '+test_reason);
 
              test_reason = 'onblur'            
              e.click();
              p = tip(e);
-             ok(p.is(':visible'), 'popover shown');
+             ok(p.is(':visible'), 'popover shown '+test_reason);
              e.parent().click();
-             ok(!p.is(':visible'), 'popover closed');
+             ok(!p.is(':visible'), 'popover closed '+test_reason);
              
              test_reason = 'nochange'            
              e.click();
              p = tip(e);
-             ok(p.is(':visible'), 'popover shown');
+             ok(p.is(':visible'), 'popover shown '+test_reason);
              p.find('form').submit();  //submit value without changes
-             ok(!p.is(':visible'), 'popover closed');             
+             ok(!p.is(':visible'), 'popover closed '+test_reason);             
              
              test_reason = 'manual'            
              e.click();
              p = tip(e);
-             ok(p.is(':visible'), 'popover shown');
+             ok(p.is(':visible'), 'popover shown '+test_reason);
              e.editable('hide');
-             ok(!p.is(':visible'), 'popover closed');             
+             ok(!p.is(':visible'), 'popover closed '+test_reason);             
              
              e.remove();    
              start();  
@@ -143,6 +147,8 @@ $(function () {
         });
         
         e.on('hidden', function(event, reason) {
+            //distinguish from native bootstrap popover event
+            if(arguments.length != 2) return;            
             equal(reason, 'save', 'hidden triggered, reason ok'); 
         });         
         
