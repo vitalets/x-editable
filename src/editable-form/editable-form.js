@@ -33,7 +33,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.$form = $($.fn.editableform.template); 
         },
         initButtons: function() {
-            this.$form.find('.editable-buttons').append($.fn.editableform.buttons);
+            var $btn = this.$form.find('.editable-buttons');
+            $btn.append($.fn.editableform.buttons);
+            if(this.options.showbuttons === 'bottom') {
+                $btn.addClass('editable-buttons-bottom');
+            }
         },
         /**
         Renders editableform
@@ -505,11 +509,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         ajaxOptions: null,
         /**
-        Whether to show buttons or not.  
+        Where to show buttons: left(true)|bottom|false  
         Form without buttons is auto-submitted.
 
         @property showbuttons 
-        @type boolean
+        @type boolean|string
         @default true
         @since 1.1.1
         **/         

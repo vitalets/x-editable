@@ -17,6 +17,12 @@
    *display: inline;
 }
 
+.editable-buttons.editable-buttons-bottom {
+   display: block; 
+   margin-top: 7px;
+   margin-left: 0;
+}
+
 .editable-input {
     vertical-align: top; 
     display: inline-block; /* should be inline to take effect of parent's white-space: nowrap */
