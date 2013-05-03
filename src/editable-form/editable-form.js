@@ -252,6 +252,29 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
+                var res = typeof this.options.fail === 'function' ? this.options.fail.call(this.options.scope, xhr, newValue) : null;
+
+                //if fail callback returns false --> keep form open and do not activate input
+                if (res === false) {
+                    this.error(false);
+                    this.showForm(false);
+                    return;
+                }
+
+                //if fail callback returns string -->  keep form open, show error and activate input               
+                if (typeof res === 'string') {
+                    this.error(res);
+                    this.showForm();
+                    return;
+                }
+
+                //if fail callback returns object like {newValue: <something>} --> use that value instead of submitted
+                //it is usefull if you want to chnage value in url-function
+                if (res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
+                    this.value = res.newValue;
+                }
+
+                //use the default behavior
                 this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
                 this.showForm();  
             }, this));
@@ -489,6 +512,22 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/          
         success: null,
         /**
+        Fail callback. Called when the call to the server failed.  
+        Useful when you want to display a custom message for an error response.
+        If it returns **string** - the return value will be displayed in the error block
+        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
+        Otherwise newValue simply rendered into element.
+        
+        @property fail 
+        @type function
+        @default null
+        @example
+        fail: function(response, newValue) {
+            return response.responseText || response.statusText || 'Unknown error!'
+        }
+        **/          
+        fail: null,
+        /**
         Additional options for submit ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
         
@@ -532,7 +571,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @default false
         @since 1.2.0
         **/
-        savenochange: false         
+        savenochange: false
     };   
 
     /*
