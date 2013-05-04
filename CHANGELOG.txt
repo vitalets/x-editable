@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.4.4 wip
 ----------------------------
+[enh #219] added `error` callback (joekaiser)
 [enh #198] new value of showbuttons: 'bottom' (vitalets)
 [enh #192] add class editable-popup to have diferent css for popup and inline (vitalets)
 [enh] update to bootstrap-datepicker 1.0.2 (vitalets)

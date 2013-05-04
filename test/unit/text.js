@@ -188,7 +188,37 @@ $(function () {
            start();  
         }, timeout);             
         
-      });      
+      }); 
+      
+      asyncTest("should show custom error if `error` callback returns string", function () {
+        var newText = 'cd<e>;"',
+            e = $('<a href="#" data-pk="1" data-url="error.php" data-name="text1">abc</a>').appendTo(fx).editable({
+             error: function(response, newValue) {
+                 ok(this === e[0], 'scope is ok');
+                 equal(response.status, 500, 'response status ok');
+                 equal(newValue, newText, 'value in success passed correctly');
+                 return 'error';
+             } 
+          }); 
+
+        e.click()
+        var p = tip(e);
+
+        ok(p.find('input[type=text]').length, 'input exists')
+        p.find('input').val(newText);
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           ok(p.is(':visible'), 'popover still shown');  
+           ok(p.find('.editable-error-block').length, 'class "editable-error-block" exists');
+           equal(p.find('.editable-error-block').text(), 'error', 'error msg shown');   
+           p.find('.editable-cancel').click(); 
+           ok(!p.is(':visible'), 'popover was removed');
+           e.remove();    
+           start();  
+        }, timeout);             
+        
+      });             
        
               
      asyncTest("ajaxOptions", function () {

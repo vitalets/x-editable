@@ -257,31 +257,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('save', {newValue: newValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-                var res = typeof this.options.fail === 'function' ? this.options.fail.call(this.options.scope, xhr, newValue) : null;
-
-                //if fail callback returns false --> keep form open and do not activate input
-                if (res === false) {
-                    this.error(false);
-                    this.showForm(false);
-                    return;
+                var msg;
+                if(typeof this.options.error === 'function') {
+                    msg = this.options.error.call(this.options.scope, xhr, newValue);
+                } else {
+                    msg = typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!';
                 }
-
-                //if fail callback returns string -->  keep form open, show error and activate input               
-                if (typeof res === 'string') {
-                    this.error(res);
-                    this.showForm();
-                    return;
-                }
-
-                //if fail callback returns object like {newValue: <something>} --> use that value instead of submitted
-                //it is usefull if you want to chnage value in url-function
-                if (res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
-                    this.value = res.newValue;
-                }
-
-                //use the default behavior
-                this.error(typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!'); 
-                this.showForm();  
+                
+                this.error(msg);
+                this.showForm();
             }, this));
         },
 
@@ -501,7 +485,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         validate: null,
         /**
         Success callback. Called when value successfully sent on server and **response status = 200**.  
-        Useful to work with json response. For example, if your backend response can be <code>{success: true}</code>
+        Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
         or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
         If it returns **string** - means error occured and string is shown as error message.  
         If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
@@ -517,21 +501,24 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/          
         success: null,
         /**
-        Fail callback. Called when the call to the server failed.  
-        Useful when you want to display a custom message for an error response.
-        If it returns **string** - the return value will be displayed in the error block
-        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
-        Otherwise newValue simply rendered into element.
-        
-        @property fail 
+        Error callback. Called when request failed (response status != 200).  
+        Usefull when you want to parse error response and display a custom message.
+        Must return **string** - the message to be displayed in the error block.
+                
+        @property error 
         @type function
         @default null
+        @since 1.4.4
         @example
-        fail: function(response, newValue) {
-            return response.responseText || response.statusText || 'Unknown error!'
+        error: function(response, newValue) {
+            if(response.status === 500) {
+                return 'Service unavailable. Please try later.';
+            } else {
+                return response.responseText;
+            }
         }
         **/          
-        fail: null,
+        error: null,
         /**
         Additional options for submit ajax request.
         List of values: http://api.jquery.com/jQuery.ajax
