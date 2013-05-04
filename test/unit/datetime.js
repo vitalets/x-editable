@@ -216,6 +216,7 @@ $(function () {
     asyncTest("clear button (showbuttons: false)", function () {
         var d = '15.05.1984 16:40',
             e = $('<a href="#" data-type="datetime" data-pk="1" data-url="post-datetime-clear1.php">'+d+'</a>').appendTo(fx).editable({
+                showbuttons: false,
                 format: f,
                 clear: 'abc'
             });

@@ -2,7 +2,7 @@ X-editable changelog
 =============================
 
 
-Version 1.4.4 wip
+Version 1.4.4 May 4, 2013
 ----------------------------
 [enh #219] added `error` callback (joekaiser)
 [enh #198] new value of showbuttons: 'bottom' (vitalets)
