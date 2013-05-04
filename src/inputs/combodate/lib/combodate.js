@@ -1,5 +1,5 @@
 /**
-* Combodate - 1.0.2
+* Combodate - 1.0.3
 * Dropdown date and time picker.
 * Converts text input into dropdowns to pick day, month, year, hour, minute and second.
 * Uses momentjs as datetime library http://momentjs.com.
@@ -106,7 +106,7 @@
                 relTime;
                 
             if(this.options.firstItem === 'name') {
-                //need both to suuport moment ver < 2 and  >= 2
+                //need both to support moment ver < 2 and  >= 2
                 relTime = moment.relativeTime || moment.langData()._relativeTime; 
                 var header = typeof relTime[key] === 'function' ? relTime[key](1, true, key, false) : relTime[key];
                 //take last entry (see momentjs lang files structure) 
@@ -171,13 +171,16 @@
         fill year
         */
         fillYear: function() {
-            var items = this.initItems('y'), name, i, 
+            var items = [], name, i, 
                 longNames = this.options.template.indexOf('YYYY') !== -1;
-
+           
             for(i=this.options.maxYear; i>=this.options.minYear; i--) {
                 name = longNames ? i : (i+'').substring(2);
-                items.push([i, name]);
-            }    
+                items[this.options.yearDescending ? 'push' : 'unshift']([i, name]);
+            }
+            
+            items = this.initItems('y').concat(items);
+            
             return items;              
         },    
         
@@ -299,6 +302,22 @@
                 that = this,
                 values = {};
             
+                //function to find nearest value in select options
+                function getNearest($select, value) {
+                    var delta = {};
+                    $select.children('option').each(function(i, opt){
+                        var optValue = $(opt).attr('value'),
+                        distance;
+
+                        if(optValue === '') return;
+                        distance = Math.abs(optValue - value); 
+                        if(typeof delta.distance === 'undefined' || distance < delta.distance) {
+                            delta = {value: optValue, distance: distance};
+                        } 
+                    }); 
+                    return delta.value;
+                }             
+            
             if(dt.isValid()) {
                  //read values from date object
                  $.each(this.map, function(k, v) {
@@ -318,7 +337,17 @@
                }
                
                $.each(values, function(k, v) {
+                   //call val() for each existing combo, e.g. this.$hour.val()
                    if(that['$'+k]) {
+                       
+                       if(k === 'minute' && that.options.minuteStep > 1 && that.options.roundTime) {
+                          v = getNearest(that['$'+k], v);
+                       }
+                       
+                       if(k === 'second' && that.options.secondStep > 1 && that.options.roundTime) {
+                          v = getNearest(that['$'+k], v);
+                       }                       
+                       
                        that['$'+k].val(v);                       
                    }
                });
@@ -393,10 +422,12 @@
         value: null,                       
         minYear: 1970,
         maxYear: 2015,
+        yearDescending: true,
         minuteStep: 5,
         secondStep: 1,
         firstItem: 'empty', //'name', 'empty', 'none'
-        errorClass: null
+        errorClass: null,
+        roundTime: true //whether to round minutes and seconds if step > 1
     };
 
 }(window.jQuery));

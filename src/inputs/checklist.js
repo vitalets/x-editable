@@ -21,7 +21,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Checklist = function (options) {
         this.init('checklist', options, Checklist.defaults);
     };
@@ -64,6 +65,8 @@ $(function(){
                value = str.split(reg);
            } else if($.isArray(str)) {
                value = str; 
+           } else {
+               value = [str];
            }
            return value;
         },       

@@ -1,3 +1,8 @@
+/*
+Loads all required files.
+Calls loader.js to get x-editable files with dependencies.
+*/
+
 //detect version of jquery from url param, e.g. 'jquery=1.7.2' 
 var jqver = decodeURIComponent((new RegExp('[?|&]' + 'jquery' + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
     jqurl = jqver ? "http://code.jquery.com/jquery-"+jqver+".min.js" : "libs/jquery/jquery-1.9.1.min.js";
@@ -33,6 +38,8 @@ require(["loader", jqurl], function(loader) {
             case 'bootstrap':
               custom = ['test/unit/datefield', 
                         'test/unit/date', 
+                        'test/unit/datetimefield', 
+                        'test/unit/datetime', 
                         'test/unit/wysihtml5',
                         'test/unit/typeahead'
                         ];

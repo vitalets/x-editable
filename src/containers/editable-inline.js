@@ -3,16 +3,18 @@
 * ---------------------
 */
 (function ($) {
+    "use strict";
     
     //copy prototype from EditableContainer
     //extend methods
     $.extend($.fn.editableContainer.Inline.prototype, $.fn.editableContainer.Popup.prototype, {
         containerName: 'editableform',
         innerCss: '.editable-inline',
+        containerClass: 'editable-container editable-inline', //css class applied to container element
                  
         initContainer: function(){
             //container is <span> element
-            this.$tip = $('<span></span>').addClass('editable-inline');
+            this.$tip = $('<span></span>');
             
             //convert anim to miliseconds (int)
             if(!this.options.anim) {

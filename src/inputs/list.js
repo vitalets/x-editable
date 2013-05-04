@@ -5,7 +5,8 @@ List - abstract class for inputs that have source option loaded from js array or
 @extends abstractinput
 **/
 (function ($) {
-
+    "use strict";
+    
     var List = function (options) {
        
     };

@@ -39,7 +39,8 @@ $(function(){
 /*global moment*/
 
 (function ($) {
-
+    "use strict";
+    
     var Constructor = function (options) {
         this.init('combodate', options, Constructor.defaults);
         

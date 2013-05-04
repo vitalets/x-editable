@@ -25,7 +25,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Wysihtml5 = function (options) {
         this.init('wysihtml5', options, Wysihtml5.defaults);
         

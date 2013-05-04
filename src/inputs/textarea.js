@@ -17,7 +17,8 @@ $(function(){
 </script>
 **/
 (function ($) {
-
+    "use strict";
+    
     var Textarea = function (options) {
         this.init('textarea', options, Textarea.defaults);
     };

@@ -50,8 +50,8 @@ $(function () {
         equal(p.find('input').val(), d, 'date set correct');
         
         //open picker
-        p.find('span').click();
-        var picker = p.find('span').parent().data().datepicker.picker;
+        p.find('span.add-on').click();
+        var picker = p.find('span.add-on').parent().data().datepicker.picker;
         
         ok(picker.is(':visible'), 'picker shown');
         ok(picker.find('td.day.active').is(':visible'), 'active day is visible');

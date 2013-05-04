@@ -39,6 +39,8 @@ $(function(){
 Password
 */
 (function ($) {
+    "use strict";
+    
     var Password = function (options) {
         this.init('password', options, Password.defaults);
     };
@@ -68,6 +70,8 @@ Password
 Email
 */
 (function ($) {
+    "use strict";
+    
     var Email = function (options) {
         this.init('email', options, Email.defaults);
     };
@@ -83,6 +87,8 @@ Email
 Url
 */
 (function ($) {
+    "use strict";
+    
     var Url = function (options) {
         this.init('url', options, Url.defaults);
     };
@@ -98,6 +104,8 @@ Url
 Tel
 */
 (function ($) {
+    "use strict";
+    
     var Tel = function (options) {
         this.init('tel', options, Tel.defaults);
     };
@@ -113,6 +121,8 @@ Tel
 Number
 */
 (function ($) {
+    "use strict";
+    
     var NumberInput = function (options) {
         this.init('number', options, NumberInput.defaults);
     };
@@ -123,7 +133,21 @@ Number
             this.setAttr('min');
             this.setAttr('max');
             this.setAttr('step');
-        }
+        },
+        postrender: function() {
+            if(this.$clear) {
+                //increase right ffset  for up/down arrows
+                this.$clear.css({right: 24});
+                /*
+                //can position clear button only here, when form is shown and height can be calculated
+                var h = this.$input.outerHeight(true) || 20,
+                    delta = (h - this.$clear.height()) / 2;
+                
+                //add 12px to offset right for up/down arrows    
+                this.$clear.css({top: delta, right: delta + 16});
+                */
+            } 
+        }        
     });     
     NumberInput.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
         tpl: '<input type="number">',
@@ -140,6 +164,8 @@ Number
 Range (inherit from number)
 */
 (function ($) {
+    "use strict";
+    
     var Range = function (options) {
         this.init('range', options, Range.defaults);
     };

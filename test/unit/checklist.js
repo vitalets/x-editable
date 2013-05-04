@@ -61,6 +61,17 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);                              
-    });                  
+    });
+    
+    test("should show checked for single value", function () {
+        var e = $('<a href="#" data-type="checklist" data-value="1"></a>').appendTo('#qunit-fixture').editable({
+             pk: 1,
+             source: groupsArr
+        });
+        
+        e.click();
+        var p = tip(e);
+        equal(p.find('input[type="checkbox"]:checked').length, 1, 'checked count ok');        
+    });
      
 });

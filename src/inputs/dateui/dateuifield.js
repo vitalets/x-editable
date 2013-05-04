@@ -9,7 +9,8 @@ Automatically shown in inline mode.
 @since 1.4.0
 **/
 (function ($) {
-
+    "use strict";
+    
     var DateUIField = function (options) {
         this.init('dateuifield', options, DateUIField.defaults);
         this.initPicker(options, DateUIField.defaults);

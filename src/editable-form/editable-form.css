@@ -17,7 +17,11 @@
    *display: inline;
 }
 
-
+.editable-buttons.editable-buttons-bottom {
+   display: block; 
+   margin-top: 7px;
+   margin-left: 0;
+}
 
 .editable-input {
     vertical-align: top; 
@@ -66,10 +70,18 @@
    color: red;  
 }
 
+/* ---- For specific types ---- */
+
 .editableform .editable-date {
     padding: 0; 
     margin: 0;
     float: left;
+}
+
+/* move datepicker icon to center of add-on button. See https://github.com/vitalets/x-editable/issues/183 */
+.editable-inline .add-on .icon-th {
+   margin-top: 3px;
+   margin-left: 1px; 
 }
 
 
@@ -107,7 +119,11 @@
    position: absolute;
    opacity: 0.6;
    z-index: 100;
-
+   
+   top: 50%;
+   right: 5px;
+   margin-top: -7px;
+   
 }
 
 .editable-clear-x:hover {

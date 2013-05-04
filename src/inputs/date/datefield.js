@@ -9,7 +9,8 @@ Automatically shown in inline mode.
 @since 1.4.0
 **/
 (function ($) {
-
+    "use strict";
+    
     var DateField = function (options) {
         this.init('datefield', options, DateField.defaults);
         this.initPicker(options, DateField.defaults);

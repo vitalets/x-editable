@@ -5,6 +5,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 @uses editableContainer
 **/
 (function ($) {
+    "use strict";
 
     var Editable = function (element, options) {
         this.$element = $(element);
@@ -99,7 +100,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     this.enable(); 
                 }
                /**        
-               Fired when element was initialized by editable method.
+               Fired when element was initialized by `$().editable()` method. 
+               Please note that you should setup `init` handler **before** applying `editable`. 
                               
                @event init 
                @param {Object} event event object
@@ -109,6 +111,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                $('#username').on('init', function(e, editable) {
                    alert('initialized ' + editable.options.name);
                });
+               $('#username').editable();
                **/                  
                 this.$element.triggerHandler('init', this);
             }, this));
@@ -415,6 +418,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @method destroy()
         **/        
         destroy: function() {
+            this.disable();
+            
             if(this.container) {
                this.container.destroy(); 
             }
@@ -426,8 +431,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             
             this.$element.off("save.internal");
             
-            this.$element.removeClass('editable');
-            this.$element.removeClass('editable-open');
+            this.$element.removeClass('editable editable-open editable-disabled');
             this.$element.removeData('editable');
         }        
     };
