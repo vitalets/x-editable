@@ -76,6 +76,8 @@ define(function () {
                 'inputs/abstract': ['editable-form/editable-form-utils'],   
                 'inputs/html5types': ['inputs/text'], 
                 'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min'],
+                //moment 1.7.2
+                //'inputs/combodate/combodate': ['inputs/abstract', 'inputs/combodate/lib/combodate', 'inputs/combodate/lib/moment.min.1.7.2'],
                 'inputs/typeahead': ['inputs/list'],  
 
 
