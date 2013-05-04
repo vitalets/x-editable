@@ -111,6 +111,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                $('#username').on('init', function(e, editable) {
                    alert('initialized ' + editable.options.name);
                });
+               $('#username').editable();
                **/                  
                 this.$element.triggerHandler('init', this);
             }, this));
