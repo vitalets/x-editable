@@ -195,14 +195,14 @@ Open your page and click on element. Enter new value and submit form. It will se
     pk:    1            //primary key (record id)
     value: &#x27;superuser!&#x27; //new value
 }</pre>
-<strong>REMOTE changes:</strong><br>
+<strong>REMOTE updates:</strong><br>
 This library has no limitation to server-side part: you can write it on any language you prefer. The main is response.<br>
 If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
 If <strong>status != 200</strong> form stays open and <i>responseText</i> is shown as error message.<br>
 Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
 For more complex iteraction with server you may use <code>success</code> callback option (e.g. to process json response).<br><br>
-<strong>LOCAL changes:</strong><br>
-To keep changes local you should not specify <code>url</code> or <code>pk</code> options. In that case value will not be sent to server, you can process it in <code>success</code> callback. 
+<strong>LOCAL updates:</strong><br>
+To keep changes locally you should not specify <code>url</code> or <code>pk</code> options. In that case value will not be sent to server, you can process it in <code>success</code> callback. 
 </li>
 <!--
 <li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
@@ -347,6 +347,25 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
         </tr> 
        
         <tr>
+            <td>error <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.4</span></div></td>
+            <td>function</td>
+            <td>null</td>
+            <td><p>Error callback. Called when request failed (response status != 200).<br>Usefull when you want to parse error response and display a custom message.
+Must return <strong>string</strong> - the message to be displayed in the error block.</p>
+
+            
+                <pre class="prettyprint linenums">error: function(response, newValue) {
+    if(response.status === 500) {
+        return &#x27;Service unavailable. Please try later.&#x27;;
+    } else {
+        return response.responseText;
+    }
+}</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>mode <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.0</span></div></td>
             <td>string</td>
             <td>&#x27;popup&#x27;</td>
@@ -462,9 +481,9 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
        
         <tr>
             <td>showbuttons <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.1.1</span></div></td>
-            <td>boolean</td>
+            <td>boolean|string</td>
             <td>true</td>
-            <td><p>Whether to show buttons or not.<br>Form without buttons is auto-submitted.</p>
+            <td><p>Where to show buttons: left(true)|bottom|false<br>Form without buttons is auto-submitted.</p>
 
             
             </td>
@@ -474,7 +493,7 @@ When &#39;auto&#39; data will be sent on server only if pk defined, otherwise ne
             <td>success </td>
             <td>function</td>
             <td>null</td>
-            <td><p>Success callback. Called when value successfully sent on server and <strong>response status = 200</strong>.<br>Useful to work with json response. For example, if your backend response can be <code>{success: true}</code>
+            <td><p>Success callback. Called when value successfully sent on server and <strong>response status = 200</strong>.<br>Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
 or <code>{success: false, msg: &quot;server error&quot;}</code> you can check it inside this callback.<br>If it returns <strong>string</strong> - means error occured and string is shown as error message.<br>If it returns <strong>object like</strong> <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.<br>Otherwise newValue simply rendered into element.</p>
 
             
@@ -610,7 +629,8 @@ $(&#x27;#price&#x27;).editable({
 </ul>
 
 </td>
-            <td>jQuery method to initialize editable element.
+            <td><p>jQuery method to initialize editable element.</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).editable({
     type: &#x27;text&#x27;,
@@ -627,7 +647,8 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Activates input of visible container (e.g. set focus)
+            <td><p>Activates input of visible container (e.g. set focus)</p>
+
             
             </td>
         </tr> 
@@ -638,7 +659,8 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Removes editable feature from element
+            <td><p>Removes editable feature from element</p>
+
             
             </td>
         </tr> 
@@ -649,7 +671,8 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Disables editable
+            <td><p>Disables editable</p>
+
             
             </td>
         </tr> 
@@ -660,7 +683,8 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Enables editable
+            <td><p>Enables editable</p>
+
             
             </td>
         </tr> 
@@ -671,9 +695,8 @@ $(&#x27;#price&#x27;).editable({
 <i>none</i>
 
 </td>
-            <td>Returns current values of editable elements.   
-Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
-If value of some editable is `null` or `undefined` it is excluded from result object.
+            <td><p>Returns current values of editable elements.<br>Note that it returns an <strong>object</strong> with name-value pairs, not a value itself. It allows to get data from several elements.<br>If value of some editable is <code>null</code> or <code>undefined</code> it is excluded from result object.</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;getValue&#x27;);
 // possible result:
@@ -691,7 +714,8 @@ fullname: &quot;John&quot;
 <i>none</i>
 
 </td>
-            <td>Hides container with form
+            <td><p>Hides container with form</p>
+
             
             </td>
         </tr> 
@@ -712,7 +736,8 @@ fullname: &quot;John&quot;
 </ul>
 
 </td>
-            <td>Sets new option
+            <td><p>Sets new option</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;.editable&#x27;).editable(&#x27;option&#x27;, &#x27;pk&#x27;, 2);</pre>
             
@@ -735,7 +760,8 @@ fullname: &quot;John&quot;
 </ul>
 
 </td>
-            <td>Sets new value of editable
+            <td><p>Sets new value of editable</p>
+
             
             </td>
         </tr> 
@@ -752,7 +778,8 @@ fullname: &quot;John&quot;
 </ul>
 
 </td>
-            <td>Shows container with form
+            <td><p>Shows container with form</p>
+
             
             </td>
         </tr> 
@@ -783,9 +810,8 @@ fullname: &quot;John&quot;
 </ul>
 
 </td>
-            <td>This method collects values from several editable elements and submit them all to server.   
-Internally it runs client-side validation for all fields and submits only in case of success.  
-See <a href="#newrecord">creating new records</a> for details.
+            <td><p>This method collects values from several editable elements and submit them all to server.<br>Internally it runs client-side validation for all fields and submits only in case of success.<br>See <a href="#newrecord">creating new records</a> for details.</p>
+
             
             </td>
         </tr> 
@@ -802,7 +828,8 @@ See <a href="#newrecord">creating new records</a> for details.
 </ul>
 
 </td>
-            <td>Toggles container visibility (show / hide)
+            <td><p>Toggles container visibility (show / hide)</p>
+
             
             </td>
         </tr> 
@@ -813,7 +840,8 @@ See <a href="#newrecord">creating new records</a> for details.
 <i>none</i>
 
 </td>
-            <td>Toggles enabled / disabled state of editable element
+            <td><p>Toggles enabled / disabled state of editable element</p>
+
             
             </td>
         </tr> 
@@ -824,7 +852,8 @@ See <a href="#newrecord">creating new records</a> for details.
 <i>none</i>
 
 </td>
-            <td>Runs client-side validation for all matched editables
+            <td><p>Runs client-side validation for all matched editables</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;validate&#x27;);
 // possible result:
@@ -859,14 +888,16 @@ See <a href="#newrecord">creating new records</a> for details.
         
     </li>
     
-    <li><strong>reason</strong> <i>String</i> Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
+    <li><strong>reason</strong> <i>String</i> Reason caused hiding. Can be <code>save|cancel|onblur|nochange|manual</code>
         
     </li>
     
 </ul>
 
 </td>
-            <td>Fired when container was hidden. It occurs on both save or cancel.
+            <td><p>Fired when container was hidden. It occurs on both save or cancel.<br><strong>Note:</strong> Bootstrap popover has own <code>hidden</code> event that now cannot be separated from x-editable&#39;s one.
+The workaround is to check <code>arguments.length</code> that is always <code>2</code> for x-editable.</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;hidden&#x27;, function(e, reason) {
     if(reason === &#x27;save&#x27; || reason === &#x27;cancel&#x27;) {
@@ -894,11 +925,14 @@ See <a href="#newrecord">creating new records</a> for details.
 </ul>
 
 </td>
-            <td>Fired when element was initialized by editable method.
+            <td><p>Fired when element was initialized by <code>$().editable()</code> method. 
+Please note that you should setup <code>init</code> handler <strong>before</strong> applying <code>editable</code>.</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;init&#x27;, function(e, editable) {
     alert(&#x27;initialized &#x27; + editable.options.name);
-});</pre>
+});
+$(&#x27;#username&#x27;).editable();</pre>
             
             </td>
         </tr> 
@@ -927,7 +961,8 @@ See <a href="#newrecord">creating new records</a> for details.
 </ul>
 
 </td>
-            <td>Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
+            <td><p>Fired when new value was submitted. You can use <code>$(this).data(&#39;editable&#39;)</code> to access to editable instance</p>
+
             
                 <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;save&#x27;, function(e, params) {
     alert(&#x27;Saved value: &#x27; + params.newValue);
@@ -948,10 +983,11 @@ See <a href="#newrecord">creating new records</a> for details.
 </ul>
 
 </td>
-            <td>Fired when container is shown and form is rendered (for select will wait for loading dropdown options)
+            <td><p>Fired when container is shown and form is rendered (for select will wait for loading dropdown options).<br><strong>Note:</strong> Bootstrap popover has own <code>shown</code> event that now cannot be separated from x-editable&#39;s one.
+The workaround is to check <code>arguments.length</code> that is always <code>2</code> for x-editable.</p>
+
             
-                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;shown&#x27;, function() {
-    var editable = $(this).data(&#x27;editable&#x27;);
+                <pre class="prettyprint linenums">$(&#x27;#username&#x27;).on(&#x27;shown&#x27;, function(e, editable) {
     editable.input.$input.val(&#x27;overwriting value of input..&#x27;);
 });</pre>
             
@@ -1419,7 +1455,7 @@ $(function(){
 Before usage you should manually include dependent js and css:
 
 </p>
-<pre><code>&lt;link href=&quot;css/bootstrap-datetimepicker.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt; 
+<pre><code>&lt;link href=&quot;css/datetimepicker.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt; 
 &lt;script src=&quot;js/bootstrap-datetimepicker.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>For <strong>i18n</strong> you should include js file from here: <a href="https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales">https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales</a>
 and set <code>language</code> option.</p>
@@ -2245,6 +2281,10 @@ $(function(){
 </p>
 <pre><code>&lt;link href=&quot;select2/select2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
 &lt;script src=&quot;select2/select2.js&quot;&gt;&lt;/script&gt;  </code></pre>
+<p>For make it <strong>Bootstrap-styled</strong> you can use css from <a href="https://github.com/t0m/select2-bootstrap-css">here</a>: 
+
+</p>
+<pre><code>&lt;link href=&quot;select2-bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;    </code></pre>
 <p><strong>Note:</strong> currently <code>ajax</code> source for select2 is not supported, as it&#39;s not possible to load it in closed select2 state.<br>The solution is to load source manually and assign statically.</p>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>

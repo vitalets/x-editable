@@ -1,23 +1,18 @@
-/*! jQuery UI - v1.10.1 - 2013-03-08
+/*! jQuery UI - v1.10.2 - 2013-04-07
 * http://jqueryui.com
 * Includes: jquery.ui.core.js, jquery.ui.datepicker.js
-* Copyright (c) 2013 jQuery Foundation and other contributors Licensed MIT */
+* Copyright 2013 jQuery Foundation and other contributors Licensed MIT */
 
 (function( $, undefined ) {
 
 var uuid = 0,
 	runiqueId = /^ui-id-\d+$/;
 
-// prevent duplicate loading
-// this is only a problem because we proxy existing functions
-// and we don't want to double proxy them
+// $.ui might exist from components with no dependencies, e.g., $.ui.position
 $.ui = $.ui || {};
-if ( $.ui.version ) {
-	return;
-}
 
 $.extend( $.ui, {
-	version: "1.10.1",
+	version: "1.10.2",
 
 	keyCode: {
 		BACKSPACE: 8,
@@ -47,20 +42,21 @@ $.extend( $.ui, {
 
 // plugins
 $.fn.extend({
-	_focus: $.fn.focus,
-	focus: function( delay, fn ) {
-		return typeof delay === "number" ?
-			this.each(function() {
-				var elem = this;
-				setTimeout(function() {
-					$( elem ).focus();
-					if ( fn ) {
-						fn.call( elem );
-					}
-				}, delay );
-			}) :
-			this._focus.apply( this, arguments );
-	},
+	focus: (function( orig ) {
+		return function( delay, fn ) {
+			return typeof delay === "number" ?
+				this.each(function() {
+					var elem = this;
+					setTimeout(function() {
+						$( elem ).focus();
+						if ( fn ) {
+							fn.call( elem );
+						}
+					}, delay );
+				}) :
+				orig.apply( this, arguments );
+		};
+	})( $.fn.focus ),
 
 	scrollParent: function() {
 		var scrollParent;
@@ -319,7 +315,7 @@ $.extend( $.ui, {
 })( jQuery );
 (function( $, undefined ) {
 
-$.extend($.ui, { datepicker: { version: "1.10.1" } });
+$.extend($.ui, { datepicker: { version: "1.10.2" } });
 
 var PROP_NAME = "datepicker",
 	dpuuid = new Date().getTime(),
@@ -2347,7 +2343,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.10.1";
+$.datepicker.version = "1.10.2";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers

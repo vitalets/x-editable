@@ -21,18 +21,9 @@
         <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
         <hr>
 
-        <h3>How to add/rename submit params or submit in stringified JSON format?</h3>
+        <h3>How to change POST variables before submit?</h3>
         <p>You should use <code>params</code> option defined as a function:</p> 
         <pre>
-//submit in JSON format        
-$('#field').editable({
-  ...        
-  params: function(params) {
-    return JSON.stringify(params);  //note: for older browsers you may need json2.js from json.org
-  }
-});  
-
-//rename submit variables        
 $('#field').editable({
   ...        
   params: function(params) {
@@ -44,6 +35,19 @@ $('#field').editable({
 }); 
 </pre>
         <hr>
+        
+        <h3>How to submit stringified JSON?</h3>
+        <p>You should use <code>params</code> option defined as a function:</p> 
+        <pre>
+//submit in JSON format        
+$('#field').editable({
+  ...        
+  params: function(params) {
+    return JSON.stringify(params);  //note: for older browsers you may need json2.js from json.org
+  }
+});  
+</pre>
+        <hr>        
         
         <h3>How to create my own widgets?</h3>
         <p>
@@ -64,5 +68,14 @@ $('#field').editable({
         </form>
 
         <p>Thank you!</p>
+        <p><strong>List of donators:</strong></p>
+        <ul>
+          <li>Tony Dark - $40</li>
+          <li>Clint Morgan - $50</li>
+          <li>Alexander Galkin - $5</li>
+          <li>Kirsty Forrester - $50</li>
+          <li>Sébastien Arbogast - $20</li>
+          <li>Tony Dew - $50</li>
+        </ul>
     </div>
 </div>

@@ -58,7 +58,7 @@ $(function(){
         }
     });      
     
-    $('#last_seen').editable({
+    $('#meeting_start').editable({
         format: 'yyyy-mm-dd hh:ii',    
         viewformat: 'dd/mm/yyyy hh:ii',
         validate: function(v) {
@@ -71,7 +71,7 @@ $(function(){
     });            
     
     $('#comments').editable({
-        showbuttons: true
+        showbuttons: 'bottom'
     }); 
     
     $('#note').editable(); 

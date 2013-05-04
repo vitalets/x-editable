@@ -2,8 +2,22 @@ X-editable changelog
 =============================
 
 
-Version 1.4.4 wip
+Version 1.4.4 May 4, 2013
 ----------------------------
+[enh #219] added `error` callback (joekaiser)
+[enh #198] new value of showbuttons: 'bottom' (vitalets)
+[enh #192] add class editable-popup to have diferent css for popup and inline (vitalets)
+[enh] update to bootstrap-datepicker 1.0.2 (vitalets)
+[enh] update to combodate 1.0.3 with yearDescending and roundTime options (vitalets)
+[enh] add 'use strict' directive (vitalets)
+[enh #202] allow pk=0 (mdeweerd)
+[enh #183] move datepicker icon to center of button (vitalets)
+[enh] upgrade to select2 3.3.2 (vitalets)
+[enh #176] update to bootstrap 2.3.1 (vitalets)
+[bug #171] clear in date & datetime when showbuttons=false (vitalets)
+[bug #166] clear button for input type=number (vitalets)
+[bug #65] checklist don't show checked for single value (vitalets)
+[enh #188] added bootstrap datetime (adeg, vitalets)
 [bug] editable-poshytip on inline mode tries to write in $.Poshytip (vitalets)
 
 

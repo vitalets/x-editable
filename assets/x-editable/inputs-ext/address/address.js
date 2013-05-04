@@ -22,6 +22,8 @@ $(function(){
 </script>
 **/
 (function ($) {
+    "use strict";
+    
     var Address = function (options) {
         this.init('address', options, Address.defaults);
     };
