@@ -137,20 +137,19 @@ Applied as jQuery method.
                 resize: $.proxy(this.setPosition, this), //this allows to re-position container when form size is changed 
                 rendered: $.proxy(function(){
                     /**        
-                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options).
+                    Fired when container is shown and form is rendered (for select will wait for loading dropdown options).  
                     **Note:** Bootstrap popover has own `shown` event that now cannot be separated from x-editable's one.
                     The workaround is to check `arguments.length` that is always `2` for x-editable.                     
                     
                     @event shown 
                     @param {Object} event event object
                     @example
-                    $('#username').on('shown', function() {
-                        var editable = $(this).data('editable');
+                    $('#username').on('shown', function(e, editable) {
                         editable.input.$input.val('overwriting value of input..');
                     });                     
                     **/                      
                     /*
-                     added second param mainly to distinguish bootstrap's shown event. It's a hotfix that will be solved in 1.5 via namespaced events.  
+                     TODO: added second param mainly to distinguish from bootstrap's shown event. It's a hotfix that will be solved in future versions via namespaced events.  
                     */
                     this.$element.triggerHandler('shown', this); 
                 }, this) 
