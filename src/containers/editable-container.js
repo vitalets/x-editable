@@ -92,6 +92,11 @@ Applied as jQuery method.
         splitOptions: function() {
             this.containerOptions = {};
             this.formOptions = {};
+            
+            if(!$.fn[this.containerName]) {
+                throw new Error(this.containerName + ' not found. Have you included corresponding js file?');   
+            }
+            
             var cDef = $.fn[this.containerName].defaults;
             //keys defined in container defaults go to container, others go to form
             for(var k in this.options) {
