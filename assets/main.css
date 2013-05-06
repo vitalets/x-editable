@@ -20,3 +20,18 @@ section {
 .table td ul {
    padding-bottom: 0; 
 }
+
+.cdn label {
+    display: inline;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+
+
+.cdn input[type="radio"] {
+    margin: 0 4px 0 0;
+}
+
+.cdn pre {
+    margin: 0;
+}
