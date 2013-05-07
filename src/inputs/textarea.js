@@ -28,6 +28,7 @@ $(function(){
     $.extend(Textarea.prototype, {
         render: function () {
             this.setClass();
+            this.setAttr('maxlength');
             this.setAttr('placeholder');
             this.setAttr('rows');                        
             
@@ -101,7 +102,16 @@ $(function(){
         @type integer
         @default 7
         **/        
-        rows: 7        
+        rows: 7,
+                        
+        /**
+        Maxlength atttribute of input. Specifies the maximum allowable length for the input.   
+        
+        @property maxlength
+        @type integer
+        @default null        
+        **/
+        maxlength: null        
     });
 
     $.fn.editabletypes.textarea = Textarea;

@@ -17,6 +17,16 @@ $(function () {
         ok(!p.is(':visible'), 'popover was removed');
       });
       
+     test("option 'maxlength'", function () {
+        var  e = $('<a href="#" id="a" data-maxlength="10"> </a>').appendTo('#qunit-fixture').editable();
+            
+        e.click();
+        var p = tip(e);
+        equal(p.find('input[type=text]').attr('maxlength'), 10, 'maxlength exists');
+        p.find('.editable-cancel').click(); 
+        ok(!p.is(':visible'), 'popover was removed');
+      });
+      
     
      asyncTest("should load correct value and save new entered text (and value)", function () {
         var  v = 'ab<b>"',

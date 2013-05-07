@@ -28,6 +28,7 @@ $(function(){
         render: function() {
            this.renderClear();
            this.setClass();
+           this.setAttr('maxlength');
            this.setAttr('placeholder');
         },
         
@@ -126,7 +127,16 @@ $(function(){
         @type boolean
         @default true        
         **/
-        clear: true
+        clear: true,
+                
+        /**
+        Maxlength atttribute of input. Specifies the maximum allowable length for the input.   
+        
+        @property maxlength
+        @type integer
+        @default null        
+        **/
+        maxlength: null
     });
 
     $.fn.editabletypes.text = Text;
