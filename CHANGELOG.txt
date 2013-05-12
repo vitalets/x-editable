@@ -1,6 +1,10 @@
 X-editable changelog
 =============================
 
+Version 1.4.5 wip
+----------------------------
+[enh] update combodate to 1.0.4, fix #222 (vitalets)
+
 
 Version 1.4.4 May 4, 2013
 ----------------------------
