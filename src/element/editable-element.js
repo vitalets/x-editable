@@ -258,7 +258,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
 
-            this.isEmpty = isEmpty !== undefined ? isEmpty : $.trim(this.$element.text()) === '';           
+            this.isEmpty = isEmpty !== undefined ? isEmpty : $.trim(this.$element.html()) === '';           
             
             //emptytext shown only for enabled
             if(!this.options.disabled) {
