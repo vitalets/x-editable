@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.5 wip
 ----------------------------
+[enh] allow follow links in disabled state (vitalets)
 [enh] update combodate to 1.0.4, fix #222 (vitalets)
 
 
