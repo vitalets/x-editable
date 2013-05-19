@@ -520,6 +520,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 var config = arguments[1] || {},
                 $elems = this,
                 errors = this.editable('validate'),
+                defaultParams = $.fn.editable.defaults.params,
                 values;
 
                 if($.isEmptyObject(errors)) {
@@ -528,6 +529,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                         $.extend(values, config.data);
                     }                    
                     
+                    if(defaultParams) {                    
+                        $.extend(values, defaultParams);
+                  	}
+                    
+                    if(config.params) {                    
+                    	$.extend(values, config.params);
+                  	}
+                  	
                     $.ajax($.extend({
                         url: config.url, 
                         data: values, 
