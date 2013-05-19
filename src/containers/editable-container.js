@@ -182,10 +182,10 @@ Applied as jQuery method.
             /*
             Currently, form is re-rendered on every show. 
             The main reason is that we dont know, what container will do with content when closed:
-            remove(), detach() or just hide().
+            remove(), detach() or just hide() - it depend on container.
             
             Detaching form itself before hide and re-insert before show is good solution, 
-            but visually it looks ugly, as container changes size before hide.  
+            but visually it looks ugly --> container changes size before hide.  
             */             
             
             //if form already exist - delete previous data 
