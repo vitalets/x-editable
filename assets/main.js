@@ -13,7 +13,7 @@ $(function(){
    }
    
    $('.cdn input[type="radio"]').click(function(){
-       var css = '<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/' + window.version+'/'+$(this).data('css')+'">\n',
+       var css = '<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/' + window.version+'/'+$(this).data('css')+'" rel="stylesheet">\n',
            js = '<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/' + window.version+'/'+$(this).data('js')+'"></script>';
           
        $('.cdn pre').text(css+js);
