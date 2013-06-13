@@ -615,7 +615,7 @@ $(function () {
      
      asyncTest("'display' callback", function () {
          var req = 0, 
-             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">123</a>').appendTo(fx).editable({
              pk: 1,
              source: groups,
              ajaxOptions: {

@@ -81,6 +81,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
             }
             
+            //if display is function it's far more convinient to have autotext = always to render correctly on init
+            //see https://github.com/vitalets/x-editable-yii/issues/34
+            if(typeof this.options.display === 'function') {
+                this.options.autotext = 'always'
+            }
+            
             //check conditions for autotext:
             switch(this.options.autotext) {
               case 'always':
