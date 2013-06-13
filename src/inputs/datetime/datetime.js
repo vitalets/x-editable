@@ -67,6 +67,16 @@ $(function(){
         render: function () {
             this.$input.datetimepicker(this.options.datetimepicker);
             
+            //adjust container position when viewMode changes
+            //see https://github.com/smalot/bootstrap-datetimepicker/pull/80
+            this.$input.on('changeMode', function(e) {
+                var f = $(this).closest('form').parent();
+                //timeout here, otherwise container changes position before form has new size
+                setTimeout(function(){
+                    f.triggerHandler('resize');
+                }, 0);
+            });            
+            
             //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
