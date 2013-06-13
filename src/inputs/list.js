@@ -63,6 +63,7 @@ List - abstract class for inputs that have source option loaded from js array or
             if ($.isFunction(this.options.source)) {
                 source = this.options.source.call(this.options.scope);
                 this.sourceData = null;
+                //note: if function returns the same source as URL - sourceData will be taken from cahce and no extra request performed
             } else {
                 source = this.options.source;
             }            
