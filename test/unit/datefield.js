@@ -5,7 +5,7 @@ $(function () {
    module("datefield", {
         setup: function(){
             fx = $('#async-fixture');
-            dpg = $.fn.datepicker.DPGlobal;
+            dpg = $.fn.bdatepicker.DPGlobal;
             $.support.transition = false;
             
             mode = $.fn.editable.defaults.mode;

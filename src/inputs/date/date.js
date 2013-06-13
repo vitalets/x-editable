@@ -26,6 +26,9 @@ $(function(){
 (function ($) {
     "use strict";
     
+    //store bootstrap-datepicker as bdateicker to exclude conflict with jQuery UI one
+    $.fn.bdatepicker = $.fn.datepicker.noConflict();    
+    
     var Date = function (options) {
         this.init('date', options, Date.defaults);
         this.initPicker(options, Date.defaults);
@@ -52,7 +55,7 @@ $(function(){
             this.options.datepicker.language = this.options.datepicker.language || 'en'; 
 
             //store DPglobal
-            this.dpg = $.fn.datepicker.DPGlobal; 
+            this.dpg = $.fn.bdatepicker.DPGlobal; 
 
             //store parsed formats
             this.parsedFormat = this.dpg.parseFormat(this.options.format);
@@ -60,7 +63,7 @@ $(function(){
         },
         
         render: function () {
-            this.$input.datepicker(this.options.datepicker);
+            this.$input.bdatepicker(this.options.datepicker);
             
             //"clear" link
             if(this.options.clear) {
@@ -96,7 +99,7 @@ $(function(){
        },                    
 
        value2input: function(value) {
-           this.$input.datepicker('update', value);
+           this.$input.bdatepicker('update', value);
        },
         
        input2value: function() { 
