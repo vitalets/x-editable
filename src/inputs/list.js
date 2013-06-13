@@ -58,30 +58,32 @@ List - abstract class for inputs that have source option loaded from js array or
         // ------------- additional functions ------------
 
         onSourceReady: function (success, error) {
+            //run source if it function
+            var source;
+            if ($.isFunction(this.options.source)) {
+                source = this.options.source.call(this.options.scope);
+                this.sourceData = null;
+            } else {
+                source = this.options.source;
+            }            
+            
             //if allready loaded just call success
-            if($.isArray(this.sourceData)) {
+            if(this.options.sourceCache && $.isArray(this.sourceData)) {
                 success.call(this);
                 return; 
             }
 
-            // try parse json in single quotes (for double quotes jquery does automatically)
+            //try parse json in single quotes (for double quotes jquery does automatically)
             try {
-                this.options.source = $.fn.editableutils.tryParseJson(this.options.source, false);
+                source = $.fn.editableutils.tryParseJson(source, false);
             } catch (e) {
                 error.call(this);
                 return;
             }
-            
-            var source = this.options.source;
-            
-            //run source if it function
-            if ($.isFunction(source)) {
-                source = source.call(this.options.scope);
-            }
 
             //loading from url
             if (typeof source === 'string') {
-                //try to get from cache
+                //try to get sourceData from cache
                 if(this.options.sourceCache) {
                     var cacheID = source,
                     cache;
