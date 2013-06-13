@@ -6,6 +6,8 @@ $(function () {
             $.support.transition = false;
         }
     });
+    
+    //note: sometimes it throws 'nativeSelection is null' error
      
     asyncTest("should load correct value and save new entered value", function () {
         
