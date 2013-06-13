@@ -62,11 +62,6 @@ $(function(){
             //store parsed formats
             this.parsedFormat = this.dpg.parseFormat(this.options.format, this.options.formatType);
             this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat, this.options.formatType);
-            
-            //
-            this.options.datetimepicker.startView = this.options.startView;
-            this.options.datetimepicker.minView = this.options.minView;
-            this.options.datetimepicker.maxView = this.options.maxView;
         },
         
         render: function () {
