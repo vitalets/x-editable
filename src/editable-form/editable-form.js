@@ -60,6 +60,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //show loading state
             this.showLoading();            
             
+            //flag showing is form now saving value to server. 
+            //It is needed to wait when closing form.
+            this.isSaving = false;
+            
             /**        
             Fired when rendering starts
             @event rendering 
@@ -215,9 +219,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //convert value for submitting to server
             var submitValue = this.input.value2submit(newValue);
             
+            this.isSaving = true;
+            
             //sending data to server
             $.when(this.save(submitValue))
             .done($.proxy(function(response) {
+            	this.isSaving = false;
+            	
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
                 
@@ -261,6 +269,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.$div.triggerHandler('save', {newValue: newValue, submitValue: submitValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
+            	this.isSaving = false;
+            	
                 var msg;
                 if(typeof this.options.error === 'function') {
                     msg = this.options.error.call(this.options.scope, xhr, newValue);
