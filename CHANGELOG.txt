@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.5 wip
 ----------------------------
+[enh] add `destroy` method to inputs (vitalets)
 [enh #164] allow emptytext to be html (vitalets)
 [enh #78] allow html in editable content (vitalets)
 [enh] update container position when datetimepicker viewMode changes (vitalets)

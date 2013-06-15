@@ -448,6 +448,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.destroy(); 
             }
+            
+            this.input.destroy();
 
             if(this.options.toggle !== 'manual') {
                 this.$element.removeClass('editable-click');

@@ -152,6 +152,12 @@ To create your own input you can inherit from this class.
         
        },
        
+       /**
+       Additional actions when destroying element 
+       **/
+ 	   destroy: function() {
+	   },       
+       
        // -------- helper functions --------
        setClass: function() {
            if(this.options.inputclass) {
