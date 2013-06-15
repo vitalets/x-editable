@@ -66,7 +66,19 @@ $(function () {
         equal(values.comment, '', 'textarea empty value') ;
         ok(!('sex' in values), 'select value not present') ;
         ok(!('dob' in values), 'date value not present') ;
-     });    
+     }); 
+     
+    test("getValue with isSingle = true", function () {
+        var v = '123', 
+          e = $(
+          '<a href="#" data-type="text" id="username">'+v+'</a>' + 
+          '<a href="#" data-type="textarea" id="comment">456</a>' 
+         ).appendTo('#qunit-fixture').editable();
+
+        //check get value
+        var value = e.editable('getValue', true);
+        equal(value, v, 'value ok');
+     });        
      
     test("'init' event", function () {
         expect(1);

@@ -507,25 +507,34 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             /**
             Returns current values of editable elements.   
             Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
-            If value of some editable is `null` or `undefined` it is excluded from result object.  
+            If value of some editable is `null` or `undefined` it is excluded from result object.
+            When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
              
             @method getValue()
+            @param {bool} isSingle whether to return just value of single element
             @returns {Object} object of element names and values
             @example
             $('#username, #fullname').editable('getValue');
-            // possible result:
+            //result:
             {
             username: "superuser",
             fullname: "John"
             }
+            //isSingle = true
+            $('#username').editable('getValue', true);
+            //result "superuser" 
             **/
             case 'getValue':
-                this.each(function () {
-                    var $this = $(this), data = $this.data(datakey);
-                    if (data && data.value !== undefined && data.value !== null) {
-                        result[data.options.name] = data.input.value2submit(data.value);
-                    }
-                });
+                if(arguments.length === 2 && arguments[1] === true) { //isSingle = true
+                	result = this.eq(0).data(datakey).value;
+				} else {
+	                this.each(function () {
+	                    var $this = $(this), data = $this.data(datakey);
+	                    if (data && data.value !== undefined && data.value !== null) {
+	                        result[data.options.name] = data.input.value2submit(data.value);
+	                    }
+	                });
+				}
             return result;
 
             /**  
