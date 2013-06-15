@@ -150,12 +150,13 @@ $(function () {
      });    
      
      asyncTest("event: save / hidden (reason: save)", function () {
-        expect(2);
+        expect(3);
         var val = '1',
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('save', function(event, params) {
             equal(params.newValue, 2, 'save triggered, value correct');
+            equal(params.submitValue, '2', 'submitValue property correct');
         });
         
         e.on('hidden', function(event, reason) {
