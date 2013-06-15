@@ -265,7 +265,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
 
-            this.isEmpty = isEmpty !== undefined ? isEmpty : $.trim(this.$element.text()) === '';           
+            /* 
+            isEmpty may be set directly as param of method.
+            It is required when we enable/disable field and can't rely on content 
+            as node content is text: "Empty" that is not empty %)
+            */
+            if(isEmpty !== undefined) { 
+                this.isEmpty = isEmpty;
+			} else {
+				//detect empty
+				if($.trim(this.$element.html()) === '') { 
+					this.isEmpty = true;
+				} else if($.trim(this.$element.text()) !== '') {
+					this.isEmpty = false;
+				} else {
+					//e.g. '<img>'
+					this.isEmpty = !this.$element.height() || !this.$element.width();
+				}
+			}           
             
             //emptytext shown only for enabled
             if(!this.options.disabled) {
