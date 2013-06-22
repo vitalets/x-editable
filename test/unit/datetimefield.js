@@ -125,4 +125,24 @@ $(function () {
         equal(e.text(), dview, 'text correct');
      });    
    
+ 	test("incorrect datetime", function () {
+        var dview = '15/05/1984 15:45',
+            d = '1984-05-15 15:45',
+            e = $('<a href="#" data-type="datetime" data-pk="1" data-format="yyyy-mm-dd hh:ii" data-viewformat="dd/mm/yyyy hh:ii"  data-value="'+d+'"></a>').appendTo('#qunit-fixture').editable();
+        
+        e.click();
+        var p = tip(e);
+        ok(p.find('input').is(':visible'), 'input exists');
+        
+        //enter incorrect date
+		p.find('input').val('abcde');
+    
+        //submit
+        p.find('form').submit();
+         
+        ok(!p.is(':visible'), 'popover closed');
+        equal(e.data('editable').value, null, 'date set to null');
+        equal(e.text(), $.fn.editable.defaults.emptytext , 'emptytext shown');            
+     });   
+   
 });

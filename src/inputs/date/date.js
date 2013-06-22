@@ -78,55 +78,55 @@ $(function(){
         },
         
         value2html: function(value, element) {
-            var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
+           var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
             Date.superclass.value2html(text, element); 
         },
 
-        html2value: function(html) {
-            return html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datepicker.language) : null;
-        },   
-        
-        value2str: function(value) {
-            return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : '';
-       }, 
-       
-       str2value: function(str) {
-           return str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datepicker.language) : null;
-       }, 
-       
-       value2submit: function(value) {
-           return this.value2str(value);
-       },                    
+		html2value: function(html) {
+			return this.parseDate(html, this.parsedViewFormat);
+		},   
 
-       value2input: function(value) {
-           this.$input.bdatepicker('update', value);
-       },
-        
-       input2value: function() { 
-           return this.$input.data('datepicker').date;
-       },       
-       
-       activate: function() {
-       },
-       
-       clear:  function() {
-          this.$input.data('datepicker').date = null;
-          this.$input.find('.active').removeClass('active');
-          if(!this.options.showbuttons) {
-              this.$input.closest('form').submit(); 
-          }
-       },
-       
-       autosubmit: function() {
-           this.$input.on('mouseup', '.day', function(e){
-               if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
-                 return;
-               }
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
+		value2str: function(value) {
+			return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : '';
+		}, 
+
+		str2value: function(str) {
+			return this.parseDate(str, this.parsedFormat);
+		}, 
+
+		value2submit: function(value) {
+			return this.value2str(value);
+		},                    
+
+		value2input: function(value) {
+			this.$input.bdatepicker('update', value);
+		},
+
+		input2value: function() { 
+			return this.$input.data('datepicker').date;
+		},       
+
+		activate: function() {
+		},
+
+		clear:  function() {
+			this.$input.data('datepicker').date = null;
+			this.$input.find('.active').removeClass('active');
+			if(!this.options.showbuttons) {
+				this.$input.closest('form').submit(); 
+			}
+		},
+
+		autosubmit: function() {
+			this.$input.on('mouseup', '.day', function(e){
+				if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
+					return;
+				}
+				var $form = $(this).closest('form');
+				setTimeout(function() {
+					$form.submit();
+				}, 200);
+			});
            //changedate is not suitable as it triggered when showing datepicker. see #149
            /*
            this.$input.on('changeDate', function(e){
@@ -136,7 +136,26 @@ $(function(){
                }, 200);
            });
            */
-       }
+       },
+       
+       /*
+        For incorrect date bootstrap-datepicker returns current date that is not suitable
+        for datefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+       	   var date = null, formattedBack;
+		   if(str) {
+			   date = this.dpg.parseDate(str, format, this.options.datepicker.language);
+			   if(typeof str === 'string') {
+				   formattedBack = this.dpg.formatDate(date, format, this.options.datepicker.language);
+				   if(str !== formattedBack) {
+					   date = null;
+				   } 
+			   }
+		   }
+		   return date;  
+	   }
 
     });
     

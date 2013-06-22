@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.5 wip
 ----------------------------
+[bug] fix datefield (datetimefield) to return null for incorrect dates (vitalets)
 [bug #224] do not close popup when it is saving value (vitalets)
 [enh] added `submitValue` to `save` event params (vitalets)
 [enh #259] allow `getValue` method to return value itself, not object (vitalets)

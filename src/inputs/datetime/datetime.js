@@ -101,7 +101,7 @@ $(function(){
 
         html2value: function(html) {
             //parseDate return utc date!
-            var value = html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : null; 
+            var value = this.parseDate(html, this.parsedViewFormat); 
             return value ? this.fromUTC(value) : null;
         },   
         
@@ -112,7 +112,7 @@ $(function(){
        
        str2value: function(str) {
            //parseDate return utc date!
-           var value = str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : null;
+           var value = this.parseDate(str, this.parsedFormat);
            return value ? this.fromUTC(value) : null;
        }, 
        
@@ -160,7 +160,26 @@ $(function(){
        //convert date from utc to local
        fromUTC: function(value) {
          return value ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000) : value;  
-       }
+       },
+       
+       /*
+        For incorrect date bootstrap-datetimepicker returns current date that is not suitable
+        for datetimefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+       	   var date = null, formattedBack;
+		   if(str) {
+			   date = this.dpg.parseDate(str, format, this.options.datetimepicker.language, this.options.formatType);
+			   if(typeof str === 'string') {
+				   formattedBack = this.dpg.formatDate(date, format, this.options.datetimepicker.language, this.options.formatType);
+				   if(str !== formattedBack) {
+					   date = null;
+				   } 
+			   }
+		   }
+		   return date;  
+	   }        
 
     });
     
