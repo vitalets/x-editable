@@ -20,13 +20,13 @@
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 {{#source}}                                                                                                            
-<a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-original-title="Enter username">superuser</a>
+<a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a>
 {{/source}}
 Main attributes you should define are:
 <ul>
 <li><code>type</code> - type of input (text, textarea, select, etc)</li>
 <li><code>url</code> - url to server-side script to process submitted value (<code>/post</code>, <code>post.php</code> etc)</li>
-<li><code>pk</code> - primary key of record to be updated (ID in db). If pk is <i>empty</i>, value will be saved on page, but not sent to server. See also <code>send</code> option</li>
+<li><code>pk</code> - primary key of record to be updated (ID in db)</li>
 <li><code>id</code> or <code>name</code> - name of field to be updated (column in db). Taken from <code>id</code> or <code>data-name</code> attribute</li>
 <li><code>value</code> - initial value. Usefull for select, where value is integer key of text to be shown. If <i>empty</i> - will be taken from element html contents</li>
 </ul>
@@ -40,7 +40,9 @@ $.fn.editable.defaults.mode = 'inline';
 </li>
 <li>Apply <strong>editable()</strong> method to these elements
 {{#source}}
-$('#username').editable();
+$(document).ready(function() {
+    $('#username').editable();
+});
 {{/source}}                                               
 Alternatively, you can set all options via javascript
 {{#source}}
@@ -55,7 +57,7 @@ $('#username').editable({
 });
 {{/source}}                                                          
 </li>
-<li>That's it!<br>
+<li>Frontend ready!<br>
 Open your page and click on element. Enter new value and submit form. It will send ajax request with new value on <code>/post</code>.<br>
 <strong>Request</strong> contains <code>name</code>, <code>value</code> and <code>pk</code> of record:<br><br>
 {{#source}}
@@ -66,18 +68,44 @@ POST /post
     value: 'superuser!' //new value
 }
 {{/source}}
-<strong>REMOTE updates:</strong><br>
-This library has no limitation to server-side part: you can write it on any language you prefer. The main is response.<br>
-If server <strong>response status is 200 OK</strong> - element will be updated in with new value. No response body required.<br>
-If <strong>status != 200</strong> form stays open and <i>responseText</i> is shown as error message.<br>
-Default request method is <strong>POST</strong>, you can change it via <i>ajaxOptions</i> config.<br>
-For more complex iteraction with server you may use <code>success</code> callback option (e.g. to process json response).<br><br>
-<strong>LOCAL updates:</strong><br>
-To keep changes locally you should not specify <code>url</code> or <code>pk</code> options. In that case value will not be sent to server, you can process it in <code>success</code> callback. 
+<li>Write backend part:<br>
+X-editable has no limitation to server-side part: you can write it on any language you prefer.<br>
+For example, you want to validate submitted value on server:
+<ul> 
+<li>If value is <span style="color: green">valid</span>, you should return <strong>HTTP status 200 OK</strong>. Element on page will be updated automatically. No response body required.</li>
+<li>If value is <span style="color: red">not valid</span>, you should return <strong>HTTP status != 200</strong> (e.g. <i>400 Bad request</i>) with error message in response body. Element on page will not be updated and editable form will display error message.</li>
+</ul>
+<br>
+Default request method is <strong>POST</strong>, you can change it via <i>defaults</i> config:<br>
+{{#source}}
+$.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+{{/source}}
+
+<strong>JSON response:</strong><br>
+If your server returns JSON, you can always have HTTP status 200 with error flag in response body.<br>
+To process it use <code>success</code> handler.<br>
+Example: 
+{{#source}}
+//assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
+
+$('#username').editable({
+    ...
+    success: function(response, newValue) {
+        if(response.status == 'error') return response.msg; //msg will be shown in editable form
+    }
+});
+{{/source}}
+<br>
+<strong>Work LOCALLY:</strong><br>
+If you don't want to send value on server, just keep empty <code>url</code> option. You can process value in <code>success</code> handler:
+{{#source}}
+$('#username').editable({
+    type: 'text',
+    title: 'Enter username',
+    success: function(response, newValue) {
+        userModel.set('username', newValue); //update backbone model
+    }
+});
+{{/source}}  
 </li>
-<!--
-<li>* You may use <strong>editableContainer()</strong> method if you need stand-alone container with form (but not element that stores value).<br>
-Container is attached to element only for <strong>positioning</strong>. You can show/hide it manually, set value via options and subscribe to events (save/cancel).
-</li>
--->
 </ol>
