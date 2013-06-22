@@ -32,7 +32,7 @@
   top: 0;
   left: 0;
 }
-.datetimepicker-dropdown:before {
+[class*=" datetimepicker-dropdown"]:before {
   content: '';
   display: inline-block;
   border-left: 7px solid transparent;
@@ -40,39 +40,63 @@
   border-bottom: 7px solid #ccc;
   border-bottom-color: rgba(0, 0, 0, 0.2);
   position: absolute;
-  top: -7px;
-  left: 6px;
 }
-.datetimepicker-dropdown:after {
+[class*=" datetimepicker-dropdown"]:after {
   content: '';
   display: inline-block;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-bottom: 6px solid #ffffff;
   position: absolute;
-  top: -6px;
-  left: 7px;
 }
-.datetimepicker-dropdown-left:before {
+[class*=" datetimepicker-dropdown-top"]:before {
   content: '';
   display: inline-block;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid #ccc;
-  border-bottom-color: rgba(0, 0, 0, 0.2);
-  position: absolute;
+  border-top: 7px solid #ccc;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 0;
+}
+[class*=" datetimepicker-dropdown-top"]:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #ffffff;
+  border-bottom: 0;
+}
+.datetimepicker-dropdown-bottom-right:before {
   top: -7px;
   right: 6px;
 }
-.datetimepicker-dropdown-left:after {
-  content: '';
-  display: inline-block;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #ffffff;
-  position: absolute;
+.datetimepicker-dropdown-bottom-right:after {
   top: -6px;
   right: 7px;
+}
+.datetimepicker-dropdown-bottom-left:before {
+  top: -7px;
+  left: 6px;
+}
+.datetimepicker-dropdown-bottom-left:after {
+  top: -6px;
+  left: 7px;
+}
+.datetimepicker-dropdown-top-right:before {
+  bottom: -7px;
+  right: 6px;
+}
+.datetimepicker-dropdown-top-right:after {
+  bottom: -6px;
+  right: 7px;
+}
+.datetimepicker-dropdown-top-left:before {
+  bottom: -7px;
+  left: 6px;
+}
+.datetimepicker-dropdown-top-left:after {
+  bottom: -6px;
+  left: 7px;
 }
 .datetimepicker > div {
   display: none;
