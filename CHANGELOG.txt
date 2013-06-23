@@ -1,7 +1,7 @@
 X-editable changelog
 =============================
 
-Version 1.4.5 wip
+Version 1.4.5 Jun 23, 2013
 ----------------------------
 [enh #245] highlight element after update (vitalets)
 [enh] select2 now works with ajax source (vitalets)
