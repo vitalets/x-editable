@@ -1,17 +1,21 @@
 /**
 Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
-Please see [original docs](http://ivaynberg.github.com/select2) for detailed description and options.  
-You should manually include select2 distributive:  
+Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.  
+Compatible **select2 version is 3.4.1**!   
+You should manually download and include select2 distributive:  
 
     <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
     <script src="select2/select2.js"></script>  
     
-To make it **Bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
+To make it **bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
 
     <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>    
     
 **Note:** currently `autotext` feature does not work for select2 with `ajax` remote source.    
-You need initially put both `data-value` and element's text youself.    
+You need initially put both `data-value` and element's text youself:    
+
+    <a href="#" data-type="select2" data-value="1">Text1</a>
+    
     
 @class select2
 @extends abstractinput
@@ -43,6 +47,11 @@ $(function(){
         options.select2 = options.select2 || {};
 
         this.sourceData = null;
+        
+        //placeholder
+        if(options.placeholder) {
+            options.select2.placeholder = options.placeholder;
+        }
        
         //if not `tags` mode, use source
         if(!options.select2.tags && options.source) {
