@@ -43,7 +43,7 @@
             this.call('update', $content);
             this.call('show');
             
-            this.tip().addClass('editable-container');
+            this.tip().addClass(this.containerClass);
             this.$form.data('editableform').input.activate();
         },     
         
