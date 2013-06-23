@@ -390,16 +390,19 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //highlight when saving
             if(this.options.highlight) {
                 var $e = this.$element,
-                    $bgColor = $e.css('background-color');
+                    bgColor = $e.css('background-color');
                     
                 $e.css('background-color', this.options.highlight);
                 setTimeout(function(){
-                    $e.css('background-color', $bgColor);
+                    if(bgColor === 'transparent') {
+                        bgColor = ''; 
+                    }
+                    $e.css('background-color', bgColor);
                     $e.addClass('editable-bg-transition');
                     setTimeout(function(){
                        $e.removeClass('editable-bg-transition');  
                     }, 1700);
-                }, 0);
+                }, 10);
             }
             
             //set new value
