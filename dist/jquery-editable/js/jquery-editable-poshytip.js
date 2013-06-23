@@ -1817,7 +1817,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     $e.addClass('editable-bg-transition');
                     setTimeout(function(){
                        $e.removeClass('editable-bg-transition');  
-                    }, 1500);
+                    }, 1700);
                 }, 0);
             }
             
@@ -4377,7 +4377,7 @@ $(function(){
             this.call('update', $content);
             this.call('show');
             
-            this.tip().addClass('editable-container');
+            this.tip().addClass(this.containerClass);
             this.$form.data('editableform').input.activate();
         },     
         
