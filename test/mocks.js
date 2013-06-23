@@ -36,8 +36,10 @@ $(function () {
       
     //groups as array  
     window.groupsArr = [];
+    window.groupsArr2 = [];
     for(var i in groups) {
         groupsArr.push({value: i, text: groups[i]}); 
+        groupsArr2.push({id: i, text: groups[i]}); 
     }
       
     window.size = groupsArr.length;
@@ -46,6 +48,16 @@ $(function () {
         url: 'groups.php',
         responseText: groups
     });
+    
+    $.mockjax({
+        url: 'groupsArr',
+        responseText: groupsArr
+    });     
+    
+    $.mockjax({
+        url: 'groupsArr2',
+        responseText: groupsArr2
+    });    
 
     $.mockjax({
         url: 'groups-error.php',

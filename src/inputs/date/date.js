@@ -26,6 +26,12 @@ $(function(){
 (function ($) {
     "use strict";
     
+    //store bootstrap-datepicker as bdateicker to exclude conflict with jQuery UI one
+    $.fn.bdatepicker = $.fn.datepicker.noConflict();
+    if(!$.fn.datepicker) { //if there were no other datepickers, keep also original name
+        $.fn.datepicker = $.fn.bdatepicker;    
+    }    
+    
     var Date = function (options) {
         this.init('date', options, Date.defaults);
         this.initPicker(options, Date.defaults);
@@ -52,7 +58,7 @@ $(function(){
             this.options.datepicker.language = this.options.datepicker.language || 'en'; 
 
             //store DPglobal
-            this.dpg = $.fn.datepicker.DPGlobal; 
+            this.dpg = $.fn.bdatepicker.DPGlobal; 
 
             //store parsed formats
             this.parsedFormat = this.dpg.parseFormat(this.options.format);
@@ -60,7 +66,7 @@ $(function(){
         },
         
         render: function () {
-            this.$input.datepicker(this.options.datepicker);
+            this.$input.bdatepicker(this.options.datepicker);
             
             //"clear" link
             if(this.options.clear) {
@@ -75,55 +81,55 @@ $(function(){
         },
         
         value2html: function(value, element) {
-            var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
+           var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
             Date.superclass.value2html(text, element); 
         },
 
         html2value: function(html) {
-            return html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datepicker.language) : null;
+            return this.parseDate(html, this.parsedViewFormat);
         },   
-        
+
         value2str: function(value) {
             return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : '';
-       }, 
-       
-       str2value: function(str) {
-           return str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datepicker.language) : null;
-       }, 
-       
-       value2submit: function(value) {
-           return this.value2str(value);
-       },                    
+        }, 
 
-       value2input: function(value) {
-           this.$input.datepicker('update', value);
-       },
-        
-       input2value: function() { 
-           return this.$input.data('datepicker').date;
-       },       
-       
-       activate: function() {
-       },
-       
-       clear:  function() {
-          this.$input.data('datepicker').date = null;
-          this.$input.find('.active').removeClass('active');
-          if(!this.options.showbuttons) {
-              this.$input.closest('form').submit(); 
-          }
-       },
-       
-       autosubmit: function() {
-           this.$input.on('mouseup', '.day', function(e){
-               if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
-                 return;
-               }
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
+        str2value: function(str) {
+            return this.parseDate(str, this.parsedFormat);
+        }, 
+
+        value2submit: function(value) {
+            return this.value2str(value);
+        },                    
+
+        value2input: function(value) {
+            this.$input.bdatepicker('update', value);
+        },
+
+        input2value: function() { 
+            return this.$input.data('datepicker').date;
+        },       
+
+        activate: function() {
+        },
+
+        clear:  function() {
+            this.$input.data('datepicker').date = null;
+            this.$input.find('.active').removeClass('active');
+            if(!this.options.showbuttons) {
+                this.$input.closest('form').submit(); 
+            }
+        },
+
+        autosubmit: function() {
+            this.$input.on('mouseup', '.day', function(e){
+                if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
+                    return;
+                }
+                var $form = $(this).closest('form');
+                setTimeout(function() {
+                    $form.submit();
+                }, 200);
+            });
            //changedate is not suitable as it triggered when showing datepicker. see #149
            /*
            this.$input.on('changeDate', function(e){
@@ -133,10 +139,29 @@ $(function(){
                }, 200);
            });
            */
+       },
+       
+       /*
+        For incorrect date bootstrap-datepicker returns current date that is not suitable
+        for datefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+           var date = null, formattedBack;
+           if(str) {
+               date = this.dpg.parseDate(str, format, this.options.datepicker.language);
+               if(typeof str === 'string') {
+                   formattedBack = this.dpg.formatDate(date, format, this.options.datepicker.language);
+                   if(str !== formattedBack) {
+                       date = null;
+                   }
+               }
+           }
+           return date;
        }
 
     });
-    
+
     Date.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
@@ -146,30 +171,30 @@ $(function(){
         /**
         @property inputclass 
         @default null
-        **/         
+        **/
         inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
         Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
-        
+
         @property format 
         @type string
         @default yyyy-mm-dd
-        **/         
+        **/
         format:'yyyy-mm-dd',
         /**
         Format used for displaying date. Also applied when converting date from element's text on init.   
         If not specified equals to <code>format</code>
-        
+
         @property viewformat 
         @type string
         @default null
-        **/          
-        viewformat: null,  
+        **/
+        viewformat: null,
         /**
         Configuration of datepicker.
         Full list of options: http://vitalets.github.com/bootstrap-datepicker
-        
+
         @property datepicker 
         @type object
         @default {
@@ -188,13 +213,13 @@ $(function(){
         /**
         Text shown as clear date button. 
         If <code>false</code> clear button will not be rendered.
-        
+
         @property clear 
         @type boolean|string
-        @default 'x clear'         
+        @default 'x clear'
         **/
         clear: '&times; clear'
-    });   
+    });
 
     $.fn.editabletypes.date = Date;
 

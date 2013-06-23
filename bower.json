@@ -1,0 +1,16 @@
+{
+  "name": "x-editable",
+  "version": "1.4.5",
+  "main": "dist/README.md",
+  "ignore": [
+    "*.*",
+    "LICENSE-MIT",
+    "node_modules",
+    "components",
+    "src",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": "~1"
+  }   
+}

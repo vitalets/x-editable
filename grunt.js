@@ -12,9 +12,9 @@ function getFiles() {
             form: [forms+'editable-form-bootstrap.js'],
             container: [containers+'editable-popover.js'],
             inputs: [
+                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
                 inputs+'date/date.js', 
                 inputs+'date/datefield.js', 
-                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
                 inputs+'datetime/datetime.js', 
                 inputs+'datetime/datetimefield.js',
                 //don't build datetime lib, should be included manually 

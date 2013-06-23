@@ -1,24 +1,28 @@
 /**
 Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
-Please see [original docs](http://ivaynberg.github.com/select2) for detailed description and options.  
-You should manually include select2 distributive:  
+Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.  
+Compatible **select2 version is 3.4.1**!   
+You should manually download and include select2 distributive:  
 
     <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
     <script src="select2/select2.js"></script>  
     
-For make it **Bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
+To make it **bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
 
     <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>    
     
-**Note:** currently `ajax` source for select2 is not supported, as it's not possible to load it in closed select2 state.  
-The solution is to load source manually and assign statically.    
+**Note:** currently `autotext` feature does not work for select2 with `ajax` remote source.    
+You need initially put both `data-value` and element's text youself:    
+
+    <a href="#" data-type="select2" data-value="1">Text1</a>
+    
     
 @class select2
 @extends abstractinput
 @since 1.4.1
 @final
 @example
-<a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-original-title="Select country"></a>
+<a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-title="Select country"></a>
 <script>
 $(function(){
     $('#country').editable({
@@ -39,56 +43,47 @@ $(function(){
     
     var Constructor = function (options) {
         this.init('select2', options, Constructor.defaults);
-       
+
         options.select2 = options.select2 || {};
+
+        this.sourceData = null;
         
-        var that = this, 
-            mixin = {    //mixin to select2 options
-               placeholder:  options.placeholder
-            };
-       
-       //detect whether it is multi-valued
-       this.isMultiple = options.select2.tags || options.select2.multiple;
-       
-       //if not `tags` mode, we need define initSelection to set data from source
-       if(!options.select2.tags) {
-            if(options.source) {
-                mixin.data = options.source;
-            } 
-
-            //this function can be defaulted in seletc2. See https://github.com/ivaynberg/select2/issues/710
-            mixin.initSelection = function (element, callback) {
-                //temp: try update results
-                /*
-                if(options.select2 && options.select2.ajax) {
-                  console.log('attached');
-                  var original =  $(element).data('select2').postprocessResults;
-                  console.log(original);
-                  $(element).data('select2').postprocessResults = function(data, initial) {
-                    console.log('postprocess');
-                   // this.element.triggerHandler('loaded', [data]);
-                    original.apply(this, arguments);  
-                  }                  
-
-               //   $(element).on('loaded', function(){console.log('loaded');});
-                  $(element).data('select2').updateResults(true);
-                }
-                */
-              
-                var val = that.str2value(element.val()),
-                    data = $.fn.editableutils.itemsByValue(val, mixin.data, 'id');
-                
-                //for single-valued mode should not use array. Take first element instead.
-                if($.isArray(data) && data.length && !that.isMultiple) {
-                   data = data[0]; 
-                }
-                                    
-                callback(data);
-            }; 
+        //placeholder
+        if(options.placeholder) {
+            options.select2.placeholder = options.placeholder;
         }
+       
+        //if not `tags` mode, use source
+        if(!options.select2.tags && options.source) {
+            var source = options.source;
+            //if source is function, call it (once!)
+            if ($.isFunction(options.source)) {
+                source = options.source.call(options.scope);
+            }               
+
+            if (typeof source === 'string') {
+                options.select2.ajax = options.select2.ajax || {};
+                //some default ajax params
+                if(!options.select2.ajax.data) {
+                    options.select2.ajax.data = function(term) {return { query:term };};
+                }
+                if(!options.select2.ajax.results) {
+                    options.select2.ajax.results = function(data) { return {results:data };};
+                }
+                options.select2.ajax.url = source;
+            } else {
+                //check format and convert x-editable format to select2 format (if needed)
+                this.sourceData = this.convertSource(source);
+                options.select2.data = this.sourceData;
+            }
+        } 
            
         //overriding objects in config (as by default jQuery extend() is not recursive)
-        this.options.select2 = $.extend({}, Constructor.defaults.select2, mixin, options.select2);
+        this.options.select2 = $.extend({}, Constructor.defaults.select2, options.select2);
+        
+        //detect whether it is multi-valued
+        this.isMultiple = this.options.select2.tags || this.options.select2.multiple;
+        this.isRemote = ('ajax' in this.options.select2);         
     };
 
     $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
@@ -96,21 +91,17 @@ $(function(){
     $.extend(Constructor.prototype, {
         render: function() {
             this.setClass();
+            
             //apply select2
             this.$input.select2(this.options.select2);
 
-            //when data is loaded via ajax, we need to know when it's done
-            if('ajax' in this.options.select2) {
-              /*
-              console.log('attached');
-              var original = this.$input.data('select2').postprocessResults;
-              this.$input.data('select2').postprocessResults = function(data, initial) {
-                  this.element.triggerHandler('loaded', [data]);
-                  original.apply(this, arguments);  
-              }
-              */
+            //when data is loaded via ajax, we need to know when it's done to populate listData
+            if(this.isRemote) {
+                //listen to loaded event to populate data
+                this.$input.on('select2-loaded', $.proxy(function(e) {
+                    this.sourceData = e.items.results;
+                }, this));
             }
-                         
 
             //trigger resize of editableform to re-position container in multi-valued mode           
             if(this.isMultiple) {
@@ -122,20 +113,16 @@ $(function(){
        
        value2html: function(value, element) {
            var text = '', data;
-           if(this.$input) { //called when submitting form and select2 already exists 
-               data = this.$input.select2('data');
-           } else { //on init (autotext)
-               //here select2 instance not created yet and data may be even not loaded.
-               //we can check data/tags property of select config and if exist lookup text
-               if(this.options.select2.tags) {
-                   data = value;
-               } else if(this.options.select2.data) {
-                   data = $.fn.editableutils.itemsByValue(value, this.options.select2.data, 'id');   
-               } else {
-                   //if('ajax' in this.options.select2) {
-               }
+           
+           if(this.options.select2.tags) { //in tags mode just assign value
+              data = value; 
+           } else if(this.sourceData) {
+              data = $.fn.editableutils.itemsByValue(value, this.sourceData, 'id'); 
+           } else {
+              //can not get list of possible values (e.g. autotext for select2 with ajax source) 
            }
            
+           //data may be array (when multiple values allowed)          
            if($.isArray(data)) {
                //collect selected data and show with separator
                text = [];
@@ -156,7 +143,26 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           //for remote source .val() is not working, need to look in sourceData 
+           if(this.isRemote) {
+               //todo: check value for array
+               var item, items;
+               //if sourceData loaded, use it to get text for display
+               if(this.sourceData) {
+                   items = $.fn.editableutils.itemsByValue(value, this.sourceData, 'id');
+                   if(items.length) {
+                       item = items[0];
+                   } 
+               } 
+               //if item not found by sourceData, use element text (e.g. for the first show)
+               if(!item) {   
+                   item = {id: value, text: $(this.options.scope).text()};
+               } 
+               //select2('data', ...) allows to set both id and text --> usefull for initial show when items are not loaded   
+               this.$input.select2('data', item).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           } else {
+               this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           }
        },
        
        input2value: function() { 
@@ -189,6 +195,22 @@ $(function(){
                   $(this).closest('form').submit();
                 }
             });
+        },
+        
+        /*
+        Converts source from x-editable format: {value: 1, text: "1"} to
+        select2 format: {id: 1, text: "1"}
+        */
+        convertSource: function(source) {
+            if($.isArray(source) && source.length && source[0].value !== undefined) {
+                for(var i = 0; i<source.length; i++) {
+                    if(source[i].value !== undefined) {
+                        source[i].id = source[i].value;
+                        delete source[i].value;
+                    }
+                }
+            }
+            return source;            
         }               
         
     });      

@@ -1,10 +1,20 @@
 /**
-* Combodate - 1.0.3
+* Combodate - 1.0.4
 * Dropdown date and time picker.
 * Converts text input into dropdowns to pick day, month, year, hour, minute and second.
 * Uses momentjs as datetime library http://momentjs.com.
 * For i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang 
 *
+* Confusion at noon and midnight - see http://en.wikipedia.org/wiki/12-hour_clock#Confusion_at_noon_and_midnight
+* In combodate: 
+* 12:00 pm --> 12:00 (24-h format, midday)
+* 12:00 am --> 00:00 (24-h format, midnight, start of day)
+* 
+* Differs from momentjs parse rules:
+* 00:00 pm, 12:00 pm --> 12:00 (24-h format, day not change)
+* 00:00 am, 12:00 am --> 00:00 (24-h format, day not change)
+* 
+* 
 * Author: Vitaliy Potapov
 * Project page: http://github.com/vitalets/combodate
 * Copyright (c) 2012 Vitaliy Potapov. Released under MIT License.
@@ -154,9 +164,10 @@
                 
             for(i=0; i<=11; i++) {
                 if(longNames) {
-                    name = moment().month(i).format('MMMM');
+                    //see https://github.com/timrwood/momentjs.com/pull/36
+                    name = moment().date(1).month(i).format('MMMM');
                 } else if(shortNames) {
-                    name = moment().month(i).format('MMM');
+                    name = moment().date(1).month(i).format('MMM');
                 } else if(twoDigit) {
                     name = this.leadZero(i+1);
                 } else {
@@ -192,9 +203,10 @@
                 h12 = this.options.template.indexOf('h') !== -1,
                 h24 = this.options.template.indexOf('H') !== -1,
                 twoDigit = this.options.template.toLowerCase().indexOf('hh') !== -1,
+                min = h12 ? 1 : 0, 
                 max = h12 ? 12 : 23;
                 
-            for(i=0; i<=max; i++) {
+            for(i=min; i<=max; i++) {
                 name = twoDigit ? this.leadZero(i) : i;
                 items.push([i, name]);
             } 
@@ -243,7 +255,7 @@
         },                                       
         
         /*
-         Returns current date value. 
+         Returns current date value from combos. 
          If format not specified - `options.format` used.
          If format = `null` - Moment object returned.
         */
@@ -272,12 +284,14 @@
                return '';
             }
             
-            //convert hours if 12h format
+            //convert hours 12h --> 24h 
             if(this.$ampm) {
-               values.hour = this.$ampm.val() === 'am' ? values.hour : values.hour+12;
-               if(values.hour === 24) {
-                   values.hour = 0;
-               }  
+                //12:00 pm --> 12:00 (24-h format, midday), 12:00 am --> 00:00 (24-h format, midnight, start of day)
+                if(values.hour === 12) {
+                    values.hour = this.$ampm.val() === 'am' ? 0 : 12;                    
+                } else {
+                    values.hour = this.$ampm.val() === 'am' ? values.hour : values.hour+12;
+                }
             }    
             
             dt = moment([values.year, values.month, values.day, values.hour, values.minute, values.second]);
@@ -328,11 +342,17 @@
                  });
                
                if(this.$ampm) {
-                   if(values.hour > 12) {
-                       values.hour -= 12;
+                   //12:00 pm --> 12:00 (24-h format, midday), 12:00 am --> 00:00 (24-h format, midnight, start of day)
+                   if(values.hour >= 12) {
                        values.ampm = 'pm';
+                       if(values.hour > 12) {
+                           values.hour -= 12;
+                       }
                    } else {
-                       values.ampm = 'am';                  
+                       values.ampm = 'am';
+                       if(values.hour === 0) {
+                           values.hour = 12;
+                       }
                    } 
                }
                

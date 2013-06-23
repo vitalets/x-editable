@@ -41,13 +41,15 @@ $(function () {
             
             //open second time: items should not dublicate
             e.click();
-                        
-            ok(p.find('select').length, 'select exists');
-            equal(p.find('select').find('option').length, size, 'options loaded');
-            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-                          
-            e.remove();    
-            start();  
+            p = tip(e);
+            setTimeout(function() {            
+                ok(p.find('select').length, 'select exists');
+                equal(p.find('select').find('option').length, size, 'options loaded');
+                equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+
+                e.remove();    
+                start();  
+            }, timeout);                
         }, timeout);                     
     });      
     
@@ -106,7 +108,8 @@ $(function () {
     }); 
     
      test("load options from function returning array", function () {
-         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+         var counter = 0,
+             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
              pk: 1,
              prepend: function() {
                 equal(this, e[0], 'prepend scope is element');
@@ -114,22 +117,30 @@ $(function () {
              },
              source: function() {
                 equal(this, e[0], 'source scope is element');
-                return groups; 
+                return counter ? groupsArr.concat([{10: 'test'}]) : groupsArr; 
              }
           });
 
-        e.click()
-        var p = tip(e);
-        ok(p.is(':visible'), 'popover visible');
-        ok(p.find('select').length, 'select exists');
-        equal(p.find('select').find('option').length, size+1, 'options loaded');
-        equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-        p.find('.editable-cancel').click(); 
-        ok(!p.is(':visible'), 'popover was removed');  
+        function t() {  
+            e.click()
+            var p = tip(e);
+            ok(p.is(':visible'), 'popover visible');
+            ok(p.find('select').length, 'select exists');
+            equal(p.find('select').find('option').length, size+1+counter, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+            p.find('.editable-cancel').click(); 
+            ok(!p.is(':visible'), 'popover was removed');
+        }
+        
+        //first run
+        t();
+        //second time
+        counter = 1;
+        t();  
     });    
     
      asyncTest("load options from function returning URL", function () {
-         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo('#qunit-fixture').editable({
+         var e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">customer</a>').appendTo(fx).editable({
              pk: 1,
              //need to disable cache to force request
              sourceCache: false,             
@@ -152,13 +163,15 @@ $(function () {
             
             //open second time: items should not dublicate
             e.click();
-                        
-            ok(p.find('select').length, 'select exists');
-            equal(p.find('select').find('option').length, size, 'options loaded');
-            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
-                          
-            e.remove();    
-            start();  
+            p = tip(e);
+            setTimeout(function() {
+                ok(p.find('select').length, 'select exists');
+                equal(p.find('select option').length, size, 'options loaded');
+                equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;
+                              
+                e.remove();
+                start();
+            }, timeout);  
         }, timeout);  
     });      
     
@@ -428,7 +441,7 @@ $(function () {
         
      });     
      
-     
+     //since 1.4.5 sourceCache is more strong: it forces load sourceData on every click     
     asyncTest("sourceCache: false", function () {
         
          $.mockjax({
@@ -448,6 +461,7 @@ $(function () {
            });
         
         setTimeout(function() {
+            //autotext for first only!
             equal(req, 1, 'autotext request performed');
                
             //click first
@@ -459,7 +473,7 @@ $(function () {
                 
                 ok(p.is(':visible'), 'popover visible');
                 equal(p.find('select').find('option').length, size, 'options loaded');
-                equal(req, 1, 'no additional request performed, loaded on autotext');
+                equal(req, 2, 'additional request performed (allthough loaded on autotext)');
                 
                 p.find('.editable-cancel').click(); 
                 ok(!p.is(':visible'), 'popover was removed');  
@@ -471,7 +485,7 @@ $(function () {
                 setTimeout(function() {
                     ok(p.is(':visible'), 'popover2 visible');
                     equal(p.find('select').find('option').length, size, 'options loaded');
-                    equal(req, 2, 'second request performed');
+                    equal(req, 3, 'second request performed');
                     
                     p.find('.editable-cancel').click(); 
                     ok(!p.is(':visible'), 'popover was removed');                  
@@ -601,7 +615,7 @@ $(function () {
      
      asyncTest("'display' callback", function () {
          var req = 0, 
-             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php"></a>').appendTo(fx).editable({
+             e = $('<a href="#" data-type="select" data-value="2" data-url="post.php">123</a>').appendTo(fx).editable({
              pk: 1,
              source: groups,
              ajaxOptions: {
@@ -690,16 +704,14 @@ $(function () {
      
     
     asyncTest("change source", function () {
-        var e = $('<a href="#" data-type="select" data-name="load-srv" data-value="2" data-source="groups.php"></a>').appendTo(fx).editable({
-            //need to disable cache to force request
-            sourceCache: false
+        var e = $('<a href="#" data-type="select" data-name="load-srv" data-value="2" data-source="groups.php">customer</a>').appendTo(fx).editable({
+            sourceCache: true
         });
-
+                 
+        e.click();
+        var p = tip(e); 
+       
         setTimeout(function() {
-        
-            e.click();
-            var p = tip(e); 
-           
             equal(p.find('select').find('option').length, size, 'options loaded');
             equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;       
             
@@ -707,12 +719,12 @@ $(function () {
             ok(!p.is(':visible'), 'popover was closed');
             
             $.mockjax({
-                url: 'groups1.php',
+                url: 'groups-changed.php',
                 responseText: [{value: 'a', text: 1}, {value: 'b', text: 2}]
             });        
                     
             //set new source
-            e.editable('option', 'source', 'groups1.php');
+            e.editable('option', 'source', 'groups-changed.php');
             e.click();
          
             setTimeout(function() {
@@ -728,8 +740,7 @@ $(function () {
                 e.remove();    
                 start();  
             }, timeout);
-            
-        }, timeout);                                                  
+         }, timeout);                
     });  
     
     asyncTest("optgroup", function () {

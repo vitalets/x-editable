@@ -33,6 +33,9 @@ Applied as jQuery method.
             this.formOptions.scope = this.$element[0]; 
             
             this.initContainer();
+            
+            //flag to hide container, when saving value will finish
+            this.delayedHide = false;
 
             //bind 'destroyed' listener to destroy container when element is removed from dom
             this.$element.on('destroyed', $.proxy(function(){
@@ -137,7 +140,14 @@ Applied as jQuery method.
                 save: $.proxy(this.save, this), //click on submit button (value changed)
                 nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
                 cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
-                show: $.proxy(this.setPosition, this), //re-position container every time form is shown (occurs each time after loading state)
+                show: $.proxy(function() {
+                    if(this.delayedHide) {
+                        this.hide(this.delayedHide.reason);
+                        this.delayedHide = false;
+                    } else {
+                        this.setPosition();
+                    }
+                }, this), //re-position container every time form is shown (occurs each time after loading state)
                 rendering: $.proxy(this.setPosition, this), //this allows to place container correctly when loading shown
                 resize: $.proxy(this.setPosition, this), //this allows to re-position container when form size is changed 
                 rendered: $.proxy(function(){
@@ -181,11 +191,11 @@ Applied as jQuery method.
 
             /*
             Currently, form is re-rendered on every show. 
-            The main reason is that we dont know, what container will do with content when closed:
-            remove(), detach() or just hide().
+            The main reason is that we dont know, what will container do with content when closed:
+            remove(), detach() or just hide() - it depends on container.
             
             Detaching form itself before hide and re-insert before show is good solution, 
-            but visually it looks ugly, as container changes size before hide.  
+            but visually it looks ugly --> container changes size before hide.  
             */             
             
             //if form already exist - delete previous data 
@@ -218,10 +228,18 @@ Applied as jQuery method.
                 return;
             }
             
+            //if form is saving value, schedule hide
+            if(this.$form.data('editableform').isSaving) {
+                this.delayedHide = {reason: reason};
+                return;    
+            } else {
+                this.delayedHide = false;
+            }
+
             this.$element.removeClass('editable-open');   
             this.innerHide();
-            
-            /**        
+
+            /**
             Fired when container was hidden. It occurs on both save or cancel.  
             **Note:** Bootstrap popover has own `hidden` event that now cannot be separated from x-editable's one.
             The workaround is to check `arguments.length` that is always `2` for x-editable. 
@@ -235,20 +253,20 @@ Applied as jQuery method.
                     //auto-open next editable
                     $(this).closest('tr').next().find('.editable').editable('show');
                 } 
-            });            
-            **/             
+            });
+            **/
             this.$element.triggerHandler('hidden', reason || 'manual');   
         },
-        
+
         /* internal show method. To be overwritten in child classes */
         innerShow: function () {
              
         },        
-        
+
         /* internal hide method. To be overwritten in child classes */
         innerHide: function () {
-    
-        },        
+
+        },
         
         /**
         Toggles container visibility (show / hide)
@@ -293,7 +311,7 @@ Applied as jQuery method.
             **/             
             this.$element.triggerHandler('save', params);
             
-            //hide must be after trigger, as saving value may require methods od plugin, applied to input
+            //hide must be after trigger, as saving value may require methods of plugin, applied to input
             this.hide('save');
         },
 
@@ -453,7 +471,7 @@ Applied as jQuery method.
         onblur: 'cancel',
         
         /**
-        Animation speed (inline mode)
+        Animation speed (inline mode only)
         @property anim 
         @type string
         @default false

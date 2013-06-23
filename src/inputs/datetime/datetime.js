@@ -5,7 +5,7 @@ Before usage you should manually include dependent js and css:
 
     <link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
     <script src="js/bootstrap-datetimepicker.js"></script>
- 
+
 For **i18n** you should include js file from here: https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales
 and set `language` option.  
 
@@ -30,14 +30,14 @@ $(function(){
 **/
 (function ($) {
     "use strict";
-    
+
     var DateTime = function (options) {
         this.init('datetime', options, DateTime.defaults);
         this.initPicker(options, DateTime.defaults);
     };
 
     $.fn.editableutils.inherit(DateTime, $.fn.editabletypes.abstractinput);
-    
+
     $.extend(DateTime.prototype, {
         initPicker: function(options, defaults) {
             //'format' is set directly from settings or data-* attributes
@@ -46,13 +46,13 @@ $(function(){
             if(!this.options.viewformat) {
                 this.options.viewformat = this.options.format;
             }
-            
+
             //overriding datetimepicker config (as by default jQuery extend() is not recursive)
             //since 1.4 datetimepicker internally uses viewformat instead of format. Format is for submit only
             this.options.datetimepicker = $.extend({}, defaults.datetimepicker, options.datetimepicker, {
                 format: this.options.viewformat
             });
-            
+
             //language
             this.options.datetimepicker.language = this.options.datetimepicker.language || 'en'; 
 
@@ -62,16 +62,21 @@ $(function(){
             //store parsed formats
             this.parsedFormat = this.dpg.parseFormat(this.options.format, this.options.formatType);
             this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat, this.options.formatType);
-            
-            //
-            this.options.datetimepicker.startView = this.options.startView;
-            this.options.datetimepicker.minView = this.options.minView;
-            this.options.datetimepicker.maxView = this.options.maxView;
         },
-        
+
         render: function () {
             this.$input.datetimepicker(this.options.datetimepicker);
-            
+
+            //adjust container position when viewMode changes
+            //see https://github.com/smalot/bootstrap-datetimepicker/pull/80
+            this.$input.on('changeMode', function(e) {
+                var f = $(this).closest('form').parent();
+                //timeout here, otherwise container changes position before form has new size
+                setTimeout(function(){
+                    f.triggerHandler('resize');
+                }, 0);
+            });
+
             //"clear" link
             if(this.options.clear) {
                 this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
@@ -79,11 +84,11 @@ $(function(){
                     e.stopPropagation();
                     this.clear();
                 }, this));
-                
+
                 this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            }                
+            }
         },
-        
+
         value2html: function(value, element) {
             //formatDate works with UTCDate!
             var text = value ? this.dpg.formatDate(this.toUTC(value), this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
@@ -91,45 +96,45 @@ $(function(){
                 DateTime.superclass.value2html(text, element);
             } else {
                 return text;
-            } 
+            }
         },
 
         html2value: function(html) {
             //parseDate return utc date!
-            var value = html ? this.dpg.parseDate(html, this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : null; 
+            var value = this.parseDate(html, this.parsedViewFormat); 
             return value ? this.fromUTC(value) : null;
-        },   
-        
+        },
+
         value2str: function(value) {
             //formatDate works with UTCDate!
             return value ? this.dpg.formatDate(this.toUTC(value), this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : '';
-       }, 
-       
+       },
+
        str2value: function(str) {
            //parseDate return utc date!
-           var value = str ? this.dpg.parseDate(str, this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : null;
+           var value = this.parseDate(str, this.parsedFormat);
            return value ? this.fromUTC(value) : null;
-       }, 
-       
+       },
+
        value2submit: function(value) {
            return this.value2str(value);
-       },                    
+       },
 
        value2input: function(value) {
            if(value) {
              this.$input.data('datetimepicker').setDate(value);
            }
        },
-        
+
        input2value: function() { 
            //date may be cleared, in that case getDate() triggers error
            var dt = this.$input.data('datetimepicker');
            return dt.date ? dt.getDate() : null;
-       },       
-       
+       },
+
        activate: function() {
        },
-       
+
        clear: function() {
           this.$input.data('datetimepicker').date = null;
           this.$input.find('.active').removeClass('active');
@@ -137,7 +142,7 @@ $(function(){
              this.$input.closest('form').submit(); 
           }          
        },
-       
+
        autosubmit: function() {
            this.$input.on('mouseup', '.minute', function(e){
                var $form = $(this).closest('form');
@@ -146,19 +151,38 @@ $(function(){
                }, 200);
            });
        },
-       
+
        //convert date from local to utc
        toUTC: function(value) {
          return value ? new Date(value.valueOf() - value.getTimezoneOffset() * 60000) : value;  
        },
-              
+
        //convert date from utc to local
        fromUTC: function(value) {
          return value ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000) : value;  
+       },
+
+       /*
+        For incorrect date bootstrap-datetimepicker returns current date that is not suitable
+        for datetimefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+           var date = null, formattedBack;
+           if(str) {
+               date = this.dpg.parseDate(str, format, this.options.datetimepicker.language, this.options.formatType);
+               if(typeof str === 'string') {
+                   formattedBack = this.dpg.formatDate(date, format, this.options.datetimepicker.language, this.options.formatType);
+                   if(str !== formattedBack) {
+                       date = null;
+                   } 
+               }
+           }
+           return date;
        }
 
     });
-    
+
     DateTime.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
@@ -168,7 +192,7 @@ $(function(){
         /**
         @property inputclass 
         @default null
-        **/         
+        **/
         inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
@@ -187,12 +211,12 @@ $(function(){
         @property viewformat 
         @type string
         @default null
-        **/          
-        viewformat: null,  
+        **/
+        viewformat: null,
         /**
         Configuration of datetimepicker.
         Full list of options: https://github.com/smalot/bootstrap-datetimepicker
-        
+
         @property datetimepicker 
         @type object
         @default { }
@@ -204,13 +228,13 @@ $(function(){
         /**
         Text shown as clear date button. 
         If <code>false</code> clear button will not be rendered.
-        
+
         @property clear 
         @type boolean|string
-        @default 'x clear'         
+        @default 'x clear'
         **/
         clear: '&times; clear'
-    });   
+    });
 
     $.fn.editabletypes.datetime = DateTime;
 

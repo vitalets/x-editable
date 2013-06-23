@@ -59,7 +59,7 @@
         */
         /*jshint laxcomma: true*/
         setPosition: function () { 
-         
+
             (function() {    
                 var $tip = this.tip()
                 , inside

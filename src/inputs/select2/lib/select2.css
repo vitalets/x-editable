@@ -1,7 +1,8 @@
 /*
-Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
+Version: 3.4.0 Timestamp: Tue May 14 08:27:33 PDT 2013
 */
 .select2-container {
+    margin: 0;
     position: relative;
     display: inline-block;
     /* inline-block for ie7 */
@@ -81,6 +82,10 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
     background-image: linear-gradient(top, #eeeeee 0%,#ffffff 90%);
 }
 
+.select2-container.select2-allowclear .select2-choice span {
+    margin-right: 42px;
+}
+
 .select2-container .select2-choice span {
     margin-right: 26px;
     display: block;
@@ -94,11 +99,11 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
 }
 
 .select2-container .select2-choice abbr {
-    display: block;
+    display: none;
     width: 12px;
     height: 12px;
     position: absolute;
-    right: 26px;
+    right: 24px;
     top: 8px;
 
     font-size: 1px;
@@ -109,6 +114,11 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
     cursor: pointer;
     outline: 0;
 }
+
+.select2-container.select2-allowclear .select2-choice abbr {
+    display: inline-block;
+}
+
 .select2-container .select2-choice abbr:hover {
     background-position: right -11px;
     cursor: pointer;
@@ -119,11 +129,6 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
     left: 0;
     top: 0;
     z-index: 9998;
-    background-color: #fff;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* works in IE 8 */
-        filter: "alpha(opacity=0)"; /* expected to work in IE 8 */
-        filter: alpha(opacity=0); /* IE 4-7 */
 }
 
 .select2-drop {
@@ -147,6 +152,15 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
             box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
 }
 
+.select2-drop-auto-width {
+    border-top: 1px solid #aaa;
+    width: auto;
+}
+
+.select2-drop-auto-width .select2-search {
+    padding-top: 4px;
+}
+
 .select2-drop.select2-drop-above {
     margin-top: 1px;
     border-top: 1px solid #aaa;
@@ -162,7 +176,7 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
 }
 
 .select2-container .select2-choice div {
-    display: block;
+    display: inline-block;
     width: 18px;
     height: 100%;
     position: absolute;
@@ -207,12 +221,6 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
     z-index: 10000;
 
     white-space: nowrap;
-}
-
-.select2-search-hidden {
-    display: block;
-    position: absolute;
-    left: -10000px;
 }
 
 .select2-search input {
@@ -292,6 +300,20 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
     background-image: linear-gradient(top, #ffffff 0%,#eeeeee 50%);
 }
 
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+    border: 1px solid #5897fb;
+    border-top-color: transparent;
+
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(0.5, #eeeeee));
+    background-image: -webkit-linear-gradient(center top, white 0%, #eeeeee 50%);
+    background-image: -moz-linear-gradient(center top, white 0%, #eeeeee 50%);
+    background-image: -o-linear-gradient(top, white 0%, #eeeeee 50%);
+    background-image: -ms-linear-gradient(bottom, #ffffff 0%,#eeeeee 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 );
+    background-image: linear-gradient(bottom, #ffffff 0%,#eeeeee 50%);
+}
+
 .select2-dropdown-open .select2-choice div {
     background: transparent;
     border-left: none;
@@ -314,6 +336,7 @@ Version: 3.3.2 Timestamp: Mon Mar 25 12:14:18 PDT 2013
 
 .select2-results ul.select2-result-sub {
     margin: 0;
+    padding-left: 0;
 }
 
 .select2-results ul.select2-result-sub > li .select2-result-label { padding-left: 20px }
@@ -420,7 +443,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-container.select2-container-disabled .select2-choice abbr {
-    display: none
+    display: none;
 }
 
 
@@ -579,8 +602,8 @@ disabled look for disabled choices in the results dropdown
     background-color: #f4f4f4;
 }
 
-.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
-    display: none;
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {    display: none;
+    background:none;
 }
 /* end multiselect */
 
@@ -590,17 +613,31 @@ disabled look for disabled choices in the results dropdown
     text-decoration: underline;
 }
 
-.select2-offscreen {
-    border: 0;
+.select2-offscreen, .select2-offscreen:focus {
     clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
     width: 1px;
+    height: 1px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: absolute;
+    outline: 0;
+    left: 0px;
 }
 
+.select2-display-none {
+    display: none;
+}
+
+.select2-measure-scrollbar {
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+}
 /* Retina-ize icons */
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {

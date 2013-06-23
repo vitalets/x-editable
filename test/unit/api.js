@@ -66,7 +66,19 @@ $(function () {
         equal(values.comment, '', 'textarea empty value') ;
         ok(!('sex' in values), 'select value not present') ;
         ok(!('dob' in values), 'date value not present') ;
-     });    
+     }); 
+     
+    test("getValue with isSingle = true", function () {
+        var v = '123', 
+          e = $(
+          '<a href="#" data-type="text" id="username">'+v+'</a>' + 
+          '<a href="#" data-type="textarea" id="comment">456</a>' 
+         ).appendTo('#qunit-fixture').editable();
+
+        //check get value
+        var value = e.editable('getValue', true);
+        equal(value, v, 'value ok');
+     });        
      
     test("'init' event", function () {
         expect(1);
@@ -138,12 +150,13 @@ $(function () {
      });    
      
      asyncTest("event: save / hidden (reason: save)", function () {
-        expect(2);
+        expect(3);
         var val = '1',
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
         e.on('save', function(event, params) {
             equal(params.newValue, 2, 'save triggered, value correct');
+            equal(params.submitValue, '2', 'submitValue property correct');
         });
         
         e.on('hidden', function(event, reason) {
@@ -166,6 +179,33 @@ $(function () {
              start();  
         }, timeout);                                        
      });   
+     
+	 asyncTest("hide when saving value", function () {
+        var newVal = 2,
+            e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="1"></a>')
+            .appendTo(fx)    
+	        .editable({
+	            source: groupsArr
+	        });
+        
+        e.click();
+        var p = tip(e);
+		p.find('select').val(2);
+        p.find('form').submit(); 
+        
+        e.parent().click();
+        
+        ok(p.is(':visible'), 'popover still visible');
+                
+        setTimeout(function() {
+             equal(e.data('editable').value, newVal, 'new value saved');
+             ok(!p.is(':visible'), 'popover closed');
+              
+             e.remove();    
+             start();  
+        }, timeout);                                        
+        
+     });      
      
      test("show/hide/toggle methods", function () {
         var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture').editable();

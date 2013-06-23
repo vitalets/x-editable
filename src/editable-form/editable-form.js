@@ -60,6 +60,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //show loading state
             this.showLoading();            
             
+            //flag showing is form now saving value to server. 
+            //It is needed to wait when closing form.
+            this.isSaving = false;
+            
             /**        
             Fired when rendering starts
             @event rendering 
@@ -212,31 +216,38 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 return;
             } 
 
+            //convert value for submitting to server
+            var submitValue = this.input.value2submit(newValue);
+            
+            this.isSaving = true;
+            
             //sending data to server
-            $.when(this.save(newValue))
+            $.when(this.save(submitValue))
             .done($.proxy(function(response) {
+                this.isSaving = false;
+
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
-                
+
                 //if success callback returns false --> keep form open and do not activate input
                 if(res === false) {
                     this.error(false);
                     this.showForm(false);
                     return;
-                }     
-                
+                }
+
                 //if success callback returns string -->  keep form open, show error and activate input               
                 if(typeof res === 'string') {
                     this.error(res);
                     this.showForm();
                     return;
-                }     
-                
+                }
+
                 //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
                 //it is usefull if you want to chnage value in url-function
                 if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
                     newValue = res.newValue;
-                }                            
+                }
 
                 //clear error message
                 this.error(false);   
@@ -246,37 +257,42 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 @event save 
                 @param {Object} event event object
                 @param {Object} params additional params
-                @param {mixed} params.newValue submitted value
+                @param {mixed} params.newValue raw new value
+                @param {mixed} params.submitValue submitted value as string
                 @param {Object} params.response ajax response
 
                 @example
                 $('#form-div').on('save'), function(e, params){
                     if(params.newValue === 'username') {...}
-                });                    
-                **/                
-                this.$div.triggerHandler('save', {newValue: newValue, response: response});
+                });
+                **/
+                this.$div.triggerHandler('save', {newValue: newValue, submitValue: submitValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
+                this.isSaving = false;
+
                 var msg;
                 if(typeof this.options.error === 'function') {
                     msg = this.options.error.call(this.options.scope, xhr, newValue);
                 } else {
                     msg = typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!';
                 }
-                
+
                 this.error(msg);
                 this.showForm();
             }, this));
         },
 
-        save: function(newValue) {
-            //convert value for submitting to server
-            var submitValue = this.input.value2submit(newValue);
-            
+        save: function(submitValue) {
             //try parse composite pk defined as json string in data-pk 
             this.options.pk = $.fn.editableutils.tryParseJson(this.options.pk, true); 
             
             var pk = (typeof this.options.pk === 'function') ? this.options.pk.call(this.options.scope) : this.options.pk,
+            /*
+              send on server in following cases:
+              1. url is function
+              2. url is string AND (pk defined OR send option = always) 
+            */
             send = !!(typeof this.options.url === 'function' || (this.options.url && ((this.options.send === 'always') || (this.options.send === 'auto' && pk !== null && pk !== undefined)))),
             params;
 
