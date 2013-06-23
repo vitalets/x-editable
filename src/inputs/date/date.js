@@ -27,7 +27,10 @@ $(function(){
     "use strict";
     
     //store bootstrap-datepicker as bdateicker to exclude conflict with jQuery UI one
-    $.fn.bdatepicker = $.fn.datepicker.noConflict();    
+    $.fn.bdatepicker = $.fn.datepicker.noConflict();
+    if(!$.fn.datepicker) { //if there were no other datepickers, keep also original name
+        $.fn.datepicker = $.fn.bdatepicker;    
+    }    
     
     var Date = function (options) {
         this.init('date', options, Date.defaults);

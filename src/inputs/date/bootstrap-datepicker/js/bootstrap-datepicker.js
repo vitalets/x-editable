@@ -958,7 +958,7 @@
 	}
 
 	var old = $.fn.datepicker;
-	$.fn.datepicker = function ( option ) {
+	var datepicker = $.fn.datepicker = function ( option ) {
 		var args = Array.apply(null, arguments);
 		args.shift();
 		var internal_return,
@@ -1242,11 +1242,13 @@
 			if ($this.data('datepicker')) return;
 			e.preventDefault();
 			// component click requires us to explicitly show it
-			$this.datepicker('show');
+			datepicker.call($this, 'show');
 		}
 	);
 	$(function(){
-		$('[data-provide="datepicker-inline"]').datepicker();
+		//$('[data-provide="datepicker-inline"]').datepicker();
+        //vit: changed to support noConflict()
+        datepicker.call($('[data-provide="datepicker-inline"]'));
 	});
 
 }( window.jQuery ));
