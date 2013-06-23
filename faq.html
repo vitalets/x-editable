@@ -89,25 +89,19 @@
         The common logic is: </p>
         <ol>
          <li>read <code>pk</code>, <code>name</code> and <code>value</code> from request (POST by default).</li>
-         <li>apply validation of value. If validation failed - return HTTP status != 200 and error message in response body.</li>
-         <li>If validation succeed - update object in database: set column specified by <code>name</code> to <code>value</code> using <code>pk</code> as object's unique identifier (<strong>ID</strong>).</li>
-         <li>send HTTP 200 OK response.</li>
+         <li>Validate value:</li>
+         <li>If <span style="color: red">validation failed</span> - return HTTP status != 200 (e.g. <i>400 Bad Request</i>) and error message in response body.</li>
+         <li>If <span style="color: green">validation succeed</span> - update object in database and return HTTP status = 200 with empty body.</li>
+
         </ol>
         <hr>
 
-        <h3>Data is not submitted to server! Why?</h3>
-        <p>The most possible reason is that you have empty <code>pk</code> or <code>url</code> options.<br> 
-        If you want to submit data without pk please set <code>send</code> option to <code>"always"</code>.   
-        </p>
-        <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
-        <hr>
-
-        <h3>How to change POST variables before submit?</h3>
-        <p>You should use <code>params</code> option defined as a function:</p> 
+        <h3>How to add/change POST variables for submit?</h3>
+        <p>You may define <code>params</code> as function:</p> 
         <pre>
 $('#field').editable({
   ...        
-  params: function(params) {
+  params: function(params) {  //params already contain `name`, `value`, `pk`
     var data = {};
     data['id'] = params.pk;
     data[params.name] = params.value;
@@ -118,7 +112,7 @@ $('#field').editable({
         <hr>
         
         <h3>How to submit stringified JSON?</h3>
-        <p>You should use <code>params</code> option defined as a function:</p> 
+        <p>You may define <code>params</code> as function and make conversion there:</p> 
         <pre>
 //submit in JSON format        
 $('#field').editable({
@@ -151,6 +145,11 @@ $('#field').editable({
         <p>Thank you!</p>
         <p><strong>List of donators:</strong></p>
         <ul>
+          <li>Ian Mayo - $50</li>
+          <li>Rene van de Peppel - $25</li>
+          <li>Nihad Hafiz - $20</li>
+          <li>Divan Moller - $15</li>
+          <li>Csstech - $100</li>
           <li>Tony Dark - $40</li>
           <li>Clint Morgan - $50</li>
           <li>Alexander Galkin - $5</li>
