@@ -1,6 +1,26 @@
 X-editable changelog
 =============================
 
+Version 1.4.5 Jun 23, 2013
+----------------------------
+[enh #245] highlight element after update (vitalets)
+[enh] select2 now works with ajax source (vitalets)
+[bug] fix datefield (datetimefield) to return null for incorrect dates (vitalets)
+[bug #224] do not close popup when it is saving value (vitalets)
+[enh] added `submitValue` to `save` event params (vitalets)
+[enh #259] allow `getValue` method to return value itself, not object (vitalets)
+[enh] add `destroy` method to inputs (vitalets)
+[enh #164] allow emptytext to be html (vitalets)
+[enh #78] allow html in editable content (vitalets)
+[enh] update container position when datetimepicker viewMode changes (vitalets)
+[enh #255] remove xxxView options from first level config of datetimepicker (vitalets)
+[enh] if `display` defined as function call it on init (vitalets)
+[enh #218] sourceCache now disables cache totally (vitalets)
+[bug #156] solve conflict of bootstrap datepicker and jQuery UI datepicker (vitalets)
+[enh] update bootstrap-datepicker to 1.1.2 (vitalets)
+[enh] allow follow links in disabled state (vitalets)
+[enh] update combodate to 1.0.4, fix #222 (vitalets)
+
 
 Version 1.4.4 May 4, 2013
 ----------------------------
