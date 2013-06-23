@@ -142,9 +142,9 @@ $(function () {
         }, timeout);
      });          
     
-     test("setValue (local)", function () {
+     test("setValue (local) + x-editable source", function () {
         var e = $('<a href="#" data-type="select2" data-name="select2" data-value="1">test2</a>').appendTo('#qunit-fixture').editable({
-               source: [{id: 1, text: 'text1'}, {id: 2, text: 'text2'}, {id: 3, text: 'text3'}]
+               source: [{value: 1, text: 'text1'}, {value: 2, text: 'text2'}, {value: 3, text: 'text3'}]
             });
 
         //autotext

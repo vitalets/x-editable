@@ -63,9 +63,9 @@ $(function(){
                 }
                 options.select2.ajax.url = source;
             } else {
-                //todo: possible convert x-editable source to select2 source format
-                options.select2.data = source;
-                this.sourceData = source;
+                //check format and convert x-editable format to select2 format (if needed)
+                this.sourceData = this.convertSource(source);
+                options.select2.data = this.sourceData;
             }
         } 
            
@@ -186,6 +186,22 @@ $(function(){
                   $(this).closest('form').submit();
                 }
             });
+        },
+        
+        /*
+        Converts source from x-editable format: {value: 1, text: "1"} to
+        select2 format: {id: 1, text: "1"}
+        */
+        convertSource: function(source) {
+            if($.isArray(source) && source.length && source[0].value !== undefined) {
+                for(var i = 0; i<source.length; i++) {
+                    if(source[i].value !== undefined) {
+                        source[i].id = source[i].value;
+                        delete source[i].value;
+                    }
+                }
+            }
+            return source;            
         }               
         
     });      
