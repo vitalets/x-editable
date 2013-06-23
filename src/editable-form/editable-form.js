@@ -224,30 +224,30 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //sending data to server
             $.when(this.save(submitValue))
             .done($.proxy(function(response) {
-            	this.isSaving = false;
-            	
+                this.isSaving = false;
+
                 //run success callback
                 var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
-                
+
                 //if success callback returns false --> keep form open and do not activate input
                 if(res === false) {
                     this.error(false);
                     this.showForm(false);
                     return;
-                }     
-                
+                }
+
                 //if success callback returns string -->  keep form open, show error and activate input               
                 if(typeof res === 'string') {
                     this.error(res);
                     this.showForm();
                     return;
-                }     
-                
+                }
+
                 //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
                 //it is usefull if you want to chnage value in url-function
                 if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
                     newValue = res.newValue;
-                }                            
+                }
 
                 //clear error message
                 this.error(false);   
@@ -264,20 +264,20 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 @example
                 $('#form-div').on('save'), function(e, params){
                     if(params.newValue === 'username') {...}
-                });                    
-                **/                
+                });
+                **/
                 this.$div.triggerHandler('save', {newValue: newValue, submitValue: submitValue, response: response});
             }, this))
             .fail($.proxy(function(xhr) {
-            	this.isSaving = false;
-            	
+                this.isSaving = false;
+
                 var msg;
                 if(typeof this.options.error === 'function') {
                     msg = this.options.error.call(this.options.scope, xhr, newValue);
                 } else {
                     msg = typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!';
                 }
-                
+
                 this.error(msg);
                 this.showForm();
             }, this));

@@ -222,16 +222,21 @@
        
        //see http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
        supportsTransitions: function () {
-           var b = document.body || document.documentElement;
-           var s = b.style;
-           var p = 'transition';
-           if(typeof s[p] == 'string') {return true; }
+           var b = document.body || document.documentElement,
+               s = b.style,
+               p = 'transition',
+               v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'];
+               
+           if(typeof s[p] === 'string') {
+               return true; 
+           }
 
            // Tests for vendor specific prop
-           v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'],
            p = p.charAt(0).toUpperCase() + p.substr(1);
            for(var i=0; i<v.length; i++) {
-               if(typeof s[v[i] + p] == 'string') { return true; }
+               if(typeof s[v[i] + p] === 'string') { 
+                   return true; 
+               }
            }
            return false;
        }            

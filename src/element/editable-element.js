@@ -89,7 +89,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //if display is function it's far more convinient to have autotext = always to render correctly on init
             //see https://github.com/vitalets/x-editable-yii/issues/34
             if(typeof this.options.display === 'function') {
-                this.options.autotext = 'always'
+                this.options.autotext = 'always';
             }
             
             //check conditions for autotext:
@@ -277,17 +277,17 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             */
             if(isEmpty !== undefined) { 
                 this.isEmpty = isEmpty;
-			} else {
-				//detect empty
-				if($.trim(this.$element.html()) === '') { 
-					this.isEmpty = true;
-				} else if($.trim(this.$element.text()) !== '') {
-					this.isEmpty = false;
-				} else {
-					//e.g. '<img>'
-					this.isEmpty = !this.$element.height() || !this.$element.width();
-				}
-			}           
+            } else {
+                //detect empty
+                if($.trim(this.$element.html()) === '') { 
+                    this.isEmpty = true;
+                } else if($.trim(this.$element.text()) !== '') {
+                    this.isEmpty = false;
+                } else {
+                    //e.g. '<img>'
+                    this.isEmpty = !this.$element.height() || !this.$element.width();
+                }
+            }           
             
             //emptytext shown only for enabled
             if(!this.options.disabled) {
@@ -546,18 +546,18 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             **/
             case 'getValue':
                 if(arguments.length === 2 && arguments[1] === true) { //isSingle = true
-                	result = this.eq(0).data(datakey).value;
-				} else {
-	                this.each(function () {
-	                    var $this = $(this), data = $this.data(datakey);
-	                    if (data && data.value !== undefined && data.value !== null) {
-	                        result[data.options.name] = data.input.value2submit(data.value);
-	                    }
-	                });
-				}
+                    result = this.eq(0).data(datakey).value;
+                } else {
+                    this.each(function () {
+                        var $this = $(this), data = $this.data(datakey);
+                        if (data && data.value !== undefined && data.value !== null) {
+                            result[data.options.name] = data.input.value2submit(data.value);
+                        }
+                    });
+                }
             return result;
 
-            /**  
+            /**
             This method collects values from several editable elements and submit them all to server.   
             Internally it runs client-side validation for all fields and submits only in case of success.  
             See <a href="#newrecord">creating new records</a> for details.
