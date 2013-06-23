@@ -785,7 +785,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
         
-        @property selector 
+        @property highlight 
         @type string|boolean
         @since 1.4.5        
         @default #FFFF80 
