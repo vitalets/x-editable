@@ -16,6 +16,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         } else {
             this.init();
         }
+        
+        //check for transition support
+        if(this.options.highlight && !$.fn.editableutils.supportsTransitions()) {
+            this.options.highlight = false;
+        }
     };
 
     Editable.prototype = {
@@ -380,6 +385,21 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 } else {
                     this.$element.addClass(this.options.unsavedclass);                    
                 }
+            }
+            
+            //highlight when saving
+            if(this.options.highlight) {
+                var $e = this.$element,
+                    $bgColor = $e.css('background-color');
+                    
+                $e.css('background-color', this.options.highlight);
+                setTimeout(function(){
+                    $e.css('background-color', $bgColor);
+                    $e.addClass('editable-bg-transition');
+                    setTimeout(function(){
+                       $e.removeClass('editable-bg-transition');  
+                    }, 1500);
+                }, 0);
             }
             
             //set new value
@@ -761,7 +781,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         });
         </script>
         **/         
-        selector: null        
+        selector: null,
+        /**
+        Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
+        
+        @property selector 
+        @type string|boolean
+        @since 1.4.5        
+        @default #FFFF80 
+        **/
+        highlight: '#FFFF80'        
     };
     
 }(window.jQuery));

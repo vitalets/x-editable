@@ -28,6 +28,14 @@ a.editable-click.editable-disabled:hover {
 /*    content: '*'*/
 }
 
+.editable-bg-transition {
+  -webkit-transition: background-color 1400ms ease-in;
+  -moz-transition: background-color 1400ms ease-in;
+  -o-transition: background-color 1400ms ease-in;
+  -ms-transition: background-color 1400ms ease-in;
+  transition: background-color 1400ms ease-in;  
+}
+
 /*see https://github.com/vitalets/x-editable/issues/139 */
 .form-horizontal .editable
 { 

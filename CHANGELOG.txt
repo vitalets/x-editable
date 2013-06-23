@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.5 wip
 ----------------------------
+[enh #245] highlight element after update (vitalets)
 [enh] select2 now works with ajax source (vitalets)
 [bug] fix datefield (datetimefield) to return null for incorrect dates (vitalets)
 [bug #224] do not close popup when it is saving value (vitalets)
