@@ -96,12 +96,19 @@
         </ol>
         <hr>
 
+        <h3>Data is not submitted to server! Why?</h3>
+        <p>The most possible reason is that you have empty <code>pk</code> or <code>url</code> options.<br> 
+        If you want to submit data without pk please set <code>send</code> option to <code>"always"</code>.   
+        </p>
+        <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
+        <hr>
+        
         <h3>How to add/change POST variables for submit?</h3>
         <p>You may define <code>params</code> as function:</p> 
         <pre>
 $('#field').editable({
   ...        
-  params: function(params) {  //params already contain `name`, `value`, `pk`
+  params: function(params) {  //params already contain `name`, `value` and `pk`
     var data = {};
     data['id'] = params.pk;
     data[params.name] = params.value;
@@ -133,7 +140,7 @@ $('#field').editable({
         
         <h3>How can I support development of X-editable?</h3>
         <p>All your ideas and feedback are very appreciated! Please feel free to open issues on <a href="http://github.com/vitalets/x-editable/issues">github</a> or send me <a href="mailto:noginsk@rambler.ru">email</a>.</p>
-        <p>I'm also grateful for your donations</p>
+        <p>I'm also grateful for your donations:</p>
         
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_s-xclick">
