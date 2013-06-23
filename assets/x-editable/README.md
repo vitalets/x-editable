@@ -1,16 +1,35 @@
 # X-editable
 
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
-It is a new life of [bootstrap-editable plugin](http://github.com/vitalets/bootstrap-editable) that was strongly refactored and improved. 
 
-## Demo + Docs + Download
-See **http://vitalets.github.com/x-editable**
+## Live demo
+**http://vitalets.github.io/x-editable/demo.html**
+
+## Installation
+
+### Manual download
+Use **http://vitalets.github.io/x-editable**
+
+### Bower
+````
+bower install x-editable
+````
+
+### CDN
+````js
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.5/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.5/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+````
+
+## Documentation
+**http://vitalets.github.io/x-editable**
+
 
 ## Reporting issues
-When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of **jsFiddle templates**:   
-1. [bootstrap](http://jsfiddle.net/xBB5x/195)  
-2. [jqueryui](http://jsfiddle.net/xBB5x/196)  
-3. [plain](http://jsfiddle.net/xBB5x/197)    
+When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of following:   
+1. [jsFiddle bootstrap template](http://jsfiddle.net/xBB5x/195)  
+2. [jsFiddle jqueryui template](http://jsfiddle.net/xBB5x/196)  
+3. [jsFiddle jquery template](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!
 
 ## Contribution
@@ -68,4 +87,4 @@ Thanks for your support!
 
 ## License
 Copyright (c) 2012 Vitaliy Potapov  
-Licensed under the MIT licenses.
+Licensed under the MIT license.

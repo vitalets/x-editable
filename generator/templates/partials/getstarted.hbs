@@ -58,8 +58,8 @@ $('#username').editable({
 {{/source}}                                                          
 </li>
 <li>Frontend ready!<br>
-Open your page and click on element. Enter new value and submit form. It will send ajax request with new value on <code>/post</code>.<br>
-<strong>Request</strong> contains <code>name</code>, <code>value</code> and <code>pk</code> of record:<br><br>
+Open your page and click on element. Enter new value and submit form. It will send ajax request with new value to <code>/post</code>.<br>
+Request contains <code>name</code>, <code>value</code> and <code>pk</code> of record to be updated:<br><br>
 {{#source}}
 POST /post
 {
@@ -82,9 +82,8 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 {{/source}}
 
 <strong>JSON response:</strong><br>
-If your server returns JSON, you can always have HTTP status 200 with error flag in response body.<br>
-To process it use <code>success</code> handler.<br>
-Example: 
+If your server returns JSON, you can always send HTTP status 200 with error flag in response body.<br>
+To process it use <code>success</code> handler:<br>
 {{#source}}
 //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
 

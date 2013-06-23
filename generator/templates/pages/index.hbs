@@ -8,7 +8,6 @@
     <p class="muted" style="font-size: 1.1em">In-place editing with <a href="http://twitter.github.com/bootstrap" target="_blank">Twitter Bootstrap</a>, <a href="http://jqueryui.com" target="_blank">jQuery UI</a> or pure <a href="http://jquery.com" target="_blank">jQuery</a></p>
     <p>This library allows you to create editable elements on your page. 
         It can be used with any engine (bootstrap, jquery-ui, jquery only) and includes both <i>popup</i> and <i>inline</i> modes.
-        It's new life of <a href="http://vitalets.github.com/bootstrap-editable" target="_blank">bootstrap-editable plugin</a> that was strongly refactored and improved.<br>
         Please try out demo to see how it works. 
     </p>
     <div style="text-align: center">
@@ -76,15 +75,15 @@
     <div class="span4">
         <h2 class="muted">Latest release</h2>
         {{#mdb}}
-#### 1.4.4 (May 4, 2013)
-* added bootstrap-datetimepicker, see [updated demo](http://vitalets.github.com/x-editable/demo.html)
-* ability to show buttons at bottom instead of right [#198](https://github.com/vitalets/x-editable/issues/198)
-* upgrade to bootstrap 2.3.1
-* upgrade to [bootstrap-datepicker 1.0.2](https://github.com/eternicode/bootstrap-datepicker)
-* upgrade to [select2 3.3.2](http://ivaynberg.github.com/select2)
-* many other [bugfixes](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt)
+#### 1.4.5 (Jun 23, 2013)
+* select2 input now supports remote source
+* element is pretty highlighted after update
+* solved conflict of bootstrap datepicker and jQuery UI datepicker
+* datetimepicker keeps position when changing modes 
+* `sourceCache` option of select input turns off cache totally
+* other [bugfixes](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt)
 
-Thanks to community for great support!
+Thanks to all for issues and emails!
         {{/mdb}}
         <div style="margin-top: 20px">
           <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
@@ -127,6 +126,7 @@ Thanks to community for great support!
             <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a> <small>by <a href="https://github.com/brianchance">brianchance</a></small></li>
             <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small>by <a href="https://github.com/clouddueling">Michael Calkins</a></small></li>
             <li><a href="http://cspeerly.github.com/Simple-ConnectDB" target="_blank">Simple-ConnectDB</a> <small>by <a href="https://github.com/cspeerly">Chuck Speerly</a></small></li>
+            <li><a href="http://lightswitch05.github.io/filterable" target="_blank">Filterable</a> <small>by <a href="https://github.com/lightswitch05">lightswitch05</a></small></li>
         </ul>
     </div>
 </div>

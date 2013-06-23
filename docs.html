@@ -189,8 +189,8 @@ Alternatively, you can set all options via javascript
 });</pre>                                                          
 </li>
 <li>Frontend ready!<br>
-Open your page and click on element. Enter new value and submit form. It will send ajax request with new value on <code>/post</code>.<br>
-<strong>Request</strong> contains <code>name</code>, <code>value</code> and <code>pk</code> of record:<br><br>
+Open your page and click on element. Enter new value and submit form. It will send ajax request with new value to <code>/post</code>.<br>
+Request contains <code>name</code>, <code>value</code> and <code>pk</code> of record to be updated:<br><br>
 <pre class="prettyprint linenums">POST /post
 {
     name:  &#x27;username&#x27;,  //name of field (column in db)
@@ -209,9 +209,8 @@ Default request method is <strong>POST</strong>, you can change it via <i>defaul
 <pre class="prettyprint linenums">$.fn.editable.defaults.ajaxOptions = {type: &quot;PUT&quot;};</pre>
 
 <strong>JSON response:</strong><br>
-If your server returns JSON, you can always have HTTP status 200 with error flag in response body.<br>
-To process it use <code>success</code> handler.<br>
-Example: 
+If your server returns JSON, you can always send HTTP status 200 with error flag in response body.<br>
+To process it use <code>success</code> handler:<br>
 <pre class="prettyprint linenums">//assume server response: 200 Ok {status: &#x27;error&#x27;, msg: &#x27;field cannot be empty!&#x27;}
 
 $(&#x27;#username&#x27;).editable({
@@ -283,7 +282,7 @@ List of values: <a href="http://api.jquery.com/jQuery.ajax">http://api.jquery.co
             <td>anim </td>
             <td>string</td>
             <td>false</td>
-            <td><p>Animation speed (inline mode)</p>
+            <td><p>Animation speed (inline mode only)</p>
 
             
             </td>
@@ -369,7 +368,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
         </tr> 
        
         <tr>
-            <td>error <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.4</span></div></td>
+            <td>error <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.4</span></div></td>
             <td>function</td>
             <td>null</td>
             <td><p>Error callback. Called when request failed (response status != 200).<br>Usefull when you want to parse error response and display a custom message.
@@ -383,6 +382,16 @@ Must return <strong>string</strong> - the message to be displayed in the error b
         return response.responseText;
     }
 }</pre>
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>highlight <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.5</span></div></td>
+            <td>string|boolean</td>
+            <td>#FFFF80</td>
+            <td><p>Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.</p>
+
             
             </td>
         </tr> 
@@ -714,18 +723,28 @@ $(&#x27;#price&#x27;).editable({
         <tr>
             <td>getValue() </td>
             <td>
-<i>none</i>
+<ul>
+    
+    <li><strong>isSingle</strong> <i>Bool</i> whether to return just value of single element
+        
+    </li>
+    
+</ul>
 
 </td>
-            <td><p>Returns current values of editable elements.<br>Note that it returns an <strong>object</strong> with name-value pairs, not a value itself. It allows to get data from several elements.<br>If value of some editable is <code>null</code> or <code>undefined</code> it is excluded from result object.</p>
+            <td><p>Returns current values of editable elements.<br>Note that it returns an <strong>object</strong> with name-value pairs, not a value itself. It allows to get data from several elements.<br>If value of some editable is <code>null</code> or <code>undefined</code> it is excluded from result object.
+When param <code>isSingle</code> is set to <strong>true</strong> - it is supposed you have single element and will return value of editable instead of object.</p>
 
             
                 <pre class="prettyprint linenums">$(&#x27;#username, #fullname&#x27;).editable(&#x27;getValue&#x27;);
-// possible result:
+//result:
 {
 username: &quot;superuser&quot;,
 fullname: &quot;John&quot;
-}</pre>
+}
+//isSingle = true
+$(&#x27;#username&#x27;).editable(&#x27;getValue&#x27;, true);
+//result &quot;superuser&quot;</pre>
             
             </td>
         </tr> 
@@ -1044,7 +1063,7 @@ The workaround is to check <code>arguments.length</code> that is always <code>2<
             
             <li>date</li>
             
-            <li>datetime <sup><span class="label label-success">new</span></sup></li>
+            <li>datetime</li>
             
             <li>dateui</li>
             
@@ -1472,7 +1491,7 @@ $(function(){
             </section>
         
          <section id="datetime">
-            <h2>datetime <sup><span class="label label-success">new</span></sup></h2>
+            <h2>datetime</h2>
             <p><p>Bootstrap-datetimepicker.<br>Based on <a href="https://github.com/smalot/bootstrap-datetimepicker">smalot bootstrap-datetimepicker plugin</a>. 
 Before usage you should manually include dependent js and css:
 
@@ -2298,16 +2317,19 @@ $(function(){
         
          <section id="select2">
             <h2>select2</h2>
-            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original docs</a> for detailed description and options.<br>You should manually include select2 distributive:  
+            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original select2 docs</a> for detailed description and options.<br>Compatible <strong>select2 version is 3.4.1</strong>!<br>You should manually download and include select2 distributive:  
 
 </p>
 <pre><code>&lt;link href=&quot;select2/select2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
 &lt;script src=&quot;select2/select2.js&quot;&gt;&lt;/script&gt;  </code></pre>
-<p>For make it <strong>Bootstrap-styled</strong> you can use css from <a href="https://github.com/t0m/select2-bootstrap-css">here</a>: 
+<p>To make it <strong>bootstrap-styled</strong> you can use css from <a href="https://github.com/t0m/select2-bootstrap-css">here</a>: 
 
 </p>
 <pre><code>&lt;link href=&quot;select2-bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;    </code></pre>
-<p><strong>Note:</strong> currently <code>ajax</code> source for select2 is not supported, as it&#39;s not possible to load it in closed select2 state.<br>The solution is to load source manually and assign statically.</p>
+<p><strong>Note:</strong> currently <code>autotext</code> feature does not work for select2 with <code>ajax</code> remote source.<br>You need initially put both <code>data-value</code> and element&#39;s text youself:    
+
+</p>
+<pre><code>&lt;a href=&quot;#&quot; data-type=&quot;select2&quot; data-value=&quot;1&quot;&gt;Text1&lt;/a&gt;</code></pre>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.1</span></div>
             </p>
@@ -2399,7 +2421,7 @@ E.g. <code>[{id: 1, text: &quot;text1&quot;}, {id: 2, text: &quot;text2&quot;}, 
 </table>
     </div>
     <div class="tab-pane" id="select2-example">
-     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;select2&quot; data-pk=&quot;1&quot; data-value=&quot;ru&quot; data-url=&quot;/post&quot; data-original-title=&quot;Select country&quot;&gt;&lt;/a&gt;
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;select2&quot; data-pk=&quot;1&quot; data-value=&quot;ru&quot; data-url=&quot;/post&quot; data-title=&quot;Select country&quot;&gt;&lt;/a&gt;
 &lt;script&gt;
 $(function(){
     $(&#x27;#country&#x27;).editable({

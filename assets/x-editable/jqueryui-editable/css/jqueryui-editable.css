@@ -1,4 +1,4 @@
-/*! X-editable - v1.4.4 
+/*! X-editable - v1.4.5 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
@@ -182,6 +182,14 @@ a.editable-click.editable-disabled:hover {
 
 .editable-unsaved:after {
 /*    content: '*'*/
+}
+
+.editable-bg-transition {
+  -webkit-transition: background-color 1400ms ease-out;
+  -moz-transition: background-color 1400ms ease-out;
+  -o-transition: background-color 1400ms ease-out;
+  -ms-transition: background-color 1400ms ease-out;
+  transition: background-color 1400ms ease-out;  
 }
 
 /*see https://github.com/vitalets/x-editable/issues/139 */
