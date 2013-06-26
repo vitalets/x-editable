@@ -139,7 +139,10 @@
                return [];
            }
            
-           valueProp = valueProp || 'value';
+           if (typeof(valueProp) !== "function") {
+               var idKey = valueProp || 'value';
+               valueProp = function (e) { return e[idKey]; };
+           }
                       
            var isValArray = $.isArray(value),
            result = [], 
@@ -151,11 +154,11 @@
                } else {
                    /*jslint eqeq: true*/
                    if(isValArray) {
-                       if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? o[valueProp] : o); }).length) {
+                       if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? valueProp(o) : o); }).length) {
                            result.push(o); 
                        }
                    } else {
-                       if(value == (o && typeof o === 'object' ? o[valueProp] : o)) {
+                       if(value == (o && typeof o === 'object' ? valueProp(o) : o)) {
                            result.push(o); 
                        }
                    }

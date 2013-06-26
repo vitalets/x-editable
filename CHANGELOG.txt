@@ -1,6 +1,11 @@
 X-editable changelog
 =============================
 
+Version 1.4.6 wip
+----------------------------
+[bug #276] support id() and text() functions of select2 (vitalets)
+
+
 Version 1.4.5 Jun 23, 2013
 ----------------------------
 [enh #245] highlight element after update (vitalets)

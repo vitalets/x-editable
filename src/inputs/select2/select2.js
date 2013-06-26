@@ -83,7 +83,7 @@ $(function(){
         
         //detect whether it is multi-valued
         this.isMultiple = this.options.select2.tags || this.options.select2.multiple;
-        this.isRemote = ('ajax' in this.options.select2);         
+        this.isRemote = ('ajax' in this.options.select2);
     };
 
     $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
@@ -108,16 +108,21 @@ $(function(){
                this.$input.on('change', function() {
                    $(this).closest('form').parent().triggerHandler('resize');
                }); 
-            } 
+            }
+            
+            //store function that extracs ID from element
+            this.idFunc = this.$input.data('select2').opts.id; 
+            this.formatSelection = this.$input.data('select2').opts.formatSelection; 
        },
        
        value2html: function(value, element) {
-           var text = '', data;
+           var text = '', data,
+               that = this;
            
            if(this.options.select2.tags) { //in tags mode just assign value
               data = value; 
            } else if(this.sourceData) {
-              data = $.fn.editableutils.itemsByValue(value, this.sourceData, 'id'); 
+              data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc); 
            } else {
               //can not get list of possible values (e.g. autotext for select2 with ajax source) 
            }
@@ -127,10 +132,10 @@ $(function(){
                //collect selected data and show with separator
                text = [];
                $.each(data, function(k, v){
-                   text.push(v && typeof v === 'object' ? v.text : v); 
+                   text.push(v && typeof v === 'object' ? that.formatSelection(v) : v); 
                });                   
            } else if(data) {
-               text = data.text;  
+               text = that.formatSelection(data);  
            }
 
            text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
@@ -149,7 +154,7 @@ $(function(){
                var item, items;
                //if sourceData loaded, use it to get text for display
                if(this.sourceData) {
-                   items = $.fn.editableutils.itemsByValue(value, this.sourceData, 'id');
+                   items = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
                    if(items.length) {
                        item = items[0];
                    } 
