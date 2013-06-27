@@ -155,7 +155,7 @@ To create your own input you can inherit from this class.
        /**
        Additional actions when destroying element 
        **/
-        destroy: function() {
+       destroy: function() {
        },
 
        // -------- helper functions --------
