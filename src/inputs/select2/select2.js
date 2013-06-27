@@ -84,6 +84,20 @@ $(function(){
         //detect whether it is multi-valued
         this.isMultiple = this.options.select2.tags || this.options.select2.multiple;
         this.isRemote = ('ajax' in this.options.select2);
+        
+        //store function returning ID of item
+        //should be here as used inautotext for local source
+        this.idFunc = this.options.select2.id;
+        if (typeof(this.idFunc) !== "function") {
+            var idKey = this.idFunc || 'id';
+            this.idFunc = function (e) { return e[idKey]; };
+        }
+        
+        //store function that renders text in select2
+        this.formatSelection = this.options.select2.formatSelection; 
+        if (typeof(this.formatSelection) !== "function") {
+            this.formatSelection = function (e) { return e.text; };
+        }       
     };
 
     $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
@@ -109,10 +123,6 @@ $(function(){
                    $(this).closest('form').parent().triggerHandler('resize');
                }); 
             }
-            
-            //store function that extracs ID from element
-            this.idFunc = this.$input.data('select2').opts.id; 
-            this.formatSelection = this.$input.data('select2').opts.formatSelection; 
        },
        
        value2html: function(value, element) {
@@ -148,25 +158,28 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           //for remote source .val() is not working, need to look in sourceData 
-           if(this.isRemote) {
-               //todo: check value for array
-               var item, items;
-               //if sourceData loaded, use it to get text for display
-               if(this.sourceData) {
-                   items = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
-                   if(items.length) {
-                       item = items[0];
-                   } 
-               } 
-               //if item not found by sourceData, use element text (e.g. for the first show)
-               if(!item) {   
-                   item = {id: value, text: $(this.options.scope).text()};
-               } 
-               //select2('data', ...) allows to set both id and text --> usefull for initial show when items are not loaded   
-               this.$input.select2('data', item).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
-           } else {
-               this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           //for local source use data directly from source (to allow autotext)
+           /*
+           if(!this.isRemote && !this.isMultiple) {
+               var items = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
+               if(items.length) {
+                   this.$input.select2('data', items[0]);
+                   return;
+               }
+           } 
+           */
+           
+           //for remote source just set value, text is updated by initSelection    
+           this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           
+           //if remote source AND no user's initSelection provided --> try to use element's text
+           if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {
+               var customId = this.options.select2.id,
+                   customText = this.options.select2.formatSelection;
+               if(!customId && !customText) {      
+                   var data = {id: value, text: $(this.options.scope).text()};
+                   this.$input.select2('data', data);    
+               }
            }
        },
        

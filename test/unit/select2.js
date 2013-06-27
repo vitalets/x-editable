@@ -8,7 +8,7 @@ $(function () {
         }
     });  
     
-     asyncTest("init-change-save (not multiple, local)", function () {
+     asyncTest("local: init-change-save (not multiple)", function () {
         var s = 2, text = 'text2',
             e = $('<a href="#" data-type="select2" data-name="select2" data-value="'+s+'"></a>').appendTo(fx).editable({
             source: [{id: 1, text: 'text1'}, {id: s, text: text}, {id: 3, text: 'text3'}],
@@ -49,7 +49,7 @@ $(function () {
         }, timeout);
      });  
      
-     asyncTest("init-change-save (multiple, local)", function () {
+     asyncTest("local: init-change-save (multiple)", function () {
         var s = '2,3', text = 'text2, text3',
             e = $('<a href="#" data-type="select2" data-name="select2" data-value="'+s+'"></a>').appendTo(fx).editable({
             source: [{id: 1, text: 'text1'}, {id: 2, text: 'text2'}, {id: 3, text: 'text3'}],
@@ -97,7 +97,7 @@ $(function () {
         }, timeout);
      });       
    
-    asyncTest("tags (local)", function () {
+    asyncTest("local: tags", function () {
         var s = 'text2,abc', text = 'text2, abc',
             e = $('<a href="#" data-type="select2" data-name="select2">'+text+'</a>').appendTo(fx).editable({
             viewseparator: ', ',
@@ -142,7 +142,7 @@ $(function () {
         }, timeout);
      });          
     
-     test("setValue (local) + x-editable source", function () {
+     test("local: setValue + x-editable source", function () {
         var e = $('<a href="#" data-type="select2" data-name="select2" data-value="1">test2</a>').appendTo('#qunit-fixture').editable({
                source: [{value: 1, text: 'text1'}, {value: 2, text: 'text2'}, {value: 3, text: 'text3'}]
             });
@@ -166,12 +166,12 @@ $(function () {
         equal(e.text(), 'text3', 'text ok');
      }); 
   
-    asyncTest("init-change-save (not multiple, remote)", function () {
+    asyncTest("remote: init-change-save, just url (not multiple)", function () {
         var s = 2, text = groups[s],
             newVal = 0, newText = groups[newVal],
             e = $('<a href="#" data-type="select2" data-name="select2" data-value="'+s+'">'+text+'</a>').appendTo(fx).editable({
-            source: 'groupsArr2'
-        });
+                source: 'groupsArr2'
+            });
         
         e.click();
         var p = tip(e);
@@ -221,4 +221,113 @@ $(function () {
         }, timeout);             
      });    
     
+    asyncTest("remote: custom id, custom text, init selection (not multiple)", function () {
+        var s = 2,
+            data = [
+            {cid: 1, name: '111'},
+            {cid: 2, name: '222'}
+            ],
+            idIndex, 
+            text = '222', req = 0,
+            newVal = 0, newText = groups[newVal],
+            e = $('<a href="#" data-type="select2" data-name="select2" data-value="'+s+'">'+text+'</a>').appendTo(fx).editable({
+                pk: 1,
+                select2: {
+                   minimumInputLength: 1,
+                   id: function (e) {
+                       return e.cid;
+                   },
+                   ajax: {
+                       url: '/select2list',
+                       dataType: 'json',
+                       data: function (term, page) {
+                           return { query: term };
+                       },
+                       results: function (data, page) {
+                           return { results: data };
+                       }
+                   },
+                   formatResult: function (e) {
+                       return e.name;
+                   },
+                   formatSelection: function (e) {
+                       return e.name;
+                   },
+                   initSelection: function (element, callback) {
+                       return $.get('/select2id', { query: element.val() }, function (data) {
+                           callback(data);
+                       }, 'json');
+                   }     
+                }
+            });
+        
+       //mocks
+       $.mockjax({
+           url: '/select2list',
+           responseTime: 50,
+           response: function() {
+               req++;
+               this.responseText = data;
+           }
+       }); 
+       
+       $.mockjax({
+           url: '/select2id',
+           responseTime: 50,
+           response: function() {
+               req++;
+               this.responseText = data[idIndex];
+           }
+       });       
+        
+        //start
+        idIndex = 1;
+        e.click();
+        var p = tip(e);
+        
+        ok(p.is(':visible'), 'popover visible');
+        
+        //waiting for initSelection
+        setTimeout(function() {
+            equal(p.find('.select2-choice span').text(), text, 'selected text correct'); 
+            equal(req, 1, '1 request ok'); 
+            
+            //enter 1 symbol
+            p.find('.select2-choice').mousedown();
+            $('.select2-search .select2-input:visible').val('1').trigger('keyup-change');
+            
+            //wait for list loading
+            setTimeout(function() {
+               equal($('.select2-results li').length, data.length, 'items loaded');
+               equal($('.select2-results .select2-highlighted > .select2-result-label').text(), data[0].name, 'highlight ok');
+      
+               //click on first
+               var newVal = 1, newText = '111';
+               $('.select2-results li').eq(0).mouseup();
+               equal(p.find('.select2-choice span').text(), data[0].name, 'new selected text ok');
+                           
+               //submit
+               p.find('form').submit();
+               
+               setTimeout(function() {
+                   ok(!p.is(':visible'), 'popover closed');
+                   equal(e.data('editable').value, newVal, 'new value ok');
+                   equal(e.text(), newText, 'new text ok');             
+
+                   //open again
+                   idIndex = 0;
+                   e.click();
+                   setTimeout(function() {
+                       p = tip(e);
+                       var $input = p.find('input[type="hidden"]');
+                       equal(p.find('.select2-choice span').text(), newText, 'text ok on second open');
+                       equal($input.val(), newVal, 'selected value ok on second open');                
+                   
+                       e.remove();
+                       start();
+                   }, timeout);
+               }, timeout);
+            }, timeout);    
+        }, timeout);
+   });        
 });
