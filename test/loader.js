@@ -19,7 +19,8 @@ define(function () {
                 paths = {
 //                    "bootstrap": "../test/libs/bootstrap221", 
 //                    "bootstrap": "../test/libs/bootstrap222", 
-                    "bootstrap": "../test/libs/bootstrap231", 
+                   // "bootstrap": "../test/libs/bootstrap231", 
+                    "bootstrap": "../test/libs/bootstrap232", 
                     
                   //  "jqueryui": "../test/libs/jquery-ui-"+jqueryui_ver+".custom", 
                     "jqueryui_js": "../test/libs/jquery-ui-"+jqueryui_ver+".custom/js/jquery-ui-"+jqueryui_ver+".custom", 
@@ -88,6 +89,8 @@ define(function () {
                     deps: ['require'],
                     init: function(require) {
                         loadCss(require.toUrl("../css/bootstrap.css")); 
+                        //add responsive css
+                        loadCss(require.toUrl("../css/bootstrap-responsive.css")); 
                     }                
                 },
                 'editable-form/editable-form-bootstrap': [
