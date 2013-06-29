@@ -78,25 +78,29 @@
                case 'top':
                       pos = {
                           my: "center bottom-5", 
-                          at: "center top" 
+                          at: "center top", 
+                          collision: 'flipfit'
                       };
                break;
                case 'right':
                       pos = {
                           my: "left+5 center", 
-                          at: "right center" 
+                          at: "right center", 
+                          collision: 'flipfit'
                       };
                break;
                case 'bottom':
                       pos = {
                           my: "center top+5", 
-                          at: "center bottom" 
+                          at: "center bottom", 
+                          collision: 'flipfit'
                       };
                break;
                case 'left':
                       pos = {
                           my: "right-5 center", 
-                          at: "left center" 
+                          at: "left center", 
+                          collision: 'flipfit'
                       };
                break;                                             
            }
