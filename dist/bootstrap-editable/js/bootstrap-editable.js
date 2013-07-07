@@ -1029,7 +1029,7 @@ Applied as jQuery method.
                     /*
                      TODO: added second param mainly to distinguish from bootstrap's shown event. It's a hotfix that will be solved in future versions via namespaced events.  
                     */
-                    this.$element.triggerHandler('shown', this); 
+                    this.$element.triggerHandler('shown', $(this.options.scope).data('editable')); 
                 }, this) 
             })
             .editableform('render');
@@ -2377,7 +2377,7 @@ To create your own input you can inherit from this class.
        /**
        Additional actions when destroying element 
        **/
-        destroy: function() {
+       destroy: function() {
        },
 
        // -------- helper functions --------
@@ -3030,12 +3030,19 @@ $(function(){
             this.$input.empty();
 
             var fillItems = function($el, data) {
+                var attr;
                 if($.isArray(data)) {
                     for(var i=0; i<data.length; i++) {
+                        attr = {};
                         if(data[i].children) {
-                           $el.append(fillItems($('<optgroup>', {label: data[i].text}), data[i].children)); 
+                            attr.label = data[i].text;
+                            $el.append(fillItems($('<optgroup>', attr), data[i].children)); 
                         } else {
-                           $el.append($('<option>', {value: data[i].value}).text(data[i].text)); 
+                            attr.value = data[i].value;
+                            if(data[i].disabled) {
+                                attr.disabled = true;
+                            }
+                            $el.append($('<option>', attr).text(data[i].text)); 
                         }
                     }
                 }
@@ -3663,6 +3670,12 @@ $(function(){
                 }
             }
             return source;            
+        },
+        
+        destroy: function() {
+            if(this.$input.data('select2')) {
+                this.$input.select2('destroy');
+            }
         }               
         
     });      
@@ -3718,7 +3731,7 @@ $(function(){
 * Dropdown date and time picker.
 * Converts text input into dropdowns to pick day, month, year, hour, minute and second.
 * Uses momentjs as datetime library http://momentjs.com.
-* For i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang 
+* For internalization include corresponding file from https://github.com/timrwood/moment/tree/master/lang 
 *
 * Confusion at noon and midnight - see http://en.wikipedia.org/wiki/12-hour_clock#Confusion_at_noon_and_midnight
 * In combodate: 
