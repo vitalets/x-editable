@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.6 wip
 ----------------------------
+[enh #287] add option to disable item in select (vitalets)
 [enh #281] add collision flag to adjust tooltip position (vitalets)
 [bug #279] fix jQuery UI tooltip z-index to be less than select2 dropdown (vitalets)
 [bug #276] support id() and text() functions of select2 (vitalets)
