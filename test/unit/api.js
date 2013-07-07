@@ -80,27 +80,33 @@ $(function () {
         equal(value, v, 'value ok');
      });        
      
-    test("'init' event", function () {
-        expect(1);
-        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo('#qunit-fixture');
+    asyncTest("'init' event", function () {
+        expect(3);
+        var e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx);
         
-        e.on('init', function(e, editable) {
+        e.on('init', function(event, editable) {
+             equal(e[0], this, 'scope ok');
              equal(editable.value, 'abc', 'init triggered, value correct');
+             setTimeout(function() {
+               equal(editable, e.data('editable'), 'editable param ok');
+               e.remove();    
+               start();  
+             }, timeout); 
         });
 
         e.editable();
     });      
   
      asyncTest("events: shown / hidden (reason: cancel, onblur, nochange, manual)", function () {
-        expect(15);
         var val = '1', test_reason, 
             e = $('<a href="#" data-pk="1" data-type="select" data-url="post.php" data-name="text" data-value="'+val+'"></a>').appendTo(fx);
         
-        e.on('shown', function(event) {
+        e.on('shown', function(event, edt) {
             //distinguish from native bootstrap popover event
             if(arguments.length != 2) return;
             var editable = $(this).data('editable');
             equal(editable.value, val, 'shown triggered, value correct');
+            equal(edt, editable, 'edt param correct');
         });
         
         e.on('hidden', function(event, reason) {

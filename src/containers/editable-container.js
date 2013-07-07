@@ -166,7 +166,7 @@ Applied as jQuery method.
                     /*
                      TODO: added second param mainly to distinguish from bootstrap's shown event. It's a hotfix that will be solved in future versions via namespaced events.  
                     */
-                    this.$element.triggerHandler('shown', this); 
+                    this.$element.triggerHandler('shown', $(this.options.scope).data('editable')); 
                 }, this) 
             })
             .editableform('render');
