@@ -387,7 +387,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
             }
             if(this.$element.css("display") == "none")
-                this.$element.css("display","");
+                this.$element.css("display","inline");
             //highlight when saving
             if(this.options.highlight) {
                 var $e = this.$element,
