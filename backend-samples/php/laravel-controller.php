@@ -1,8 +1,8 @@
 <?php
 
-class Serie_Controller extends Base_Controller
+class SerieController extends BaseController
 {
-    public function post_quick_update()
+    public function postQuickUpdate()
     {
         $inputs = Input::all();
 
@@ -16,7 +16,7 @@ class Serie_Controller extends Base_Controller
 
 /*
 The blade template.
-<span class='video-editable' data-emptytext='Click to add YouTube Video' data-type='text' data-url='{{ url('serie/quick_update') }}' data-pk="{{ $serie->id }}" data-name='video'>
+<span class='video-editable' data-emptytext='Click to add YouTube Video' data-type='text' data-url='{{ URL::route('serie/quick_update') }}' data-pk="{{ $serie->id }}" data-name='video'>
     {{ nl2br($serie->video) }}
 </span>
 */
