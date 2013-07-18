@@ -129,7 +129,26 @@ $('#field').editable({
   }
 });  
 </pre>
-        <hr>        
+        <hr>  
+        
+        <h3>How to customize element style?</h3>
+        <p>Overwrite css classes, e.g.</p> 
+        <pre>
+a.editable-click {
+  color: green;
+  border-color: green;
+} 
+a.editable-click.editable-disabled {
+  color: black;  
+  border-bottom: none;
+}
+a.editable-empty
+  color: gray;
+  font-style: italic;
+}
+</pre>
+
+        <hr>       
         
         <h3>How to create my own widgets?</h3>
         <p>
@@ -152,6 +171,7 @@ $('#field').editable({
         <p>Thank you!</p>
         <p><strong>List of donators:</strong></p>
         <ul>
+          <li>David Aronchick - $25</li>
           <li>yolcu-iskender.com - $13</li>
           <li>Ian Mayo - $50</li>
           <li>Rene van de Peppel - $25</li>

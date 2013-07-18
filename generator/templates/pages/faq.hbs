@@ -51,12 +51,20 @@ $('#field').editable({
         <hr>  
         
         <h3>How to customize element style?</h3>
-        <p>Overwrite css class, e.g.</p> 
+        <p>Overwrite css classes, e.g.</p> 
         <pre>
 a.editable-click {
-   color: green;
-   border-color: green;
+  color: green;
+  border-color: green;
 } 
+a.editable-click.editable-disabled {
+  color: black;  
+  border-bottom: none;
+}
+a.editable-empty
+  color: gray;
+  font-style: italic;
+}
 </pre>
 
         <hr>       
