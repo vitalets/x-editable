@@ -47,7 +47,11 @@ $(function(){
        showbuttons: false 
     });   
 
-    $('#vacation').editable();  
+    $('#vacation').editable({
+        datepicker: {
+            todayBtn: 'linked'
+        } 
+    });  
         
     $('#dob').editable();
           
