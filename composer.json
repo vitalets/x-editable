@@ -19,7 +19,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git://github.com/vitalets/x-editable.git"
+            "url": "https://github.com/vitalets/x-editable.git"
         }
     ],
     "support": {
