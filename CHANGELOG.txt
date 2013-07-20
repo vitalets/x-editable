@@ -3,6 +3,8 @@ X-editable changelog
 
 Version 1.4.6 wip
 ----------------------------
+[enh #300] Fix 'bootstrap popover falls off page if editable is too close to window edge' (belerweb)
+[enh #302] allow data-datepicker and data-datetimepicker (vitalets)
 [enh #287] add option to disable item in select (vitalets)
 [enh #281] add collision flag to adjust tooltip position (vitalets)
 [bug #279] fix jQuery UI tooltip z-index to be less than select2 dropdown (vitalets)
