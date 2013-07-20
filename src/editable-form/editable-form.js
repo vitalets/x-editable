@@ -477,8 +477,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         value: null,
         /**
-        Strategy for sending data on server. Can be <code>auto|always|never</code>.
-        When 'auto' data will be sent on server only if pk defined, otherwise new value will be stored in element.
+        Strategy for sending data on server. Can be `auto|always|never`.
+        When 'auto' data will be sent on server **only if pk and url defined**, otherwise new value will be stored locally.
 
         @property send 
         @type string
