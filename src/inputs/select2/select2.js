@@ -25,6 +25,7 @@ You need initially put both `data-value` and element's text youself:
 <a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-title="Select country"></a>
 <script>
 $(function(){
+    //local source
     $('#country').editable({
         source: [
               {id: 'gb', text: 'Great Britain'},
@@ -34,6 +35,42 @@ $(function(){
         select2: {
            multiple: true
         }
+    });
+    //remote source (simple)
+    $('#country').editable({
+        source: '/getCountries'  
+    });
+    //remote source (advanced)
+    $('#country').editable({
+        select2: {
+            placeholder: 'Select Country',
+            allowClear: true,
+            minimumInputLength: 3,
+            id: function (item) {
+                return item.CountryId;
+            },
+            ajax: {
+                url: '/getCountries',
+                dataType: 'json',
+                data: function (term, page) {
+                    return { query: term };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) {
+                return item.CountryName;
+            },
+            formatSelection: function (item) {
+                return item.CountryName;
+            },
+            initSelection: function (element, callback) {
+                return $.get('/getCountryById', { query: element.val() }, function (data) {
+                    callback(data);
+                });
+            } 
+        }  
     });
 });
 </script>
