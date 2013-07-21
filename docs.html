@@ -504,7 +504,7 @@ $(&#x27;#user&#x27;).editable({
             <td>string</td>
             <td>&#x27;auto&#x27;</td>
             <td><p>Strategy for sending data on server. Can be <code>auto|always|never</code>.
-When &#39;auto&#39; data will be sent on server only if pk defined, otherwise new value will be stored in element.</p>
+When &#39;auto&#39; data will be sent on server <strong>only if pk and url defined</strong>, otherwise new value will be stored locally.</p>
 
             
             </td>
@@ -2079,13 +2079,16 @@ $(function(){
         
          <section id="wysihtml5">
             <h2>wysihtml5</h2>
-            <p><p>Bootstrap wysihtml5 editor. Based on <a href="https://github.com/jhollingworth/bootstrap-wysihtml5">bootstrap-wysihtml5</a>.<br>You should include this input <strong>manually</strong> with dependent js and css files from <code>inputs-ext</code> directory.
+            <p><p>Bootstrap wysihtml5 editor. Based on <a href="https://github.com/jhollingworth/bootstrap-wysihtml5">bootstrap-wysihtml5</a>.<br>You should include <strong>manually</strong> distributives of <code>wysihtml5</code> and <code>bootstrap-wysihtml5</code>:
 
 </p>
 <pre><code>&lt;link href=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
 &lt;script src=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js&quot;&gt;&lt;/script&gt;  
-&lt;script src=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js&quot;&gt;&lt;/script&gt;  
-&lt;script src=&quot;js/inputs-ext/wysihtml5/wysihtml5.js&quot;&gt;&lt;/script&gt;  </code></pre>
+&lt;script src=&quot;js/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>And also include <code>wysihtml5.js</code> from <code>inputs-ext</code> directory of x-editable:
+
+</p>
+<pre><code>&lt;script src=&quot;js/inputs-ext/wysihtml5/wysihtml5.js&quot;&gt;&lt;/script&gt;  </code></pre>
 <p><strong>Note:</strong> It&#39;s better to use fresh bootstrap-wysihtml5 from it&#39;s <a href="https://github.com/jhollingworth/bootstrap-wysihtml5/tree/master/src">master branch</a> as there is update for correct image insertion.</p>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.0</span></div>
@@ -2424,6 +2427,7 @@ E.g. <code>[{id: 1, text: &quot;text1&quot;}, {id: 2, text: &quot;text2&quot;}, 
      <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;select2&quot; data-pk=&quot;1&quot; data-value=&quot;ru&quot; data-url=&quot;/post&quot; data-title=&quot;Select country&quot;&gt;&lt;/a&gt;
 &lt;script&gt;
 $(function(){
+    //local source
     $(&#x27;#country&#x27;).editable({
         source: [
               {id: &#x27;gb&#x27;, text: &#x27;Great Britain&#x27;},
@@ -2433,6 +2437,42 @@ $(function(){
         select2: {
            multiple: true
         }
+    });
+    //remote source (simple)
+    $(&#x27;#country&#x27;).editable({
+        source: &#x27;/getCountries&#x27;  
+    });
+    //remote source (advanced)
+    $(&#x27;#country&#x27;).editable({
+        select2: {
+            placeholder: &#x27;Select Country&#x27;,
+            allowClear: true,
+            minimumInputLength: 3,
+            id: function (item) {
+                return item.CountryId;
+            },
+            ajax: {
+                url: &#x27;/getCountries&#x27;,
+                dataType: &#x27;json&#x27;,
+                data: function (term, page) {
+                    return { query: term };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) {
+                return item.CountryName;
+            },
+            formatSelection: function (item) {
+                return item.CountryName;
+            },
+            initSelection: function (element, callback) {
+                return $.get(&#x27;/getCountryById&#x27;, { query: element.val() }, function (data) {
+                    callback(data);
+                });
+            } 
+        }  
     });
 });
 &lt;/script&gt;</pre>
