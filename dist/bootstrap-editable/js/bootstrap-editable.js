@@ -3495,10 +3495,24 @@ $(function(){
                 if(!options.select2.ajax.data) {
                     options.select2.ajax.data = function(term) {return { query:term };};
                 }
+
                 if(!options.select2.ajax.results) {
                     options.select2.ajax.results = function(data) { return {results:data };};
+                
                 }
+                
                 options.select2.ajax.url = source;
+                $.ajax({
+                  url: source,
+                  async:false,
+                  type: 'GET',
+                  cache: false,
+                  success: function(text){
+                    source = $.parseJSON(text);
+                  }
+                  });
+                this.sourceData = this.convertSource(source);
+                options.select2.data = this.sourceData;
             } else {
                 //check format and convert x-editable format to select2 format (if needed)
                 this.sourceData = this.convertSource(source);
@@ -3522,7 +3536,6 @@ $(function(){
             
             //apply select2
             this.$input.select2(this.options.select2);
-
             //when data is loaded via ajax, we need to know when it's done to populate listData
             if(this.isRemote) {
                 //listen to loaded event to populate data
@@ -3579,17 +3592,18 @@ $(function(){
                if(this.sourceData) {
                    items = $.fn.editableutils.itemsByValue(value, this.sourceData, 'id');
                    if(items.length) {
-                       item = items[0];
+                       item = items;
                    } 
-               } 
+               }
                //if item not found by sourceData, use element text (e.g. for the first show)
                if(!item) {   
                    item = {id: value, text: $(this.options.scope).text()};
                } 
                //select2('data', ...) allows to set both id and text --> usefull for initial show when items are not loaded   
-               this.$input.select2('data', item).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+               var select2Data = this.$input.select2('data', item);
+               //this.$input.select2('data', item).trigger('change', false); //second argument needed to separate initial change from user's click (for autosubmit)
            } else {
-               this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+               this.$input.val(value).trigger('change', false); //second argument needed to separate initial change from user's click (for autosubmit)
            }
        },
        
