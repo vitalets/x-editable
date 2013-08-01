@@ -121,7 +121,7 @@ Applied as jQuery method.
 
         /* returns container object */
         container: function() {
-            return this.$element.data(this.containerDataName || this.containerName); 
+            return this.$element.data(this.containerDataName) || this.$element.data(this.containerName);
         },
 
         /* call native method of underlying container, e.g. this.$element.popover('method') */ 
