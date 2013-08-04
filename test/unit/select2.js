@@ -97,7 +97,7 @@ $(function () {
         }, timeout);
      });       
    
-    asyncTest("local: tags", function () {
+    asyncTest("local: tags (simple array)", function () {
         var s = 'text2,abc', text = 'text2, abc',
             e = $('<a href="#" data-type="select2" data-name="select2">'+text+'</a>').appendTo(fx).editable({
             viewseparator: ', ',
@@ -140,7 +140,54 @@ $(function () {
             e.remove();
             start();
         }, timeout);
+     });      
+     
+ /*    
+ asyncTest("local: tags (array of objects)", function () {
+        var s = 'text2,abc', text = 'text2, abc',
+            e = $('<a href="#" data-type="select2" data-name="select2"></a>').appendTo(fx).editable({
+            viewseparator: ', ',
+            value: [1, 2],
+            select2: {
+                tags: [{id: 1, text: 'text1'}, {id: 2, text: 'text2'}]
+            }
+        });
+
+        equal(e.text(), 'text1, text2', 'initial text ok');
+        
+        e.click();
+        var p = tip(e);
+        
+        ok(p.is(':visible'), 'popover visible');
+        var $input = p.find('input[type="hidden"]');
+        ok($input.length, 'input exists');
+        ok($input.select2, 'select2 applied');
+        equal($input.val(), '1,2', 'selected value ok');        
+        equal(p.find('.select2-search-choice > div').length, 2, 'selected text ok');        
+        equal(p.find('.select2-search-choice > div').eq(0).text(), 'text1', 'text1 ok');        
+        equal(p.find('.select2-search-choice > div').eq(1).text(), 'text2', 'text2 ok');        
+        
+        //select new value
+//        s = 'text1,cde'; 
+ //       text = 'text1, cde';
+        $input.select2('val', [1]);
+
+        equal($input.val(), '1', 'new value ok');        
+        equal(p.find('.select2-search-choice > div').length, 1, 'new text ok');        
+        equal(p.find('.select2-search-choice > div').eq(0).text(), 'text1', 'text1 ok');        
+
+        p.find('form').submit();
+        
+        setTimeout(function() {
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value.length, 1, 'new value ok');
+            equal(e.text(), 'text1', 'new text ok');             
+            
+            e.remove();
+            start();
+        }, timeout);
      });          
+ */        
     
      test("local: setValue + x-editable source", function () {
         var e = $('<a href="#" data-type="select2" data-name="select2" data-value="1">test2</a>').appendTo('#qunit-fixture').editable({
