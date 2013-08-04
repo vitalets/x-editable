@@ -158,7 +158,8 @@
                            result.push(o); 
                        }
                    } else {
-                       if(value == (o && typeof o === 'object' ? valueProp(o) : o)) {
+                       var itemValue = (o && (typeof o === 'object')) ? valueProp(o) : o;
+                       if(value == itemValue) {
                            result.push(o); 
                        }
                    }
