@@ -61,6 +61,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //add 'editable' class to every editable element
             this.$element.addClass('editable');
             
+            //specifically for "textarea" add class .editable-pre-wrapped to keep linebreaks
+            if(this.input.type === 'textarea') {
+                this.$element.addClass('editable-pre-wrapped');
+            }
+            
             //attach handler activating editable. In disabled mode it just prevent default action (useful for links)
             if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');

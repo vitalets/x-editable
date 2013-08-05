@@ -57,6 +57,8 @@ $(function () {
         }, timeout);                       
       })            
   
+     //with white-space: pre-wrap no need to convert \n to BR
+     /*
      asyncTest("should replace <br> with newline (on show) and back (on save)", function () {
         var  v = '12<br>\n3&lt;i&gt;4<br />56',
              e = $('<a href="#" data-type="textarea" data-pk="1" data-url="post.php">'+v+'</a>').appendTo(fx).editable(),
@@ -80,7 +82,32 @@ $(function () {
            e.remove();    
            start();  
         }, timeout);           
-    })  
+    }) 
+    */ 
+   asyncTest("should keep newlines on show and on save", function () {
+        var  v = '12\n56',
+             e = $('<a href="#" data-type="textarea" data-pk="1" data-url="post.php">'+v+'</a>').appendTo(fx).editable(),
+             vnew = "12\n3<b>4\n56\n\n78",
+             vnew2 = "12\n3&lt;b&gt;4\n56\n\n78";
+
+        equal(e.data('editable').value, v, '\\n preserved');               
+ 
+        e.click();
+        var p = tip(e);
+        equal(p.find('textarea').val(), e.data('editable').value, 'textarea contains correct value');
+
+        p.find('textarea').val(vnew)
+        p.find('form').submit(); 
+        
+        setTimeout(function() {
+           ok(!p.is(':visible'), 'popover closed')
+           equal(e.data('editable').value, vnew, 'new text saved to value')
+           equal(e.html().toLowerCase(), vnew2.toLowerCase(), 'new text shown') 
+           e.remove();    
+           start();  
+        }, timeout);           
+    });     
+    
     
      asyncTest("submit by ctrl+enter", function () {
         expect(2);
