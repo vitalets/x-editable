@@ -547,6 +547,37 @@ $(function () {
         e.click(); 
         ok(!c.is(':visible'), 'clear hidden for empty input');
   });
+  
+    test("defaultValue", function () {
+        var e = $('<a href="#" data-name="text1"></a>').appendTo('#qunit-fixture').editable({
+          defaultValue: '123'
+        }),
+        e1 = $('<a href="#" data-name="text1"></a>').appendTo('#qunit-fixture').editable({
+          value: null,  
+          defaultValue: '123'
+        });
+        e2 = $('<a href="#" data-name="text1">qwe</a>').appendTo('#qunit-fixture').editable({
+          defaultValue: '123'
+        });
+
+        //empty text
+        e.click()
+        var p = tip(e);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), '123', 'default text ok');
+        
+        //empty value from js
+        e1.click()
+        p = tip(e1);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), '123', 'default text ok');
+        
+        //not empty
+        e2.click()
+        p = tip(e2);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), 'qwe', 'default text not set as element not empty');
+    });
                    
          
 });    

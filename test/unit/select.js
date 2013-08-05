@@ -778,6 +778,18 @@ $(function () {
                e.remove();    
                start();  
          }, timeout);                              
-    });               
+    }); 
+    
+    test("defaultValue", function () {
+        var e = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: groups,
+            defaultValue: 3 
+        });
+
+        e.click();
+        var p = tip(e);
+        ok(p.find('select').length, 'select exists')
+        equal(p.find('select').val(), 3, 'selected value correct');
+    });                
      
 });

@@ -102,7 +102,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     this.error(false);
                     this.input.$input.removeAttr('disabled');
                     this.$form.find('.editable-submit').removeAttr('disabled');
-                    this.input.value2input(this.value);
+                    var value = (this.value === null || this.value === undefined || this.value === '') ? this.options.defaultValue : this.value;
+                    this.input.value2input(value);
                     //attach submit handler
                     this.$form.submit($.proxy(this.submit, this));
                 }
@@ -476,6 +477,14 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @default null
         **/        
         value: null,
+        /**
+        Value that will be displayed in input if original field value is `null`.
+
+        @property defaultValue 
+        @type string|object
+        @default null
+        **/        
+        defaultValue: null,
         /**
         Strategy for sending data on server. Can be `auto|always|never`.
         When 'auto' data will be sent on server **only if pk and url defined**, otherwise new value will be stored locally.
