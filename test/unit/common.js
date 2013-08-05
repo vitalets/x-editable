@@ -647,13 +647,19 @@
     
      test("`selector` option", function () {
         var parent = $('<div><a href="#" id="a" data-type="text">123</a></div>').appendTo('#qunit-fixture').editable({
-            selector: 'a',
-            url: 'post.php',
-            source: groups
+            selector: '#a',
+            url: 'post.php'
         }),
         b = $('<a href="#" id="b" data-type="select" data-value="1"></a>'),
         e = $('#a'),
         selected = 2;
+        
+        //apply delegated editable second time
+        parent.editable({
+           selector: '#b', 
+           url: 'post.php',
+           source: groups
+        });
        
         ok(!e.hasClass('editable'), 'no editable class applied');
        

@@ -621,6 +621,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 data = $this.data(datakey), 
                 options = typeof option === 'object' && option;
 
+            //for delegated targets do not store `editable` object for element
+            //it's allows several different selectors.
+            //see: https://github.com/vitalets/x-editable/issues/312    
+            if(options && options.selector) {
+                data = new Editable(this, options);
+                return; 
+            }    
+            
             if (!data) {
                 $this.data(datakey, (data = new Editable(this, options)));
             }
