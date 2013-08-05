@@ -204,8 +204,14 @@ Time
     var Time = function (options) {
         this.init('time', options, Time.defaults);
     };
-    $.fn.editableutils.inherit(Time, $.fn.editabletypes.text);
-    Time.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+    //inherit from abstract, as inheritance from text gives selection error.
+    $.fn.editableutils.inherit(Time, $.fn.editabletypes.abstractinput);
+    $.extend(Time.prototype, {
+        render: function() {
+           this.setClass();
+        }        
+    });
+    Time.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<input type="time">'
     });
     $.fn.editabletypes.time = Time;

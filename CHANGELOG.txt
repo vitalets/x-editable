@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.4.6 wip
 ----------------------------
+[enh #286] added HTML5 time input (Doggie52)
 [enh] add `defaultValue` option (vitalets)
 [enh #313] add composer support (masim)
 [enh #300] Fix 'bootstrap popover falls off page if editable is too close to window edge' (belerweb)
