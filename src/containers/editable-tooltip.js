@@ -16,6 +16,12 @@
         splitOptions: function() {
             this.containerOptions = {};
             this.formOptions = {};
+            
+            //check that jQueryUI build contains tooltip widget
+            if(!$.ui[this.containerName]) {
+                $.error('Please use jQueryUI with "tooltip" widget! http://jqueryui.com/download');
+                return;
+            }
             //defaults for tooltip
             var cDef = $.ui[this.containerName].prototype.options;
             for(var k in this.options) {
