@@ -483,6 +483,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @property defaultValue 
         @type string|object
         @default null
+        @since 1.4.6
         **/        
         defaultValue: null,
         /**
