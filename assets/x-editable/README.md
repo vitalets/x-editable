@@ -27,7 +27,7 @@ bower install x-editable
 
 ## Reporting issues
 When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of following:   
-1. [jsFiddle bootstrap template](http://jsfiddle.net/xBB5x/195)  
+1. [jsFiddle bootstrap template](http://jsfiddle.net/xBB5x/1817)  
 2. [jsFiddle jqueryui template](http://jsfiddle.net/xBB5x/196)  
 3. [jsFiddle jquery template](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!

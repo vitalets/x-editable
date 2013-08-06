@@ -1,6 +1,21 @@
 X-editable changelog
 =============================
 
+Version 1.4.6 wip
+----------------------------
+[bug #312] can't apply selector more than once (vitalets)
+[enh #48] textarea: use `white-space: pre-wrap` instead of nl2br conversion (vitalets)
+[enh #286] added HTML5 time input (Doggie52)
+[enh] add `defaultValue` option (vitalets)
+[enh #313] add composer support (masim)
+[enh #300] Fix 'bootstrap popover falls off page if editable is too close to window edge' (belerweb)
+[enh #302] allow data-datepicker and data-datetimepicker (vitalets)
+[enh #287] add option to disable item in select (vitalets)
+[enh #281] add collision flag to adjust tooltip position (vitalets)
+[bug #279] fix jQuery UI tooltip z-index to be less than select2 dropdown (vitalets)
+[bug #276] support id() and text() functions of select2 (vitalets)
+
+
 Version 1.4.5 Jun 23, 2013
 ----------------------------
 [enh #245] highlight element after update (vitalets)
