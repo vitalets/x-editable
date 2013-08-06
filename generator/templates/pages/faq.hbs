@@ -22,7 +22,7 @@
         <p>Also form is not submitted if you did not change value. To manage this behavior see <code>savenochange</code> option.</p>
         <hr>
         
-        <h3>How to add/change POST variables for submit?</h3>
+        <h3>How to add/change POST variables submitted to server?</h3>
         <p>You may define <code>params</code> as function:</p> 
         <pre>
 $('#field').editable({
@@ -69,10 +69,16 @@ a.editable-empty
 
         <hr>       
         
-        <h3>How to create my own widgets?</h3>
+        <h3>How to create my own widgets / complex form?</h3>
         <p>
-          Please have a look on <a href="https://github.com/vitalets/x-editable/blob/master/src/inputs-ext/address/address.js">address input source</a>.  
-          Code is commented.   
+        {{#mdb}}
+To create new input type (widget) just have a look on sources in [inputs directory](https://github.com/vitalets/x-editable/tree/master/src/inputs).  
+All inputs a derived from `abstract.js`, code is commented.
+            
+I'm very often asked how to create complex widgets like [address input](https://github.com/vitalets/x-editable/blob/master/src/inputs-ext/address/address.js):    
+Please consider, that **x-editable main power is quick edit of single value that is stored in single database field**.  
+If you want to have full featured form with several fields, just render it in hidden DIV and display by click. You don't need x-editable for that.    
+        {{/mdb}}   
         </p>
         <hr>        
         
