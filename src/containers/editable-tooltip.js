@@ -44,8 +44,15 @@
             
             this.call(this.containerOptions);
             
-            //disable standart triggering tooltip event 
-            this.container()._off(this.container().element, 'mouseover focusin');
+            //disable standart triggering tooltip event
+            //for some versions of jQueryUI it gives error:
+            //TypeError: this.container(...)._off is not a function
+            //see: https://github.com/vitalets/x-editable/issues/32
+            if(this.container()._off) {
+                this.container()._off(this.container().element, 'mouseover focusin');
+            } else {
+                $.error('this.container()._off is not a function. jQuery UI: ' + $.ui.version);
+            }
         },         
         
         tip: function() {
