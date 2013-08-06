@@ -15,7 +15,7 @@ define(function () {
         loadCss: loadCss,
         getConfig: function (baseUrl) {
           
-            var jqueryui_ver = '1.10.2',
+            var jqueryui_ver = '1.10.3',
                 paths = {
 //                    "bootstrap": "../test/libs/bootstrap221", 
 //                    "bootstrap": "../test/libs/bootstrap222", 
