@@ -478,7 +478,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/        
         value: null,
         /**
-        Value that will be displayed in input if original field value is `null`.
+        Value that will be displayed in input if original field value is empty (`null|undefined|''`).
 
         @property defaultValue 
         @type string|object
