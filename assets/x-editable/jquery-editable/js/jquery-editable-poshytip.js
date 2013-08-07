@@ -894,7 +894,8 @@ Applied as jQuery method.
 
     //methods
     Popup.prototype = {
-        containerName: null, //tbd in child class
+        containerName: null, //method to call container on element
+        containerDataName: null, //object name in element's .data()
         innerCss: null, //tbd in child class
         containerClass: 'editable-container editable-popup', //css class applied to container element
         init: function(element, options) {
@@ -995,7 +996,16 @@ Applied as jQuery method.
 
         /* returns container object */
         container: function() {
-            return this.$element.data(this.containerDataName || this.containerName); 
+            var container;
+            //first, try get it by `containerDataName`
+            if(this.containerDataName) {
+                if(container = this.$element.data(this.containerDataName)) {
+                    return container;
+                }
+            }
+            //second, try `containerName`
+            container = this.$element.data(this.containerName);
+            return container;
         },
 
         /* call native method of underlying container, e.g. this.$element.popover('method') */ 

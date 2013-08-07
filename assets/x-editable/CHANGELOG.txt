@@ -1,7 +1,7 @@
 X-editable changelog
 =============================
 
-Version 1.4.6 wip
+Version 1.4.6 Aug 8, 2013
 ----------------------------
 [bug #312] can't apply selector more than once (vitalets)
 [enh #48] textarea: use `white-space: pre-wrap` instead of nl2br conversion (vitalets)

@@ -553,7 +553,7 @@
     "classitems": [
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 154,
+            "line": 164,
             "description": "Fired when container is shown and form is rendered (for select will wait for loading dropdown options).  \n**Note:** Bootstrap popover has own `shown` event that now cannot be separated from x-editable's one.\nThe workaround is to check `arguments.length` that is always `2` for x-editable.",
             "itemtype": "event",
             "name": "shown",
@@ -571,7 +571,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 175,
+            "line": 185,
             "description": "Shows container with form",
             "itemtype": "method",
             "name": "show()",
@@ -586,7 +586,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 221,
+            "line": 231,
             "description": "Hides container with form",
             "itemtype": "method",
             "name": "hide()",
@@ -601,7 +601,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 242,
+            "line": 252,
             "description": "Fired when container was hidden. It occurs on both save or cancel.  \n**Note:** Bootstrap popover has own `hidden` event that now cannot be separated from x-editable's one.\nThe workaround is to check `arguments.length` that is always `2` for x-editable.",
             "itemtype": "event",
             "name": "hidden",
@@ -624,7 +624,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 271,
+            "line": 281,
             "description": "Toggles container visibility (show / hide)",
             "itemtype": "method",
             "name": "toggle()",
@@ -639,7 +639,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 293,
+            "line": 303,
             "description": "Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance",
             "itemtype": "event",
             "name": "save",
@@ -674,7 +674,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 318,
+            "line": 328,
             "description": "Sets new option",
             "itemtype": "method",
             "name": "option(key, value)",
@@ -694,7 +694,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 342,
+            "line": 352,
             "description": "Destroys the container instance",
             "itemtype": "method",
             "name": "destroy()",
@@ -702,7 +702,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 386,
+            "line": 396,
             "description": "Activates input of visible container (e.g. set focus)",
             "itemtype": "method",
             "name": "activate()",
@@ -710,7 +710,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 398,
+            "line": 408,
             "description": "jQuery method to initialize editableContainer.",
             "itemtype": "method",
             "name": "$().editableContainer(options)",
@@ -728,7 +728,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 436,
+            "line": 446,
             "description": "Initial value of form input",
             "itemtype": "property",
             "name": "value",
@@ -740,7 +740,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 445,
+            "line": 455,
             "description": "Placement of container relative to element. Can be <code>top|right|bottom|left</code>. Not used for inline container.",
             "itemtype": "property",
             "name": "placement",
@@ -750,7 +750,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 453,
+            "line": 463,
             "description": "Whether to hide container on save/cancel.",
             "itemtype": "property",
             "name": "autohide",
@@ -762,7 +762,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 462,
+            "line": 472,
             "description": "Action when user clicks outside the container. Can be <code>cancel|submit|ignore</code>.  \nSetting <code>ignore</code> allows to have several containers open.",
             "itemtype": "property",
             "name": "onblur",
@@ -773,7 +773,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 473,
+            "line": 483,
             "description": "Animation speed (inline mode only)",
             "itemtype": "property",
             "name": "anim",
@@ -783,7 +783,7 @@
         },
         {
             "file": "..\\lib\\src\\containers\\editable-container.js",
-            "line": 481,
+            "line": 491,
             "description": "Mode of editable, can be `popup` or `inline`",
             "itemtype": "property",
             "name": "mode",
@@ -2300,7 +2300,7 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " ..\\lib\\src\\containers\\editable-container.js:398"
+            "line": " ..\\lib\\src\\containers\\editable-container.js:408"
         },
         {
             "message": "replacing incorrect tag: params with param",
