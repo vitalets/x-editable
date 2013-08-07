@@ -15,7 +15,9 @@ define(function () {
         loadCss: loadCss,
         getConfig: function (baseUrl) {
           
-            var jqueryui_ver = '1.10.3',
+            var 
+                jqueryui_ver = '1.10.3',
+            //    jqueryui_ver = '1.9.1',
                 paths = {
 //                    "bootstrap": "../test/libs/bootstrap221", 
 //                    "bootstrap": "../test/libs/bootstrap222", 
@@ -157,6 +159,8 @@ define(function () {
                    ------------------------------ */ 
                 'jqueryui_js': {
                     deps: ['require'],
+                    //temp: test simultaneous jquery-ui with bootstrap
+                    //deps: ['require', 'bootstrap/js/bootstrap'],
                     init: function(require) {
                         //loadCss(require.toUrl("../css/redmond/jquery-ui-1.10.1.custom.css")); 
                         loadCss(require.toUrl("../test/libs/jquery-ui-"+jqueryui_ver+".custom/css/redmond/jquery-ui-"+jqueryui_ver+".custom.css")); 
