@@ -72,7 +72,7 @@
         var title = 'abc',
         //add to fx because qunit-fixture has wrong positioning
         e = $('<a href="#" id="a"></a>').appendTo(fx).editable({
-              placement: 'bottom',
+              placement: 'top',
               title: title
         });
 
@@ -82,7 +82,7 @@
 
         //todo: for jqueryui phantomjs calcs wrong position. Skip this test..
         if(!/phantom/i.test(navigator.userAgent) && e.data('editableContainer').containerName !== 'tooltip') {
-            ok(p.offset().top > e.offset().top, 'placement ok');
+            ok(p.offset().top < e.offset().top, 'placement ok');
         }
         
         //check title
