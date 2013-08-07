@@ -27,6 +27,12 @@ require(["loader", jqurl], function(loader) {
         $.support.transition = false;
         $.fn.editable.defaults.mode = params.c === 'inline' ? 'inline' : 'popup';           
         
+        //for some reason qunit's empty of fixture does not call element's `destryed` event
+        //and container remains open
+        QUnit.testDone(function( details ) {
+            $('#qunit-fixture').empty();
+        });        
+        
         QUnit.load();
         QUnit.start();
     });
