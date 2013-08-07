@@ -134,6 +134,10 @@
 .editable-clear-x:hover {
    opacity: 1;
 }
+
+.editable-pre-wrapped {
+   white-space: pre-wrap;
+}
 .editable-container.editable-popup {
     max-width: none !important; /* without this rule poshytip/tooltip does not stretch */
 }  
