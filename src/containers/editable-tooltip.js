@@ -9,7 +9,8 @@
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'tooltip',  //jQuery method, aplying the widget
-        containerDataName: 'uiTooltip', //object name in elements .data() (e.g. uiTooltip for tooltip)
+        //object name in element's .data() 
+        containerDataName: 'ui-tooltip', 
         innerCss: '.ui-tooltip-content', 
         
         //split options on containerOptions and formOptions
@@ -50,15 +51,8 @@
             
             this.call(this.containerOptions);
             
-            //disable standart triggering tooltip event
-            //for some versions of jQueryUI it gives error:
-            //TypeError: this.container(...)._off is not a function
-            //see: https://github.com/vitalets/x-editable/issues/32
-            if(this.container()._off) {
-                this.container()._off(this.container().element, 'mouseover focusin');
-            } else {
-                $.error('this.container()._off is not a function. jQuery UI: ' + $.ui.version);
-            }
+            //disable standart triggering tooltip events
+            this.container()._off(this.container().element, 'mouseover focusin');
         },         
         
         tip: function() {
