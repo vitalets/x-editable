@@ -131,11 +131,7 @@ Applied as jQuery method.
             }
             //second, try `containerName`
             container = this.$element.data(this.containerName);
-            if(container) {
-                return container;
-            } else {
-                $.error('Can`t get container in element`s .data(). Container: ' + this.containerName);
-            }
+            return container;
         },
 
         /* call native method of underlying container, e.g. this.$element.popover('method') */ 
