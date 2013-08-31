@@ -140,6 +140,7 @@ module.exports = function(grunt) {
  
  //module for testing
  var module = ''; 
+// module = '&module=combodate';
 // module = '&module=textarea';
 //module = '&module=select';
 //module = '&module=text';
@@ -291,6 +292,7 @@ module.exports = function(grunt) {
 
   //test task
   grunt.registerTask('test', ['jshint', 'connect', 'qunit:bootstrap2']);
+  grunt.registerTask('test3', ['jshint', 'connect', 'qunit:bootstrap3']);
   grunt.registerTask('testall', [
     'jshint', 
     'connect', 
