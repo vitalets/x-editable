@@ -15,17 +15,19 @@ define(function () {
         loadCss: loadCss,
         getConfig: function (baseUrl) {
 
+            var
+                params = this.getParams(),
+                f = params.f, 
+                c = params.c;            
+                  
             var 
                 jqueryui_ver = '1.10.3',
             //    jqueryui_ver = '1.9.1',
-                bs_ver = '300',
-                bs_major_ver = bs_ver.substr(0,1),
+                bs2_ver = '232',
+                bs3_ver = '300',
+                //path aliases
                 paths = {
-//                    "bootstrap": "../test/libs/bootstrap221", 
-//                    "bootstrap": "../test/libs/bootstrap222", 
-                   // "bootstrap": "../test/libs/bootstrap231", 
-                   // "bootstrap": "../test/libs/bootstrap232", 
-                    "bootstrap": "../test/libs/bootstrap"+bs_ver, 
+                    "bootstrap": "../test/libs/bootstrap"+(f === 'bootstrap2' ? bs2_ver : bs3_ver), 
                     
                   //  "jqueryui": "../test/libs/jquery-ui-"+jqueryui_ver+".custom", 
                     "jqueryui_js": "../test/libs/jquery-ui-"+jqueryui_ver+".custom/js/jquery-ui-"+jqueryui_ver+".custom", 
@@ -37,9 +39,6 @@ define(function () {
                     "test": "../test" 
                 },          
           
-                params = this.getParams(),
-                f = params.f, 
-                c = params.c,
                 shim = {
                 'containers/editable-container': {
                     deps: ['require', 'editable-form/editable-form-utils', 'editable-form/editable-form'],
@@ -94,8 +93,8 @@ define(function () {
                     deps: ['require'],
                     init: function(require) {
                         loadCss(require.toUrl("../css/bootstrap.css")); 
-                        //add responsive css
-                        if(bs_major_ver < 3) {
+                        //add responsive css for bs2
+                        if(f === 'bootstrap2') {
                            loadCss(require.toUrl("../css/bootstrap-responsive.css"));
                         } 
                     }                
@@ -227,9 +226,20 @@ define(function () {
             /*
              modify shim for bootstrap, jqueryui or plain
             */
-            
-            if(f === 'bootstrap') { 
-                //bootstrap
+            if(f === 'bootstrap3') { 
+                //bootstrap 3
+                shim['editable-form/editable-form'].deps = shim['editable-form/editable-form'].deps.concat( 
+                 [
+                  'inputs/date/datefield',
+                  'inputs/datetime/datetimefield'
+                  //'inputs-ext/wysihtml5/wysihtml5',
+                  //'inputs/typeahead'
+                 ]);
+
+                shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap3');
+                shim['element/editable-element'].deps.push('containers/editable-popover3');
+            } else if(f === 'bootstrap2') { 
+                //bootstrap 2
                 shim['editable-form/editable-form'].deps = shim['editable-form/editable-form'].deps.concat( 
                  [
                   'inputs/date/datefield',
@@ -237,9 +247,8 @@ define(function () {
                   'inputs-ext/wysihtml5/wysihtml5',
                   'inputs/typeahead'
                  ]);
-                var suffix = bs_major_ver < 3 ? '' : bs_major_ver; 
-                shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap'+suffix);
-                shim['element/editable-element'].deps.push('containers/editable-popover'+suffix);
+                shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
+                shim['element/editable-element'].deps.push('containers/editable-popover');
             } else if(f === 'jqueryui') {
                 //jqueryui
                 shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');
@@ -270,8 +279,10 @@ define(function () {
                 f = 'jqueryui';
             } else if(url.match(/f=plain/i)) {
                 f = 'plain';
+            } else if(url.match(/f=bootstrap3/i) || url.match(/f=bs3/i)) {      
+                f = 'bootstrap3';
             } else {      
-                f = 'bootstrap';
+                f = 'bootstrap2';
             }
             c = url.match(/c=inline/i) ? 'inline' : 'popup';
             return {f: f, c: c};

@@ -41,7 +41,7 @@ require(["loader", jqurl], function(loader) {
         var custom;
         
         switch(params.f) {
-            case 'bootstrap':
+            case 'bootstrap2':
               custom = ['test/unit/datefield', 
                         'test/unit/date', 
                         'test/unit/datetimefield', 
@@ -50,6 +50,17 @@ require(["loader", jqurl], function(loader) {
                         'test/unit/typeahead'
                         ];
               break;
+
+            case 'bootstrap3':
+              custom = [
+                        'test/unit/datefield', 
+                        'test/unit/date', 
+                        'test/unit/datetimefield', 
+                        'test/unit/datetime' 
+                        //'test/unit/wysihtml5'
+                        //'test/unit/typeahead'
+                       ];
+              break;              
                
             default:  
               custom = ['test/unit/dateuifield', 'test/unit/dateui'];
