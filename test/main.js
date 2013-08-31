@@ -8,7 +8,7 @@ var jqver = decodeURIComponent((new RegExp('[?|&]' + 'jquery' + '=' + '([^&;]+?)
     jqurl = jqver ? "http://code.jquery.com/jquery-"+jqver+".min.js" : "libs/jquery/jquery-1.9.1.min.js";
     
 require(["loader", jqurl], function(loader) {
-
+    
     var config = loader.getConfig("../src"),
         params = loader.getParams();
     

@@ -58,7 +58,7 @@
         /**
         * move popover to new position. This function mainly copied from bootstrap-popover.
         */
-        /*jshint laxcomma: true*/
+        /*jshint laxcomma: true, eqeqeq: false*/
         setPosition: function () { 
 
             (function() {
@@ -192,7 +192,7 @@
            
                 
             }).call(this.container());
-          /*jshint laxcomma: false*/  
+          /*jshint laxcomma: false, eqeqeq: true*/  
         }            
     });
 

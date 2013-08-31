@@ -49,33 +49,31 @@ function getFiles() {
 
     //common js files 
     var js = [
-    '<banner:meta.banner>',
-    forms+'editable-form.js',
-    forms+'editable-form-utils.js',
-    containers+'editable-container.js', 
-    containers+'editable-inline.js',
-    lib+'element/editable-element.js',
-    inputs+'abstract.js',
-    inputs+'list.js',
-    inputs+'text.js',
-    inputs+'textarea.js',
-    inputs+'select.js',    
-    inputs+'checklist.js',
-    inputs+'html5types.js',
-    inputs+'select2/select2.js',
-    inputs+'combodate/lib/combodate.js', 
-    inputs+'combodate/combodate.js'    
+        forms+'editable-form.js',
+        forms+'editable-form-utils.js',
+        containers+'editable-container.js', 
+        containers+'editable-inline.js',
+        lib+'element/editable-element.js',
+        inputs+'abstract.js',
+        inputs+'list.js',
+        inputs+'text.js',
+        inputs+'textarea.js',
+        inputs+'select.js',    
+        inputs+'checklist.js',
+        inputs+'html5types.js',
+        inputs+'select2/select2.js',
+        inputs+'combodate/lib/combodate.js', 
+        inputs+'combodate/combodate.js'    
     ]; 
 
     //common css files
     var css = [
-    '<banner:meta.banner>',
-    forms+'editable-form.css',
-    containers+'editable-container.css', 
-    lib+'element/editable-element.css'
+        forms+'editable-form.css',
+        containers+'editable-container.css', 
+        lib+'element/editable-element.css'
     ];
 
-    //create 'concat' config
+    //create 'concat' and 'uglify' tasks
     var task, folder, dest, concat_files = {}, min_files = {};
     for(var k in config) {
         folder = '<%= dist %>/'+k+'-editable/';
@@ -88,7 +86,7 @@ function getFiles() {
             dest: dest+'.js'
         };
         min_files[task] = {
-            src: ['<banner:meta.banner>', '<config:concat.'+task+'.dest>'],
+            src: ['<%= concat.'+task+'.dest %>'],
             dest: dest + '.min.js'
         };      
 
@@ -106,7 +104,14 @@ function getFiles() {
 /*global module:false*/
 module.exports = function(grunt) {
 
- grunt.loadNpmTasks('grunt-contrib');
+ grunt.loadNpmTasks('grunt-contrib-clean');
+ grunt.loadNpmTasks('grunt-contrib-concat');
+ grunt.loadNpmTasks('grunt-contrib-uglify');
+ grunt.loadNpmTasks('grunt-contrib-qunit');
+ grunt.loadNpmTasks('grunt-contrib-connect');
+ grunt.loadNpmTasks('grunt-contrib-jshint');
+ grunt.loadNpmTasks('grunt-contrib-copy');
+ grunt.loadNpmTasks('grunt-contrib-requirejs');
 
  //version of jquery-ui datepicker to be copied into dist
  var dp_ui_ver = '1.10.3';
@@ -130,66 +135,75 @@ module.exports = function(grunt) {
  //get js and css for different builds
  var files = getFiles();
  
- // Project configuration.
-  grunt.initConfig({
-    pkg: '<json:package.json>',
-    dist: 'dist',
-    meta: {
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> \n' +
+ var banner = '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> \n' +
         '* <%= pkg.description %>\n' +
         '* <%= pkg.homepage %>\n' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
-    },
-    clean: ['<config:dist>'],
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n';
+ 
+ files.concat_files.options = {banner: banner};
+ files.min_files.options = {banner: banner};
+ 
+ 
+ // Project configuration.
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    dist: 'dist',
+    
+    clean: ['<%= dist %>'],
+    
     concat: files.concat_files,
-    min: files.min_files,
+    
+    uglify: files.min_files,
+     
     qunit: {
-      bootstrap: [
+      bootstrap2: {
+          options: {
+            urls: [
                   'http://localhost:8000/test/index.html?f=bootstrap&c=popup'+module,
                   'http://localhost:8000/test/index.html?f=bootstrap&c=inline'+module
-                 ],
-      jqueryui: [
+                 ]
+          }
+      },
+      bootstrap3: {
+          options: {
+            urls: [
+                  'http://localhost:8000/test/index.html?f=bs3&c=popup'+module,
+                  'http://localhost:8000/test/index.html?f=bs3&c=inline'+module
+                 ]
+          }
+      },
+      jqueryui: {
+          options: {
+            urls:[
                   'http://localhost:8000/test/index.html?f=jqueryui&c=popup'+module,
                   'http://localhost:8000/test/index.html?f=jqueryui&c=inline'+module
-                 ],
-      plain: [
+                 ]
+          }
+      },
+      plain: {
+          options: {
+            urls:[
                   'http://localhost:8000/test/index.html?f=plain&c=popup'+module,
                   'http://localhost:8000/test/index.html?f=plain&c=inline'+module
-                 ],            
+             ]
+          }
+      },
       //test all builds under several versions of jquery                                   
-      testover: qunit_testover
+      testover: {
+          options: {
+            urls:qunit_testover
+          }
+      },          
     },
-    server: {
-        port: 8000,
-        base: '.'
+    
+    connect: {
+        server: {
+            port: 8000,
+            base: '.'
+        }
     },    
     
-    lint: {
-     //TODO: lint tests files
-     //files: ['grunt.js', 'src/js/*.js', 'test/**/*.js']     
-      files: ['grunt.js', 
-              'src/editable-form/*.js', 
-              'src/containers/*.js', 
-              'src/element/*.js', 
-              
-              'src/inputs/*.js', 
-              'src/inputs/date/*.js',
-              'src/inputs/dateui/*.js',
-              'src/inputs/datetime/*.js',
-              'src/inputs/combodate/*.js',
-              'src/inputs/select2/*.js',
-              
-              'src/inputs-ext/address/*.js',
-              'src/inputs-ext/wysihtml5/*.js'
-              ]
-    },
-    /*
-    watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint qunit'
-    },
-    */
     jshint: {
       options: {
         curly: true,
@@ -203,11 +217,26 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
-        evil: false  
+        evil: false,
+        globals: {
+            jQuery: true
+        },  
       },
-      globals: {
-        jQuery: true
-      }
+      js: [   'Gruntfile.js', 
+              'src/editable-form/*.js', 
+              'src/containers/*.js', 
+              'src/element/*.js', 
+              
+              'src/inputs/*.js', 
+              'src/inputs/date/*.js',
+              'src/inputs/dateui/*.js',
+              'src/inputs/datetime/*.js',
+              'src/inputs/combodate/*.js',
+              'src/inputs/select2/*.js',
+              
+              'src/inputs-ext/address/*.js',
+              'src/inputs-ext/wysihtml5/*.js'
+          ]
     },
     copy: {
         dist: {
@@ -238,22 +267,29 @@ module.exports = function(grunt) {
              '<%= dist %>/jquery-editable/jquery-ui-datepicker/css/redmond/images/': 'src/inputs/dateui/jquery-ui-datepicker/css/redmond/images/**'
          }
        }         
-    },
- 
-    uglify: {}
+    }
   });
 
   //test task
-  grunt.registerTask('test', 'lint server qunit:bootstrap');
-  grunt.registerTask('testall', 'lint server qunit:bootstrap qunit:jqueryui qunit:plain');  
-  grunt.registerTask('testover', 'lint server qunit:testover');  
+  grunt.registerTask('test', ['jshint', 'connect', 'qunit:bootstrap2']);
+  grunt.registerTask('testall', [
+    'jshint', 
+    'connect', 
+    'qunit:bootstrap2', 
+    'qunit:bootstrap3', 
+    'qunit:jqueryui', 
+    'qunit:plain'
+  ]);  
+  grunt.registerTask('testover', ['jshint', 'connect', 'qunit:testover']);  
   
   // Default task.
-//  grunt.registerTask('default', 'lint qunit');
-  grunt.registerTask('default', 'clean lint concat min copy');
+  grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify', 'copy']);
+  
+  
+  grunt.registerTask('server', 'connect:server:keepalive');
   
   // build
-  grunt.registerTask('build', 'clean lint concat min copy');
+  grunt.registerTask('build', ['clean', 'jshint', 'concat', 'uglify', 'copy']);
   
  //to run particular task use ":", e.g. copy:libs 
 };
