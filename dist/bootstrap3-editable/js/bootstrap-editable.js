@@ -4515,11 +4515,14 @@ Editableform based on Twitter Bootstrap 3
             var $btn = this.$form.find('.editable-buttons');
             var classes = emptyInputClass ? [defaultClass] : this.input.options.inputclass.split(' ');
             for(var i=0; i<classes.length; i++) {
+                // `btn-sm` is default now
+                /*
                 if(classes[i].toLowerCase() === 'input-sm') { 
                     $btn.find('button').addClass('btn-sm');  
                 }
+                */
                 if(classes[i].toLowerCase() === 'input-lg') {
-                    $btn.find('button').addClass('btn-lg'); 
+                    $btn.find('button').removeClass('btn-sm').addClass('btn-lg'); 
                 }
             }
         }
@@ -4527,10 +4530,10 @@ Editableform based on Twitter Bootstrap 3
     
     //buttons
     $.fn.editableform.buttons = 
-      '<button type="submit" class="btn btn-primary editable-submit">'+
+      '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
         '<i class="glyphicon glyphicon-ok"></i>'+
       '</button>'+
-      '<button type="button" class="btn btn-default editable-cancel">'+
+      '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
         '<i class="glyphicon glyphicon-remove"></i>'+
       '</button>';         
     
