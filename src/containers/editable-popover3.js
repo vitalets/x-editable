@@ -1,5 +1,5 @@
 /**
-* Editable Popover 
+* Editable Popover3 (for Bootstrap 3) 
 * ---------------------
 * requires bootstrap-popover.js
 */
@@ -9,10 +9,10 @@
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'popover',
-        //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
-        innerCss: $.fn.popover && $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
-        defaults: $.fn.popover.defaults,
-        
+        containerDataName: 'bs.popover',
+        innerCss: '.popover-content',
+        defaults: $.fn.popover.Constructor.DEFAULTS,
+
         initContainer: function(){
             $.extend(this.containerOptions, {
                 trigger: 'manual',
@@ -61,7 +61,8 @@
         /*jshint laxcomma: true*/
         setPosition: function () { 
 
-            (function() {    
+            (function() {
+            /*    
                 var $tip = this.tip()
                 , inside
                 , pos
@@ -171,6 +172,24 @@
                 .offset(tp)
                 .addClass(placement)
                 .addClass('in');
+           */
+                     
+           
+            var $tip = this.tip();
+            
+            var placement = typeof this.options.placement == 'function' ?
+                this.options.placement.call(this, $tip[0], this.$element[0]) :
+                this.options.placement;            
+            
+            
+            var pos = this.getPosition();
+            var actualWidth = $tip[0].offsetWidth;
+            var actualHeight = $tip[0].offsetHeight;
+            var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight);
+
+            this.applyPlacement(calculatedOffset, placement);            
+           
+           
                 
             }).call(this.container());
           /*jshint laxcomma: false*/  

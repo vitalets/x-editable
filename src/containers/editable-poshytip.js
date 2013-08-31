@@ -10,6 +10,7 @@
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'poshytip',
         innerCss: 'div.tip-inner',
+        defaults: $.fn.poshytip.defaults,
         
         initContainer: function(){
             this.handlePlacement();

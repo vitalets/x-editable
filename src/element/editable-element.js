@@ -806,7 +806,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.4.5        
         @default #FFFF80 
         **/
-        highlight: '#FFFF80'        
+        highlight: '#FFFF80'
     };
     
 }(window.jQuery));

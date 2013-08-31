@@ -14,15 +14,18 @@ define(function () {
     return {
         loadCss: loadCss,
         getConfig: function (baseUrl) {
-          
+
             var 
                 jqueryui_ver = '1.10.3',
             //    jqueryui_ver = '1.9.1',
+                bs_ver = '300',
+                bs_major_ver = bs_ver.substr(0,1),
                 paths = {
 //                    "bootstrap": "../test/libs/bootstrap221", 
 //                    "bootstrap": "../test/libs/bootstrap222", 
                    // "bootstrap": "../test/libs/bootstrap231", 
-                    "bootstrap": "../test/libs/bootstrap232", 
+                   // "bootstrap": "../test/libs/bootstrap232", 
+                    "bootstrap": "../test/libs/bootstrap"+bs_ver, 
                     
                   //  "jqueryui": "../test/libs/jquery-ui-"+jqueryui_ver+".custom", 
                     "jqueryui_js": "../test/libs/jquery-ui-"+jqueryui_ver+".custom/js/jquery-ui-"+jqueryui_ver+".custom", 
@@ -92,14 +95,24 @@ define(function () {
                     init: function(require) {
                         loadCss(require.toUrl("../css/bootstrap.css")); 
                         //add responsive css
-                        loadCss(require.toUrl("../css/bootstrap-responsive.css")); 
+                        if(bs_major_ver < 3) {
+                           loadCss(require.toUrl("../css/bootstrap-responsive.css"));
+                        } 
                     }                
                 },
                 'editable-form/editable-form-bootstrap': [
                     'editable-form/editable-form', 
                     'bootstrap/js/bootstrap'
                 ],
+                'editable-form/editable-form-bootstrap3': [
+                    'editable-form/editable-form', 
+                    'bootstrap/js/bootstrap'
+                ],
                 'containers/editable-popover': [
+                    'containers/editable-inline', 
+                    'bootstrap/js/bootstrap'
+                ],
+                'containers/editable-popover3': [
                     'containers/editable-inline', 
                     'bootstrap/js/bootstrap'
                 ],
@@ -217,12 +230,16 @@ define(function () {
             
             if(f === 'bootstrap') { 
                 //bootstrap
-                shim['editable-form/editable-form'].deps.push('inputs/date/datefield');
-                shim['editable-form/editable-form'].deps.push('inputs/datetime/datetimefield');
-                shim['editable-form/editable-form'].deps.push('inputs-ext/wysihtml5/wysihtml5');
-                shim['editable-form/editable-form'].deps.push('inputs/typeahead');
-                shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap');
-                shim['element/editable-element'].deps.push('containers/editable-popover');
+                shim['editable-form/editable-form'].deps = shim['editable-form/editable-form'].deps.concat( 
+                 [
+                  'inputs/date/datefield',
+                  'inputs/datetime/datetimefield',
+                  'inputs-ext/wysihtml5/wysihtml5',
+                  'inputs/typeahead'
+                 ]);
+                var suffix = bs_major_ver < 3 ? '' : bs_major_ver; 
+                shim['element/editable-element'].deps.push('editable-form/editable-form-bootstrap'+suffix);
+                shim['element/editable-element'].deps.push('containers/editable-popover'+suffix);
             } else if(f === 'jqueryui') {
                 //jqueryui
                 shim['editable-form/editable-form'].deps.push('inputs/dateui/dateuifield');

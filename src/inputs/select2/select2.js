@@ -316,7 +316,7 @@ $(function(){
         @type string
         @default ', '        
         **/
-        viewseparator: ', '        
+        viewseparator: ', '
     });
 
     $.fn.editabletypes.select2 = Constructor;      

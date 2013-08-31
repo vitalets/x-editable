@@ -64,7 +64,14 @@ $(function(){
     $.extend(Constructor.prototype, {
         render: function () {
             this.$input.combodate(this.options.combodate);
+                    
+            if($.fn.editableform.engine === 'bs3') {
+                this.$input.siblings().find('select').addClass('form-control');
+            }
             
+            if(this.options.inputclass) {
+                this.$input.siblings().find('select').addClass(this.options.inputclass);
+            }            
             //"clear" link
             /*
             if(this.options.clear) {

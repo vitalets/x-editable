@@ -28,6 +28,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //set initial value
             //todo: may be add check: typeof str === 'string' ? 
             this.value = this.input.str2value(this.options.value); 
+            
+            //prerender: get input.$input
+            this.input.prerender();
         },
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
@@ -75,9 +78,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.initInput();
             
             //append input to form
-            this.input.prerender();
             this.$form.find('div.editable-input').append(this.input.$tpl);            
-
+            
             //append form to container
             this.$div.append(this.$form);
             
@@ -615,4 +617,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
     //error class attached to editable-error-block
     $.fn.editableform.errorBlockClass = 'editable-error';
+    
+    //engine
+    $.fn.editableform.engine = 'jqeury';
 }(window.jQuery));
