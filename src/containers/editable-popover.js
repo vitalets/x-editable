@@ -4,11 +4,14 @@
 * requires bootstrap-popover.js
 */
 (function ($) {
-    "use strict";
+	"use strict";
+	
+	$.fn.popover.defaults = $.fn.popover.Constructor.DEFAULTS;
 
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
-        containerName: 'popover',
+    	containerName: 'popover',
+    	containerDataName: 'bs.popover',
         //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
         innerCss: $.fn.popover && $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
 
