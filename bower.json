@@ -1,10 +1,14 @@
 {
   "name": "x-editable",
   "version": "1.4.6",
-  "main": "dist/README.md",
   "ignore": [
-    "*.*",
+    "CHANGELOG.txt",
+    "Gruntfile.js",
     "LICENSE-MIT",
+    "Package.nuspec",
+    "README.md",
+    "composer.json",
+    "package.json",
     "node_modules",
     "components",
     "src",
