@@ -61,9 +61,9 @@ Automatically shown in inline mode.
         tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
         /**
         @property inputclass 
-        @default 'input-medium'
+        @default 'form-control input-sm'
         **/         
-        inputclass: 'input-medium',
+        inputclass: 'form-control input-sm',
         
         /* datetimepicker config */
         datetimepicker:{
