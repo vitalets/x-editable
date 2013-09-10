@@ -190,7 +190,7 @@ Range (inherit from number)
     });
     Range.defaults = $.extend({}, $.fn.editabletypes.number.defaults, {
         tpl: '<input type="range"><output style="width: 30px; display: inline-block"></output>',
-        inputclass: 'input-medium'
+        inputclass: 'form-control input-sm'
     });
     $.fn.editabletypes.range = Range;
 }(window.jQuery));
