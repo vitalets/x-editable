@@ -191,9 +191,9 @@ To create your own input you can inherit from this class.
         
         @property inputclass 
         @type string
-        @default input-medium
+        @default form-control input-sm
         **/         
-        inputclass: 'input-medium',
+        inputclass: 'form-control input-sm',
         //scope for external methods (e.g. source defined as function)
         //for internal use only
         scope: null,
