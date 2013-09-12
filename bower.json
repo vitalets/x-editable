@@ -3,7 +3,6 @@
   "version": "1.4.6",
   "main": "dist/README.md",
   "ignore": [
-    "*.*",
     "LICENSE-MIT",
     "node_modules",
     "components",
