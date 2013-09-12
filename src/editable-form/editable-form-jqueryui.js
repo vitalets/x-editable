@@ -26,5 +26,7 @@ Editableform based on jQuery UI
     //error classes
     $.fn.editableform.errorGroupClass = null;
     $.fn.editableform.errorBlockClass = 'ui-state-error';
+    //engine
+    $.fn.editableform.engine = 'jqeury-ui';
     
 }(window.jQuery));

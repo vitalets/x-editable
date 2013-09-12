@@ -159,7 +159,7 @@ To create your own input you can inherit from this class.
        },
 
        // -------- helper functions --------
-       setClass: function() {
+       setClass: function() {          
            if(this.options.inputclass) {
                this.$input.addClass(this.options.inputclass); 
            } 
@@ -191,9 +191,9 @@ To create your own input you can inherit from this class.
         
         @property inputclass 
         @type string
-        @default input-medium
+        @default null
         **/         
-        inputclass: 'input-medium',
+        inputclass: null,
         //scope for external methods (e.g. source defined as function)
         //for internal use only
         scope: null,

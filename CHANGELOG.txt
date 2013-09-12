@@ -1,6 +1,10 @@
 X-editable changelog
 =============================
 
+Version 1.4.7 wip
+----------------------------
+
+
 Version 1.4.6 Aug 8, 2013
 ----------------------------
 [bug #312] can't apply selector more than once (vitalets)
