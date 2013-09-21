@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.5.0 wip
 ----------------------------
+[enh] update select2 to 3.4.3 (vitalets)
 [enh #343] Bootstrap 3 support (vitalets)
 
 
