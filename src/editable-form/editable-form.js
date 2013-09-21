@@ -619,5 +619,5 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     $.fn.editableform.errorBlockClass = 'editable-error';
     
     //engine
-    $.fn.editableform.engine = 'jqeury';
+    $.fn.editableform.engine = 'jquery';
 }(window.jQuery));
