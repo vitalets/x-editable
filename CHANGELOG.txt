@@ -1,8 +1,9 @@
 X-editable changelog
 =============================
 
-Version 1.4.7 wip
+Version 1.5.0 wip
 ----------------------------
+[enh #343] Bootstrap 3 support (vitalets)
 
 
 Version 1.4.6 Aug 8, 2013
