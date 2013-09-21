@@ -71,10 +71,9 @@ $(function(){
         value2htmlFinal: function(value, element) {
             if(this.getIsObjects()) {
                 var items = $.fn.editableutils.itemsByValue(value, this.sourceData);
-                $(element).text(items.length ? items[0].text : '');
-            } else {
-                $(element).text(value);
-            }
+                value = items.length ? items[0].text : '';
+            } 
+            $.fn.editabletypes.abstractinput.prototype.value2html.call(this, value, element);
         },
         
         html2value: function (html) {
