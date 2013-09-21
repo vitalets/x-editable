@@ -305,7 +305,7 @@ $(function(){
         E.g. `[{id: 1, text: "text1"}, {id: 2, text: "text2"}, ...]`.  
         
         @property source 
-        @type array
+        @type array|string|function
         @default null        
         **/
         source: null,
