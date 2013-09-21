@@ -284,13 +284,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.isEmpty = isEmpty;
             } else {
                 //detect empty
-                if($.trim(this.$element.html()) === '') { 
-                    this.isEmpty = true;
-                } else if($.trim(this.$element.text()) !== '') {
-                    this.isEmpty = false;
+                //for some inputs we need more smart check
+                //e.g. wysihtml5 may have <br>, <p></p>, <img>
+                if(typeof(this.input.isEmpty) === 'function') {
+                    this.isEmpty = this.input.isEmpty(this.$element);                    
                 } else {
-                    //e.g. '<img>'
-                    this.isEmpty = !this.$element.height() || !this.$element.width();
+                    this.isEmpty = $.trim(this.$element.html()) === '';
                 }
             }           
             
