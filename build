@@ -20,7 +20,14 @@ fi
 
 if [ $(expr match $1 ".*zip.*") -gt 0 ] 
 then
-  #create zip
+  #starter
+  cd starter
+  zipfile=../assets/starter.zip
+  rm -f $zipfile
+  zip -rT $zipfile *.*
+  cd ..
+
+  #dist zip
   version=$(head -1 assets/x-editable/bootstrap-editable/js/bootstrap-editable.js | sed -n 's/^.*v\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p') 
   mkdir -p assets/zip 
   cd assets/x-editable
