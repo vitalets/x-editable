@@ -3,6 +3,7 @@ X-editable changelog
 
 Version 1.5.0 wip
 ----------------------------
+[enh] select: add `sourceOptions` to modify source request method and params (vitalets)
 [enh #377] add bool option `escape` to allow html as content (vitalets)
 [bug #344] fix determing empty for html content (vitalets)
 [enh] update select2 to 3.4.3 (vitalets)
