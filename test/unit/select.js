@@ -792,6 +792,21 @@ $(function () {
         equal(p.find('select').val(), 3, 'selected value correct');
     });                
     
+    test("`escape` option", function () {
+        var e = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: '<b>hello</b>'}],
+            value: 'a',
+            escape: true
+        }),
+        e1 = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: '<b>hello</b>'}],
+            value: 'a',
+            escape: false
+        });
+ 
+        equal(e.html(), '&lt;b&gt;hello&lt;/b&gt;', 'html escaped');
+        equal(e1.html(), '<b>hello</b>', 'html not escaped');
+    });    
     
    asyncTest("sourceOptions", function () {
         expect(3);
