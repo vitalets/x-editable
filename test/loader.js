@@ -220,6 +220,16 @@ define(function () {
                     init: function(require) {
                         loadCss(require.toUrl("./address.css")); 
                     }
+                },
+                'inputs-ext/typeaheadjs/typeaheadjs': { 
+                    deps: [
+                        'require',
+                        'inputs/text',
+                        'inputs-ext/typeaheadjs/lib/typeahead'
+                    ],
+                    init: function(require) {
+                        loadCss(require.toUrl("./lib/typeahead.js-bootstrap.css")); 
+                    }
                 }
             };
 
@@ -231,7 +241,8 @@ define(function () {
                 shim['editable-form/editable-form'].deps = shim['editable-form/editable-form'].deps.concat( 
                  [
                   'inputs/date/datefield',
-                  'inputs/datetime/datetimefield'
+                  'inputs/datetime/datetimefield',
+                  'inputs-ext/typeaheadjs/typeaheadjs'
                   //'inputs-ext/wysihtml5/wysihtml5',
                   //'inputs/typeahead'
                  ]);
