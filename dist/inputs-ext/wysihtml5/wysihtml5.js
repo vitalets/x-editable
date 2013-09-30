@@ -87,6 +87,17 @@ $(function(){
 
         activate: function() {
             this.$input.data("wysihtml5").editor.focus();
+        },
+        
+        isEmpty: function($element) {
+            if($.trim($element.html()) === '') { 
+                return true;
+            } else if($.trim($element.text()) !== '') {
+                return false;
+            } else {
+                //e.g. '<img>', '<br>', '<p></p>'
+                return !$element.height() || !$element.width();
+            } 
         }
     });
 

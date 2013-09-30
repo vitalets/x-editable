@@ -437,12 +437,10 @@ $(function () {
     });
     
     test("'display' returning html only (img)", function () {
-        var c = 0,
-            html = '<img src="../src/img/clear.png">',
-            html_br = '<br>',
+        var html = '<img src="../src/img/clear.png">',
             e = $('<a href="#" data-pk="1" data-type="text" data-name="text1">0</a>').appendTo('#qunit-fixture').editable({
               display: function(value, response) {
-          	      $(this).html(c == 0 ? html : html_br);
+          	      $(this).html(html);
               } 
             });  
 
@@ -454,7 +452,7 @@ $(function () {
         p.find('input').val(1);         	
         p.find('form').submit();
         
-		equal(e.html(), $.fn.editable.defaults.emptytext, 'html br --> emptytext ok');
+		equal(e.html(), html, 'html again ok');
     });         
 
    test("password", function () {

@@ -117,8 +117,8 @@ List - abstract class for inputs that have source option loaded from js array or
                     }
                 }
                 
-                //loading sourceData from server
-                $.ajax({
+                //ajaxOptions for source. Can be overwritten bt options.sourceOptions
+                var ajaxOptions = $.extend({
                     url: source,
                     type: 'get',
                     cache: false,
@@ -153,7 +153,11 @@ List - abstract class for inputs that have source option loaded from js array or
                              $.each(cache.err_callbacks, function () { this.call(); }); 
                         }
                     }, this)
-                });
+                }, this.options.sourceOptions);
+                
+                //loading sourceData from server
+                $.ajax(ajaxOptions);
+                
             } else { //options as json/array
                 this.sourceData = this.makeArray(source);
                     
@@ -313,7 +317,17 @@ List - abstract class for inputs that have source option loaded from js array or
         @default true
         @since 1.2.0
         **/        
-        sourceCache: true
+        sourceCache: true,
+        /**
+        Additional ajax options to be used in $.ajax() when loading list from server.
+        Useful to send extra parameters (`data` key) or change request method (`type` key).
+        
+        @property sourceOptions 
+        @type object|function
+        @default null
+        @since 1.5.0
+        **/        
+        sourceOptions: null
     });
 
     $.fn.editabletypes.list = List;      

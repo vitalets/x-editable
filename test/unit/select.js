@@ -791,5 +791,52 @@ $(function () {
         ok(p.find('select').length, 'select exists')
         equal(p.find('select').val(), 3, 'selected value correct');
     });                
-     
+    
+    test("`escape` option", function () {
+        var e = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: '<b>hello</b>'}],
+            value: 'a',
+            escape: true
+        }),
+        e1 = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: '<b>hello</b>'}],
+            value: 'a',
+            escape: false
+        });
+ 
+        equal(e.html(), '&lt;b&gt;hello&lt;/b&gt;', 'html escaped');
+        equal(e1.html(), '<b>hello</b>', 'html not escaped');
+    });    
+    
+   asyncTest("sourceOptions", function () {
+        expect(3);
+        var e = $('<a href="#" data-type="select" data-value="2" data-source="sourceOptions">customer</a>').appendTo(fx).editable({
+            sourceOptions: {
+                type: 'post',
+                data: {
+                    a: 1
+                }
+            }
+        });
+
+        $.mockjax({
+            url: 'sourceOptions',
+            type: 'post',
+            response: function(settings) {
+                equal(settings.data.a, 1, 'params sent!');
+                this.responseText = groups;
+            }
+        });
+                 
+        e.click();
+        var p = tip(e); 
+       
+        setTimeout(function() {
+            equal(p.find('select').find('option').length, size, 'options loaded');
+            equal(p.find('select').val(), e.data('editable').value, 'selected value correct') ;       
+            
+            e.remove();    
+            start();  
+        }, timeout);                
+    });  
 });

@@ -12,6 +12,7 @@
         //object name in element's .data() 
         containerDataName: 'ui-tooltip', 
         innerCss: '.ui-tooltip-content', 
+        defaults: $.ui.tooltip.prototype.options,
         
         //split options on containerOptions and formOptions
         splitOptions: function() {
@@ -23,10 +24,10 @@
                 $.error('Please use jQueryUI with "tooltip" widget! http://jqueryui.com/download');
                 return;
             }
+            
             //defaults for tooltip
-            var cDef = $.ui[this.containerName].prototype.options;
             for(var k in this.options) {
-              if(k in cDef) {
+              if(k in this.defaults) {
                  this.containerOptions[k] = this.options[k];
               } else {
                  this.formOptions[k] = this.options[k];

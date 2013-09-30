@@ -72,7 +72,8 @@ $(function(){
                 text = items[0].text;
             }
             
-            $(element).text(text);
+            //$(element).text(text);
+            $.fn.editabletypes.abstractinput.prototype.value2html.call(this, text, element);
         },
         
         autosubmit: function() {

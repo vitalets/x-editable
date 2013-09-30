@@ -1,8 +1,7 @@
-/*! X-editable - v1.4.6 
+/*! X-editable - v1.5.0 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
-
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -33,6 +32,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //set initial value
             //todo: may be add check: typeof str === 'string' ? 
             this.value = this.input.str2value(this.options.value); 
+            
+            //prerender: get input.$input
+            this.input.prerender();
         },
         initTemplate: function() {
             this.$form = $($.fn.editableform.template); 
@@ -80,9 +82,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             this.initInput();
             
             //append input to form
-            this.input.prerender();
             this.$form.find('div.editable-input').append(this.input.$tpl);            
-
+            
             //append form to container
             this.$div.append(this.$form);
             
@@ -620,6 +621,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
     //error class attached to editable-error-block
     $.fn.editableform.errorBlockClass = 'editable-error';
+    
+    //engine
+    $.fn.editableform.engine = 'jquery';
 }(window.jQuery));
 
 /**
@@ -898,6 +902,8 @@ Applied as jQuery method.
         containerDataName: null, //object name in element's .data()
         innerCss: null, //tbd in child class
         containerClass: 'editable-container editable-popup', //css class applied to container element
+        defaults: {}, //container itself defaults
+        
         init: function(element, options) {
             this.$element = $(element);
             //since 1.4.1 container do not use data-* directly as they already merged into options.
@@ -975,10 +981,9 @@ Applied as jQuery method.
                 throw new Error(this.containerName + ' not found. Have you included corresponding js file?');   
             }
             
-            var cDef = $.fn[this.containerName].defaults;
             //keys defined in container defaults go to container, others go to form
             for(var k in this.options) {
-              if(k in cDef) {
+              if(k in this.defaults) {
                  this.containerOptions[k] = this.options[k];
               } else {
                  this.formOptions[k] = this.options[k];
@@ -1727,13 +1732,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.isEmpty = isEmpty;
             } else {
                 //detect empty
-                if($.trim(this.$element.html()) === '') { 
-                    this.isEmpty = true;
-                } else if($.trim(this.$element.text()) !== '') {
-                    this.isEmpty = false;
+                //for some inputs we need more smart check
+                //e.g. wysihtml5 may have <br>, <p></p>, <img>
+                if(typeof(this.input.isEmpty) === 'function') {
+                    this.isEmpty = this.input.isEmpty(this.$element);                    
                 } else {
-                    //e.g. '<img>'
-                    this.isEmpty = !this.$element.height() || !this.$element.width();
+                    this.isEmpty = $.trim(this.$element.html()) === '';
                 }
             }           
             
@@ -2249,7 +2253,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.4.5        
         @default #FFFF80 
         **/
-        highlight: '#FFFF80'        
+        highlight: '#FFFF80'
     };
     
 }(window.jQuery));
@@ -2308,7 +2312,7 @@ To create your own input you can inherit from this class.
         @param {DOMElement} element
        **/
        value2html: function(value, element) {
-           $(element).text($.trim(value));
+           $(element)[this.options.escape ? 'text' : 'html']($.trim(value));
        },
 
        /**
@@ -2415,7 +2419,7 @@ To create your own input you can inherit from this class.
        },
 
        // -------- helper functions --------
-       setClass: function() {
+       setClass: function() {          
            if(this.options.inputclass) {
                this.$input.addClass(this.options.inputclass); 
            } 
@@ -2447,9 +2451,22 @@ To create your own input you can inherit from this class.
         
         @property inputclass 
         @type string
-        @default input-medium
+        @default null
         **/         
-        inputclass: 'input-medium',
+        inputclass: null,
+        
+        /**
+        If `true` - html will be escaped in content of element via $.text() method.
+        If `false` - html will not be escaped, $.html() used.
+        When you use own `display` function, this option has no influence.
+        
+        @property escape 
+        @type boolean
+        @since 1.5.0
+        @default true
+        **/         
+        escape: true,
+                
         //scope for external methods (e.g. source defined as function)
         //for internal use only
         scope: null,
@@ -2581,8 +2598,8 @@ List - abstract class for inputs that have source option loaded from js array or
                     }
                 }
                 
-                //loading sourceData from server
-                $.ajax({
+                //ajaxOptions for source. Can be overwritten bt options.sourceOptions
+                var ajaxOptions = $.extend({
                     url: source,
                     type: 'get',
                     cache: false,
@@ -2617,7 +2634,11 @@ List - abstract class for inputs that have source option loaded from js array or
                              $.each(cache.err_callbacks, function () { this.call(); }); 
                         }
                     }, this)
-                });
+                }, this.options.sourceOptions);
+                
+                //loading sourceData from server
+                $.ajax(ajaxOptions);
+                
             } else { //options as json/array
                 this.sourceData = this.makeArray(source);
                     
@@ -2777,7 +2798,17 @@ List - abstract class for inputs that have source option loaded from js array or
         @default true
         @since 1.2.0
         **/        
-        sourceCache: true
+        sourceCache: true,
+        /**
+        Additional ajax options to be used in $.ajax() when loading list from server.
+        Useful to send extra parameters (`data` key) or change request method (`type` key).
+        
+        @property sourceOptions 
+        @type object|function
+        @default null
+        @since 1.5.0
+        **/        
+        sourceOptions: null
     });
 
     $.fn.editabletypes.list = List;      
@@ -3105,7 +3136,8 @@ $(function(){
                 text = items[0].text;
             }
             
-            $(element).text(text);
+            //$(element).text(text);
+            $.fn.editabletypes.abstractinput.prototype.value2html.call(this, text, element);
         },
         
         autosubmit: function() {
@@ -3229,10 +3261,14 @@ $(function(){
        //collect text of checked boxes
         value2htmlFinal: function(value, element) {
            var html = [],
-               checked = $.fn.editableutils.itemsByValue(value, this.sourceData);
+               checked = $.fn.editableutils.itemsByValue(value, this.sourceData),
+               escape = this.options.escape;
                
            if(checked.length) {
-               $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+               $.each(checked, function(i, v) {
+                   var text = escape ? $.fn.editableutils.escape(v.text) : v.text; 
+                   html.push(text); 
+               });
                $(element).html(html.join('<br>'));
            } else {
                $(element).empty(); 
@@ -3502,7 +3538,7 @@ Time
 /**
 Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
 Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.  
-Compatible **select2 version is 3.4.1**!   
+ 
 You should manually download and include select2 distributive:  
 
     <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
@@ -3643,9 +3679,11 @@ $(function(){
     $.extend(Constructor.prototype, {
         render: function() {
             this.setClass();
-            
-            //apply select2
-            this.$input.select2(this.options.select2);
+
+            //can not apply select2 here as it calls initSelection 
+            //over input that does not have correct value yet.
+            //apply select2 only in value2input
+            //this.$input.select2(this.options.select2);
 
             //when data is loaded via ajax, we need to know when it's done to populate listData
             if(this.isRemote) {
@@ -3673,7 +3711,8 @@ $(function(){
            } else if(this.sourceData) {
               data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc); 
            } else {
-              //can not get list of possible values (e.g. autotext for select2 with ajax source) 
+              //can not get list of possible values 
+              //(e.g. autotext for select2 with ajax source) 
            }
            
            //data may be array (when multiple values allowed)          
@@ -3689,7 +3728,8 @@ $(function(){
 
            text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
 
-           $(element).text(text);
+           //$(element).text(text);
+           Constructor.superclass.value2html.call(this, text, element); 
        },       
         
        html2value: function(html) {
@@ -3708,8 +3748,14 @@ $(function(){
            } 
            */
            
-           //for remote source just set value, text is updated by initSelection    
-           this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
+           //for remote source just set value, text is updated by initSelection
+           if(!this.$input.data('select2')) {
+               this.$input.val(value);
+               this.$input.select2(this.options.select2);
+           } else {
+               //second argument needed to separate initial change from user's click (for autosubmit)   
+               this.$input.val(value).trigger('change', true); 
+           }
            
            //if remote source AND no user's initSelection provided --> try to use element's text
            if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {
@@ -3717,7 +3763,7 @@ $(function(){
                    customText = this.options.select2.formatSelection;
                if(!customId && !customText) {      
                    var data = {id: value, text: $(this.options.scope).text()};
-                   this.$input.select2('data', data);    
+                   this.$input.select2('data', data); 
                }
            }
        },
@@ -3806,7 +3852,7 @@ $(function(){
         E.g. `[{id: 1, text: "text1"}, {id: 2, text: "text2"}, ...]`.  
         
         @property source 
-        @type array
+        @type array|string|function
         @default null        
         **/
         source: null,
@@ -3817,7 +3863,7 @@ $(function(){
         @type string
         @default ', '        
         **/
-        viewseparator: ', '        
+        viewseparator: ', '
     });
 
     $.fn.editabletypes.select2 = Constructor;      
@@ -4343,7 +4389,14 @@ $(function(){
     $.extend(Constructor.prototype, {
         render: function () {
             this.$input.combodate(this.options.combodate);
+                    
+            if($.fn.editableform.engine === 'bs3') {
+                this.$input.siblings().find('select').addClass('form-control');
+            }
             
+            if(this.options.inputclass) {
+                this.$input.siblings().find('select').addClass(this.options.inputclass);
+            }            
             //"clear" link
             /*
             if(this.options.clear) {
@@ -4360,7 +4413,8 @@ $(function(){
         
         value2html: function(value, element) {
             var text = value ? value.format(this.options.viewformat) : '';
-            $(element).text(text); 
+            //$(element).text(text);
+            Constructor.superclass.value2html.call(this, text, element);  
         },
 
         html2value: function(html) {
@@ -4479,6 +4533,7 @@ $(function(){
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'poshytip',
         innerCss: 'div.tip-inner',
+        defaults: $.fn.poshytip.defaults,
         
         initContainer: function(){
             this.handlePlacement();
@@ -4742,7 +4797,7 @@ $(function(){
 
         value2html: function(value, element) {
             var text = $.datepicker.formatDate(this.options.viewformat, value);
-            DateUI.superclass.value2html(text, element); 
+            DateUI.superclass.value2html.call(this, text, element); 
         },
 
         html2value: function(html) {

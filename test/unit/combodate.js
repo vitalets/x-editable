@@ -47,9 +47,8 @@ $(function () {
             
         e.click();
         var p = tip(e);
-        ok(p.find('.combodate').is(':visible'), 'combodate exists');
-        equal(p.find('.day, .month, .year, .hour, .minute').length, 3, 'combos correct');        
-        
+        ok(p.is(':visible'), 'container visible');
+        equal(p.find('.day, .month, .year, .hour, .minute').filter(':visible').length, 3, 'combos correct');        
         equal(p.find('.day').val(), m.date(), 'day set correct');
         equal(p.find('.month').val(), m.month(), 'month set correct');
         equal(p.find('.year').val(), m.year(), 'year set correct');
@@ -90,8 +89,8 @@ $(function () {
             
         e.click();
         var p = tip(e);
-        ok(p.find('.combodate').is(':visible'), 'combodate exists');
-        equal(p.find('.day, .month, .year, .hour, .minute, .second, .ampm').length, 7, 'combos correct');        
+        ok(p.is(':visible'), 'container visible');
+        equal(p.find('.day, .month, .year, .hour, .minute, .second, .ampm').filter(':visible').length, 7, 'combos correct');        
         
         equal(p.find('.day').val(), m.date(), 'day set correct');
         equal(p.find('.month').val(), m.month(), 'month set correct');

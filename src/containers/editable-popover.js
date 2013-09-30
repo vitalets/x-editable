@@ -11,13 +11,14 @@
         containerName: 'popover',
         //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
         innerCss: $.fn.popover && $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
-
+        defaults: $.fn.popover.defaults,
+        
         initContainer: function(){
             $.extend(this.containerOptions, {
                 trigger: 'manual',
                 selector: false,
                 content: ' ',
-                template: $.fn.popover.defaults.template
+                template: this.defaults.template
             });
             
             //as template property is used in inputs, hide it from popover

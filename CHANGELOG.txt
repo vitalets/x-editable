@@ -1,6 +1,16 @@
 X-editable changelog
 =============================
 
+Version 1.5.0 wip
+----------------------------
+[enh #362] add twitter typeahead.js (vitalets)
+[enh] select: add `sourceOptions` to modify source request method and params (vitalets)
+[enh #377] add bool option `escape` to allow html as content (vitalets)
+[bug #344] fix determing empty for html content (vitalets)
+[enh] update select2 to 3.4.3 (vitalets)
+[enh #343] Bootstrap 3 support (vitalets)
+
+
 Version 1.4.6 Aug 8, 2013
 ----------------------------
 [bug #312] can't apply selector more than once (vitalets)

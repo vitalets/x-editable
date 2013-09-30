@@ -67,7 +67,7 @@ $(function(){
 
         value2html: function(value, element) {
             var text = $.datepicker.formatDate(this.options.viewformat, value);
-            DateUI.superclass.value2html(text, element); 
+            DateUI.superclass.value2html.call(this, text, element); 
         },
 
         html2value: function(html) {
