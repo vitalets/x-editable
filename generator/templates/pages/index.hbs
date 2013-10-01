@@ -2,14 +2,14 @@
 {{#with project}}
 <div class="hero-unit">
     <h1>{{name}}</h1>
-    <p class="muted" style="font-size: 1.1em">In-place editing with <a href="http://twitter.github.com/bootstrap" target="_blank">Twitter Bootstrap</a>, <a href="http://jqueryui.com" target="_blank">jQuery UI</a> or pure <a href="http://jquery.com" target="_blank">jQuery</a></p>
+    <p class="muted" style="font-size: 1.1em">In-place editing with <a href="http://getbootstrap.com" target="_blank">Twitter Bootstrap</a>, <a href="http://jqueryui.com" target="_blank">jQuery UI</a> or pure <a href="http://jquery.com" target="_blank">jQuery</a></p>
     <p>This library allows you to create editable elements on your page. 
         It can be used with any engine (bootstrap, jquery-ui, jquery only) and includes both <i>popup</i> and <i>inline</i> modes.
         Please try out demo to see how it works. 
     </p>
     <div style="text-align: center">
         <p>
-        <a class="btn btn-success btn-large" style="width: 150px" href="demo.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
+        <a class="btn btn-success btn-large" style="width: 150px" href="demo-bs3.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
         <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
         </p>                    
         <p><small class="muted">Current version {{version}} <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small></p>
@@ -18,9 +18,15 @@
 </div>    
 
 <div class="row">
+    <div class="span12">
+      <p>Exact build of x-editable depends on core library you want to use:</p>
+    </div>
+</div>
+
+<div class="row">
     <div class="span4">
-        <h2>Bootstrap <small>(not 3.0 yet)</small></h2>
-        <p>Twitter Bootstrap has awesome <a href="http://twitter.github.com/bootstrap/base-css.html#forms" target="_blank">Form markup</a> and <a href="http://twitter.github.com/bootstrap/javascript.html#popovers" target="_blank">Popover plugin</a> allowing pretty in-place editing.
+        <h2>Bootstrap <small>(2 or 3)</small></h2>
+        <p>Twitter Bootstrap has awesome <a href="http://getbootstrap.com/css/#forms" target="_blank">Form markup</a> and <a href="http://getbootstrap.com/javascript/#popovers" target="_blank">Popover plugin</a> allowing pretty in-place editing.
         For <i>date</i> input it uses <a target="_blank" href="https://github.com/eternicode/bootstrap-datepicker">bootstrap-datepicker</a>.
         </p>
     </div>
@@ -41,22 +47,25 @@
 <div class="row">
     <div class="span4">
         <p class="centered"><img src="assets/img/bootstrap.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/bootstrap-editable-{{version}}.zip"><strong>Download</strong> (bootstrap build)</a></p>
+        <p class="centered">
+          <a class="btn btn-primary" href="assets/zip/bootstrap3-editable-{{version}}.zip"><strong>Download</strong> BS3 build</a>
+          <a class="btn btn-primary" href="assets/zip/bootstrap-editable-{{version}}.zip">BS2 build</a>
+        </p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jqueryui.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-{{version}}.zip"><strong>Download</strong> (jquery-ui build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-{{version}}.zip"><strong>Download</strong> jquery-ui build</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jquery.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-{{version}}.zip"><strong>Download</strong> (jquery build)</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-{{version}}.zip"><strong>Download</strong> jquery build</a></p>
     </div>
 </div>
 
 <div class="row">
     <div class="span12 cdn">
-        <h4>Using CDN <small>(1.4.5)</small> : 
-        <label><input type="radio" name="cdn-build" data-css="bootstrap-editable/css/bootstrap-editable.css" data-js="bootstrap-editable/js/bootstrap-editable.min.js">bootstrap</label>
+        <h4>Using CDN <small id="cdnver">(1.4.5)</small> : 
+        <label><input type="radio" name="cdn-build" data-css="bootstrap-editable/css/bootstrap-editable.css" data-js="bootstrap-editable/js/bootstrap-editable.min.js">bootstrap 2</label>
         <label><input type="radio" name="cdn-build" data-css="jqueryui-editable/css/jqueryui-editable.css" data-js="jqueryui-editable/js/jqueryui-editable.min.js">jquery-ui</label>
         <label><input type="radio" name="cdn-build" data-css="jquery-editable/css/jquery-editable.css" data-js="jquery-editable/js/jquery-editable-poshytip.min.js">jquery</label>
         </h4>
@@ -72,15 +81,19 @@
     <div class="span4">
         <h2 class="muted">Latest release</h2>
         {{#mdb}}
-#### 1.4.6 (Aug 8, 2013)
-* smart popup positioning
-* `defaultValue` option
-* HTML5 time input
-* composer support 
-* [other fixes](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt)
+#### 1.5.0 (Oct 1, 2013)
+* support of Bootstrap 3
+* add [twitter typeahed.js](http://twitter.github.io/typeahead.js) input
+* update select2 to 3.4.3
+* new options `escape` and `sourceOptions` 
+* [full changelog](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt)
 
-Thanks to all for issues and emails!
+Thanks to everybody for support and reporting!
         {{/mdb}}
+        <div style="margin-top: 20px; text-align: center">
+          <strong>For AngularJS projects consider</strong><br>
+          <a class="angular-xeditable" href="http://vitalets.github.io/angular-xeditable" target="_blank">Angular-xeditable</a>
+        </div>
         <div style="margin-top: 20px">
           <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
           <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a><br>
@@ -118,6 +131,7 @@ Thanks to all for issues and emails!
         <br>
         <h2 class="muted">Related projects</h2>
         <ul>
+            <li><a href="http://vitalets.github.io/angular-xeditable" target="_blank">Angular-xeditable</a> <small>by <a href="https://github.com/vitalets">Vitalets</a></small></li>
             <li><a href="http://x-editable.demopage.ru" target="_blank">X-editable for Yii</a> <small>by <a href="https://github.com/vitalets">Vitalets</a></small></li>
             <li><a href="https://github.com/brianchance/knockout-x-editable" target="_blank">Knockout binding</a> <small>by <a href="https://github.com/brianchance">brianchance</a></small></li>
             <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small>by <a href="https://github.com/clouddueling">Michael Calkins</a></small></li>

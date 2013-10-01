@@ -8,8 +8,9 @@
 <br>
 <p>Include it on your page. Examples below are for <i>bootstrap</i>:</p> 
 {{#source}}
-<link href="path/to/bootstrap/css/bootstrap.css" rel="stylesheet">
-<script src="path/to/bootstrap/js/bootstrap.js"></script>           
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script> 
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>           
 {{/source}}
 </li>
 <li>Download corresponding X-editable build and include it on your page:<br>
@@ -17,6 +18,7 @@
 <link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
 <script src="bootstrap-editable/js/bootstrap-editable.js"></script> 
 {{/source}}
+<p>Note to include x-editable <b>after</b> bootstrap!</p>
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 {{#source}}                                                                                                            
@@ -58,6 +60,11 @@ $('#username').editable({
 {{/source}}                                                          
 </li>
 <li>Frontend ready!<br>
+<p>
+<a href="starter" class="btn btn-primary" target="_blank">View starter template</a>
+<a href="assets/starter.zip" class="btn btn-success">Download starter zip</a>
+</p>
+<p>
 Open your page and click on element. Enter new value and submit form. It will send ajax request with new value to <code>/post</code>.<br>
 Request contains <code>name</code>, <code>value</code> and <code>pk</code> of record to be updated:<br><br>
 {{#source}}
@@ -68,6 +75,8 @@ POST /post
     value: 'superuser!' //new value
 }
 {{/source}}
+</p>
+</li>
 <li>Write backend part:<br>
 X-editable has no limitation to server-side part: you can write it on any language you prefer.<br>
 For example, you want to validate submitted value on server:

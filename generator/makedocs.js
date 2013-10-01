@@ -124,6 +124,7 @@ function loadContext() {
                         'checklist', 
                         'wysihtml5',
                         'typeahead',
+                        'typeaheadjs',
                         'select2'
                        ];
     
@@ -146,6 +147,11 @@ function loadContext() {
                       if(item.extends) {
                           mergeDefaults(item, classes[item.extends]);
                       }
+                      return item;
+                  })
+                  // sort item rpoperties alphabetically
+                  .map(function(item) {
+                      item.property.sort(sf);
                       return item;
                   })
                   .filter(function(item, key) {

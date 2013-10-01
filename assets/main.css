@@ -35,3 +35,11 @@ section {
 .cdn pre {
     margin: 0;
 }
+
+.angular-xeditable {
+    background: url('img/angular32.jpeg') left center no-repeat;
+    padding-left: 40px;
+    height: 32px;
+    line-height: 32px;
+    display: inline-block;
+}

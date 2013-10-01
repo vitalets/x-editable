@@ -1,0 +1,18 @@
+#frm select {
+    width: auto;
+}
+
+ 
+#user > tbody > tr > td {
+    height: 45px;
+    padding: 4px 8px;  
+}
+
+.muted {
+   color: #999999;
+}
+
+.notready {
+   color: #999999;
+   font-style: italic;
+}

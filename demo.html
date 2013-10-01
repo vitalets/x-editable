@@ -56,7 +56,7 @@
         </style>
         
         <script>
-        var f = 'bootstrap';
+        var f = 'bootstrap2';
         </script>
 
         
@@ -78,7 +78,11 @@
                         $(this).attr('action', 'demo-jqueryui.html');
                     } else if(f === 'plain') {
                         $(this).attr('action', 'demo-plain.html');
-                    } 
+                    } else if(f === 'bootstrap2') {
+                        $(this).attr('action', 'demo.html');
+                    } else {
+                        $(this).attr('action', 'demo-bs3.html');                        
+                    }
                 });
             });
         </script>        
@@ -104,21 +108,25 @@
             <hr>
 
             <h2>Settings</h2>
-             <form method="get" id="frm" class="form-inline" action="demo.html">        
-                <label>Form style:
-                    <select id="f">
-                        <option value="bootstrap">Bootstrap</option>
+             <form method="get" id="frm" class="form-inline" action="demo.html">
+                
+                <label>
+                    <span>Form style:</span>
+                    <select id="f" class="form-control">
+                        <option value="bootstrap3">Bootstrap 3</option>
+                        <option value="bootstrap2">Bootstrap 2</option>
                         <option value="jqueryui">jQuery UI</option>
                         <option value="plain">Plain</option>
                     </select>
                 </label>
-                           
+
                 <label style="margin-left: 30px">Mode:
-                    <select name="c" id="c">
+                    <select name="c" id="c" class="form-control">
                         <option value="popup">Popup</option>
                         <option value="inline">Inline</option>
                     </select>
                 </label>
+
                 <button type="submit" class="btn btn-primary" style="margin-left: 30px">refresh</button>
             </form>
 
@@ -127,7 +135,7 @@
             <h2>Example</h2>   
             <div style="float: right; margin-bottom: 10px">
             <label style="display: inline-block; margin-right: 50px"><input type="checkbox" id="autoopen" style="vertical-align: baseline">&nbsp;auto-open next field</label>
-            <button id="enable" class="btn">enable / disable</button>
+            <button id="enable" class="btn btn-default">enable / disable</button>
             </div>
             <p>Click to edit</p>
             <table id="user" class="table table-bordered table-striped" style="clear: both">
@@ -156,10 +164,15 @@
                         <td>Status</td>
                         <td><a href="#" id="status" data-type="select" data-pk="1" data-value="0" data-source="/status" data-original-title="Select status">Active</a></td>
                         <td><span class="muted">Error when loading list items</span></td>
-                    </tr>       
+                    </tr>  
+                         
                     <tr>         
                         <td>Plan vacation?</td>
-                        <td><a href="#" id="vacation" data-type="date" data-viewformat="dd.mm.yyyy" data-pk="1" data-placement="right" data-original-title="When you want vacation to start?">25.02.2013</a></td>
+                        <td>
+                        
+                        <a href="#" id="vacation" data-type="date" data-viewformat="dd.mm.yyyy" data-pk="1" data-placement="right" data-original-title="When you want vacation to start?">25.02.2013</a>                        
+                        
+                        </td>
                         <td><span class="muted">Datepicker</span></td>
                     </tr>
                     <tr>         
@@ -194,6 +207,8 @@ user!</a></td>
                         <td><a href="#" id="state" data-type="typeahead" data-pk="1" data-placement="right" data-original-title="Start typing State.."></a></td>
                         <td><span class="muted">Bootstrap typeahead</span></td>
                     </tr>                       
+                    
+                    
                                          
                                                         
                     <tr>         
@@ -235,7 +250,7 @@ user!</a></td>
                               <i>Source:</i> <a href="http://en.wikipedia.org/wiki/WYSIWYG_%28disambiguation%29">wikipedia.org</a> 
                              
                             </div></td>
-                        <td><a href="#" id="pencil"><i class="icon-pencil" style="padding-right: 5px"></i>[edit]</a><br><span class="muted">Wysihtml5 (bootstrap only).<br>Toggle by another element</span></td>
+                        <td><a href="#" id="pencil"><i class="icon-pencil" style="padding-right: 5px"></i>[edit]</a><br><span class="muted">Wysihtml5 (bootstrap 2 only).<br>Toggle by another element</span></td>
                     </tr>                                                                                            
                     
                 </tbody>
@@ -243,7 +258,7 @@ user!</a></td>
             
             <div style="float: left; width: 50%">
                 <h3>Console <small>(all ajax requests here are emulated)</small></h3> 
-                <div><textarea id="console" rows="8" style="width: 70%" autocomplete="off"></textarea></div>
+                <div><textarea id="console" class="form-control" rows="8" style="width: 70%" autocomplete="off"></textarea></div>
             </div>
            
             <div style="float: left">             

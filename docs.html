@@ -36,7 +36,7 @@
             <a href="index.html" class="brand">X-editable</a>
             <ul class="nav">
                 <li><a href="index.html">Home</a></li>
-                <li><a target="_blank" href="demo.html">Demo</a></li>
+                <li><a target="_blank" href="demo-bs3.html">Demo</a></li>
                 <li class="active"><a href="docs.html">Docs</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="http://github.com/vitalets/x-editable">GitHub</a></li>
@@ -123,6 +123,8 @@
                          
                           <li><a href="#typeahead">typeahead</a></li>
                          
+                          <li><a href="#typeaheadjs">typeaheadjs</a></li>
+                         
                           <li><a href="#select2">select2</a></li>
                          
                       </ul>
@@ -152,12 +154,14 @@
 </ul>
 <br>
 <p>Include it on your page. Examples below are for <i>bootstrap</i>:</p> 
-<pre class="prettyprint linenums">&lt;link href=&quot;path/to/bootstrap/css/bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt;
-&lt;script src=&quot;path/to/bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;</pre>
+<pre class="prettyprint linenums">&lt;link href=&quot;//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;script src=&quot;http://code.jquery.com/jquery-2.0.3.min.js&quot;&gt;&lt;/script&gt; 
+&lt;script src=&quot;//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;</pre>
 </li>
 <li>Download corresponding X-editable build and include it on your page:<br>
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;bootstrap-editable/js/bootstrap-editable.js&quot;&gt;&lt;/script&gt;</pre>
+<p>Note to include x-editable <b>after</b> bootstrap!</p>
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot; data-type=&quot;text&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-title=&quot;Enter username&quot;&gt;superuser&lt;/a&gt;</pre>
@@ -189,6 +193,11 @@ Alternatively, you can set all options via javascript
 });</pre>                                                          
 </li>
 <li>Frontend ready!<br>
+<p>
+<a href="starter" class="btn btn-primary" target="_blank">View starter template</a>
+<a href="assets/starter.zip" class="btn btn-success">Download starter zip</a>
+</p>
+<p>
 Open your page and click on element. Enter new value and submit form. It will send ajax request with new value to <code>/post</code>.<br>
 Request contains <code>name</code>, <code>value</code> and <code>pk</code> of record to be updated:<br><br>
 <pre class="prettyprint linenums">POST /post
@@ -197,6 +206,8 @@ Request contains <code>name</code>, <code>value</code> and <code>pk</code> of re
     pk:    1            //primary key (record id)
     value: &#x27;superuser!&#x27; //new value
 }</pre>
+</p>
+</li>
 <li>Write backend part:<br>
 X-editable has no limitation to server-side part: you can write it on any language you prefer.<br>
 For example, you want to validate submitted value on server:
@@ -248,7 +259,7 @@ If you don't want to send value on server, just keep empty <code>url</code> opti
 Options can be defined via javascript <code>$().editable({...})</code> or via <code>data-*</code> html attributes.<br>
 
 Please see also <a href="#inputs">input dependent options</a>.<br>
-Additionally, you can use core options of popup from their docs: <a href="http://twitter.github.com/bootstrap/javascript.html#popovers">bootstrap-popover</a>, <a href="http://api.jqueryui.com/tooltip">jquery-ui-tooltip</a>.
+Additionally, you can use core options of popup from their docs: <a href="http://getbootstrap.com/javascript/#popovers">bootstrap-popover</a>, <a href="http://api.jqueryui.com/tooltip">jquery-ui-tooltip</a>.
  
 </p>
 <table class="table table-bordered table-striped">
@@ -300,7 +311,7 @@ For example, if dropdown list is <code>{1: &#39;a&#39;, 2: &#39;b&#39;}</code> a
         </tr> 
        
         <tr>
-            <td>defaultValue <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.6</span></div></td>
+            <td>defaultValue <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.4.6</span></div></td>
             <td>string|object</td>
             <td>null</td>
             <td><p>Value that will be displayed in input if original field value is empty (<code>null|undefined|&#39;&#39;</code>).</p>
@@ -1087,6 +1098,8 @@ The workaround is to check <code>arguments.length</code> that is always <code>2<
             
             <li>typeahead</li>
             
+            <li>typeaheadjs <sup><span class="label label-success">new</span></sup></li>
+            
             <li>select2</li>
                    
             </ul>
@@ -1122,10 +1135,30 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
+            <td>clear </td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Whether to show <code>clear</code> button</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
             <td>string</td>
-            <td>&lt;input type=&quot;text&quot;&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
 
             
             </td>
@@ -1142,20 +1175,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>clear </td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>Whether to show <code>clear</code> button</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass </td>
+            <td>tpl </td>
             <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1207,10 +1230,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
 
             
             </td>
@@ -1241,6 +1264,16 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
             <td>integer</td>
             <td>7</td>
             <td><p>Number of rows in textarea</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1293,10 +1326,30 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
             <td>string</td>
-            <td>&lt;select&gt;&lt;/select&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>prepend </td>
+            <td>string | array | object | function</td>
+            <td>false</td>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
             
             </td>
@@ -1322,10 +1375,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>prepend </td>
-            <td>string | array | object | function</td>
-            <td>false</td>
-            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
+            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
 
             
             </td>
@@ -1342,20 +1395,21 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
+            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>object|function</td>
+            <td>null</td>
+            <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
+Useful to send extra parameters (<code>data</code> key) or change request method (<code>type</code> key).</p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>inputclass </td>
+            <td>tpl </td>
             <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>&lt;select&gt;&lt;/select&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1412,41 +1466,11 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;div&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>format </td>
-            <td>string</td>
-            <td>yyyy-mm-dd</td>
-            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>viewformat </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
+            <td>clear </td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
 
             
             </td>
@@ -1469,11 +1493,51 @@ Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">
         </tr> 
        
         <tr>
-            <td>clear </td>
-            <td>boolean|string</td>
-            <td>&#x27;x clear&#x27;</td>
-            <td><p>Text shown as clear date button. 
-If <code>false</code> clear button will not be rendered.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>format </td>
+            <td>string</td>
+            <td>yyyy-mm-dd</td>
+            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
 
             
             </td>
@@ -1536,41 +1600,11 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;div&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>format </td>
-            <td>string</td>
-            <td>yyyy-mm-dd hh:ii</td>
-            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>viewformat </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
+            <td>clear </td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
 
             
             </td>
@@ -1588,11 +1622,51 @@ Full list of options: <a href="https://github.com/smalot/bootstrap-datetimepicke
         </tr> 
        
         <tr>
-            <td>clear </td>
-            <td>boolean|string</td>
-            <td>&#x27;x clear&#x27;</td>
-            <td><p>Text shown as clear date button. 
-If <code>false</code> clear button will not be rendered.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>format </td>
+            <td>string</td>
+            <td>yyyy-mm-dd hh:ii</td>
+            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
 
             
             </td>
@@ -1648,41 +1722,11 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;div&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>CSS class automatically applied to input</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>format </td>
-            <td>string</td>
-            <td>yyyy-mm-dd</td>
-            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">http://docs.jquery.com/UI/Datepicker/formatDate</a></p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>viewformat </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
+            <td>clear </td>
+            <td>boolean|string</td>
+            <td>&#x27;x clear&#x27;</td>
+            <td><p>Text shown as clear date button. 
+If <code>false</code> clear button will not be rendered.</p>
 
             
             </td>
@@ -1704,11 +1748,51 @@ Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jq
         </tr> 
        
         <tr>
-            <td>clear </td>
-            <td>boolean|string</td>
-            <td>&#x27;x clear&#x27;</td>
-            <td><p>Text shown as clear date button. 
-If <code>false</code> clear button will not be rendered.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>format </td>
+            <td>string</td>
+            <td>yyyy-mm-dd</td>
+            <td><p>Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+Full list of tokens: <a href="http://docs.jquery.com/UI/Datepicker/formatDate">http://docs.jquery.com/UI/Datepicker/formatDate</a></p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code></p>
 
             
             </td>
@@ -1776,20 +1860,21 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;input type=&quot;text&quot;&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>combodate </td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of combodate.
+Full list of options: <a href="http://vitalets.github.com/combodate/#docs">http://vitalets.github.com/combodate/#docs</a></p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>inputclass </td>
-            <td>string</td>
-            <td>null</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
 
             
             </td>
@@ -1807,10 +1892,10 @@ See list of tokens in <a href="http://momentjs.com/docs/#/parsing/string-format"
         </tr> 
        
         <tr>
-            <td>viewformat </td>
+            <td>inputclass </td>
             <td>string</td>
             <td>null</td>
-            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code>.</p>
+            <td><p>CSS class automatically applied to input</p>
 
             
             </td>
@@ -1827,11 +1912,20 @@ See list of tokens in <a href="http://momentjs.com/docs/#/parsing/string-format"
         </tr> 
        
         <tr>
-            <td>combodate </td>
-            <td>object</td>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>viewformat </td>
+            <td>string</td>
             <td>null</td>
-            <td><p>Configuration of combodate.
-Full list of options: <a href="http://vitalets.github.com/combodate/#docs">http://vitalets.github.com/combodate/#docs</a></p>
+            <td><p>Format used for displaying date. Also applied when converting date from element&#39;s text on init.<br>If not specified equals to <code>format</code>.</p>
 
             
             </td>
@@ -1903,10 +1997,30 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
+            <td>clear </td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Whether to show <code>clear</code> button</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
             <td>string</td>
-            <td>depends on type</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
 
             
             </td>
@@ -1923,20 +2037,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>clear </td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>Whether to show <code>clear</code> button</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>inputclass </td>
+            <td>tpl </td>
             <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>depends on type</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -1989,10 +2093,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;div&gt;&lt;/div&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
 
             
             </td>
@@ -2003,6 +2107,16 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
             <td>string</td>
             <td>null</td>
             <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>prepend </td>
+            <td>string | array | object | function</td>
+            <td>false</td>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
             
             </td>
@@ -2038,10 +2152,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>prepend </td>
-            <td>string | array | object | function</td>
-            <td>false</td>
-            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
+            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
 
             
             </td>
@@ -2058,10 +2172,21 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
+            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>object|function</td>
+            <td>null</td>
+            <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
+Useful to send extra parameters (<code>data</code> key) or change request method (<code>type</code> key).</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;div&gt;&lt;/div&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -2127,10 +2252,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
 
             
             </td>
@@ -2151,6 +2276,16 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
             <td>string</td>
             <td>null</td>
             <td><p>Placeholder attribute of input. Shown when input is empty.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;textarea&gt;&lt;/textarea&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
@@ -2185,7 +2320,7 @@ $(function(){
         
          <section id="typeahead">
             <h2>typeahead</h2>
-            <p><p>Typeahead input (bootstrap only). Based on Twitter Bootstrap <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">typeahead</a>.<br>Depending on <code>source</code> format typeahead operates in two modes:
+            <p><p>Typeahead input (bootstrap 2 only). Based on Twitter Bootstrap 2 <a href="http://getbootstrap.com/2.3.2/javascript.html#typeahead">typeahead</a>.<br>Depending on <code>source</code> format typeahead operates in two modes:
 
 </p>
 <ul>
@@ -2220,30 +2355,40 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;input type=&quot;text&quot;&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
-            <td>typeahead </td>
-            <td>object</td>
-            <td>null</td>
-            <td><p>Configuration of typeahead. <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead">Full list of options</a>.</p>
-
-            
-            </td>
-        </tr> 
-       
-        <tr>
             <td>clear </td>
             <td>boolean</td>
             <td>true</td>
             <td><p>Whether to show <code>clear</code> button</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>prepend </td>
+            <td>string | array | object | function</td>
+            <td>false</td>
+            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
 
             
             </td>
@@ -2269,10 +2414,10 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>prepend </td>
-            <td>string | array | object | function</td>
-            <td>false</td>
-            <td><p>Data automatically prepended to the beginning of dropdown list.</p>
+            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
 
             
             </td>
@@ -2289,20 +2434,31 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceCache <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.2.0</span></div></td>
-            <td>boolean</td>
-            <td>true</td>
-            <td><p>if <code>true</code> and source is <strong>string url</strong> - results will be cached for fields with the same source.<br>Usefull for editable column in grid to prevent extra requests.</p>
+            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>object|function</td>
+            <td>null</td>
+            <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
+Useful to send extra parameters (<code>data</code> key) or change request method (<code>type</code> key).</p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>inputclass </td>
+            <td>tpl </td>
             <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>typeahead </td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of typeahead. <a href="http://getbootstrap.com/2.3.2/javascript.html#typeahead">Full list of options</a>.</p>
 
             
             </td>
@@ -2329,9 +2485,128 @@ $(function(){
 </div>
             </section>
         
+         <section id="typeaheadjs">
+            <h2>typeaheadjs <sup><span class="label label-success">new</span></sup></h2>
+            <p><p>Typeahead.js input, based on <a href="http://twitter.github.io/typeahead.js">Twitter Typeahead</a>.<br>It is mainly replacement of typeahead in Bootstrap 3.</p>
+
+               <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div>
+            </p>
+            <ul class="nav nav-tabs" id="typeaheadjs-tabs">
+    <li class="active"><a href="#typeaheadjs-options" data-toggle="tab">Options</a></li>
+    <li><a href="#typeaheadjs-example" data-toggle="tab">Example</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="typeaheadjs-options">
+      <p>
+Options can be defined via javascript <code>$().editable({...})</code> or via <code>data-*</code> html attributes.<br>
+ 
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Name</th>
+            <th style="width: 15%;">Type</th>
+            <th style="width: 15%;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>clear </td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>Whether to show <code>clear</code> button</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>inputclass </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>CSS class automatically applied to input</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>placeholder </td>
+            <td>string</td>
+            <td>null</td>
+            <td><p>Placeholder attribute of input. Shown when input is empty.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>tpl </td>
+            <td>string</td>
+            <td>&lt;input type=&quot;text&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
+            <td>typeahead </td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of typeahead itself. 
+<a href="https://github.com/twitter/typeahead.js#dataset">Full list of options</a>.</p>
+
+            
+            </td>
+        </tr> 
+                                    
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="typeaheadjs-example">
+     <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;country&quot; data-type=&quot;typeaheadjs&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-title=&quot;Input country&quot;&gt;&lt;/a&gt;
+&lt;script&gt;
+$(function(){
+    $(&#x27;#country&#x27;).editable({
+        value: &#x27;ru&#x27;,
+        typeahead: {
+            name: &#x27;country&#x27;,
+            local: [
+                {value: &#x27;ru&#x27;, tokens: [&#x27;Russia&#x27;]}, 
+                {value: &#x27;gb&#x27;, tokens: [&#x27;Great Britain&#x27;]}, 
+                {value: &#x27;us&#x27;, tokens: [&#x27;United States&#x27;]}
+            ],
+            template: function(item) {
+                return item.tokens[0] + &#x27; (&#x27; + item.value + &#x27;)&#x27;; 
+            } 
+        }
+    });
+});
+&lt;/script&gt;</pre>
+    </div>
+</div>
+            </section>
+        
          <section id="select2">
             <h2>select2</h2>
-            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original select2 docs</a> for detailed description and options.<br>Compatible <strong>select2 version is 3.4.1</strong>!<br>You should manually download and include select2 distributive:  
+            <p><p>Select2 input. Based on amazing work of Igor Vaynberg <a href="https://github.com/ivaynberg/select2">https://github.com/ivaynberg/select2</a>.<br>Please see <a href="http://ivaynberg.github.com/select2">original select2 docs</a> for detailed description and options.  
+
+</p>
+<p>You should manually download and include select2 distributive:  
 
 </p>
 <pre><code>&lt;link href=&quot;select2/select2.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;&lt;/link&gt;  
@@ -2370,20 +2645,20 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>tpl </td>
-            <td>string</td>
-            <td>&lt;input type=&quot;hidden&quot;&gt;</td>
-            <td><p>HTML template of input. Normally you should not change it.</p>
+            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>boolean</td>
+            <td>true</td>
+            <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>select2 </td>
-            <td>object</td>
+            <td>inputclass </td>
+            <td>string</td>
             <td>null</td>
-            <td><p>Configuration of select2. <a href="http://ivaynberg.github.com/select2">Full list of options</a>.</p>
+            <td><p>CSS class automatically applied to input</p>
 
             
             </td>
@@ -2400,8 +2675,18 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
+            <td>select2 </td>
+            <td>object</td>
+            <td>null</td>
+            <td><p>Configuration of select2. <a href="http://ivaynberg.github.com/select2">Full list of options</a>.</p>
+
+            
+            </td>
+        </tr> 
+       
+        <tr>
             <td>source </td>
-            <td>array</td>
+            <td>array|string|function</td>
             <td>null</td>
             <td><p>Source data for select. It will be assigned to select2 <code>data</code> property and kept here just for convenience.
 Please note, that format is different from simple <code>select</code> input: use &#39;id&#39; instead of &#39;value&#39;.
@@ -2412,20 +2697,20 @@ E.g. <code>[{id: 1, text: &quot;text1&quot;}, {id: 2, text: &quot;text2&quot;}, 
         </tr> 
        
         <tr>
-            <td>viewseparator </td>
+            <td>tpl </td>
             <td>string</td>
-            <td>&#x27;, &#x27;</td>
-            <td><p>Separator used to display tags.</p>
+            <td>&lt;input type=&quot;hidden&quot;&gt;</td>
+            <td><p>HTML template of input. Normally you should not change it.</p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>inputclass </td>
+            <td>viewseparator </td>
             <td>string</td>
-            <td>input-medium</td>
-            <td><p>CSS class automatically applied to input</p>
+            <td>&#x27;, &#x27;</td>
+            <td><p>Separator used to display tags.</p>
 
             
             </td>

@@ -45,6 +45,10 @@ then
   rm -f $zipfile
   zip -rT $zipfile jquery-editable $files
   
+  zipfile=../zip/bootstrap3-editable-$version.zip
+  rm -f $zipfile
+  zip -rT $zipfile bootstrap3-editable $files
+  
   cd $startdir 
 fi
 

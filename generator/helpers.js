@@ -9,6 +9,14 @@ Handlebars.registerHelper('if_eq', function(v1, v2, options) {
   return options.inverse(this);
 });   
 
+//not equal helper
+Handlebars.registerHelper('if_neq', function(v1, v2, options) {
+  if(v1 != v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});  
+
 //each property helper
 Handlebars.registerHelper('eachProperty', function(context, options) {
     var ret = "";
