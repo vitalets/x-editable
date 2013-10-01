@@ -122,8 +122,10 @@ $(function(){
         countries.push({id: k, text: v});
     }); 
     $('#country').editable({
-        inputclass: 'input-large',
-        source: countries 
+        source: countries,
+        select2: {
+            width: 200
+        } 
     });      
 
 

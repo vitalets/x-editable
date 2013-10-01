@@ -300,7 +300,7 @@
             "final": 1,
             "since": "1.4.0",
             "example": [
-                "\n<a href=\"#\" id=\"dob\" data-type=\"combodate\" data-pk=\"1\" data-url=\"/post\" data-value=\"1984-05-15\" data-original-title=\"Select date\"></a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'YYYY-MM-DD',    \n        viewformat: 'DD.MM.YYYY',    \n        template: 'D / MMMM / YYYY',    \n        combodate: {\n                minYear: 2000,\n                maxYear: 2015,\n                minuteStep: 1\n           }\n        }\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"dob\" data-type=\"combodate\" data-pk=\"1\" data-url=\"/post\" data-value=\"1984-05-15\" data-title=\"Select date\"></a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'YYYY-MM-DD',    \n        viewformat: 'DD.MM.YYYY',    \n        template: 'D / MMMM / YYYY',    \n        combodate: {\n                minYear: 2000,\n                maxYear: 2015,\n                minuteStep: 1\n           }\n        }\n    });\n});\n</script>"
             ]
         },
         "date": {
@@ -317,7 +317,7 @@
             "extends": "abstractinput",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                weekStart: 1\n           }\n        }\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                weekStart: 1\n           }\n        }\n    });\n});\n</script>"
             ]
         },
         "datefield": {
@@ -379,7 +379,7 @@
             "extends": "abstractinput",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                firstDay: 1\n           }\n        }\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"dob\" data-type=\"date\" data-pk=\"1\" data-url=\"/post\" data-title=\"Select date\">15/05/1984</a>\n<script>\n$(function(){\n    $('#dob').editable({\n        format: 'yyyy-mm-dd',    \n        viewformat: 'dd/mm/yyyy',    \n        datepicker: {\n                firstDay: 1\n           }\n        }\n    });\n});\n</script>"
             ]
         },
         "dateuifield": {
@@ -440,7 +440,7 @@
             "extends": "list",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"options\" data-type=\"checklist\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select options\"></a>\n<script>\n$(function(){\n    $('#options').editable({\n        value: [2, 3],    \n        source: [\n              {value: 1, text: 'option1'},\n              {value: 2, text: 'option2'},\n              {value: 3, text: 'option3'}\n           ]\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"options\" data-type=\"checklist\" data-pk=\"1\" data-url=\"/post\" data-title=\"Select options\"></a>\n<script>\n$(function(){\n    $('#options').editable({\n        value: [2, 3],    \n        source: [\n              {value: 1, text: 'option1'},\n              {value: 2, text: 'option2'},\n              {value: 3, text: 'option3'}\n           ]\n    });\n});\n</script>"
             ]
         },
         "html5types": {
@@ -488,7 +488,7 @@
             "extends": "list",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"status\" data-type=\"select\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Select status\"></a>\n<script>\n$(function(){\n    $('#status').editable({\n        value: 2,    \n        source: [\n              {value: 1, text: 'Active'},\n              {value: 2, text: 'Blocked'},\n              {value: 3, text: 'Deleted'}\n           ]\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"status\" data-type=\"select\" data-pk=\"1\" data-url=\"/post\" data-title=\"Select status\"></a>\n<script>\n$(function(){\n    $('#status').editable({\n        value: 2,    \n        source: [\n              {value: 1, text: 'Active'},\n              {value: 2, text: 'Blocked'},\n              {value: 3, text: 'Deleted'}\n           ]\n    });\n});\n</script>"
             ]
         },
         "text": {
@@ -544,7 +544,7 @@
             "since": "1.4.1",
             "final": 1,
             "example": [
-                "\n<a href=\"#\" id=\"country\" data-type=\"typeahead\" data-pk=\"1\" data-url=\"/post\" data-original-title=\"Input country\"></a>\n<script>\n$(function(){\n    $('#country').editable({\n        value: 'ru',    \n        source: [\n              {value: 'gb', text: 'Great Britain'},\n              {value: 'us', text: 'United States'},\n              {value: 'ru', text: 'Russia'}\n           ]\n    });\n});\n</script>"
+                "\n<a href=\"#\" id=\"country\" data-type=\"typeahead\" data-pk=\"1\" data-url=\"/post\" data-title=\"Input country\"></a>\n<script>\n$(function(){\n    $('#country').editable({\n        value: 'ru',    \n        source: [\n              {value: 'gb', text: 'Great Britain'},\n              {value: 'us', text: 'United States'},\n              {value: 'ru', text: 'Russia'}\n           ]\n    });\n});\n</script>"
             ]
         },
         "typeaheadjs": {

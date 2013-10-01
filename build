@@ -22,7 +22,7 @@ if [ $(expr match $1 ".*zip.*") -gt 0 ]
 then
   #starter
   cd starter
-  zipfile=../assets/starter.zip
+  zipfile=../assets/x-editable_starter.zip
   rm -f $zipfile
   zip -rT $zipfile *.*
   cd ..
