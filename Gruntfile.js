@@ -136,6 +136,7 @@ module.exports = function(grunt) {
  //grunt.loadNpmTasks('grunt-contrib-requirejs');
 
  //version of jquery-ui datepicker to be copied into dist
+ //note: if change here => don't forget to change in gh-pages demo-plain.hbs !!!
  var dp_ui_ver = '1.10.3';
  
  //module for testing
@@ -280,12 +281,15 @@ module.exports = function(grunt) {
             dest:'<%= dist %>/inputs-ext/'
         },
         ui_datepicker: {
-            files: {
-             //copy jquery ui datepicker
-             '<%= dist %>/jquery-editable/jquery-ui-datepicker/js/': 'src/inputs/dateui/jquery-ui-datepicker/js/jquery-ui-'+dp_ui_ver+'.*.js',
-             '<%= dist %>/jquery-editable/jquery-ui-datepicker/css/redmond/': 'src/inputs/dateui/jquery-ui-datepicker/css/redmond/jquery-ui-'+dp_ui_ver+'.*.css',
-             '<%= dist %>/jquery-editable/jquery-ui-datepicker/css/redmond/images/': 'src/inputs/dateui/jquery-ui-datepicker/css/redmond/images/**'
-         }
+            //copy jquery ui datepicker to jquery-editable build
+            expand: true, 
+            cwd: 'src/inputs/dateui/jquery-ui-datepicker', 
+            src: [
+                'js/jquery-ui-'+dp_ui_ver+'.*.js', 
+                'css/redmond/jquery-ui-'+dp_ui_ver+'.*.css',
+                'css/redmond/images/**'
+            ],
+            dest:'<%= dist %>/jquery-editable/jquery-ui-datepicker/'
        }         
     }
   });
