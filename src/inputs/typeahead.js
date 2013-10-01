@@ -15,7 +15,7 @@ Depending on `source` format typeahead operates in two modes:
 @since 1.4.1
 @final
 @example
-<a href="#" id="country" data-type="typeahead" data-pk="1" data-url="/post" data-original-title="Input country"></a>
+<a href="#" id="country" data-type="typeahead" data-pk="1" data-url="/post" data-title="Input country"></a>
 <script>
 $(function(){
     $('#country').editable({
