@@ -1,5 +1,5 @@
 /**
-Typeahead.js input, based on [Twitter Typeahead](http://twitter.github.io/typeahead.js) 
+Typeahead.js input, based on [Twitter Typeahead](http://twitter.github.io/typeahead.js).   
 It is mainly replacement of typeahead in Bootstrap 3.
 
 

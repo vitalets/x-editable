@@ -2456,9 +2456,9 @@ To create your own input you can inherit from this class.
         inputclass: null,
         
         /**
-        If `true` - html will be escaped in content of element via $.text() method.
-        If `false` - html will not be escaped, $.html() used.
-        When you use own `display` function, this option has no influence.
+        If `true` - html will be escaped in content of element via $.text() method.  
+        If `false` - html will not be escaped, $.html() used.  
+        When you use own `display` function, this option obviosly has no effect.
         
         @property escape 
         @type boolean
@@ -6632,7 +6632,7 @@ Automatically shown in inline mode.
 
 }(window.jQuery));
 /**
-Typeahead input (bootstrap only). Based on Twitter Bootstrap [typeahead](http://twitter.github.com/bootstrap/javascript.html#typeahead).  
+Typeahead input (bootstrap 2 only). Based on Twitter Bootstrap 2 [typeahead](http://getbootstrap.com/2.3.2/javascript.html#typeahead).  
 Depending on `source` format typeahead operates in two modes:
 
 * **strings**:  
@@ -6879,7 +6879,7 @@ $(function(){
         **/         
         tpl:'<input type="text">',
         /**
-        Configuration of typeahead. [Full list of options](http://twitter.github.com/bootstrap/javascript.html#typeahead).
+        Configuration of typeahead. [Full list of options](http://getbootstrap.com/2.3.2/javascript.html#typeahead).
         
         @property typeahead 
         @type object
