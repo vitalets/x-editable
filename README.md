@@ -42,7 +42,7 @@ git clone https://github.com/<your-github-name>/x-editable.git -b dev
 ````
 2.Install *grunt-cli* globally (if not yet):
 ````
-npm i -d grunt-cli
+npm i -g grunt-cli
 ````
 3.Install dependencies:  
 ````
