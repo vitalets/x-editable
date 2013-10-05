@@ -119,15 +119,22 @@ $(function(){
        
        clear:  function() {
            this.$input.datepicker('setDate', null);
+           // submit automatically whe that are no buttons
+           if(this.isAutosubmit) {
+              this.submit();
+           }
        },
        
        autosubmit: function() {
-           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', function(e){
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
+           this.isAutosubmit = true; 
+           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', $.proxy(this.submit, this));
+       },
+
+       submit: function() {
+           var $form = this.$input.closest('form');
+           setTimeout(function() {
+               $form.submit();
+           }, 200);
        }
 
     });
