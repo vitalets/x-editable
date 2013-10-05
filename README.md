@@ -54,7 +54,7 @@ npm i
 ````
 vim editable-form.js
 ````
-5.Write some tests for your chnages:
+5.Write some tests for your changes:
 ````
 vim /test/unit/*.js
 ````
@@ -66,7 +66,21 @@ or directly in browser:
 ````
 grunt server
 ````
-and open http://127.0.0.1:8000/test
+and open http://127.0.0.1:8000/test  
+By default test run on bootstrap 3 popup version, but you can test any other build:  
+
+* bootstrap 3
+  * popup: http://127.0.0.1:8000/test/?f=bootstrap3&c=popup  
+  * inline: http://127.0.0.1:8000/test/?f=bootstrap3&c=inline  
+* bootstrap 2
+  * popup: http://127.0.0.1:8000/test/?f=bootstrap2&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=bootstrap2&c=inline
+* jquery-ui
+  * popup: http://127.0.0.1:8000/test/?f=jqueryui&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=jqueryui&c=inline
+* jquery + poshytip
+  * popup: http://127.0.0.1:8000/test/?f=plain&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=plain&c=inline
 
 7.Commit and push on github:  
 ````
