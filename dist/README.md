@@ -26,10 +26,12 @@ bower install x-editable
 
 
 ## Reporting issues
-When creating issues please provide [jsFiddle](http://jsfiddle.net) example. You can easily fork one of following:   
-1. [jsFiddle bootstrap template](http://jsfiddle.net/xBB5x/1817)  
-2. [jsFiddle jqueryui template](http://jsfiddle.net/xBB5x/196)  
-3. [jsFiddle jquery template](http://jsfiddle.net/xBB5x/197)    
+Please provide [jsFiddles](http://jsfiddle.net)!  
+Use these as template:   
+1. [jsFiddle bootstrap 3](http://jsfiddle.net/xBB5x/2265)  
+2. [jsFiddle bootstrap 2](http://jsfiddle.net/xBB5x/1817)  
+3. [jsFiddle jqueryui](http://jsfiddle.net/xBB5x/196)  
+4. [jsFiddle jquery](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!
 
 ## Contribution
@@ -42,7 +44,7 @@ git clone https://github.com/<your-github-name>/x-editable.git -b dev
 ````
 2.Install *grunt-cli* globally (if not yet):
 ````
-npm i -d grunt-cli
+npm i -g grunt-cli
 ````
 3.Install dependencies:  
 ````
@@ -52,17 +54,41 @@ npm i
 ````
 vim editable-form.js
 ````
-5.Run tests:  
+5.Write some tests for your changes:
+````
+vim /test/unit/*.js
+````
+6.Run tests:  
 ````
 grunt test
 ````
-6.Commit and push back on github:  
+or directly in browser:
+````
+grunt server
+````
+and open http://127.0.0.1:8000/test  
+By default test run on bootstrap 3 popup version, but you can test any other build:  
+
+* bootstrap 3
+  * popup: http://127.0.0.1:8000/test/?f=bootstrap3&c=popup  
+  * inline: http://127.0.0.1:8000/test/?f=bootstrap3&c=inline  
+* bootstrap 2
+  * popup: http://127.0.0.1:8000/test/?f=bootstrap2&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=bootstrap2&c=inline
+* jquery-ui
+  * popup: http://127.0.0.1:8000/test/?f=jqueryui&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=jqueryui&c=inline
+* jquery + poshytip
+  * popup: http://127.0.0.1:8000/test/?f=plain&c=popup 
+  * inline: http://127.0.0.1:8000/test/?f=plain&c=inline
+
+7.Commit and push on github:  
 ````
 git add .
 git commit -m'refactor editable form, fix #123'
 git push origin
 ````
-7.Make pull request on github.  
+8.Make pull request on github.  
  
 Thanks for your support!
 
