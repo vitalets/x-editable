@@ -180,16 +180,41 @@
             var placement = typeof this.options.placement == 'function' ?
                 this.options.placement.call(this, $tip[0], this.$element[0]) :
                 this.options.placement;            
+
+            var autoToken = /\s?auto?\s?/i;
+            var autoPlace = autoToken.test(placement);
+            if (autoPlace) placement = placement.replace(autoToken, '') || 'top';
             
             
             var pos = this.getPosition();
             var actualWidth = $tip[0].offsetWidth;
             var actualHeight = $tip[0].offsetHeight;
+
+            if (autoPlace) {
+                var $parent = this.$element.parent();
+
+                var orgPlacement = placement;
+                var docScroll    = document.documentElement.scrollTop || document.body.scrollTop;
+                var parentWidth  = this.options.container == 'body' ? window.innerWidth  : $parent.outerWidth();
+                var parentHeight = this.options.container == 'body' ? window.innerHeight : $parent.outerHeight();
+                var parentLeft   = this.options.container == 'body' ? 0 : $parent.offset().left;
+
+                placement = placement == 'bottom' && pos.top   + pos.height  + actualHeight - docScroll > parentHeight  ? 'top'    :
+                            placement == 'top'    && pos.top   - docScroll   - actualHeight < 0                         ? 'bottom' :
+                            placement == 'right'  && pos.right + actualWidth > parentWidth                              ? 'left'   :
+                            placement == 'left'   && pos.left  - actualWidth < parentLeft                               ? 'right'  :
+                            placement;
+
+                $tip
+                  .removeClass(orgPlacement)
+                  .addClass(placement);
+            }
+
+
             var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight);
 
             this.applyPlacement(calculatedOffset, placement);            
-           
-           
+                     
                 
             }).call(this.container());
           /*jshint laxcomma: false, eqeqeq: true*/  

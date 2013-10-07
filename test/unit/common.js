@@ -88,7 +88,31 @@
         //check title
         ok(p.find(':contains("'+title+'")').length, 'title ok');
         e.remove();
-      });   
+      });
+
+    test("popup placement `auto` (BS3 only)", function () {
+        //do not test inline  
+        if($.fn.editable.defaults.mode === 'inline' || $.fn.editableform.engine !== 'bs3') {
+            expect(0);
+            return;
+        }
+        
+        var title = 'abc',
+        //add to fx because qunit-fixture has wrong positioning
+        e = $('<a href="#" id="a" style="position: absolute; top: 50px; left: 10px"></a>').appendTo(fx).editable({
+              placement: 'auto',
+              title: title
+        });
+
+        e.click();
+        var p = tip(e); 
+        ok(p.is(':visible'), 'popover shown');   
+
+        ok(p.offset().left < e.offset().left, 'placement X ok');
+        ok(p.offset().top > e.offset().top, 'placement Y ok');
+
+        e.remove();
+      });     
       
       test("onblur: cancel", function () {
         var oldValue = 'abc',
