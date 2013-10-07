@@ -200,7 +200,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             var newValue = this.input.input2value(); 
 
             // validation: if validate returns truthy value - means error
-            var error = this.validate(newValue)
+            var error = this.validate(newValue);
             if (error) {
                 this.error(error);
                 this.showForm();
