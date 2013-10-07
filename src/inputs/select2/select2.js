@@ -200,17 +200,11 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           //for local source use data directly from source (to allow autotext)
-           /*
-           if(!this.isRemote && !this.isMultiple) {
-               var items = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
-               if(items.length) {
-                   this.$input.select2('data', items[0]);
-                   return;
-               }
-           } 
-           */
-           
+           // if value array => join it anyway
+           if($.isArray(value)) {
+              value = value.join(this.getSeparator());
+           }
+
            //for remote source just set value, text is updated by initSelection
            if(!this.$input.data('select2')) {
                this.$input.val(value);
@@ -218,10 +212,18 @@ $(function(){
            } else {
                //second argument needed to separate initial change from user's click (for autosubmit)   
                this.$input.val(value).trigger('change', true); 
+
+               //Uncaught Error: cannot call val() if initSelection() is not defined
+               //this.$input.select2('val', value);
            }
            
-           //if remote source AND no user's initSelection provided --> try to use element's text
+           // if defined remote source AND no multiple mode AND no user's initSelection provided --> 
+           // we should somehow get text for provided id.
+           // The solution is to use element's text as text for that id
            if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {
+               // customId and customText are methods to extract `id` and `text` from data object
+               // we can use this workaround only if user did not define these methods
+               // otherwise we cant construct data object
                var customId = this.options.select2.id,
                    customText = this.options.select2.formatSelection;
                if(!customId && !customText) {      
@@ -240,7 +242,7 @@ $(function(){
                 return str;
             }
             
-            separator = separator || this.options.select2.separator || $.fn.select2.defaults.separator;
+            separator = separator || this.getSeparator();
             
             var val, i, l;
                 
@@ -261,6 +263,10 @@ $(function(){
                   $(this).closest('form').submit();
                 }
             });
+        },
+
+        getSeparator: function() {
+            return this.options.select2.separator || $.fn.select2.defaults.separator;
         },
         
         /*

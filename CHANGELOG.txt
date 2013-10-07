@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.5.1 wip
 ----------------------------
+[bug #357] select2: tags mode with space separator (vitalets)
 [bug #374] dateui: clear button does not submit (vitalets)
 
 

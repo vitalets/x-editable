@@ -142,6 +142,57 @@ $(function () {
         }, timeout);
      });      
      
+
+    asyncTest("local: tags with space separator", function () {
+        var sep = ' ', vsep = '-',
+            s = 'a,text2 abc d', 
+            text = 'a,text2-abc-d',
+            e = $('<a href="#" data-type="select2" data-name="select2" data-value="'+s+'"></a>').appendTo(fx).editable({
+            viewseparator: vsep,
+            select2: {
+              tags: [],
+              separator: sep
+            }
+        });
+
+        equal(e.data('editable').value.join(sep), s, 'initial value ok');
+        equal(e.data('editable').value.join(vsep), text, 'initial text ok');
+        
+        e.click();
+        var p = tip(e);
+        
+        ok(p.is(':visible'), 'popover visible');
+        var $input = p.find('input[type="hidden"]');
+        ok($input.length, 'input exists');
+        ok($input.select2, 'select2 applied');
+        equal($input.val(), s, 'selected value ok'); 
+      
+        equal(p.find('.select2-search-choice > div').length, 3, 'selected text ok');        
+        equal(p.find('.select2-search-choice > div').eq(0).text(), 'a,text2', 'text2 ok');        
+        equal(p.find('.select2-search-choice > div').eq(1).text(), 'abc', 'abc ok');        
+        equal(p.find('.select2-search-choice > div').eq(2).text(), 'd', 'd ok');        
+        
+        //select new value
+        s = 'a,text1 cde'; 
+        text = 'a,text1-cde';
+        $input.select2('val', ['a,text1', 'cde']);
+
+        equal($input.val(), s, 'new value ok');        
+        equal(p.find('.select2-search-choice > div').length, 2, 'new text ok');        
+        equal(p.find('.select2-search-choice > div').eq(0).text(), 'a,text1', 'text1 ok');        
+        equal(p.find('.select2-search-choice > div').eq(1).text(), 'cde', 'cde ok');   
+
+        p.find('form').submit();
+        
+        setTimeout(function() {
+            ok(!p.is(':visible'), 'popover closed');
+            equal(e.data('editable').value.join(sep), s, 'new value ok');
+            equal(e.text(), text, 'new text ok');             
+            
+            e.remove();
+            start();
+        }, timeout);
+     });       
  /*    
  asyncTest("local: tags (array of objects)", function () {
         var s = 'text2,abc', text = 'text2, abc',
