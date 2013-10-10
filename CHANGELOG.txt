@@ -4,7 +4,7 @@ X-editable changelog
 
 Version 1.5.1 wip
 ----------------------------
-[enh #400] allow `validate` to change submitted value (vitalets)
+[enh #400] allow `validate` to change submitted value, also fix #354 (vitalets)
 [enh #396] bs3 popover: placement `auto` (vitalets)
 [bug #357] select2: tags mode with space separator (vitalets)
 [bug #374] dateui: clear button does not submit (vitalets)
