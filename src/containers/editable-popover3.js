@@ -183,7 +183,9 @@
 
             var autoToken = /\s?auto?\s?/i;
             var autoPlace = autoToken.test(placement);
-            if (autoPlace) placement = placement.replace(autoToken, '') || 'top';
+            if (autoPlace) {
+                placement = placement.replace(autoToken, '') || 'top';
+            }
             
             
             var pos = this.getPosition();
