@@ -203,9 +203,18 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //get new value from input
             var newValue = this.input.input2value(); 
 
-            // validation: if validate returns truthy value - means error
+            //validation: if validate returns string or truthy value - means error
+            //if returns object like {newValue: '...'} => submitted value is reassigned to it
             var error = this.validate(newValue);
-            if (error) {
+            if ($.type(error) === 'object' && error.newValue !== undefined) {
+                newValue = error.newValue;
+                this.input.value2input(newValue);
+                if(typeof error.msg === 'string') {
+                    this.error(error.msg);
+                    this.showForm();
+                    return;
+                }
+            } else if (error) {
                 this.error(error);
                 this.showForm();
                 return;
@@ -504,6 +513,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         send: 'auto', 
         /**
         Function for client-side validation. If returns string - means validation not passed and string showed as error.
+        Since 1.5.1 you can modify submitted value by returning object from `validate`: 
+        `{newValue: '...'}` or `{newValue: '...', msg: '...'}`
 
         @property validate 
         @type function
@@ -4774,16 +4785,43 @@ Editableform based on Twitter Bootstrap 3
             var placement = typeof this.options.placement == 'function' ?
                 this.options.placement.call(this, $tip[0], this.$element[0]) :
                 this.options.placement;            
+
+            var autoToken = /\s?auto?\s?/i;
+            var autoPlace = autoToken.test(placement);
+            if (autoPlace) {
+                placement = placement.replace(autoToken, '') || 'top';
+            }
             
             
             var pos = this.getPosition();
             var actualWidth = $tip[0].offsetWidth;
             var actualHeight = $tip[0].offsetHeight;
+
+            if (autoPlace) {
+                var $parent = this.$element.parent();
+
+                var orgPlacement = placement;
+                var docScroll    = document.documentElement.scrollTop || document.body.scrollTop;
+                var parentWidth  = this.options.container == 'body' ? window.innerWidth  : $parent.outerWidth();
+                var parentHeight = this.options.container == 'body' ? window.innerHeight : $parent.outerHeight();
+                var parentLeft   = this.options.container == 'body' ? 0 : $parent.offset().left;
+
+                placement = placement == 'bottom' && pos.top   + pos.height  + actualHeight - docScroll > parentHeight  ? 'top'    :
+                            placement == 'top'    && pos.top   - docScroll   - actualHeight < 0                         ? 'bottom' :
+                            placement == 'right'  && pos.right + actualWidth > parentWidth                              ? 'left'   :
+                            placement == 'left'   && pos.left  - actualWidth < parentLeft                               ? 'right'  :
+                            placement;
+
+                $tip
+                  .removeClass(orgPlacement)
+                  .addClass(placement);
+            }
+
+
             var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight);
 
             this.applyPlacement(calculatedOffset, placement);            
-           
-           
+                     
                 
             }).call(this.container());
           /*jshint laxcomma: false, eqeqeq: true*/  

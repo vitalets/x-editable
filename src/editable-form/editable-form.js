@@ -199,8 +199,8 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             //get new value from input
             var newValue = this.input.input2value(); 
 
-            // validation: if validate returns string or truthy value - means error
-            // if returns object like {newValue: '...'} => submitted value is reassigned to it
+            //validation: if validate returns string or truthy value - means error
+            //if returns object like {newValue: '...'} => submitted value is reassigned to it
             var error = this.validate(newValue);
             if ($.type(error) === 'object' && error.newValue !== undefined) {
                 newValue = error.newValue;
