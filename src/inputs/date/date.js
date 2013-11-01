@@ -196,7 +196,7 @@ $(function(){
         viewformat: null,
         /**
         Configuration of datepicker.
-        Full list of options: http://vitalets.github.com/bootstrap-datepicker
+        Full list of options: http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
 
         @property datepicker 
         @type object
