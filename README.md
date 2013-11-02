@@ -28,9 +28,9 @@ bower install x-editable
 ## Reporting issues
 Please provide [jsFiddles](http://jsfiddle.net)!  
 Use these as template:   
-1. [jsFiddle bootstrap 3](http://jsfiddle.net/xBB5x/2265)  
-2. [jsFiddle bootstrap 2](http://jsfiddle.net/xBB5x/1817)  
-3. [jsFiddle jqueryui](http://jsfiddle.net/xBB5x/196)  
+1. [jsFiddle bootstrap 3](http://jsfiddle.net/xBB5x/2265/)  
+2. [jsFiddle bootstrap 2](http://jsfiddle.net/xBB5x/1817/)  
+3. [jsFiddle jqueryui](http://jsfiddle.net/xBB5x/2511/)  
 4. [jsFiddle jquery](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!
 
