@@ -156,7 +156,9 @@ define(function () {
                     'inputs/abstract'], 
                     init: function(require) {
                         loadCss(require.toUrl("./lib/select2.css")); 
-                        //loadCss(require.toUrl("./lib/select2-bootstrap.css")); 
+                        if (f === 'bootstrap2' || f === 'bootstrap3') {
+                            loadCss(require.toUrl("./lib/select2-bootstrap.css"));
+                        } 
                     }
                 },                
                 
