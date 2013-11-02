@@ -317,7 +317,24 @@ $(function () {
                start();
            }, timeout);
         }, timeout);             
-     });    
+     });  
+     
+    test("remote: initially empty", function () {
+        var s = 2, text = groups[s],
+            newVal = 0, newText = groups[newVal],
+            e = $('<a href="#" data-type="select2" data-name="select2"></a>').appendTo(sfx).editable({
+                source: 'groupsArr2',
+                select2: {
+                    placeholder: 'placeholder'
+                }
+            }); 
+            
+        e.click();
+        var p = tip(e);
+        
+        ok(p.is(':visible'), 'popover visible');
+        equal(p.find('.select2-choice span').text(), 'placeholder', 'placeholder shown in select2');            
+    });      
     
     asyncTest("remote: custom id, custom text, init selection (not multiple)", function () {
         var s = 2,
