@@ -13,7 +13,7 @@ $(function(){
    }
    
    $('.cdn input[type="radio"]').click(function(){
-       var CDNVersion = '1.4.6'; //cdn is updated with delay..
+       var CDNVersion = '1.5.0'; //cdn is updated with delay..
        var css = '<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/' + CDNVersion+'/'+$(this).data('css')+'" rel="stylesheet"/>\n',
            js = '<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/' + CDNVersion+'/'+$(this).data('js')+'"></script>';
           

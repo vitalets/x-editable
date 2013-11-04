@@ -93,14 +93,14 @@
         <a class="btn btn-success btn-large" style="width: 150px" href="demo-bs3.html" target="_blank">Demo <span style="font-size: 0.8em">(new window)</span></a>
         <a class="btn btn-primary btn-large" style="width: 150px" href="docs.html">Documentation</a>
         </p>                    
-        <p><small class="muted">Current version 1.5.0 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small></p>
+        <p><small class="muted">Current version 1.5.1 <a href="assets/x-editable/CHANGELOG.txt">changelog</a></small></p>
         <p><a href="https://twitter.com/xeditable" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @xeditable</a></p>
     </div>
 </div>    
 
 <div class="row">
     <div class="span12">
-      <p>Exact build of x-editable depends on core library you want to use:</p>
+      <p style="text-align: center">↓ Exact build of x-editable depends on core library you want to use ↓</p>
     </div>
 </div>
 
@@ -129,23 +129,24 @@
     <div class="span4">
         <p class="centered"><img src="assets/img/bootstrap.png"></p>
         <p class="centered">
-          <a class="btn btn-primary" href="assets/zip/bootstrap3-editable-1.5.0.zip"><strong>Download</strong> BS3 build</a>
-          <a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.5.0.zip">BS2 build</a>
+          <a class="btn btn-primary" href="assets/zip/bootstrap3-editable-1.5.1.zip"><strong>Download</strong> BS3 build</a>
+          <a class="btn btn-primary" href="assets/zip/bootstrap-editable-1.5.1.zip">BS2 build</a>
         </p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jqueryui.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.5.0.zip"><strong>Download</strong> jquery-ui build</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jqueryui-editable-1.5.1.zip"><strong>Download</strong> jquery-ui build</a></p>
     </div>
     <div class="span4">
         <p class="centered"><img src="assets/img/jquery.png"></p>
-        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.5.0.zip"><strong>Download</strong> jquery build</a></p>
+        <p class="centered"><a class="btn btn-primary" href="assets/zip/jquery-editable-1.5.1.zip"><strong>Download</strong> jquery build</a></p>
     </div>
 </div>
 
 <div class="row">
     <div class="span12 cdn">
-        <h4>Using CDN <small id="cdnver">(1.4.5)</small> : 
+        <h4>Using CDN <small id="cdnver"></small> : 
+        <label><input type="radio" name="cdn-build" data-css="bootstrap3-editable/css/bootstrap-editable.css" data-js="bootstrap3-editable/js/bootstrap-editable.min.js">bootstrap 3</label>
         <label><input type="radio" name="cdn-build" data-css="bootstrap-editable/css/bootstrap-editable.css" data-js="bootstrap-editable/js/bootstrap-editable.min.js">bootstrap 2</label>
         <label><input type="radio" name="cdn-build" data-css="jqueryui-editable/css/jqueryui-editable.css" data-js="jqueryui-editable/js/jqueryui-editable.min.js">jquery-ui</label>
         <label><input type="radio" name="cdn-build" data-css="jquery-editable/css/jquery-editable.css" data-js="jquery-editable/js/jquery-editable-poshytip.min.js">jquery</label>
@@ -161,24 +162,22 @@
 <div class="row">
     <div class="span4">
         <h2 class="muted">Latest release</h2>
-        <h4>1.5.0 (Oct 1, 2013)</h4>
+        <h4>1.5.1 (Nov 4, 2013)</h4>
 <ul>
-<li>support of Bootstrap 3</li>
-<li>add <a href="http://twitter.github.io/typeahead.js">twitter typeahed.js</a> input</li>
-<li>update select2 to 3.4.3</li>
-<li>new options <code>escape</code> and <code>sourceOptions</code> </li>
-<li><a href="http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt">full changelog</a></li>
+<li>support bootstrap popover = <code>auto</code></li>
+<li><code>validate</code> method can change the value </li>
+<li>select2 tags mode fixed</li>
 </ul>
 <p>Thanks to everybody for support and reporting!</p>
 
         <div style="margin-top: 20px">
-          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
+          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Previous versions</a><br>
           <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a><br>
           <a href="faq.html#donation">Donation</a><br>
         </div>
 
         <div style="margin-top: 20px; text-align: center">
-          <strong>For AngularJS projects consider</strong><br>
+          <strong>For AngularJS projects consider</strong><br><br>
           <a class="angular-xeditable" href="http://vitalets.github.io/angular-xeditable" target="_blank">Angular-xeditable</a>
         </div>
     </div>
@@ -211,7 +210,7 @@
                
                <li>typeahead</li>
                
-               <li>typeaheadjs <sup><span class="label label-success">new</span></sup></li>
+               <li>typeaheadjs</li>
                
                <li>select2</li>
                
@@ -243,6 +242,7 @@
             <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small>by <a href="https://github.com/clouddueling">Michael Calkins</a></small></li>
             <li><a href="http://cspeerly.github.com/Simple-ConnectDB" target="_blank">Simple-ConnectDB</a> <small>by <a href="https://github.com/cspeerly">Chuck Speerly</a></small></li>
             <li><a href="http://lightswitch05.github.io/filterable" target="_blank">Filterable</a> <small>by <a href="https://github.com/lightswitch05">lightswitch05</a></small></li>
+            <li><a href="https://github.com/nate-strauser/meteor-x-editable-bootstrap" target="_blank">meteor-x-editable</a> <small>by <a href="https://github.com/nate-strauser">nate-strauser</a></small></li>
         </ul>
     </div>
 </div>

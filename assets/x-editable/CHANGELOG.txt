@@ -1,6 +1,17 @@
 X-editable changelog
 =============================
 
+
+Version 1.5.1 Nov 4, 2013
+----------------------------
+[enh #371] submit single field (vitalets)
+[bug] select2: placeholder not shown if value initially empty (vitalets)
+[enh #400] allow `validate` to change submitted value, also fix #354 (vitalets)
+[enh #396] bs3 popover: placement `auto` (vitalets)
+[bug #357] select2: tags mode with space separator (vitalets)
+[bug #374] dateui: clear button does not submit (vitalets)
+
+
 Version 1.5.0 Oct 1, 2013
 ----------------------------
 [enh #362] add twitter typeahead.js (vitalets)

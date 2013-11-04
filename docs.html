@@ -161,7 +161,7 @@
 <li>Download corresponding X-editable build and include it on your page:<br>
 <pre class="prettyprint linenums">&lt;link href=&quot;bootstrap-editable/css/bootstrap-editable.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;script src=&quot;bootstrap-editable/js/bootstrap-editable.js&quot;&gt;&lt;/script&gt;</pre>
-<p>Note to include x-editable <b>after</b> bootstrap!</p>
+<div class="alert alert-warning"><b>Note to include x-editable <u>after core library</u> (bootstrap, jquery-ui)!</b></div>
 </li>
 <li>Markup elements that should be editable. Usually it is <code>&lt;A&gt;</code> element with additional <code>data-*</code> attributes
 <pre class="prettyprint linenums">&lt;a href=&quot;#&quot; id=&quot;username&quot; data-type=&quot;text&quot; data-pk=&quot;1&quot; data-url=&quot;/post&quot; data-title=&quot;Enter username&quot;&gt;superuser&lt;/a&gt;</pre>
@@ -622,7 +622,9 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
             <td>validate </td>
             <td>function</td>
             <td>null</td>
-            <td><p>Function for client-side validation. If returns string - means validation not passed and string showed as error.</p>
+            <td><p>Function for client-side validation. If returns string - means validation not passed and string showed as error.
+Since 1.5.1 you can modify submitted value by returning object from <code>validate</code>: 
+<code>{newValue: &#39;...&#39;}</code> or <code>{newValue: &#39;...&#39;, msg: &#39;...&#39;}</code></p>
 
             
                 <pre class="prettyprint linenums">validate: function(value) {
@@ -872,7 +874,8 @@ $(&#x27;#username&#x27;).editable(&#x27;getValue&#x27;, true);
 </ul>
 
 </td>
-            <td><p>This method collects values from several editable elements and submit them all to server.<br>Internally it runs client-side validation for all fields and submits only in case of success.<br>See <a href="#newrecord">creating new records</a> for details.</p>
+            <td><p>This method collects values from several editable elements and submit them all to server.<br>Internally it runs client-side validation for all fields and submits only in case of success.<br>See <a href="#newrecord">creating new records</a> for details.<br>Since 1.5.1 <code>submit</code> can be applied to single element to send data programmatically. In that case
+<code>url</code>, <code>success</code> and <code>error</code> is taken from initial options and you can just call <code>$(&#39;#username&#39;).editable(&#39;submit&#39;)</code>.</p>
 
             
             </td>
@@ -1098,7 +1101,7 @@ The workaround is to check <code>arguments.length</code> that is always <code>2<
             
             <li>typeahead</li>
             
-            <li>typeaheadjs <sup><span class="label label-success">new</span></sup></li>
+            <li>typeaheadjs</li>
             
             <li>select2</li>
                    
@@ -1145,7 +1148,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1230,7 +1233,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1326,7 +1329,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1395,7 +1398,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>sourceOptions <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>object|function</td>
             <td>null</td>
             <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
@@ -1486,14 +1489,14 @@ If <code>false</code> clear button will not be rendered.</p>
     autoclose: false
 }</td>
             <td><p>Configuration of datepicker.
-Full list of options: <a href="http://vitalets.github.com/bootstrap-datepicker">http://vitalets.github.com/bootstrap-datepicker</a></p>
+Full list of options: <a href="http://bootstrap-datepicker.readthedocs.org/en/latest/options.html">http://bootstrap-datepicker.readthedocs.org/en/latest/options.html</a></p>
 
             
             </td>
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1622,7 +1625,7 @@ Full list of options: <a href="https://github.com/smalot/bootstrap-datetimepicke
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1748,7 +1751,7 @@ Full list of options: <a href="http://api.jqueryui.com/datepicker">http://api.jq
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -1871,7 +1874,7 @@ Full list of options: <a href="http://vitalets.github.com/combodate/#docs">http:
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2007,7 +2010,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2093,7 +2096,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2172,7 +2175,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>sourceOptions <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>object|function</td>
             <td>null</td>
             <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
@@ -2252,7 +2255,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2365,7 +2368,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2434,7 +2437,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>sourceOptions <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>sourceOptions <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>object|function</td>
             <td>null</td>
             <td><p>Additional ajax options to be used in $.ajax() when loading list from server.
@@ -2486,7 +2489,7 @@ $(function(){
             </section>
         
          <section id="typeaheadjs">
-            <h2>typeaheadjs <sup><span class="label label-success">new</span></sup></h2>
+            <h2>typeaheadjs</h2>
             <p><p>Typeahead.js input, based on <a href="http://twitter.github.io/typeahead.js">Twitter Typeahead</a>.<br>It is mainly replacement of typeahead in Bootstrap 3.</p>
 
                <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div>
@@ -2524,7 +2527,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
         </tr> 
        
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2645,7 +2648,7 @@ Options can be defined via javascript <code>$().editable({...})</code> or via <c
     <tbody>
       
         <tr>
-            <td>escape <sup><span class="label label-success">new</span></sup> <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
+            <td>escape <div style="text-align: left"><span class="muted" style="font-size: 0.8em">since 1.5.0</span></div></td>
             <td>boolean</td>
             <td>true</td>
             <td><p>If <code>true</code> - html will be escaped in content of element via $.text() method.<br>If <code>false</code> - html will not be escaped, $.html() used.<br>When you use own <code>display</code> function, this option obviosly has no effect.</p>
@@ -2736,7 +2739,11 @@ $(function(){
     });
     //remote source (simple)
     $(&#x27;#country&#x27;).editable({
-        source: &#x27;/getCountries&#x27;  
+        source: &#x27;/getCountries&#x27;,
+        select2: {
+            placeholder: &#x27;Select Country&#x27;,
+            minimumInputLength: 1
+        }
     });
     //remote source (advanced)
     $(&#x27;#country&#x27;).editable({

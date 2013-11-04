@@ -19,7 +19,7 @@
 
 <div class="row">
     <div class="span12">
-      <p>Exact build of x-editable depends on core library you want to use:</p>
+      <p style="text-align: center">↓ Exact build of x-editable depends on core library you want to use ↓</p>
     </div>
 </div>
 
@@ -64,7 +64,8 @@
 
 <div class="row">
     <div class="span12 cdn">
-        <h4>Using CDN <small id="cdnver">(1.4.5)</small> : 
+        <h4>Using CDN <small id="cdnver"></small> : 
+        <label><input type="radio" name="cdn-build" data-css="bootstrap3-editable/css/bootstrap-editable.css" data-js="bootstrap3-editable/js/bootstrap-editable.min.js">bootstrap 3</label>
         <label><input type="radio" name="cdn-build" data-css="bootstrap-editable/css/bootstrap-editable.css" data-js="bootstrap-editable/js/bootstrap-editable.min.js">bootstrap 2</label>
         <label><input type="radio" name="cdn-build" data-css="jqueryui-editable/css/jqueryui-editable.css" data-js="jqueryui-editable/js/jqueryui-editable.min.js">jquery-ui</label>
         <label><input type="radio" name="cdn-build" data-css="jquery-editable/css/jquery-editable.css" data-js="jquery-editable/js/jquery-editable-poshytip.min.js">jquery</label>
@@ -81,23 +82,21 @@
     <div class="span4">
         <h2 class="muted">Latest release</h2>
         {{#mdb}}
-#### 1.5.0 (Oct 1, 2013)
-* support of Bootstrap 3
-* add [twitter typeahed.js](http://twitter.github.io/typeahead.js) input
-* update select2 to 3.4.3
-* new options `escape` and `sourceOptions` 
-* [full changelog](http://vitalets.github.com/x-editable/assets/x-editable/CHANGELOG.txt)
+#### 1.5.1 (Nov 4, 2013)
+* support bootstrap popover = `auto`
+* `validate` method can change the value 
+* select2 tags mode fixed
 
 Thanks to everybody for support and reporting!
         {{/mdb}}
         <div style="margin-top: 20px">
-          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Release notes</a><br>
+          <a href="https://github.com/vitalets/x-editable/wiki/Release-notes">Previous versions</a><br>
           <a href="https://github.com/vitalets/x-editable/wiki/Roadmap">Roadmap</a><br>
           <a href="faq.html#donation">Donation</a><br>
         </div>
 
         <div style="margin-top: 20px; text-align: center">
-          <strong>For AngularJS projects consider</strong><br>
+          <strong>For AngularJS projects consider</strong><br><br>
           <a class="angular-xeditable" href="http://vitalets.github.io/angular-xeditable" target="_blank">Angular-xeditable</a>
         </div>
     </div>
@@ -138,6 +137,7 @@ Thanks to everybody for support and reporting!
             <li><a href="https://github.com/vitalets/x-editable/blob/gh-pages/backend-samples/php/laravel-controller.php" target="_blank">Laravel controller</a> <small>by <a href="https://github.com/clouddueling">Michael Calkins</a></small></li>
             <li><a href="http://cspeerly.github.com/Simple-ConnectDB" target="_blank">Simple-ConnectDB</a> <small>by <a href="https://github.com/cspeerly">Chuck Speerly</a></small></li>
             <li><a href="http://lightswitch05.github.io/filterable" target="_blank">Filterable</a> <small>by <a href="https://github.com/lightswitch05">lightswitch05</a></small></li>
+            <li><a href="https://github.com/nate-strauser/meteor-x-editable-bootstrap" target="_blank">meteor-x-editable</a> <small>by <a href="https://github.com/nate-strauser">nate-strauser</a></small></li>
         </ul>
     </div>
 </div>

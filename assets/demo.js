@@ -124,7 +124,9 @@ $(function(){
     $('#country').editable({
         source: countries,
         select2: {
-            width: 200
+            width: 200,
+            placeholder: 'Select country',
+            allowClear: true
         } 
     });      
 
