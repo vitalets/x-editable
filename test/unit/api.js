@@ -369,7 +369,7 @@ $(function () {
         
      });       
      
-     asyncTest("'submit' method: success", function () {
+     asyncTest("'submit' method: success (multiple elems)", function () {
         var ev1 = 'ev1',
             e1v = 'e1v',
             pk = 123,
@@ -402,6 +402,57 @@ $(function () {
         });
         
      }); 
+     
+     asyncTest("'submit' method: success (single elem)", function () {
+        expect(5);
+        
+        var ev1 = 'ev1',
+            pk = 123,
+            e = $('<a href="#" class="new" data-type="text" data-pk="'+pk+'" data-url="submit-single" data-name="text">'+ev1+'</a>').appendTo(fx).editable({
+               success: function(data) {
+                   equal(data, 'response-body', 'response body ok');
+               }             
+            });
+
+        $.mockjax({
+            url: 'submit-single',
+            response: function(settings) {
+                equal(settings.data.name, 'text', 'name ok');
+                equal(settings.data.pk, pk, 'pk ok');
+                equal(settings.data.value, ev1, 'value ok');
+                equal(settings.data.a, 1, 'extra data ok');
+                this.responseText = 'response-body';  
+            }
+        });            
+            
+       $(fx).find('.new').editable('submit', {
+           data: {a: 1}           
+       });
+       
+       setTimeout(function() {
+           e.remove();
+           start();
+       }, timeout);
+        
+     });  
+     
+     asyncTest("'submit' method: error (single elem)", function () {
+        expect(1);
+        
+        var e = $('<a href="#" class="new" data-type="text" data-pk="123" data-url="error.php" data-name="text">text</a>').appendTo(fx).editable();
+
+       $(fx).find('.new').editable('submit', {
+           error: function() {
+               equal(this[0], e[0], 'error called in correct scope');
+           }
+       });
+       
+       setTimeout(function() {
+           e.remove();
+           start();
+       }, timeout);
+        
+     });           
      
      
      test("setValue method", function () {

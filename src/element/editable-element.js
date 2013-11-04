@@ -567,7 +567,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             /**
             This method collects values from several editable elements and submit them all to server.   
             Internally it runs client-side validation for all fields and submits only in case of success.  
-            See <a href="#newrecord">creating new records</a> for details.
+            See <a href="#newrecord">creating new records</a> for details.  
+            Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
+            `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
             
             @method submit(options)
             @param {object} options 
@@ -581,31 +583,76 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             case 'submit':  //collects value, validate and submit to server for creating new record
                 var config = arguments[1] || {},
                 $elems = this,
-                errors = this.editable('validate'),
-                values;
+                errors = this.editable('validate');
 
+                // validation ok
                 if($.isEmptyObject(errors)) {
-                    values = this.editable('getValue'); 
-                    if(config.data) {
-                        $.extend(values, config.data);
-                    }                    
-                    
-                    $.ajax($.extend({
-                        url: config.url, 
-                        data: values, 
-                        type: 'POST'                        
-                    }, config.ajaxOptions))
-                    .success(function(response) {
-                        //successful response 200 OK
-                        if(typeof config.success === 'function') {
-                            config.success.call($elems, response, config);
-                        } 
-                    })
-                    .error(function(){  //ajax error
-                        if(typeof config.error === 'function') {
-                            config.error.apply($elems, arguments);
+                    var ajaxOptions = {};
+                                                      
+                    // for single element use url, success etc from options
+                    if($elems.length === 1) {
+                        var editable = $elems.data('editable');
+                        //standard params
+                        var params = {
+                            name: editable.options.name || '',
+                            value: editable.input.value2submit(editable.value),
+                            pk: (typeof editable.options.pk === 'function') ? 
+                                editable.options.pk.call(editable.options.scope) : 
+                                editable.options.pk 
+                        };
+
+                        //additional params
+                        if(typeof editable.options.params === 'function') {
+                            params = editable.options.params.call(editable.options.scope, params);  
+                        } else {
+                            //try parse json in single quotes (from data-params attribute)
+                            editable.options.params = $.fn.editableutils.tryParseJson(editable.options.params, true);   
+                            $.extend(params, editable.options.params);
                         }
-                    });
+
+                        ajaxOptions = {
+                            url: editable.options.url,
+                            data: params,
+                            type: 'POST'  
+                        };
+                        
+                        // use success / error from options 
+                        config.success = config.success || editable.options.success;
+                        config.error = config.error || editable.options.error;
+                        
+                    // multiple elements
+                    } else {
+                        var values = this.editable('getValue'); 
+                        
+                        ajaxOptions = {
+                            url: config.url,
+                            data: values, 
+                            type: 'POST'
+                        };                        
+                    }                    
+
+                    // ajax success callabck (response 200 OK)
+                    ajaxOptions.success = typeof config.success === 'function' ? function(response) {
+                            config.success.call($elems, response, config);
+                        } : $.noop;
+                                  
+                    // ajax error callabck
+                    ajaxOptions.error = typeof config.error === 'function' ? function() {
+                             config.error.apply($elems, arguments);
+                        } : $.noop;
+                       
+                    // extend ajaxOptions    
+                    if(config.ajaxOptions) { 
+                        $.extend(ajaxOptions, config.ajaxOptions);
+                    }
+                    
+                    // extra data 
+                    if(config.data) {
+                        $.extend(ajaxOptions.data, config.data);
+                    }                     
+                    
+                    // perform ajax request
+                    $.ajax(ajaxOptions);
                 } else { //client-side validation error
                     if(typeof config.error === 'function') {
                         config.error.call($elems, errors);
