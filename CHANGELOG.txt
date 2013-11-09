@@ -2,6 +2,11 @@ X-editable changelog
 =============================
 
 
+Version 1.5.2 wip
+----------------------------
+[bug #261] select2 disappears in IE when dropdown clicked (vitalets)
+
+
 Version 1.5.1 Nov 4, 2013
 ----------------------------
 [enh #371] submit single field (vitalets)
