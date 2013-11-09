@@ -4,6 +4,7 @@ X-editable changelog
 
 Version 1.5.2 wip
 ----------------------------
+[bug #433] typeaheadjs with showbuttons: false (vitalets)
 [bug #266] `escape` option not work for select/checklist items (vitalets)
 [bug #261] select2 disappears in IE when dropdown clicked (vitalets)
 
