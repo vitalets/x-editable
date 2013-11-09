@@ -793,19 +793,29 @@ $(function () {
     });                
     
     test("`escape` option", function () {
-        var e = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
-            source: [{value: 'a', text: '<b>hello</b>'}],
+        var t = '<b>hello</b>',
+            esc = '&lt;b&gt;hello&lt;/b&gt;',  
+        e = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: esc}],
             value: 'a',
             escape: true
         }),
         e1 = $('<a href="#" data-type="select"></a>').appendTo('#qunit-fixture').editable({
-            source: [{value: 'a', text: '<b>hello</b>'}],
+            source: [{value: 'a', text: esc}],
             value: 'a',
             escape: false
         });
- 
-        equal(e.html(), '&lt;b&gt;hello&lt;/b&gt;', 'html escaped');
-        equal(e1.html(), '<b>hello</b>', 'html not escaped');
+
+        equal(e.text(), esc, 'text equals, html escaped');
+        e.click();
+        var p = tip(e); 
+        equal(p.find('select').find('option').eq(0).text(), esc, 'option escaped');
+        e.remove();    
+        
+        equal(e1.text(), t, 'html not escaped');
+        e1.click();
+        var p1 = tip(e1); 
+        equal(p1.find('select').find('option').eq(0).text(), t, 'option not escaped');
     });    
     
    asyncTest("sourceOptions", function () {

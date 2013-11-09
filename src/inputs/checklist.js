@@ -43,12 +43,14 @@ $(function(){
                 $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
                                            value: this.sourceData[i].value 
-                                     }))
-                                     .append($('<span>').text(' '+this.sourceData[i].text));
-                
+                                     }));
+                var $option = $('<span>');
+                $option[this.options.escape ? 'text' : 'html'](' '+this.sourceData[i].text);
+                $label.append($option);
+
                 $('<div>').append($label).appendTo(this.$tpl);
             }
-            
+
             this.$input = this.$tpl.find('input[type="checkbox"]');
             this.setClass();
         },

@@ -73,5 +73,31 @@ $(function () {
         var p = tip(e);
         equal(p.find('input[type="checkbox"]:checked').length, 1, 'checked count ok');        
     });
+    
+    test("`escape` option", function () {
+        var t = '<b>hello</b>',
+            esc = '&lt;b&gt;hello&lt;/b&gt;',  
+        e = $('<a href="#" data-type="checklist"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: esc}],
+            value: ['a'],
+            escape: true
+        }),
+        e1 = $('<a href="#" data-type="checklist"></a>').appendTo('#qunit-fixture').editable({
+            source: [{value: 'a', text: esc}],
+            value: ['a'],
+            escape: false
+        });
+
+        equal(e.text(), esc, 'html escaped');
+        e.click();
+        var p = tip(e); 
+        equal($.trim(p.find('label > span').eq(0).text()), esc, 'option escaped');
+        e.remove();    
+        
+        equal(e1.text(), t, 'html not escaped');
+        e1.click();
+        var p1 = tip(e1); 
+        equal($.trim(p1.find('label > span').eq(0).text()), t, 'option not escaped');
+    });     
      
 });
