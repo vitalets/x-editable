@@ -1,6 +1,6 @@
 {
   "name": "x-editable",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "ignore": [
     "CHANGELOG.txt",
     "Gruntfile.js",
