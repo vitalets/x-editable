@@ -34,7 +34,9 @@ $(function(){
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
-                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"]')) {
+                    $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                }
                 if(this.toggleClear) {
                     this.toggleClear();
                 }
