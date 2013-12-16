@@ -105,7 +105,7 @@ $(function(){
        }, 
        
        value2submit: function(value) {
-           return this.value2str(value);
+           return this.options.submitFullDate ? value.toISOString() : this.value2str(value);
        },                    
 
        value2input: function(value) {
