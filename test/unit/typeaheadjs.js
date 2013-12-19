@@ -85,15 +85,50 @@ $(function () {
          var p = tip(e); 
          var $input = p.find('input.tt-query'); 
          
-         // simutale <enter>
+         // simulate <enter>
          var ev = jQuery.Event("keydown");
          ev.which = 13;
          $input.val(newText).trigger(ev);
          
          ok(!p.is(':visible'), 'popup closed');
          equal(e.data('editable').value, newText, 'new text saved to value');
-         equal(e.text(), newText, 'new text shown');           
+         equal(e.text(), newText, 'new text shown');
+         
     });
-
+    
+    test("click submit with unchanged value ", function () {
+        var v = 'ru', 
+          e = $('<a href="#" data-name="text1" data-type="typeaheadjs"></a>').appendTo(sfx).editable({
+            value: v,
+            showbuttons: true,
+            typeahead: {
+                name: 'country',
+                local: [
+                    {value: 'ru', tokens: ['Russia']}, 
+                    {value: 'gb', tokens: ['Great Britain']}, 
+                    {value: 'us', tokens: ['United States']}
+                ],
+                template: function(item) {
+                    return item.tokens[0] + ' (' + item.value + ')'; 
+                } 
+            }   
+          });
+         
+         // open editable and submit unchanged value
+         var oldText = e.text();
+         e.click();
+         var p = tip(e); 
+         var $input = p.find('input.tt-query');
+         var $submit = p.find('button[type="submit"]');
+         
+         // simulate a real click by a user (which implies blur of input first)
+         $input.blur();
+         $submit.click();
+         
+         ok(!p.is(':visible'), 'popup closed');
+         equal(e.data('editable').value, oldText, 'old value remains unchanged');
+         equal(e.text(), oldText, 'original text remains unchanged');
+         
+    });
     
 });
