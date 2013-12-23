@@ -56,6 +56,12 @@ $(function(){
                     that.$input.closest('form').submit();
                 }
             });
+        },
+        
+        activate: function() {
+            // apply typeaheadjs here since input value is set
+            this.$input.typeahead(this.options.typeahead);
+
             // copy `input-sm | input-lg` classes to placeholder input
             if($.fn.editableform.engine === 'bs3') {
                 if(this.$input.hasClass('input-sm')) {
@@ -65,11 +71,7 @@ $(function(){
                     this.$input.siblings('input.tt-hint').addClass('input-lg');
                 }
             }
-        },
-        
-        activate: function() {
-            // apply typeaheadjs here since input value is set
-            this.$input.typeahead(this.options.typeahead);
+
             if(this.$input.is(':visible')) {
                 this.$input.focus();
                 if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"]')) {
