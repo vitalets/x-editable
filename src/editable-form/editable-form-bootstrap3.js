@@ -21,7 +21,7 @@ Editableform based on Twitter Bootstrap 3
             var defaultClass = 'input-sm';
             
             //bs3 add `form-control` class to standard inputs
-            var stdtypes = 'text,select,textarea,password,email,url,tel,number,range,time,typeaheadjs'.split(','); 
+            var stdtypes = 'text,select,textarea,password,email,url,tel,number,range,time,typeaheadjs,combodate'.split(','); 
             if(~$.inArray(this.input.type, stdtypes)) {
                 this.input.$input.addClass('form-control');
                 if(emptyInputClass) {
