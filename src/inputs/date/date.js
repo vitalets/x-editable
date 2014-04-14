@@ -30,7 +30,9 @@ $(function(){
     $.fn.bdatepicker = $.fn.datepicker.noConflict();
     if(!$.fn.datepicker) { //if there were no other datepickers, keep also original name
         $.fn.datepicker = $.fn.bdatepicker;    
-    }    
+    } else if (typeof $.fn.datepicker.dates === 'undefined') { // define dates object
+        $.fn.datepicker.dates = $.fn.bdatepicker.dates;
+    }
     
     var Date = function (options) {
         this.init('date', options, Date.defaults);
