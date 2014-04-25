@@ -21,6 +21,7 @@ Automatically shown in inline mode.
     $.extend(DateUIField.prototype, {
        render: function () {
           //  this.$input = this.$tpl.find('input'); 
+            this.setClass();
             this.$input.datepicker(this.options.datepicker);
             $.fn.editabletypes.text.prototype.renderClear.call(this);
        },
