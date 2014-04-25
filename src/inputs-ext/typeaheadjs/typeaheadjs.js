@@ -44,6 +44,10 @@ $(function(){
                 this.$input.typeahead('setQuery', value);
         },
 
+        clear: function() {
+            this.$input.typeahead('setQuery', '');
+        },
+
         render: function() {
             this.renderClear();
             this.setClass();
