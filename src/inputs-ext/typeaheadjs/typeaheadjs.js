@@ -38,6 +38,11 @@ $(function(){
     $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.text);
 
     $.extend(Constructor.prototype, {
+        //You cannot set value to typeahead just with .val() it gets cleared on blur
+        value2input: function(value) {
+            this.$input.typeahead('setQuery', value);
+        },
+
         render: function() {
             this.renderClear();
             this.setClass();
