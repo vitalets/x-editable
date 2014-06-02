@@ -13,7 +13,7 @@ $(function(){
         source: [
               {value: 1, text: 'Active'},
               {value: 2, text: 'Blocked'},
-              {value: 3, text: 'Deleted'}
+              {value: 3, text: 'Deleted', inputclass: 'deleted'}
            ]
     });
 });
@@ -38,6 +38,9 @@ $(function(){
                 if($.isArray(data)) {
                     for(var i=0; i<data.length; i++) {
                         attr = {};
+                        if(data[i].inputclass) {
+                            attr['class'] = data[i].inputclass;
+                        }
                         if(data[i].children) {
                             attr.label = data[i].text;
                             $el.append(fillItems($('<optgroup>', attr), data[i].children)); 
