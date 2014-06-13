@@ -41,7 +41,7 @@
         "component": {
             "name": "x-editable",
             "files": [
-                "dist/*"
+                "dist/**"
             ]
         }
     }
