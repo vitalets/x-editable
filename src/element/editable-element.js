@@ -382,7 +382,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 sent = sent || typeof this.options.url === 'function';
                 sent = sent || this.options.display === false; 
                 sent = sent || params.response !== undefined; 
-                sent = sent || (this.options.savenochange && this.input.value2str(this.value) !== this.input.value2str(params.newValue)); 
+                sent = sent || (this.input.value2str(this.value) !== this.input.value2str(params.newValue));
                 
                 if(sent) {
                     this.$element.removeClass(this.options.unsavedclass); 
