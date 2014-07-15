@@ -68,10 +68,10 @@ $(function(){
         tpl:'<input type="text">',
         /**
         Configuration of typeahead itself. 
-        [Full list of options](https://github.com/twitter/typeahead.js#dataset).
+        [Full list of options](https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md#usage).
         
         @property typeahead 
-        @type object
+        @type object or array
         @default null
         **/
         typeahead: null,
