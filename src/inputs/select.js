@@ -45,7 +45,7 @@ $(function(){
                             if(data[i].disabled) {
                                 attr.disabled = true;
                             }
-                            $el.append($('<option>', attr).text(data[i].text)); 
+                            $el.append($('<option>').attr(attr).text(data[i].text)); 
                         }
                     }
                 }
