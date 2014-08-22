@@ -7,23 +7,23 @@ To create your own input you can inherit from this class.
 **/
 (function ($) {
     "use strict";
-    
+
     //types
     $.fn.editabletypes = {};
-    
+
     var AbstractInput = function () { };
 
     AbstractInput.prototype = {
        /**
         Initializes input
-        
+
         @method init() 
         **/
        init: function(type, options, defaults) {
            this.type = type;
            this.options = $.extend({}, defaults, options);
        },
-       
+
        /*
        this method called before render to init $tpl that is inserted in DOM
        */
@@ -37,107 +37,107 @@ To create your own input you can inherit from this class.
        /**
         Renders input from tpl. Can return jQuery deferred object.
         Can be overwritten in child objects
-        
-        @method render() 
-       **/       
+
+        @method render()
+       **/
        render: function() {
 
        }, 
 
        /**
         Sets element's html by value. 
-        
-        @method value2html(value, element) 
+
+        @method value2html(value, element)
         @param {mixed} value
         @param {DOMElement} element
-       **/       
+       **/
        value2html: function(value, element) {
-           $(element).text(value);
+           $(element)[this.options.escape ? 'text' : 'html']($.trim(value));
        },
-        
+
        /**
         Converts element's html to value
-        
-        @method html2value(html) 
+
+        @method html2value(html)
         @param {string} html
         @returns {mixed}
-       **/             
+       **/
        html2value: function(html) {
            return $('<div>').html(html).text();
        },
-        
+
        /**
         Converts value to string (for internal compare). For submitting to server used value2submit().
-        
+
         @method value2str(value) 
         @param {mixed} value
         @returns {string}
-       **/       
+       **/
        value2str: function(value) {
            return value;
        }, 
-       
+
        /**
         Converts string received from server into value. Usually from `data-value` attribute.
-        
-        @method str2value(str) 
+
+        @method str2value(str)
         @param {string} str
         @returns {mixed}
-       **/        
+       **/
        str2value: function(str) {
            return str;
        }, 
        
        /**
         Converts value for submitting to server. Result can be string or object.
-        
+
         @method value2submit(value) 
         @param {mixed} value
         @returns {mixed}
-       **/       
+       **/
        value2submit: function(value) {
            return value;
-       },         
-       
+       },
+
        /**
         Sets value of input.
-        
+
         @method value2input(value) 
         @param {mixed} value
-       **/       
+       **/
        value2input: function(value) {
            this.$input.val(value);
        },
-        
+
        /**
         Returns value of input. Value can be object (e.g. datepicker)
-        
+
         @method input2value() 
-       **/         
+       **/
        input2value: function() { 
            return this.$input.val();
        }, 
 
        /**
         Activates input. For text it sets focus.
-        
+
         @method activate() 
-       **/        
+       **/
        activate: function() {
            if(this.$input.is(':visible')) {
                this.$input.focus();
            }
        },
-       
+
        /**
         Creates input.
-        
+
         @method clear() 
        **/        
        clear: function() {
            this.$input.val(null);
        },
-       
+
        /**
         method to escape html.
        **/
@@ -147,18 +147,24 @@ To create your own input you can inherit from this class.
        
        /**
         attach handler to automatically submit form when value changed (useful when buttons not shown)
-       **/       
+       **/
        autosubmit: function() {
         
        },
        
+       /**
+       Additional actions when destroying element 
+       **/
+       destroy: function() {
+       },
+
        // -------- helper functions --------
-       setClass: function() {
+       setClass: function() {          
            if(this.options.inputclass) {
                this.$input.addClass(this.options.inputclass); 
            } 
        },
-       
+
        setAttr: function(attr) {
            if (this.options[attr] !== undefined && this.options[attr] !== null) {
                this.$input.attr(attr, this.options[attr]);
@@ -185,9 +191,22 @@ To create your own input you can inherit from this class.
         
         @property inputclass 
         @type string
-        @default input-medium
+        @default null
         **/         
-        inputclass: 'input-medium',
+        inputclass: null,
+        
+        /**
+        If `true` - html will be escaped in content of element via $.text() method.  
+        If `false` - html will not be escaped, $.html() used.  
+        When you use own `display` function, this option obviosly has no effect.
+        
+        @property escape 
+        @type boolean
+        @since 1.5.0
+        @default true
+        **/         
+        escape: true,
+                
         //scope for external methods (e.g. source defined as function)
         //for internal use only
         scope: null,

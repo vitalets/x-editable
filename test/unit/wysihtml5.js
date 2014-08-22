@@ -6,11 +6,14 @@ $(function () {
             $.support.transition = false;
         }
     });
+
+    //skip test for ie7 as it is not supported by wysihtml5
+    var msieOld = /msie\s*(7|6)/i.test(navigator.userAgent); 
+    
+    //note: sometimes it throws 'nativeSelection is null' error
      
     asyncTest("should load correct value and save new entered value", function () {
-        
-        //skip test for ie7 as it is not supported by wysihtml5
-        var msieOld = /msie\s*(7|6)/i.test(navigator.userAgent);  
+
         if(msieOld) {
            expect(0);
            start();  
@@ -73,6 +76,27 @@ $(function () {
            });
         });               
 
+    });
+    
+    asyncTest("empty value", function () {
+
+        if(msieOld) {
+           expect(0);
+           start();  
+           return;
+        } 
+
+        var v1 = '<p></p><br>',
+            e = $('<a href="#" data-pk="1" data-url="post.php">'+v1+'</a>').appendTo(fx).editable({
+            type: 'wysihtml5'
+        }); 
+        
+        setTimeout(function() {
+             equal(e.html(), 'Empty', '`Empty` shown');
+             e.remove();    
+             start();            
+        }, timeout);       
+        
     });
    
 });

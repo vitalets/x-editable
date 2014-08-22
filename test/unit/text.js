@@ -374,17 +374,27 @@ $(function () {
       
      asyncTest("'display' callback", function () {
         var newText = 'cd<e>;"',
-            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">abc</a>').appendTo(fx).editable({
+            counter = 0,
+            initialVal = 'abc',
+            e = $('<a href="#" data-pk="1" data-url="post.php" data-name="text1">123</a>').appendTo(fx).editable({
               ajaxOptions: {
                  dataType: 'json'
               },
               display: function(value, response) {
-                 ok(this === e[0], 'scope is ok');
-                 ok(response.success, 'response param ok');
-                 $(this).text('qq'+value);
-             } 
-          });  
+                 if(counter === 0) {
+                     ok(response === undefined, 'initial autotext ok as display is func');
+                     $(this).text(initialVal);
+                 } else {
+                     ok(this === e[0], 'updating, scope is ok');
+                     ok(response.success, 'response param ok');
+                     $(this).text('qq'+value);
+                 }
+                 counter++;
+              } 
+            });  
 
+        equal(e.text(), initialVal, 'initial autotext ok');  
+          
         e.click()
         var p = tip(e);
 
@@ -424,7 +434,26 @@ $(function () {
            start();  
         }, timeout);             
         
-      });     
+    });
+    
+    test("'display' returning html only (img)", function () {
+        var html = '<img src="../src/img/clear.png">',
+            e = $('<a href="#" data-pk="1" data-type="text" data-name="text1">0</a>').appendTo('#qunit-fixture').editable({
+              display: function(value, response) {
+          	      $(this).html(html);
+              } 
+            });  
+
+        equal(e.html(), html, 'html ok');
+        
+        c = 1;
+ 		e.click()
+        var p = tip(e);
+        p.find('input').val(1);         	
+        p.find('form').submit();
+        
+		equal(e.html(), html, 'html again ok');
+    });         
 
    test("password", function () {
           var v = '123', v1 = '456';
@@ -516,6 +545,37 @@ $(function () {
         e.click(); 
         ok(!c.is(':visible'), 'clear hidden for empty input');
   });
+  
+    test("defaultValue", function () {
+        var e = $('<a href="#" data-name="text1"></a>').appendTo('#qunit-fixture').editable({
+          defaultValue: '123'
+        }),
+        e1 = $('<a href="#" data-name="text1"></a>').appendTo('#qunit-fixture').editable({
+          value: null,  
+          defaultValue: '123'
+        });
+        e2 = $('<a href="#" data-name="text1">qwe</a>').appendTo('#qunit-fixture').editable({
+          defaultValue: '123'
+        });
+
+        //empty text
+        e.click()
+        var p = tip(e);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), '123', 'default text ok');
+        
+        //empty value from js
+        e1.click()
+        p = tip(e1);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), '123', 'default text ok');
+        
+        //not empty
+        e2.click()
+        p = tip(e2);
+        ok(p.find('input').length, 'input exists');
+        equal(p.find('input').val(), 'qwe', 'default text not set as element not empty');
+    });
                    
          
 });    

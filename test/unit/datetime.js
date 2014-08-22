@@ -140,6 +140,15 @@ $(function () {
         
      });       
   
+
+    test("datetimepicker options can be defined in data-datetimepicker string", function () {
+        var  e = $('<a href="#" data-type="datetime" data-datetimepicker="{weekStart: 2}" data-pk="1" data-url="/post"></a>').appendTo('#qunit-fixture').editable({
+            });
+       
+        equal(e.data('editable').input.options.datetimepicker.weekStart, 2, 'options applied correct');
+    });   
+  
+  
      test("viewformat, init by value", function () {
         var dview = '15/05/1984 15:45',
             d = '1984-05-15 15:45',

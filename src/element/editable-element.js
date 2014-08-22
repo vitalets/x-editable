@@ -16,6 +16,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         } else {
             this.init();
         }
+        
+        //check for transition support
+        if(this.options.highlight && !$.fn.editableutils.supportsTransitions()) {
+            this.options.highlight = false;
+        }
     };
 
     Editable.prototype = {
@@ -56,27 +61,40 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             //add 'editable' class to every editable element
             this.$element.addClass('editable');
             
+            //specifically for "textarea" add class .editable-pre-wrapped to keep linebreaks
+            if(this.input.type === 'textarea') {
+                this.$element.addClass('editable-pre-wrapped');
+            }
+            
             //attach handler activating editable. In disabled mode it just prevent default action (useful for links)
             if(this.options.toggle !== 'manual') {
                 this.$element.addClass('editable-click');
                 this.$element.on(this.options.toggle + '.editable', $.proxy(function(e){
-                    //prevent following link
-                    e.preventDefault();
+                    //prevent following link if editable enabled
+                    if(!this.options.disabled) {
+                        e.preventDefault();
+                    }
                     
                     //stop propagation not required because in document click handler it checks event target
                     //e.stopPropagation();
                     
                     if(this.options.toggle === 'mouseenter') {
                         //for hover only show container
-                        this.show(); 
+                        this.show();
                     } else {
                         //when toggle='click' we should not close all other containers as they will be closed automatically in document click listener
                         var closeAll = (this.options.toggle !== 'click');
                         this.toggle(closeAll);
-                    }                    
+                    }
                 }, this));
             } else {
                 this.$element.attr('tabindex', -1); //do not stop focus on element when toggled manually
+            }
+            
+            //if display is function it's far more convinient to have autotext = always to render correctly on init
+            //see https://github.com/vitalets/x-editable-yii/issues/34
+            if(typeof this.options.display === 'function') {
+                this.options.autotext = 'always';
             }
             
             //check conditions for autotext:
@@ -257,12 +275,28 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
 
-            this.isEmpty = isEmpty !== undefined ? isEmpty : $.trim(this.$element.text()) === '';           
+            /* 
+            isEmpty may be set directly as param of method.
+            It is required when we enable/disable field and can't rely on content 
+            as node content is text: "Empty" that is not empty %)
+            */
+            if(isEmpty !== undefined) { 
+                this.isEmpty = isEmpty;
+            } else {
+                //detect empty
+                //for some inputs we need more smart check
+                //e.g. wysihtml5 may have <br>, <p></p>, <img>
+                if(typeof(this.input.isEmpty) === 'function') {
+                    this.isEmpty = this.input.isEmpty(this.$element);                    
+                } else {
+                    this.isEmpty = $.trim(this.$element.html()) === '';
+                }
+            }           
             
             //emptytext shown only for enabled
             if(!this.options.disabled) {
                 if (this.isEmpty) {
-                    this.$element.text(this.options.emptytext);
+                    this.$element.html(this.options.emptytext);
                     if(this.options.emptyclass) {
                         this.$element.addClass(this.options.emptyclass);
                     }
@@ -357,6 +391,24 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
             }
             
+            //highlight when saving
+            if(this.options.highlight) {
+                var $e = this.$element,
+                    bgColor = $e.css('background-color');
+                    
+                $e.css('background-color', this.options.highlight);
+                setTimeout(function(){
+                    if(bgColor === 'transparent') {
+                        bgColor = ''; 
+                    }
+                    $e.css('background-color', bgColor);
+                    $e.addClass('editable-bg-transition');
+                    setTimeout(function(){
+                       $e.removeClass('editable-bg-transition');  
+                    }, 1700);
+                }, 10);
+            }
+            
             //set new value
             this.setValue(params.newValue, false, params.response);
             
@@ -423,6 +475,8 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                this.container.destroy(); 
             }
+            
+            this.input.destroy();
 
             if(this.options.toggle !== 'manual') {
                 this.$element.removeClass('editable-click');
@@ -480,31 +534,42 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             /**
             Returns current values of editable elements.   
             Note that it returns an **object** with name-value pairs, not a value itself. It allows to get data from several elements.    
-            If value of some editable is `null` or `undefined` it is excluded from result object.  
+            If value of some editable is `null` or `undefined` it is excluded from result object.
+            When param `isSingle` is set to **true** - it is supposed you have single element and will return value of editable instead of object.   
              
             @method getValue()
+            @param {bool} isSingle whether to return just value of single element
             @returns {Object} object of element names and values
             @example
             $('#username, #fullname').editable('getValue');
-            // possible result:
+            //result:
             {
             username: "superuser",
             fullname: "John"
             }
+            //isSingle = true
+            $('#username').editable('getValue', true);
+            //result "superuser" 
             **/
             case 'getValue':
-                this.each(function () {
-                    var $this = $(this), data = $this.data(datakey);
-                    if (data && data.value !== undefined && data.value !== null) {
-                        result[data.options.name] = data.input.value2submit(data.value);
-                    }
-                });
+                if(arguments.length === 2 && arguments[1] === true) { //isSingle = true
+                    result = this.eq(0).data(datakey).value;
+                } else {
+                    this.each(function () {
+                        var $this = $(this), data = $this.data(datakey);
+                        if (data && data.value !== undefined && data.value !== null) {
+                            result[data.options.name] = data.input.value2submit(data.value);
+                        }
+                    });
+                }
             return result;
 
-            /**  
+            /**
             This method collects values from several editable elements and submit them all to server.   
             Internally it runs client-side validation for all fields and submits only in case of success.  
-            See <a href="#newrecord">creating new records</a> for details.
+            See <a href="#newrecord">creating new records</a> for details.  
+            Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
+            `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
             
             @method submit(options)
             @param {object} options 
@@ -518,31 +583,76 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             case 'submit':  //collects value, validate and submit to server for creating new record
                 var config = arguments[1] || {},
                 $elems = this,
-                errors = this.editable('validate'),
-                values;
+                errors = this.editable('validate');
 
+                // validation ok
                 if($.isEmptyObject(errors)) {
-                    values = this.editable('getValue'); 
-                    if(config.data) {
-                        $.extend(values, config.data);
-                    }                    
-                    
-                    $.ajax($.extend({
-                        url: config.url, 
-                        data: values, 
-                        type: 'POST'                        
-                    }, config.ajaxOptions))
-                    .success(function(response) {
-                        //successful response 200 OK
-                        if(typeof config.success === 'function') {
-                            config.success.call($elems, response, config);
-                        } 
-                    })
-                    .error(function(){  //ajax error
-                        if(typeof config.error === 'function') {
-                            config.error.apply($elems, arguments);
+                    var ajaxOptions = {};
+                                                      
+                    // for single element use url, success etc from options
+                    if($elems.length === 1) {
+                        var editable = $elems.data('editable');
+                        //standard params
+                        var params = {
+                            name: editable.options.name || '',
+                            value: editable.input.value2submit(editable.value),
+                            pk: (typeof editable.options.pk === 'function') ? 
+                                editable.options.pk.call(editable.options.scope) : 
+                                editable.options.pk 
+                        };
+
+                        //additional params
+                        if(typeof editable.options.params === 'function') {
+                            params = editable.options.params.call(editable.options.scope, params);  
+                        } else {
+                            //try parse json in single quotes (from data-params attribute)
+                            editable.options.params = $.fn.editableutils.tryParseJson(editable.options.params, true);   
+                            $.extend(params, editable.options.params);
                         }
-                    });
+
+                        ajaxOptions = {
+                            url: editable.options.url,
+                            data: params,
+                            type: 'POST'  
+                        };
+                        
+                        // use success / error from options 
+                        config.success = config.success || editable.options.success;
+                        config.error = config.error || editable.options.error;
+                        
+                    // multiple elements
+                    } else {
+                        var values = this.editable('getValue'); 
+                        
+                        ajaxOptions = {
+                            url: config.url,
+                            data: values, 
+                            type: 'POST'
+                        };                        
+                    }                    
+
+                    // ajax success callabck (response 200 OK)
+                    ajaxOptions.success = typeof config.success === 'function' ? function(response) {
+                            config.success.call($elems, response, config);
+                        } : $.noop;
+                                  
+                    // ajax error callabck
+                    ajaxOptions.error = typeof config.error === 'function' ? function() {
+                             config.error.apply($elems, arguments);
+                        } : $.noop;
+                       
+                    // extend ajaxOptions    
+                    if(config.ajaxOptions) { 
+                        $.extend(ajaxOptions, config.ajaxOptions);
+                    }
+                    
+                    // extra data 
+                    if(config.data) {
+                        $.extend(ajaxOptions.data, config.data);
+                    }                     
+                    
+                    // perform ajax request
+                    $.ajax(ajaxOptions);
                 } else { //client-side validation error
                     if(typeof config.error === 'function') {
                         config.error.call($elems, errors);
@@ -557,6 +667,14 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 data = $this.data(datakey), 
                 options = typeof option === 'object' && option;
 
+            //for delegated targets do not store `editable` object for element
+            //it's allows several different selectors.
+            //see: https://github.com/vitalets/x-editable/issues/312    
+            if(options && options.selector) {
+                data = new Editable(this, options);
+                return; 
+            }    
+            
             if (!data) {
                 $this.data(datakey, (data = new Editable(this, options)));
             }
@@ -725,7 +843,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         });
         </script>
         **/         
-        selector: null        
+        selector: null,
+        /**
+        Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
+        
+        @property highlight 
+        @type string|boolean
+        @since 1.4.5        
+        @default #FFFF80 
+        **/
+        highlight: '#FFFF80'
     };
     
 }(window.jQuery));

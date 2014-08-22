@@ -18,7 +18,7 @@ Internally value stored as `momentjs` object.
 @final
 @since 1.4.0
 @example
-<a href="#" id="dob" data-type="combodate" data-pk="1" data-url="/post" data-value="1984-05-15" data-original-title="Select date"></a>
+<a href="#" id="dob" data-type="combodate" data-pk="1" data-url="/post" data-value="1984-05-15" data-title="Select date"></a>
 <script>
 $(function(){
     $('#dob').editable({
@@ -64,7 +64,14 @@ $(function(){
     $.extend(Constructor.prototype, {
         render: function () {
             this.$input.combodate(this.options.combodate);
+                    
+            if($.fn.editableform.engine === 'bs3') {
+                this.$input.siblings().find('select').addClass('form-control');
+            }
             
+            if(this.options.inputclass) {
+                this.$input.siblings().find('select').addClass(this.options.inputclass);
+            }            
             //"clear" link
             /*
             if(this.options.clear) {
@@ -81,7 +88,8 @@ $(function(){
         
         value2html: function(value, element) {
             var text = value ? value.format(this.options.viewformat) : '';
-            $(element).text(text); 
+            //$(element).text(text);
+            Constructor.superclass.value2html.call(this, text, element);  
         },
 
         html2value: function(html) {

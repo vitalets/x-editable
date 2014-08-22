@@ -1,0 +1,20 @@
+{
+  "name": "x-editable",
+  "version": "1.5.1",
+  "ignore": [
+    "CHANGELOG.txt",
+    "Gruntfile.js",
+    "LICENSE-MIT",
+    "Package.nuspec",
+    "README.md",
+    "composer.json",
+    "package.json",
+    "node_modules",
+    "components",
+    "src",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": ">=1.6"
+  }   
+}

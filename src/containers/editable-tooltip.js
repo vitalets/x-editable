@@ -9,17 +9,25 @@
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'tooltip',  //jQuery method, aplying the widget
-        containerDataName: 'uiTooltip', //object name in elements .data() (e.g. uiTooltip for tooltip)
+        //object name in element's .data() 
+        containerDataName: 'ui-tooltip', 
         innerCss: '.ui-tooltip-content', 
+        defaults: $.ui.tooltip.prototype.options,
         
         //split options on containerOptions and formOptions
         splitOptions: function() {
             this.containerOptions = {};
             this.formOptions = {};
+            
+            //check that jQueryUI build contains tooltip widget
+            if(!$.ui[this.containerName]) {
+                $.error('Please use jQueryUI with "tooltip" widget! http://jqueryui.com/download');
+                return;
+            }
+            
             //defaults for tooltip
-            var cDef = $.ui[this.containerName].prototype.options;
             for(var k in this.options) {
-              if(k in cDef) {
+              if(k in this.defaults) {
                  this.containerOptions[k] = this.options[k];
               } else {
                  this.formOptions[k] = this.options[k];
@@ -44,7 +52,7 @@
             
             this.call(this.containerOptions);
             
-            //disable standart triggering tooltip event 
+            //disable standart triggering tooltip events
             this.container()._off(this.container().element, 'mouseover focusin');
         },         
         
@@ -78,25 +86,29 @@
                case 'top':
                       pos = {
                           my: "center bottom-5", 
-                          at: "center top" 
+                          at: "center top", 
+                          collision: 'flipfit'
                       };
                break;
                case 'right':
                       pos = {
                           my: "left+5 center", 
-                          at: "right center" 
+                          at: "right center", 
+                          collision: 'flipfit'
                       };
                break;
                case 'bottom':
                       pos = {
                           my: "center top+5", 
-                          at: "center bottom" 
+                          at: "center bottom", 
+                          collision: 'flipfit'
                       };
                break;
                case 'left':
                       pos = {
                           my: "right-5 center", 
-                          at: "left center" 
+                          at: "left center", 
+                          collision: 'flipfit'
                       };
                break;                                             
            }

@@ -8,6 +8,7 @@ Following types are supported:
 * tel
 * number
 * range
+* time
 
 Learn more about html5 inputs:  
 http://www.w3.org/wiki/HTML5_form_additions  
@@ -192,4 +193,26 @@ Range (inherit from number)
         inputclass: 'input-medium'
     });
     $.fn.editabletypes.range = Range;
+}(window.jQuery));
+
+/*
+Time
+*/
+(function ($) {
+    "use strict";
+
+    var Time = function (options) {
+        this.init('time', options, Time.defaults);
+    };
+    //inherit from abstract, as inheritance from text gives selection error.
+    $.fn.editableutils.inherit(Time, $.fn.editabletypes.abstractinput);
+    $.extend(Time.prototype, {
+        render: function() {
+           this.setClass();
+        }        
+    });
+    Time.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<input type="time">'
+    });
+    $.fn.editabletypes.time = Time;
 }(window.jQuery));

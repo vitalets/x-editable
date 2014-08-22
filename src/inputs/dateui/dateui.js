@@ -8,7 +8,7 @@ For **i18n** you should include js file from here: https://github.com/jquery/jqu
 @extends abstractinput
 @final
 @example
-<a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-original-title="Select date">15/05/1984</a>
+<a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-title="Select date">15/05/1984</a>
 <script>
 $(function(){
     $('#dob').editable({
@@ -67,7 +67,7 @@ $(function(){
 
         value2html: function(value, element) {
             var text = $.datepicker.formatDate(this.options.viewformat, value);
-            DateUI.superclass.value2html(text, element); 
+            DateUI.superclass.value2html.call(this, text, element); 
         },
 
         html2value: function(html) {
@@ -119,15 +119,22 @@ $(function(){
        
        clear:  function() {
            this.$input.datepicker('setDate', null);
+           // submit automatically whe that are no buttons
+           if(this.isAutosubmit) {
+              this.submit();
+           }
        },
        
        autosubmit: function() {
-           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', function(e){
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
+           this.isAutosubmit = true; 
+           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', $.proxy(this.submit, this));
+       },
+
+       submit: function() {
+           var $form = this.$input.closest('form');
+           setTimeout(function() {
+               $form.submit();
+           }, 200);
        }
 
     });

@@ -11,13 +11,14 @@
         containerName: 'popover',
         //for compatibility with bootstrap <= 2.2.1 (content inserted into <p> instead of directly .popover-content) 
         innerCss: $.fn.popover && $($.fn.popover.defaults.template).find('p').length ? '.popover-content p' : '.popover-content',
-
+        defaults: $.fn.popover.defaults,
+        
         initContainer: function(){
             $.extend(this.containerOptions, {
                 trigger: 'manual',
                 selector: false,
                 content: ' ',
-                template: $.fn.popover.defaults.template
+                template: this.defaults.template
             });
             
             //as template property is used in inputs, hide it from popover
@@ -59,7 +60,7 @@
         */
         /*jshint laxcomma: true*/
         setPosition: function () { 
-         
+
             (function() {    
                 var $tip = this.tip()
                 , inside
@@ -67,7 +68,11 @@
                 , actualWidth
                 , actualHeight
                 , placement
-                , tp;
+                , tp
+                , tpt
+                , tpb
+                , tpl
+                , tpr;
 
                 placement = typeof this.options.placement === 'function' ?
                 this.options.placement.call(this, $tip[0], this.$element[0]) :
@@ -87,18 +92,78 @@
                 actualWidth = $tip[0].offsetWidth;
                 actualHeight = $tip[0].offsetHeight;
 
-                switch (inside ? placement.split(' ')[1] : placement) {
+                placement = inside ? placement.split(' ')[1] : placement;
+
+                tpb = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
+                tpt = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
+                tpl = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
+                tpr = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
+
+                switch (placement) {
                     case 'bottom':
-                        tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        if ((tpb.top + actualHeight) > ($(window).scrollTop() + $(window).height())) {
+                            if (tpt.top > $(window).scrollTop()) {
+                                placement = 'top';
+                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                placement = 'right';
+                            } else if (tpl.left > $(window).scrollLeft()) {
+                                placement = 'left';
+                            } else {
+                                placement = 'right';
+                            }
+                        }
                         break;
                     case 'top':
-                        tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        if (tpt.top < $(window).scrollTop()) {
+                            if ((tpb.top + actualHeight) < ($(window).scrollTop() + $(window).height())) {
+                                placement = 'bottom';
+                            } else if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                placement = 'right';
+                            } else if (tpl.left > $(window).scrollLeft()) {
+                                placement = 'left';
+                            } else {
+                                placement = 'right';
+                            }
+                        }
                         break;
                     case 'left':
-                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
+                        if (tpl.left < $(window).scrollLeft()) {
+                            if ((tpr.left + actualWidth) < ($(window).scrollLeft() + $(window).width())) {
+                                placement = 'right';
+                            } else if (tpt.top > $(window).scrollTop()) {
+                                placement = 'top';
+                            } else if (tpt.top > $(window).scrollTop()) {
+                                placement = 'bottom';
+                            } else {
+                                placement = 'right';
+                            }
+                        }
                         break;
                     case 'right':
-                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
+                        if ((tpr.left + actualWidth) > ($(window).scrollLeft() + $(window).width())) {
+                            if (tpl.left > $(window).scrollLeft()) {
+                                placement = 'left';
+                            } else if (tpt.top > $(window).scrollTop()) {
+                                placement = 'top';
+                            } else if (tpt.top > $(window).scrollTop()) {
+                                placement = 'bottom';
+                            }
+                        }
+                        break;
+                }
+
+                switch (placement) {
+                    case 'bottom':
+                        tp = tpb;
+                        break;
+                    case 'top':
+                        tp = tpt;
+                        break;
+                    case 'left':
+                        tp = tpl;
+                        break;
+                    case 'right':
+                        tp = tpr;
                         break;
                 }
 

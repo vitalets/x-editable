@@ -5,7 +5,7 @@ $(function () {
    module("date", {
         setup: function(){
             fx = $('#async-fixture');
-            dpg = $.fn.datepicker.DPGlobal;
+            dpg = $.fn.bdatepicker.DPGlobal;
             $.support.transition = false;
             mode = $.fn.editable.defaults.mode;
             $.fn.editable.defaults.mode = 'popup';
@@ -133,7 +133,14 @@ $(function () {
         
         equal(frmt(e.data('editable').value, 'yyyy-mm-dd'), d, 'value correct');
         equal(e.text(), dview, 'text correct');
-     });    
+     });
+     
+    test("datepicker options can be defined in data-datepicker string", function () {
+        var  e = $('<a href="#" data-type="date" data-datepicker="{weekStart: 2}" data-pk="1" data-url="/post"></a>').appendTo('#qunit-fixture').editable({
+            });
+       
+        equal(e.data('editable').input.options.datepicker.weekStart, 2, 'options applied correct');
+    });    
      
      
      test("input should contain today if element is empty", function () {

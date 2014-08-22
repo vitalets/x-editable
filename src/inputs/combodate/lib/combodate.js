@@ -1,10 +1,20 @@
 /**
-* Combodate - 1.0.3
+* Combodate - 1.0.5
 * Dropdown date and time picker.
 * Converts text input into dropdowns to pick day, month, year, hour, minute and second.
 * Uses momentjs as datetime library http://momentjs.com.
 * For i18n include corresponding file from https://github.com/timrwood/moment/tree/master/lang 
 *
+* Confusion at noon and midnight - see http://en.wikipedia.org/wiki/12-hour_clock#Confusion_at_noon_and_midnight
+* In combodate: 
+* 12:00 pm --> 12:00 (24-h format, midday)
+* 12:00 am --> 00:00 (24-h format, midnight, start of day)
+* 
+* Differs from momentjs parse rules:
+* 00:00 pm, 12:00 pm --> 12:00 (24-h format, day not change)
+* 00:00 am, 12:00 am --> 00:00 (24-h format, day not change)
+* 
+* 
 * Author: Vitaliy Potapov
 * Project page: http://github.com/vitalets/combodate
 * Copyright (c) 2012 Vitaliy Potapov. Released under MIT License.
@@ -40,16 +50,22 @@
             this.initCombos();
             
             //update original input on change 
-            this.$widget.on('change', 'select', $.proxy(function(){
-                this.$element.val(this.getValue());
+            this.$widget.on('change', 'select', $.proxy(function(e) {
+                this.$element.val(this.getValue()).change();
+                // update days count if month or year changes
+                if (this.options.smartDays) {
+                    if ($(e.target).is('.month') || $(e.target).is('.year')) {
+                        this.fillCombo('day');
+                    }
+                }
             }, this));
             
             this.$widget.find('select').css('width', 'auto');
                                        
-            //hide original input and insert widget                                       
+            // hide original input and insert widget                                       
             this.$element.hide().after(this.$widget);
             
-            //set initial value
+            // set initial value
             this.setValue(this.$element.val() || this.options.value);
         },
         
@@ -86,22 +102,41 @@
          Initialize combos that presents in template 
         */        
         initCombos: function() {
-            var that = this;
-            $.each(this.map, function(k, v) {
-               var $c = that.$widget.find('.'+k), f, items;
-               if($c.length) {
-                   that['$'+k] = $c; //set properties like this.$day, this.$month etc.
-                   f = 'fill' + k.charAt(0).toUpperCase() + k.slice(1); //define method name to fill items, e.g `fillDays`
-                   items = that[f](); 
-                   that['$'+k].html(that.renderItems(items));
-               }
-            }); 
+            for (var k in this.map) {
+                var $c = this.$widget.find('.'+k);
+                // set properties like this.$day, this.$month etc.
+                this['$'+k] = $c.length ? $c : null;
+                // fill with items
+                this.fillCombo(k);
+            }
         },
-        
+
+        /*
+         Fill combo with items 
+        */        
+        fillCombo: function(k) {
+            var $combo = this['$'+k];
+            if (!$combo) {
+                return;
+            }
+
+            // define method name to fill items, e.g `fillDays`
+            var f = 'fill' + k.charAt(0).toUpperCase() + k.slice(1); 
+            var items = this[f]();
+            var value = $combo.val();
+
+            $combo.empty();
+            for(var i=0; i<items.length; i++) {
+                $combo.append('<option value="'+items[i][0]+'">'+items[i][1]+'</option>');
+            }
+
+            $combo.val(value);
+        },
+
         /*
          Initialize items of combos. Handles `firstItem` option 
         */
-        initItems: function(key) {
+        fillCommon: function(key) {
             var values = [],
                 relTime;
                 
@@ -116,27 +151,29 @@
                 values.push(['', '']);
             }
             return values;
-        },        
-        
-        /*
-        render items to string of <option> tags
-        */
-        renderItems: function(items) {
-            var str = [];
-            for(var i=0; i<items.length; i++) {
-                str.push('<option value="'+items[i][0]+'">'+items[i][1]+'</option>');                
-            }
-            return str.join("\n");
-        },        
+        },  
+
 
         /*
         fill day
         */
         fillDay: function() {
-            var items = this.initItems('d'), name, i,
-                twoDigit = this.options.template.indexOf('DD') !== -1;
-                
-            for(i=1; i<=31; i++) {
+            var items = this.fillCommon('d'), name, i,
+                twoDigit = this.options.template.indexOf('DD') !== -1,
+                daysCount = 31;
+
+            // detect days count (depends on month and year)
+            // originally https://github.com/vitalets/combodate/pull/7
+            if (this.options.smartDays && this.$month && this.$year) {
+                var month = parseInt(this.$month.val(), 10);
+                var year = parseInt(this.$year.val(), 10);
+
+                if (!isNaN(month) && !isNaN(year)) {
+                    daysCount = moment([year, month]).daysInMonth();
+                }
+            }
+
+            for (i = 1; i <= daysCount; i++) {
                 name = twoDigit ? this.leadZero(i) : i;
                 items.push([i, name]);
             }
@@ -147,16 +184,17 @@
         fill month
         */
         fillMonth: function() {
-            var items = this.initItems('M'), name, i, 
+            var items = this.fillCommon('M'), name, i, 
                 longNames = this.options.template.indexOf('MMMM') !== -1,
                 shortNames = this.options.template.indexOf('MMM') !== -1,
                 twoDigit = this.options.template.indexOf('MM') !== -1;
                 
             for(i=0; i<=11; i++) {
                 if(longNames) {
-                    name = moment().month(i).format('MMMM');
+                    //see https://github.com/timrwood/momentjs.com/pull/36
+                    name = moment().date(1).month(i).format('MMMM');
                 } else if(shortNames) {
-                    name = moment().month(i).format('MMM');
+                    name = moment().date(1).month(i).format('MMM');
                 } else if(twoDigit) {
                     name = this.leadZero(i+1);
                 } else {
@@ -179,7 +217,7 @@
                 items[this.options.yearDescending ? 'push' : 'unshift']([i, name]);
             }
             
-            items = this.initItems('y').concat(items);
+            items = this.fillCommon('y').concat(items);
             
             return items;              
         },    
@@ -188,13 +226,14 @@
         fill hour
         */
         fillHour: function() {
-            var items = this.initItems('h'), name, i,
+            var items = this.fillCommon('h'), name, i,
                 h12 = this.options.template.indexOf('h') !== -1,
                 h24 = this.options.template.indexOf('H') !== -1,
                 twoDigit = this.options.template.toLowerCase().indexOf('hh') !== -1,
+                min = h12 ? 1 : 0, 
                 max = h12 ? 12 : 23;
                 
-            for(i=0; i<=max; i++) {
+            for(i=min; i<=max; i++) {
                 name = twoDigit ? this.leadZero(i) : i;
                 items.push([i, name]);
             } 
@@ -205,7 +244,7 @@
         fill minute
         */
         fillMinute: function() {
-            var items = this.initItems('m'), name, i,
+            var items = this.fillCommon('m'), name, i,
                 twoDigit = this.options.template.indexOf('mm') !== -1;
 
             for(i=0; i<=59; i+= this.options.minuteStep) {
@@ -219,7 +258,7 @@
         fill second
         */
         fillSecond: function() {
-            var items = this.initItems('s'), name, i,
+            var items = this.fillCommon('s'), name, i,
                 twoDigit = this.options.template.indexOf('ss') !== -1;
 
             for(i=0; i<=59; i+= this.options.secondStep) {
@@ -241,9 +280,9 @@
                 ];
             return items;                              
         },                                       
-        
+
         /*
-         Returns current date value. 
+         Returns current date value from combos. 
          If format not specified - `options.format` used.
          If format = `null` - Moment object returned.
         */
@@ -272,12 +311,14 @@
                return '';
             }
             
-            //convert hours if 12h format
+            //convert hours 12h --> 24h 
             if(this.$ampm) {
-               values.hour = this.$ampm.val() === 'am' ? values.hour : values.hour+12;
-               if(values.hour === 24) {
-                   values.hour = 0;
-               }  
+                //12:00 pm --> 12:00 (24-h format, midday), 12:00 am --> 00:00 (24-h format, midnight, start of day)
+                if(values.hour === 12) {
+                    values.hour = this.$ampm.val() === 'am' ? 0 : 12;                    
+                } else {
+                    values.hour = this.$ampm.val() === 'am' ? values.hour : values.hour+12;
+                }
             }    
             
             dt = moment([values.year, values.month, values.day, values.hour, values.minute, values.second]);
@@ -302,57 +343,68 @@
                 that = this,
                 values = {};
             
-                //function to find nearest value in select options
-                function getNearest($select, value) {
-                    var delta = {};
-                    $select.children('option').each(function(i, opt){
-                        var optValue = $(opt).attr('value'),
-                        distance;
+            //function to find nearest value in select options
+            function getNearest($select, value) {
+                var delta = {};
+                $select.children('option').each(function(i, opt){
+                    var optValue = $(opt).attr('value'),
+                    distance;
 
-                        if(optValue === '') return;
-                        distance = Math.abs(optValue - value); 
-                        if(typeof delta.distance === 'undefined' || distance < delta.distance) {
-                            delta = {value: optValue, distance: distance};
-                        } 
-                    }); 
-                    return delta.value;
-                }             
+                    if(optValue === '') return;
+                    distance = Math.abs(optValue - value); 
+                    if(typeof delta.distance === 'undefined' || distance < delta.distance) {
+                        delta = {value: optValue, distance: distance};
+                    } 
+                }); 
+                return delta.value;
+            }             
             
             if(dt.isValid()) {
-                 //read values from date object
-                 $.each(this.map, function(k, v) {
-                     if(k === 'ampm') {
-                         return; 
-                     }
-                     values[k] = dt[v[1]]();
-                 });
+                //read values from date object
+                $.each(this.map, function(k, v) {
+                    if(k === 'ampm') {
+                       return; 
+                    }
+                    values[k] = dt[v[1]]();
+                });
                
-               if(this.$ampm) {
-                   if(values.hour > 12) {
-                       values.hour -= 12;
-                       values.ampm = 'pm';
-                   } else {
-                       values.ampm = 'am';                  
-                   } 
-               }
+                if(this.$ampm) {
+                    //12:00 pm --> 12:00 (24-h format, midday), 12:00 am --> 00:00 (24-h format, midnight, start of day)
+                    if(values.hour >= 12) {
+                        values.ampm = 'pm';
+                        if(values.hour > 12) {
+                            values.hour -= 12;
+                        }
+                    } else {
+                        values.ampm = 'am';
+                        if(values.hour === 0) {
+                            values.hour = 12;
+                        }
+                    } 
+                }
                
-               $.each(values, function(k, v) {
-                   //call val() for each existing combo, e.g. this.$hour.val()
-                   if(that['$'+k]) {
+                $.each(values, function(k, v) {
+                    //call val() for each existing combo, e.g. this.$hour.val()
+                    if(that['$'+k]) {
                        
-                       if(k === 'minute' && that.options.minuteStep > 1 && that.options.roundTime) {
-                          v = getNearest(that['$'+k], v);
-                       }
+                        if(k === 'minute' && that.options.minuteStep > 1 && that.options.roundTime) {
+                           v = getNearest(that['$'+k], v);
+                        }
                        
-                       if(k === 'second' && that.options.secondStep > 1 && that.options.roundTime) {
-                          v = getNearest(that['$'+k], v);
-                       }                       
+                        if(k === 'second' && that.options.secondStep > 1 && that.options.roundTime) {
+                           v = getNearest(that['$'+k], v);
+                        }                       
                        
-                       that['$'+k].val(v);                       
-                   }
-               });
+                        that['$'+k].val(v);
+                    }
+                });
+
+                // update days count
+                if (this.options.smartDays) {
+                    this.fillCombo('day');
+                }
                
-               this.$element.val(dt.format(this.options.format));
+               this.$element.val(dt.format(this.options.format)).change();
             }
         },
         
@@ -427,7 +479,8 @@
         secondStep: 1,
         firstItem: 'empty', //'name', 'empty', 'none'
         errorClass: null,
-        roundTime: true //whether to round minutes and seconds if step > 1
+        roundTime: true, // whether to round minutes and seconds if step > 1
+        smartDays: false // whether days in combo depend on selected month: 31, 30, 28
     };
 
 }(window.jQuery));

@@ -10,6 +10,7 @@
     $.extend($.fn.editableContainer.Popup.prototype, {
         containerName: 'poshytip',
         innerCss: 'div.tip-inner',
+        defaults: $.fn.poshytip.defaults,
         
         initContainer: function(){
             this.handlePlacement();
@@ -43,7 +44,7 @@
             this.call('update', $content);
             this.call('show');
             
-            this.tip().addClass('editable-container');
+            this.tip().addClass(this.containerClass);
             this.$form.data('editableform').input.activate();
         },     
         

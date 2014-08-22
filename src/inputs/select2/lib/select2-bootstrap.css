@@ -1,91 +1,87 @@
-.select2-container {
-  vertical-align:middle;
+.form-control .select2-choice {
+    border: 0;
+    border-radius: 2px;
 }
 
-.select2-container .select2-choice {
-  border:1px solid #ccc;
-  height:28px;
-  border-radius: 3px;
-  line-height: 29px;
-  background-image:none;
-  filter:none;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+.form-control .select2-choice .select2-arrow {
+    border-radius: 0 2px 2px 0;   
 }
 
-.select2-container .select2-choice div {
-  border-left:none;
-  background:none;
-  background-image:none;
-  filter:none;
+.form-control.select2-container {
+    height: auto !important;
+    padding: 0px;
 }
 
-.select2-container-multi .select2-choices {
-  border:1px solid #ccc;
-  border-radius: 3px;
-  background-image:none;
-  filter:none;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+.form-control.select2-container.select2-dropdown-open {
+    border-color: #5897FB;
+    border-radius: 3px 3px 0 0;
 }
 
-.control-group.error .select2-container-multi .select2-choices {
-  border-color:#B94A48;
+.form-control .select2-container.select2-dropdown-open .select2-choices {
+    border-radius: 3px 3px 0 0;
 }
 
-.control-group.error .select2-container .select2-choice {
-  border-color:#B94A48;
+.form-control.select2-container .select2-choices {
+    border: 0 !important;
+    border-radius: 3px;
 }
 
-.select2-container-multi .select2-choices .select2-search-field {
-  height:28px;
-  line-height: 27px;
+.control-group.warning .select2-container .select2-choice,
+.control-group.warning .select2-container .select2-choices,
+.control-group.warning .select2-container-active .select2-choice,
+.control-group.warning .select2-container-active .select2-choices,
+.control-group.warning .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.warning .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.warning .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #C09853 !important;
 }
 
-.select2-container-active .select2-choice,
-.select2-container-active .select2-choices,
-.select2-container-multi.select2-container-active .select2-choices {
-    border-color: rgba(82, 168, 236, 0.8);
-    outline: none;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(82, 168, 236, 0.6);
-    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(82, 168, 236, 0.6);
+.control-group.warning .select2-container .select2-choice div {
+    border-left: 1px solid #C09853 !important;
+    background: #FCF8E3 !important;
 }
 
-.input-append .select2-container, .input-prepend .select2-container {
-  font-size:14px;
+.control-group.error .select2-container .select2-choice,
+.control-group.error .select2-container .select2-choices,
+.control-group.error .select2-container-active .select2-choice,
+.control-group.error .select2-container-active .select2-choices,
+.control-group.error .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.error .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.error .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #B94A48 !important;
 }
 
-.input-prepend .select2-container > a.select2-choice,
-.input-prepend .select2-container-multi .select2-choices {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+.control-group.error .select2-container .select2-choice div {
+    border-left: 1px solid #B94A48 !important;
+    background: #F2DEDE !important;
 }
 
-.input-append .select2-container > a, 
-.input-append .select2-container-multi .select2-choices {
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
+.control-group.info .select2-container .select2-choice,
+.control-group.info .select2-container .select2-choices,
+.control-group.info .select2-container-active .select2-choice,
+.control-group.info .select2-container-active .select2-choices,
+.control-group.info .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.info .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.info .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #3A87AD !important;
 }
 
-.input-prepend .select2-container > a.select2-choice > div,
-.input-append .select2-container > a.select2-choice > div {
-  display:none;
+.control-group.info .select2-container .select2-choice div {
+    border-left: 1px solid #3A87AD !important;
+    background: #D9EDF7 !important;
 }
 
-.input-append .select2-offscreen,
-.input-prepend .select2-offscreen {
-  position: absolute;
+.control-group.success .select2-container .select2-choice,
+.control-group.success .select2-container .select2-choices,
+.control-group.success .select2-container-active .select2-choice,
+.control-group.success .select2-container-active .select2-choices,
+.control-group.success .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.success .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.success .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #468847 !important;
 }
 
-/**
- * This stops the quick flash when a native selectbox is shown and 
- * then replaced by a select2 input when javascript kicks in. This can be 
- * removed if javascript is not present 
- */  
-select.select2 {
-  height:28px;
-  visibility:hidden;
+.control-group.success .select2-container .select2-choice div {
+    border-left: 1px solid #468847 !important;
+    background: #DFF0D8 !important;
 }

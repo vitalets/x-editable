@@ -72,7 +72,7 @@
         var title = 'abc',
         //add to fx because qunit-fixture has wrong positioning
         e = $('<a href="#" id="a"></a>').appendTo(fx).editable({
-              placement: 'bottom',
+              placement: 'top',
               title: title
         });
 
@@ -82,13 +82,37 @@
 
         //todo: for jqueryui phantomjs calcs wrong position. Skip this test..
         if(!/phantom/i.test(navigator.userAgent) && e.data('editableContainer').containerName !== 'tooltip') {
-            ok(p.offset().top > e.offset().top, 'placement ok');
+            ok(p.offset().top < e.offset().top, 'placement ok');
         }
         
         //check title
         ok(p.find(':contains("'+title+'")').length, 'title ok');
         e.remove();
-      });   
+      });
+
+    test("popup placement `auto` (BS3 only)", function () {
+        //do not test inline  
+        if($.fn.editable.defaults.mode === 'inline' || $.fn.editableform.engine !== 'bs3') {
+            expect(0);
+            return;
+        }
+        
+        var title = 'abc',
+        //add to fx because qunit-fixture has wrong positioning
+        e = $('<a href="#" id="a" style="position: absolute; top: 50px; left: 10px"></a>').appendTo(fx).editable({
+              placement: 'auto',
+              title: title
+        });
+
+        e.click();
+        var p = tip(e); 
+        ok(p.is(':visible'), 'popover shown');   
+
+        ok(p.offset().left < e.offset().left, 'placement X ok');
+        ok(p.offset().top > e.offset().top, 'placement Y ok');
+
+        e.remove();
+      });     
       
       test("onblur: cancel", function () {
         var oldValue = 'abc',
@@ -647,13 +671,19 @@
     
      test("`selector` option", function () {
         var parent = $('<div><a href="#" id="a" data-type="text">123</a></div>').appendTo('#qunit-fixture').editable({
-            selector: 'a',
-            url: 'post.php',
-            source: groups
+            selector: '#a',
+            url: 'post.php'
         }),
         b = $('<a href="#" id="b" data-type="select" data-value="1"></a>'),
         e = $('#a'),
         selected = 2;
+        
+        //apply delegated editable second time
+        parent.editable({
+           selector: '#b', 
+           url: 'post.php',
+           source: groups
+        });
        
         ok(!e.hasClass('editable'), 'no editable class applied');
        

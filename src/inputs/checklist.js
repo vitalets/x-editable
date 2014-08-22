@@ -6,7 +6,7 @@ Internally value stored as javascript array of values.
 @extends list
 @final
 @example
-<a href="#" id="options" data-type="checklist" data-pk="1" data-url="/post" data-original-title="Select options"></a>
+<a href="#" id="options" data-type="checklist" data-pk="1" data-url="/post" data-title="Select options"></a>
 <script>
 $(function(){
     $('#options').editable({
@@ -100,10 +100,14 @@ $(function(){
        //collect text of checked boxes
         value2htmlFinal: function(value, element) {
            var html = [],
-               checked = $.fn.editableutils.itemsByValue(value, this.sourceData);
+               checked = $.fn.editableutils.itemsByValue(value, this.sourceData),
+               escape = this.options.escape;
                
            if(checked.length) {
-               $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+               $.each(checked, function(i, v) {
+                   var text = escape ? $.fn.editableutils.escape(v.text) : v.text; 
+                   html.push(text); 
+               });
                $(element).html(html.join('<br>'));
            } else {
                $(element).empty(); 

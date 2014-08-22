@@ -1,5 +1,5 @@
 /**
-Typeahead input (bootstrap only). Based on Twitter Bootstrap [typeahead](http://twitter.github.com/bootstrap/javascript.html#typeahead).  
+Typeahead input (bootstrap 2 only). Based on Twitter Bootstrap 2 [typeahead](http://getbootstrap.com/2.3.2/javascript.html#typeahead).  
 Depending on `source` format typeahead operates in two modes:
 
 * **strings**:  
@@ -15,7 +15,7 @@ Depending on `source` format typeahead operates in two modes:
 @since 1.4.1
 @final
 @example
-<a href="#" id="country" data-type="typeahead" data-pk="1" data-url="/post" data-original-title="Input country"></a>
+<a href="#" id="country" data-type="typeahead" data-pk="1" data-url="/post" data-title="Input country"></a>
 <script>
 $(function(){
     $('#country').editable({
@@ -71,10 +71,9 @@ $(function(){
         value2htmlFinal: function(value, element) {
             if(this.getIsObjects()) {
                 var items = $.fn.editableutils.itemsByValue(value, this.sourceData);
-                $(element).text(items.length ? items[0].text : '');
-            } else {
-                $(element).text(value);
-            }
+                value = items.length ? items[0].text : '';
+            } 
+            $.fn.editabletypes.abstractinput.prototype.value2html.call(this, value, element);
         },
         
         html2value: function (html) {
@@ -247,7 +246,7 @@ $(function(){
         **/         
         tpl:'<input type="text">',
         /**
-        Configuration of typeahead. [Full list of options](http://twitter.github.com/bootstrap/javascript.html#typeahead).
+        Configuration of typeahead. [Full list of options](http://getbootstrap.com/2.3.2/javascript.html#typeahead).
         
         @property typeahead 
         @type object

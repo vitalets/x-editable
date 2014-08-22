@@ -58,30 +58,33 @@ List - abstract class for inputs that have source option loaded from js array or
         // ------------- additional functions ------------
 
         onSourceReady: function (success, error) {
+            //run source if it function
+            var source;
+            if ($.isFunction(this.options.source)) {
+                source = this.options.source.call(this.options.scope);
+                this.sourceData = null;
+                //note: if function returns the same source as URL - sourceData will be taken from cahce and no extra request performed
+            } else {
+                source = this.options.source;
+            }            
+            
             //if allready loaded just call success
-            if($.isArray(this.sourceData)) {
+            if(this.options.sourceCache && $.isArray(this.sourceData)) {
                 success.call(this);
                 return; 
             }
 
-            // try parse json in single quotes (for double quotes jquery does automatically)
+            //try parse json in single quotes (for double quotes jquery does automatically)
             try {
-                this.options.source = $.fn.editableutils.tryParseJson(this.options.source, false);
+                source = $.fn.editableutils.tryParseJson(source, false);
             } catch (e) {
                 error.call(this);
                 return;
             }
-            
-            var source = this.options.source;
-            
-            //run source if it function
-            if ($.isFunction(source)) {
-                source = source.call(this.options.scope);
-            }
 
             //loading from url
             if (typeof source === 'string') {
-                //try to get from cache
+                //try to get sourceData from cache
                 if(this.options.sourceCache) {
                     var cacheID = source,
                     cache;
@@ -114,8 +117,8 @@ List - abstract class for inputs that have source option loaded from js array or
                     }
                 }
                 
-                //loading sourceData from server
-                $.ajax({
+                //ajaxOptions for source. Can be overwritten bt options.sourceOptions
+                var ajaxOptions = $.extend({
                     url: source,
                     type: 'get',
                     cache: false,
@@ -150,7 +153,11 @@ List - abstract class for inputs that have source option loaded from js array or
                              $.each(cache.err_callbacks, function () { this.call(); }); 
                         }
                     }, this)
-                });
+                }, this.options.sourceOptions);
+                
+                //loading sourceData from server
+                $.ajax(ajaxOptions);
+                
             } else { //options as json/array
                 this.sourceData = this.makeArray(source);
                     
@@ -310,7 +317,17 @@ List - abstract class for inputs that have source option loaded from js array or
         @default true
         @since 1.2.0
         **/        
-        sourceCache: true
+        sourceCache: true,
+        /**
+        Additional ajax options to be used in $.ajax() when loading list from server.
+        Useful to send extra parameters (`data` key) or change request method (`type` key).
+        
+        @property sourceOptions 
+        @type object|function
+        @default null
+        @since 1.5.0
+        **/        
+        sourceOptions: null
     });
 
     $.fn.editabletypes.list = List;      

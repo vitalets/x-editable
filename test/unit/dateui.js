@@ -142,6 +142,48 @@ $(function () {
            start();  
         }, 500); 
         
-     });                     
+     });
+
+
+    asyncTest("clear button in no-buttons mode", function () {
+        var d = '15.05.1984',
+            f = 'dd.mm.yyyy',
+            e = $('<a href="#" data-type="date" data-pk="1" data-url="post-date-clear-no-buttons">'+d+'</a>').appendTo(fx).editable({
+                format: f,
+                showbuttons: false
+            });
+                       
+          $.mockjax({
+              url: 'post-date-clear-no-buttons',
+              response: function(settings) {
+                  equal(settings.data.value, '', 'submitted value correct');            
+              }
+          });
+       
+        equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
+
+        e.click();
+        var p = tip(e);
+        ok(p.find('.ui-datepicker').is(':visible'), 'datepicker exists');
+        
+        equal(frmt(e.data('editable').value, f), d, 'day set correct');
+        equal(p.find('a.ui-state-active').text(), 15, 'day shown correct');
+
+        var clear = p.find('.editable-clear a:visible');
+        ok(clear.length, 'clear link shown');
+
+        //click clear
+        clear.click();
+            
+        setTimeout(function() {          
+           ok(!p.is(':visible'), 'popover closed');
+           equal(e.data('editable').value, null, 'null saved to value');
+           equal(e.text(), e.data('editable').options.emptytext, 'empty text shown');
+           e.remove();    
+           start();  
+        }, 500); 
+        
+     });
+
     
 });    
