@@ -197,103 +197,113 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             e.preventDefault();
             
             //get new value from input
-            var newValue = this.input.input2value(); 
-
-            //validation: if validate returns string or truthy value - means error
-            //if returns object like {newValue: '...'} => submitted value is reassigned to it
-            var error = this.validate(newValue);
-            if ($.type(error) === 'object' && error.newValue !== undefined) {
-                newValue = error.newValue;
-                this.input.value2input(newValue);
-                if(typeof error.msg === 'string') {
-                    this.error(error.msg);
+            var newValue = this.input.input2value();
+            
+            //beside direct value, accept also promise object
+            $.when(this.validate(newValue)).done(function (error) {
+                
+                //validation: if validate returns string or truthy value - means error
+                //if returns object like {newValue: '...'} => submitted value is reassigned to it
+                if ($.type(error) === 'object' && error.newValue !== undefined) {
+                    newValue = error.newValue;
+                    this.input.value2input(newValue);
+                    if(typeof error.msg === 'string') {
+                        this.error(error.msg);
+                        this.showForm();
+                        return;
+                    }
+                } else if (error) {
+                    this.error(error);
                     this.showForm();
                     return;
-                }
-            } else if (error) {
+                } 
+
+                //if value not changed --> trigger 'nochange' event and return
+                /*jslint eqeq: true*/
+                if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
+                /*jslint eqeq: false*/                
+                    /**        
+                    Fired when value not changed but form is submitted. Requires savenochange = false.
+                    @event nochange 
+                    @param {Object} event event object
+                    **/                    
+                    this.$div.triggerHandler('nochange');            
+                    return;
+                } 
+
+                //convert value for submitting to server
+                var submitValue = this.input.value2submit(newValue);
+
+                this.isSaving = true;
+
+                //sending data to server
+                $.when(this.save(submitValue))
+                .done($.proxy(function(response) {
+                    this.isSaving = false;
+
+                    //run success callback
+                    var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
+
+                    //if success callback returns false --> keep form open and do not activate input
+                    if(res === false) {
+                        this.error(false);
+                        this.showForm(false);
+                        return;
+                    }
+
+                    //if success callback returns string -->  keep form open, show error and activate input               
+                    if(typeof res === 'string') {
+                        this.error(res);
+                        this.showForm();
+                        return;
+                    }
+
+                    //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
+                    //it is usefull if you want to chnage value in url-function
+                    if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
+                        newValue = res.newValue;
+                    }
+
+                    //clear error message
+                    this.error(false);   
+                    this.value = newValue;
+                    /**        
+                    Fired when form is submitted
+                    @event save 
+                    @param {Object} event event object
+                    @param {Object} params additional params
+                    @param {mixed} params.newValue raw new value
+                    @param {mixed} params.submitValue submitted value as string
+                    @param {Object} params.response ajax response
+
+                    @example
+                    $('#form-div').on('save'), function(e, params){
+                        if(params.newValue === 'username') {...}
+                    });
+                    **/
+                    this.$div.triggerHandler('save', {newValue: newValue, submitValue: submitValue, response: response});
+                }, this))
+                .fail($.proxy(function(xhr) {
+                    this.isSaving = false;
+
+                    var msg;
+                    if(typeof this.options.error === 'function') {
+                        msg = this.options.error.call(this.options.scope, xhr, newValue);
+                    } else {
+                        msg = typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!';
+                    }
+
+                    this.error(msg);
+                    this.showForm();
+                }, this));
+            }.bind(this)).fail(function (error) {
+                //when accepting string, leave it like it is, in other cases, inform with default error line
+                error = (typeof error === 'string' && error) || 'Validation error!';
                 this.error(error);
                 this.showForm();
                 return;
-            } 
+            }.bind(this));
             
-            //if value not changed --> trigger 'nochange' event and return
-            /*jslint eqeq: true*/
-            if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
-            /*jslint eqeq: false*/                
-                /**        
-                Fired when value not changed but form is submitted. Requires savenochange = false.
-                @event nochange 
-                @param {Object} event event object
-                **/                    
-                this.$div.triggerHandler('nochange');            
-                return;
-            } 
-
-            //convert value for submitting to server
-            var submitValue = this.input.value2submit(newValue);
-            
-            this.isSaving = true;
-            
-            //sending data to server
-            $.when(this.save(submitValue))
-            .done($.proxy(function(response) {
-                this.isSaving = false;
-
-                //run success callback
-                var res = typeof this.options.success === 'function' ? this.options.success.call(this.options.scope, response, newValue) : null;
-
-                //if success callback returns false --> keep form open and do not activate input
-                if(res === false) {
-                    this.error(false);
-                    this.showForm(false);
-                    return;
-                }
-
-                //if success callback returns string -->  keep form open, show error and activate input               
-                if(typeof res === 'string') {
-                    this.error(res);
-                    this.showForm();
-                    return;
-                }
-
-                //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
-                //it is usefull if you want to chnage value in url-function
-                if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
-                    newValue = res.newValue;
-                }
-
-                //clear error message
-                this.error(false);   
-                this.value = newValue;
-                /**        
-                Fired when form is submitted
-                @event save 
-                @param {Object} event event object
-                @param {Object} params additional params
-                @param {mixed} params.newValue raw new value
-                @param {mixed} params.submitValue submitted value as string
-                @param {Object} params.response ajax response
-
-                @example
-                $('#form-div').on('save'), function(e, params){
-                    if(params.newValue === 'username') {...}
-                });
-                **/
-                this.$div.triggerHandler('save', {newValue: newValue, submitValue: submitValue, response: response});
-            }, this))
-            .fail($.proxy(function(xhr) {
-                this.isSaving = false;
-
-                var msg;
-                if(typeof this.options.error === 'function') {
-                    msg = this.options.error.call(this.options.scope, xhr, newValue);
-                } else {
-                    msg = typeof xhr === 'string' ? xhr : xhr.responseText || xhr.statusText || 'Unknown error!';
-                }
-
-                this.error(msg);
-                this.showForm();
-            }, this));
         },
 
         save: function(submitValue) {
