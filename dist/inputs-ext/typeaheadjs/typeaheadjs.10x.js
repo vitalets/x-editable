@@ -1,5 +1,5 @@
 /**
-Typeahead.js input, based on [Twitter Typeahead](http://twitter.github.io/typeahead.js).   
+Typeahead.js input, based on [Twitter Typeahead](http://twitter.github.io/typeahead.js).
 It is mainly replacement of typeahead in Bootstrap 3.
 
 
@@ -8,29 +8,41 @@ It is mainly replacement of typeahead in Bootstrap 3.
 @since 1.5.0
 @final
 @example
-<a href="#" id="country" data-type="typeaheadjs" data-pk="1" data-url="/post" data-title="Input country"></a>
-<script>
-$(function(){
-    $('#country').editable({
-        value: 'ru',
-        typeahead: {
-            name: 'country',
-            local: [
-                {value: 'ru', tokens: ['Russia']}, 
-                {value: 'gb', tokens: ['Great Britain']}, 
-                {value: 'us', tokens: ['United States']}
-            ],
-            template: function(item) {
-                return item.tokens[0] + ' (' + item.value + ')'; 
-            } 
-        }
+<script type="text/javascript" src="http://twitter.github.io/typeahead.js/releases/latest/bloodhound.js"></script>
+<a href="#" data-url="/list" class="authorize-workstation" data-type="typeaheadjs" data-pk="1" data-title="Selecione o colaborador">pendente</a>
+$(function () {
+    'use strict';
+    var engine = new Bloodhound({
+        name: 'states',
+        local: [{ value: "Alabama" }, { value: "Alaska" }, { value: "Arizona" }, { value: "Arkansas" }, { value: "California" }, { value: "Colorado" }, { value: "Connecticut" }, { value: "Delaware" }, { value: "Florida" }, { value: "Georgia" }, { value: "Hawaii" }, { value: "Idaho" }, { value: "Illinois" }, { value: "Indiana" }, { value: "Iowa" }, { value: "Kansas" }, { value: "Kentucky" }, { value: "Louisiana" }, { value: "Maine" }, { value: "Maryland" }, { value: "Massachusetts" }, { value: "Michigan" }, { value: "Minnesota" }, { value: "Mississippi" }, { value: "Missouri" }, { value: "Montana" }, { value: "Nebraska" }, { value: "Nevada" }, { value: "New Hampshire" }, { value: "New Jersey" }, { value: "New Mexico" }, { value: "New York" }, { value: "North Dakota" }, { value: "North Carolina" }, { value: "Ohio" }, { value: "Oklahoma" }, { value: "Oregon" }, { value: "Pennsylvania" }, { value: "Rhode Island" }, { value: "South Carolina" }, { value: "South Dakota" }, { value: "Tennessee" }, { value: "Texas" }, { value: "Utah" }, { value: "Vermont" }, { value: "Virginia" }, { value: "Washington" }, { value: "West Virginia" }, { value: "Wisconsin" }, { value: "Wyoming" }],
+        // remote: '/list',
+        datumTokenizer: function(d) {
+            return Bloodhound.tokenizers.whitespace(d.value);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+    engine.initialize();
+
+    // editable
+    $('.authorize-workstation').editable({
+        mode: "inline",
+        typeahead: [
+            {
+                minLength: 1,
+                highlight: true,
+                hint: true
+            },
+            {
+                name: 'states',
+                source: engine.ttAdapter()
+            }
+        ]
     });
 });
-</script>
 **/
 (function ($) {
     "use strict";
-    
+
     var Constructor = function (options) {
         this.init('typeaheadjs', options, Constructor.defaults);
     };
@@ -43,7 +55,7 @@ $(function(){
             this.setClass();
             this.setAttr('placeholder');
             this.$input.typeahead.apply(this.$input, this.options.typeahead);
-            
+
             // copy `input-sm | input-lg` classes to placeholder input
             if($.fn.editableform.engine === 'bs3') {
                 if(this.$input.hasClass('input-sm')) {
@@ -54,33 +66,33 @@ $(function(){
                 }
             }
         }
-    });      
+    });
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
         /**
-        @property tpl 
+        @property tpl
         @default <input type="text">
-        **/         
+        **/
         tpl:'<input type="text">',
         /**
-        Configuration of typeahead itself. 
+        Configuration of typeahead itself.
         [Full list of options](https://github.com/twitter/typeahead.js#dataset).
-        
-        @property typeahead 
+
+        @property typeahead
         @type object
         @default null
         **/
         typeahead: null,
         /**
-        Whether to show `clear` button 
-        
-        @property clear 
+        Whether to show `clear` button
+
+        @property clear
         @type boolean
-        @default true        
+        @default true
         **/
         clear: true
     });
 
-    $.fn.editabletypes.typeaheadjs = Constructor;      
-    
+    $.fn.editabletypes.typeaheadjs = Constructor;
+
 }(window.jQuery));
