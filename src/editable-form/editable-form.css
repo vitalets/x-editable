@@ -8,6 +8,12 @@
     line-height: 20px; /* overwriting bootstrap line-height. See #133 */
 }
 
+.form-horizontal .editable-popup .editableform .form-group{
+    /** fix: stop css from breaking when the form is inside a popup and inside a form with the class .form-horizontal **/
+	margin-left:0;
+	margin-right:0;
+}
+
 /* 
   BS3 width:1005 for inputs breaks editable form in popup 
   See: https://github.com/vitalets/x-editable/issues/393
