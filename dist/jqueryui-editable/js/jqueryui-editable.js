@@ -4718,8 +4718,9 @@ Editableform based on jQuery UI
         },         
         
         tip: function() {
-	    if (this.container()) {
-                return this.container()._find(this.container().element).tooltip;
+            var containter = this.container();
+	    if (container) {
+	    	return container._find(this.container().element)?container._find(this.container().element).tooltip:null;
             }
             return null;
             //return this.container() ? this.container()._find(this.container().element).tooltip : null;
