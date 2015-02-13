@@ -4718,7 +4718,7 @@ Editableform based on jQuery UI
         },         
         
         tip: function() {
-            return this.container() ? this.container()._find(this.container().element) : null;
+            return this.container() ? this.container()._find(this.container().element).element : null;
         },
         
         innerShow: function() {
