@@ -157,7 +157,19 @@ List - abstract class for inputs that have source option loaded from js array or
                 
                 //loading sourceData from server
                 $.ajax(ajaxOptions);
-                
+            } else if ((typeof source === 'object') && ($.isFunction(source.promise))) {
+                // options as function returned a Deferred promise
+                $.when(source).done($.proxy(function(response) {
+                     this.sourceData = this.makeArray(response);	                    
+                     if($.isArray(this.sourceData)) {
+                          this.doPrepend();
+                          success.call(this);   
+                     } else {
+                          error.call(this);
+                     }
+                }, this)).fail($.proxy(function(xhr) {
+                    error.call(this);
+                }, this));
             } else { //options as json/array
                 this.sourceData = this.makeArray(source);
                     
