@@ -949,7 +949,8 @@ Applied as jQuery method.
                 //(mousedown could be better than click, it closes everything also on drag drop)
                 $(document).on('click.editable', function(e) {
                     var $target = $(e.target), i,
-                        exclude_classes = ['.editable-container', 
+                        exclude_classes = ['.editable-container',
+                                           '.select2-search__field', //inline select 2 search field 
                                            '.ui-datepicker-header', 
                                            '.datepicker', //in inline mode datepicker is rendered into body
                                            '.modal-backdrop', 
