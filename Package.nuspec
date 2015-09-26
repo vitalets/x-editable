@@ -5,8 +5,8 @@
     <version>1.5.2</version>
     <authors>Vitaliy Potapov</authors>
     <owners>Vitaliy Potapov</owners>
-    <licenseUrl>https://github.com/loqu8/x-editable/blob/master/LICENSE-MIT</licenseUrl>
-    <projectUrl>http://github.com/loqu8/x-editable</projectUrl>
+    <licenseUrl>https://github.com/vitalets/x-editable/blob/master/LICENSE-MIT</licenseUrl>
+    <projectUrl>http://github.com/vitalets/x-editable</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</description>
     <releaseNotes>Date and select2 minor fixes</releaseNotes>
