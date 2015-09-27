@@ -156,7 +156,7 @@ Applied as jQuery method.
             .on({
                 save: $.proxy(this.save, this), //click on submit button (value changed)
                 nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on cancel button
                 show: $.proxy(function() {
                     if(this.delayedHide) {
                         this.hide(this.delayedHide.reason);
