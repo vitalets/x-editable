@@ -57,7 +57,12 @@
         },         
         
         tip: function() {
-            return this.container() ? this.container()._find(this.container().element) : null;
+            var container = this.container();
+            if (container) {
+            var tip = container._find(this.container().element);
+                return tip?tip.tooltip:$();
+            }
+            return null;
         },
         
         innerShow: function() {

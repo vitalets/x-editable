@@ -949,7 +949,8 @@ Applied as jQuery method.
                 //(mousedown could be better than click, it closes everything also on drag drop)
                 $(document).on('click.editable', function(e) {
                     var $target = $(e.target), i,
-                        exclude_classes = ['.editable-container', 
+                        exclude_classes = ['.editable-container',
+                                           '.select2-search__field', //inline select 2 search field 
                                            '.ui-datepicker-header', 
                                            '.datepicker', //in inline mode datepicker is rendered into body
                                            '.modal-backdrop', 
@@ -2697,7 +2698,19 @@ List - abstract class for inputs that have source option loaded from js array or
                 
                 //loading sourceData from server
                 $.ajax(ajaxOptions);
-                
+            } else if ((typeof source === 'object') && ($.isFunction(source.promise))) {
+                // options as function returned a Deferred promise
+                $.when(source).done($.proxy(function(response) {
+                     this.sourceData = this.makeArray(response);	                    
+                     if($.isArray(this.sourceData)) {
+                          this.doPrepend();
+                          success.call(this);   
+                     } else {
+                          error.call(this);
+                     }
+                }, this)).fail($.proxy(function(xhr) {
+                    error.call(this);
+                }, this));
             } else { //options as json/array
                 this.sourceData = this.makeArray(source);
                     
@@ -4718,7 +4731,12 @@ Editableform based on jQuery UI
         },         
         
         tip: function() {
-            return this.container() ? this.container()._find(this.container().element) : null;
+            var container = this.container();
+            if (container) {
+                var tip = container._find(this.container().element);
+                return tip?tip.tooltip:$();
+            }
+            return null;
         },
         
         innerShow: function() {
