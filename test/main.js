@@ -74,7 +74,8 @@ require(["loader", jqurl], function(loader) {
             'test/unit/select',
             'test/unit/checklist',
             'test/unit/combodate',
-            'test/unit/select2'
+            'test/unit/select2',
+            'test/unit/validation-promise'
        ];
        tests = tests.concat(custom);
        tests.push('test/unit/api');
