@@ -50,7 +50,7 @@ Applied as jQuery method.
                 //close all on escape
                 $(document).on('keyup.editable', function (e) {
                     if (e.which === 27) {
-                        $('.editable-open').editableContainer('hide');
+                        $('.editable-open').editableContainer('hide', 'cancel');
                         //todo: return focus on element 
                     }
                 });
