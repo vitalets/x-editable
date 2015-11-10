@@ -1,6 +1,9 @@
 X-editable changelog
 =============================
 
+Version 1.5.3 Nov 9, 2015
+----------------------------
+Working through various PRs to ultimately move dev to master
 
 Version 1.5.2 wip
 ----------------------------
