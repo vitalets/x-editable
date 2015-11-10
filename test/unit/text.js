@@ -576,6 +576,20 @@ $(function () {
         ok(p.find('input').length, 'input exists');
         equal(p.find('input').val(), 'qwe', 'default text not set as element not empty');
     });
-                   
+
+    test("should able to submit a value which changed 0 to ''(empty string)", function () {
+        var e = $('<a href="#" data-name="text1"></a>').appendTo('#qunit-fixture').editable({
+          value: '0'
+        });
+
+        //empty text
+        e.click();
+        var p = tip(e);
+        equal(p.find('input').val(), '0', 'text value is 0 ok');
+        p.find('input').val('');
+        p.find('form').submit(); 
+        e.click();
+        equal(p.find('input').val(), '', 'text changed to \'\' ok');
+    });
          
 });    

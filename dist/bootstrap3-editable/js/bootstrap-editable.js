@@ -1,7 +1,7 @@
-/*! X-editable - v1.5.1 
+/*! X-editable - v1.5.3 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
-* Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
+* Copyright (c) 2015 Vitaliy Potapov; Licensed MIT */
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -222,7 +222,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             
             //if value not changed --> trigger 'nochange' event and return
             /*jslint eqeq: true*/
-            if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
+            if (!this.options.savenochange && this.input.value2str(newValue) === this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
                 /**        
                 Fired when value not changed but form is submitted. Requires savenochange = false.
@@ -530,9 +530,10 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         /**
         Success callback. Called when value successfully sent on server and **response status = 200**.  
         Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
-        or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.  
+        or `{success: false, msg: "server error"}` you can check it inside this callback.  
         If it returns **string** - means error occured and string is shown as error message.  
-        If it returns **object like** <code>{newValue: &lt;something&gt;}</code> - it overwrites value, submitted by user.  
+        If it returns **object like** `{newValue: &lt;something&gt;}` - it overwrites value, submitted by user
+        (useful when server changes value).  
         Otherwise newValue simply rendered into element.
         
         @property success 
@@ -956,17 +957,23 @@ Applied as jQuery method.
                                            '.bootstrap-wysihtml5-insert-image-modal', 
                                            '.bootstrap-wysihtml5-insert-link-modal'
                                            ];
-                    
+
+                    // select2 has extra body click in IE
+                    // see: https://github.com/ivaynberg/select2/issues/1058 
+                    if ($('.select2-drop-mask').is(':visible')) {
+                        return;
+                    }
+
                     //check if element is detached. It occurs when clicking in bootstrap datepicker
                     if (!$.contains(document.documentElement, e.target)) {
-                      return;
+                        return;
                     }
 
                     //for some reason FF 20 generates extra event (click) in select2 widget with e.target = document
                     //we need to filter it via construction below. See https://github.com/vitalets/x-editable/issues/199
                     //Possibly related to http://stackoverflow.com/questions/10119793/why-does-firefox-react-differently-from-webkit-and-ie-to-click-event-on-selec
                     if($target.is(document)) {
-                       return; 
+                        return;
                     }
                     
                     //if click inside one of exclude classes --> no nothing
@@ -1040,7 +1047,7 @@ Applied as jQuery method.
             .on({
                 save: $.proxy(this.save, this), //click on submit button (value changed)
                 nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on cancel button
                 show: $.proxy(function() {
                     if(this.delayedHide) {
                         this.hide(this.delayedHide.reason);
@@ -2823,8 +2830,15 @@ List - abstract class for inputs that have source option loaded from js array or
           
         If **function**, it should return data in format above (since 1.4.0).
         
-        Since 1.4.1 key `children` supported to render OPTGROUP (for **select** input only).  
-        `[{text: "group1", children: [{value: 1, text: "text1"}, {value: 2, text: "text2"}]}, ...]` 
+        Since 1.4.1 key `children` supported to render OPTGROUP (for **select** input only):  
+        @example
+        [
+          {text: "group1", children: [
+            {value: 1, text: "text1"}, 
+            {value: 2, text: "text2"}
+          ]}, 
+          ...
+        ] 
 
 		
         @property source 
@@ -2849,7 +2863,7 @@ List - abstract class for inputs that have source option loaded from js array or
         **/          
         sourceError: 'Error when loading list',
         /**
-        if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
+        if `true` and source is **string url** - results will be cached for fields with the same source.    
         Usefull for editable column in grid to prevent extra requests.
         
         @property sourceCache 
@@ -2860,12 +2874,18 @@ List - abstract class for inputs that have source option loaded from js array or
         sourceCache: true,
         /**
         Additional ajax options to be used in $.ajax() when loading list from server.
-        Useful to send extra parameters (`data` key) or change request method (`type` key).
+        Useful to send extra parameters or change request method.
         
         @property sourceOptions 
         @type object|function
         @default null
         @since 1.5.0
+        @example
+        sourceOptions: {
+            data: {param: 123},
+            type: 'post'
+        }
+        
         **/        
         sourceOptions: null
     });
@@ -2910,7 +2930,9 @@ $(function(){
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
-                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"]')) {
+                    $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                }
                 if(this.toggleClear) {
                     this.toggleClear();
                 }
@@ -3154,6 +3176,7 @@ $(function(){
     $.extend(Select.prototype, {
         renderList: function() {
             this.$input.empty();
+            var escape = this.options.escape;
 
             var fillItems = function($el, data) {
                 var attr;
@@ -3168,7 +3191,9 @@ $(function(){
                             if(data[i].disabled) {
                                 attr.disabled = true;
                             }
-                            $el.append($('<option>', attr).text(data[i].text)); 
+                            var $option = $('<option>', attr);
+                            $option[escape ? 'text' : 'html'](data[i].text);
+                            $el.append($option);
                         }
                     }
                 }
@@ -3263,12 +3288,14 @@ $(function(){
                 $label = $('<label>').append($('<input>', {
                                            type: 'checkbox',
                                            value: this.sourceData[i].value 
-                                     }))
-                                     .append($('<span>').text(' '+this.sourceData[i].text));
-                
+                                     }));
+                var $option = $('<span>');
+                $option[this.options.escape ? 'text' : 'html'](' '+this.sourceData[i].text);
+                $label.append($option);
+
                 $('<div>').append($label).appendTo(this.$tpl);
             }
-            
+
             this.$input = this.$tpl.find('input[type="checkbox"]');
             this.setClass();
         },

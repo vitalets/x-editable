@@ -2,20 +2,22 @@
 <package >
   <metadata>
     <id>x-editable</id>
-    <version>1.5.1</version>
+    <version>1.5.3</version>
     <authors>Vitaliy Potapov</authors>
     <owners>Vitaliy Potapov</owners>
     <licenseUrl>https://github.com/vitalets/x-editable/blob/master/LICENSE-MIT</licenseUrl>
-    <projectUrl>http://vitalets.github.com/x-editable</projectUrl>
+    <projectUrl>http://github.com/vitalets/x-editable</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery</description>
     <releaseNotes>Date and select2 minor fixes</releaseNotes>
-    <copyright>Copyright 2012-2013</copyright>
+    <copyright>Copyright 2012-2015</copyright>
     <tags>edit-in-place editable click-to-edit bootstrap jquery</tags>
     <dependencies>
     </dependencies>
   </metadata>
   <files>
-    <file src="dist\**" target="\" />
+    <file src="dist\*" target="\" />
+	<file src="dist\**\*.js" target="content\Scripts" />
+	<file src="dist\**" target="content\Content" exclude="**\*.js;**\*.txt;**\*.md;**\*-MIT" />	
   </files>  
 </package>

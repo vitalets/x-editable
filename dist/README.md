@@ -2,6 +2,12 @@
 
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
 
+## Project status
+Unfortunately, **project is currently frozen**, as I don't have enough time for it.
+You could try use it as is, but there may be some bugs with newer versions of dependend libraries (e.g. bootstrap).
+I would really appreciate if someone take care of it.. See [#610](https://github.com/vitalets/x-editable/issues/610).
+Vitalets.
+
 ## Live demo
 **http://vitalets.github.io/x-editable/demo.html**
 
