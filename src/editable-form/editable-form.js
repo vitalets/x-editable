@@ -218,7 +218,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             
             //if value not changed --> trigger 'nochange' event and return
             /*jslint eqeq: true*/
-            if (!this.options.savenochange && this.input.value2str(newValue) == this.input.value2str(this.value)) {
+            if (!this.options.savenochange && this.input.value2str(newValue) === this.input.value2str(this.value)) {
             /*jslint eqeq: false*/                
                 /**        
                 Fired when value not changed but form is submitted. Requires savenochange = false.
