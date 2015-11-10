@@ -74,7 +74,7 @@ To create your own input you can inherit from this class.
         @returns {string}
        **/
        value2str: function(value) {
-           return value;
+           return String(value);
        }, 
 
        /**
