@@ -35,7 +35,7 @@
         Response body will be shown as error message in editable form.
         */
 
-        header('HTTP 400 Bad Request', true, 400);
+        header('HTTP/1.0 400 Bad Request', true, 400);
         echo "This field is required!";
     }
 
