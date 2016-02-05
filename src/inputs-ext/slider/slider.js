@@ -34,16 +34,6 @@ Make sure to include the plugin's code before using this editor.
             
             // apply slider
             this.$input.slider(this.options.slider);
-            
-//            // copy `input-sm | input-lg` classes to placeholder input
-//            if($.fn.editableform.engine === 'bs3') {
-//                if(this.$input.hasClass('input-sm')) {
-//                    this.$input.siblings('input.tt-hint').addClass('input-sm');
-//                }
-//                if(this.$input.hasClass('input-lg')) {
-//                    this.$input.siblings('input.tt-hint').addClass('input-lg');
-//                }
-//            }
         },
         
        value2input: function(value) {
