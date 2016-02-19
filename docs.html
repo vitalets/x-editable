@@ -600,7 +600,7 @@ you need to apply <code>e.stopPropagation()</code> because containers are being 
 
             
                 <pre class="prettyprint linenums">url: function(params) {
-    var d = new $.Deferred;
+    var d = new $.Deferred();
     if(params.value === &#x27;abc&#x27;) {
         return d.reject(&#x27;error message&#x27;); //returning error via deferred object
     } else {
