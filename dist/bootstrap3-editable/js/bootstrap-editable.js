@@ -2574,7 +2574,7 @@ List - abstract class for inputs that have source option loaded from js array or
         },
         
         value2html: function (value, element, display, response) {
-            var deferred = $.Deferred(),
+            var deferred = $.Deferred();
 	        success = deferred.then(function () {
 	            if(typeof display === 'function') {
 	                //custom display method
