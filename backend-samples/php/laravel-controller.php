@@ -20,7 +20,9 @@ class SerieController extends Controller
     public function update(Request $request, $id)
     {
         $serie = Serie::findOrFail($id);
-        $serie->$inputs['name'] = $request->get('value');
+        $name = $request->get('name');
+        $value = $request->get('value');
+        $serie->$name = $value;
         return $serie->save();
     }
 }
