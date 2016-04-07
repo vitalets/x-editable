@@ -213,18 +213,18 @@
            }
            
            
-           var defaults = $.fn.editable.defaults[options.type];
+           var _defaults = $.fn.editable.defaults[options.type];
 
-            if (defaults != undefined) {
+            if (_defaults != undefined) {
     
-                for (var i=0; i<defaults.filters.length; i++) {
-                    var _options = defaults.filters[i](options);
+                for (var i=0; i<_defaults.filters.length; i++) {
+                    var _options = _defaults.filters[i](options);
                     if (_options != undefined) {
                         options = _options;
                     }
                 }
     
-                $.extend(options, defaults);
+                $.extend(options, _defaults);
             }
            
 
