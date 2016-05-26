@@ -1,7 +1,7 @@
-/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> 
-* <%= pkg.description %>
-* <%= pkg.homepage %>
-* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>; Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */
+/*! X-editable - v1.5.1
+* In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
+* http://github.com/vitalets/x-editable
+* Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -662,7 +662,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
         */        
         setCursorPosition: function(elem, pos) {
-            if (elem.setSelectionRange && elem.type != 'number') {
+            if (elem.setSelectionRange && elem.type !== 'number') {
                 elem.setSelectionRange(pos, pos);
             } else if (elem.createTextRange) {
                 var range = elem.createTextRange();
