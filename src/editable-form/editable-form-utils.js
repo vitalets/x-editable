@@ -22,7 +22,7 @@
         * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
         */        
         setCursorPosition: function(elem, pos) {
-            if (elem.setSelectionRange) {
+            if (elem.setSelectionRange && elem.type != 'number') {
                 elem.setSelectionRange(pos, pos);
             } else if (elem.createTextRange) {
                 var range = elem.createTextRange();
