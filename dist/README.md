@@ -2,6 +2,14 @@
 
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
 
+PLEASE SUBMIT ALL PULL REQUESTS TO THE 'dev' BRANCH!
+
+## Project status
+Unfortunately, **project is currently frozen**, as I don't have enough time for it.
+You could try use it as is, but there may be some bugs with newer versions of dependend libraries (e.g. bootstrap).
+I would really appreciate if someone take care of it.. See [#610](https://github.com/vitalets/x-editable/issues/610).
+Vitalets.
+
 ## Live demo
 **http://vitalets.github.io/x-editable/demo.html**
 
@@ -20,25 +28,25 @@ bower install x-editable
 
 ### CDN
 Bootstrap 3 build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 Bootstrap 2 build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 jQuery UI build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js"></script>
 ````
 
 jQuery only build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
 ````

@@ -294,13 +294,12 @@ $(function(){
         },
         
         destroy: function() {
-	        if(this.$input) {
-	            if(this.$input.data('select2')) {
-	                this.$input.select2('destroy');
-	            }
-	        }
+          if(this.$input) {
+            if(this.$input.data('select2')) {
+              this.$input.select2('destroy');
+            }
+          }
         }
-        
     });
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {

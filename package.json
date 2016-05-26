@@ -4,10 +4,7 @@
   "description": "In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery",
   "version": "1.5.1",
   "homepage": "http://github.com/vitalets/x-editable",
-  "author": {
-    "name": "Vitaliy Potapov",
-    "email": "noginsk@rambler.ru"
-  },
+  "author": "Vitaliy Potapov <noginsk@rambler.ru>",
   "repository": {
     "type": "git",
     "url": "git://github.com/vitalets/x-editable.git"
@@ -23,15 +20,23 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "^1.0.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-qunit": "~0.2.2",
     "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.1"
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-qunit": "~0.2.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2"
   },
-  "keywords": []
+  "keywords": [],
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC"
 }
