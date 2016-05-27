@@ -60,7 +60,6 @@ $(function(){
             });
             
             
-            $.wysihtml5
             this.$input.wysihtml5(this.options.wysihtml5);
             
             /*
