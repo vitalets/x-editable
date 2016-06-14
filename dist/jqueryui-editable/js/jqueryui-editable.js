@@ -1,7 +1,7 @@
 /*! X-editable - v1.5.1 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
-* Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */
+* Copyright (c) 2016 Vitaliy Potapov; Licensed MIT */
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -1040,7 +1040,7 @@ Applied as jQuery method.
             .on({
                 save: $.proxy(this.save, this), //click on submit button (value changed)
                 nochange: $.proxy(function(){ this.hide('nochange'); }, this), //click on submit button (value NOT changed)                
-                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on calcel button
+                cancel: $.proxy(function(){ this.hide('cancel'); }, this), //click on cancel button
                 show: $.proxy(function() {
                     if(this.delayedHide) {
                         this.hide(this.delayedHide.reason);
@@ -3595,24 +3595,24 @@ Time
 }(window.jQuery));
 
 /**
-Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.  
-Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.  
- 
-You should manually download and include select2 distributive:  
+Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.
+Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.
 
-    <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>  
-    <script src="select2/select2.js"></script>  
-    
-To make it **bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css): 
+You should manually download and include select2 distributive:
 
-    <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>    
-    
-**Note:** currently `autotext` feature does not work for select2 with `ajax` remote source.    
-You need initially put both `data-value` and element's text youself:    
+    <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>
+    <script src="select2/select2.js"></script>
+
+To make it **bootstrap-styled** you can use css from [here](https://github.com/t0m/select2-bootstrap-css):
+
+    <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>
+
+**Note:** currently `autotext` feature does not work for select2 with `ajax` remote source.
+You need initially put both `data-value` and element's text youself:
 
     <a href="#" data-type="select2" data-value="1">Text1</a>
-    
-    
+
+
 @class select2
 @extends abstractinput
 @since 1.4.1
@@ -3669,34 +3669,34 @@ $(function(){
                 return $.get('/getCountryById', { query: element.val() }, function (data) {
                     callback(data);
                 });
-            } 
-        }  
+            }
+        }
     });
 });
 </script>
 **/
 (function ($) {
     "use strict";
-    
+
     var Constructor = function (options) {
         this.init('select2', options, Constructor.defaults);
 
         options.select2 = options.select2 || {};
 
         this.sourceData = null;
-        
+
         //placeholder
         if(options.placeholder) {
             options.select2.placeholder = options.placeholder;
         }
-       
+
         //if not `tags` mode, use source
         if(!options.select2.tags && options.source) {
             var source = options.source;
             //if source is function, call it (once!)
             if ($.isFunction(options.source)) {
                 source = options.source.call(options.scope);
-            }               
+            }
 
             if (typeof source === 'string') {
                 options.select2.ajax = options.select2.ajax || {};
@@ -3713,7 +3713,7 @@ $(function(){
                 this.sourceData = this.convertSource(source);
                 options.select2.data = this.sourceData;
             }
-        } 
+        }
 
         //overriding objects in config (as by default jQuery extend() is not recursive)
         this.options.select2 = $.extend({}, Constructor.defaults.select2, options.select2);
@@ -3743,7 +3743,7 @@ $(function(){
         render: function() {
             this.setClass();
 
-            //can not apply select2 here as it calls initSelection 
+            //can not apply select2 here as it calls initSelection
             //over input that does not have correct value yet.
             //apply select2 only in value2input
             //this.$input.select2(this.options.select2);
@@ -3769,12 +3769,12 @@ $(function(){
                that = this;
 
            if(this.options.select2.tags) { //in tags mode just assign value
-              data = value; 
+              data = value;
               //data = $.fn.editableutils.itemsByValue(value, this.options.select2.tags, this.idFunc);
            } else if(this.sourceData) {
-              data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc); 
+              data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
            } else {
-              //can not get list of possible values 
+              //can not get list of possible values
               //(e.g. autotext for select2 with ajax source)
            }
 
@@ -3792,7 +3792,7 @@ $(function(){
            text = $.isArray(text) ? text.join(this.options.viewseparator) : text;
 
            //$(element).text(text);
-           Constructor.superclass.value2html.call(this, text, element); 
+           Constructor.superclass.value2html.call(this, text, element);
        },
 
        html2value: function(html) {
@@ -3810,14 +3810,14 @@ $(function(){
                this.$input.val(value);
                this.$input.select2(this.options.select2);
            } else {
-               //second argument needed to separate initial change from user's click (for autosubmit)   
-               this.$input.val(value).trigger('change', true); 
+               //second argument needed to separate initial change from user's click (for autosubmit)
+               this.$input.val(value).trigger('change', true);
 
                //Uncaught Error: cannot call val() if initSelection() is not defined
                //this.$input.select2('val', value);
            }
 
-           // if defined remote source AND no multiple mode AND no user's initSelection provided --> 
+           // if defined remote source AND no multiple mode AND no user's initSelection provided -->
            // we should somehow get text for provided id.
            // The solution is to use element's text as text for that id (exclude empty)
            if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {
@@ -3831,13 +3831,13 @@ $(function(){
                    var $el = $(this.options.scope);
                    if (!$el.data('editable').isEmpty) {
                        var data = {id: value, text: $el.text()};
-                       this.$input.select2('data', data); 
+                       this.$input.select2('data', data);
                    }
                }
            }
        },
-       
-       input2value: function() { 
+
+       input2value: function() {
            return this.$input.select2('val');
        },
 
@@ -3888,25 +3888,27 @@ $(function(){
             }
             return source;
         },
-        
+
         destroy: function() {
-            if(this.$input.data('select2')) {
-                this.$input.select2('destroy');
-            }
+          if(this.$input) {
+              if(this.$input.data('select2')) {
+                  this.$input.select2('destroy');
+              }
+          }
         }
-        
+
     });
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
-        @property tpl 
+        @property tpl
         @default <input type="hidden">
         **/
         tpl:'<input type="hidden">',
         /**
         Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).
 
-        @property select2 
+        @property select2
         @type object
         @default null
         **/
@@ -3914,7 +3916,7 @@ $(function(){
         /**
         Placeholder attribute of select
 
-        @property placeholder 
+        @property placeholder
         @type string
         @default null
         **/
@@ -3924,17 +3926,17 @@ $(function(){
         Please note, that format is different from simple `select` input: use 'id' instead of 'value'.
         E.g. `[{id: 1, text: "text1"}, {id: 2, text: "text2"}, ...]`.
 
-        @property source 
+        @property source
         @type array|string|function
-        @default null        
+        @default null
         **/
         source: null,
         /**
         Separator used to display tags.
 
-        @property viewseparator 
+        @property viewseparator
         @type string
-        @default ', '        
+        @default ', '
         **/
         viewseparator: ', '
     });
@@ -4418,7 +4420,7 @@ $(function(){
         //initial value, can be `new Date()`    
         value: null,                       
         minYear: 1970,
-        maxYear: 2015,
+        maxYear: (new Date().getFullYear()),
         yearDescending: true,
         minuteStep: 5,
         secondStep: 1,
@@ -4429,6 +4431,7 @@ $(function(){
     };
 
 }(window.jQuery));
+
 /**
 Combodate input - dropdown date and time picker.    
 Based on [combodate](http://vitalets.github.com/combodate) plugin (included). To use it you should manually include [momentjs](http://momentjs.com).
