@@ -1,7 +1,7 @@
 {
     "name": "vitalets/x-editable",
     "description": "In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "homepage": "http://github.com/vitalets/x-editable",
     "authors": [
         {
