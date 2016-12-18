@@ -151,20 +151,19 @@
            $.each(sourceData, function(i, o) {
                if(o.children) {
                    result = result.concat(that.itemsByValue(value, o.children, valueProp));
-               } else {
-                   /*jslint eqeq: true*/
-                   if(isValArray) {
-                       if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? valueProp(o) : o); }).length) {
-                           result.push(o); 
-                       }
-                   } else {
-                       var itemValue = (o && (typeof o === 'object')) ? valueProp(o) : o;
-                       if(value == itemValue) {
-                           result.push(o); 
-                       }
-                   }
-                   /*jslint eqeq: false*/
                }
+               /*jslint eqeq: true*/
+               if(isValArray) {
+                   if($.grep(value, function(v){  return v == (o && typeof o === 'object' ? valueProp(o) : o); }).length) {
+                       result.push(o);
+                   }
+               } else {
+                   var itemValue = (o && (typeof o === 'object')) ? valueProp(o) : o;
+                   if(value == itemValue) {
+                       result.push(o);
+                   }
+               }
+               /*jslint eqeq: false*/
            });
            
            return result;
