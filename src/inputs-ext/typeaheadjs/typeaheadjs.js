@@ -55,11 +55,13 @@ $(function(){
                 if (!$dropdown.is(':visible') && e.which === 13) {
                     that.$input.closest('form').submit();
                 }
-            });            
-            
-            // apply typeaheadjs
+            });
+        },
+        
+        activate: function() {
+            // apply typeaheadjs here since input value is set
             this.$input.typeahead(this.options.typeahead);
-            
+
             // copy `input-sm | input-lg` classes to placeholder input
             if($.fn.editableform.engine === 'bs3') {
                 if(this.$input.hasClass('input-sm')) {
@@ -69,11 +71,28 @@ $(function(){
                     this.$input.siblings('input.tt-hint').addClass('input-lg');
                 }
             }
+
+            if(this.$input.is(':visible')) {
+                this.$input.focus();
+                if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"]')) {
+                    $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                }
+                if(this.toggleClear) {
+                    this.toggleClear();
+                }
+            }
         },
         
         autosubmit: function() {
             this.isAutosubmit = true;
-        }        
+        },
+        
+        clear: function() {
+            // tell typeaheadjs we've cleared the input
+            this.$input.typeahead('setQuery', '');
+            this.$clear.hide();
+            this.$input.val('').focus();
+        }
     });      
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
