@@ -312,12 +312,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             if (send) { //send to server
                 this.showLoading();
 
-                //standard params
-                params = {
-                    name: this.options.name || '',
-                    value: submitValue,
-                    pk: pk 
-                };
+                params = this.buildParams(submitValue, pk);
 
                 //additional params
                 if(typeof this.options.params === 'function') {
@@ -340,6 +335,15 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 }
             }
         }, 
+
+        buildParams: function (value, pk) {
+          //standard params
+          return {
+            name: this.options.name || '',
+            value: value,
+            pk: pk
+          };
+        },
 
         validate: function (value) {
             if (value === undefined) {
