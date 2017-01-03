@@ -3701,11 +3701,14 @@ $(function(){
             if (typeof source === 'string') {
                 options.select2.ajax = options.select2.ajax || {};
                 //some default ajax params
+		if(!options.select2.ajax.dataType) {
+                    options.select2.ajax.dataType = 'json';
+                }
                 if(!options.select2.ajax.data) {
                     options.select2.ajax.data = function(term) {return { query:term };};
                 }
-                if(!options.select2.ajax.results) {
-                    options.select2.ajax.results = function(data) { return {results:data };};
+                if(!options.select2.ajax.processResults) {
+                    options.select2.ajax.processResults = function(data) { return {results:data };};
                 }
                 options.select2.ajax.url = source;
             } else {
