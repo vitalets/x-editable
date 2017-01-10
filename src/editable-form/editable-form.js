@@ -201,7 +201,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
             //validation: if validate returns string or truthy value - means error
             //if returns object like {newValue: '...'} => submitted value is reassigned to it
-            var error = this.validate(newValue);
+            var error = this.validate(newValue, this.options.name);
             if ($.type(error) === 'object' && error.newValue !== undefined) {
                 newValue = error.newValue;
                 this.input.value2input(newValue);
@@ -341,12 +341,12 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             }
         }, 
 
-        validate: function (value) {
+        validate: function (value, name) {
             if (value === undefined) {
                 value = this.value;
             }
             if (typeof this.options.validate === 'function') {
-                return this.options.validate.call(this.options.scope, value);
+                return this.options.validate.call(this.options.scope, value, name);
             }
         },
 
