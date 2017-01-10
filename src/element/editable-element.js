@@ -855,4 +855,19 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         highlight: '#FFFF80'
     };
     
+    
+    var _input_types = Object.keys($.fn.editabletypes);    
+    for (var i=0; i < _input_types.length; i++) {
+        if ($.fn.editable.defaults[_input_types[i]] == undefined) {
+            $.fn.editable.defaults[_input_types[i]] = {
+                filters: [],
+                addFilter: function(callback) {
+                    this.filters.push(callback);
+                }
+            };
+        }
+    }
+    
+    
+    
 }(window.jQuery));
