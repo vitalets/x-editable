@@ -75,7 +75,9 @@ Applied as jQuery method.
                     //for some reason FF 20 generates extra event (click) in select2 widget with e.target = document
                     //we need to filter it via construction below. See https://github.com/vitalets/x-editable/issues/199
                     //Possibly related to http://stackoverflow.com/questions/10119793/why-does-firefox-react-differently-from-webkit-and-ie-to-click-event-on-selec
-                    if($target.is(document)) {
+                    if ($target.is(document) ||
+                        // ie 11 has similar issue 
+                        $target.is('body')) {
                        return; 
                     }
                     
