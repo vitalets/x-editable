@@ -2,14 +2,16 @@
 
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
 
-PLEASE SUBMIT ALL PULL REQUESTS TO THE 'dev' BRANCH!
+Please submit all Pull Requests to the `develop` branch.
+
+## Live Demo
+**http://vitalets.github.io/x-editable/demo.html**
 
 ## Project Status
-Actively maintained<br>
-Please report all issues here:  https://github.com/vitalets/x-editable/issues
+Actively maintained
 
-## Live demo
-**http://vitalets.github.io/x-editable/demo.html**
+## Issue Tracker
+Please report all issues here:  https://github.com/vitalets/x-editable/issues
 
 ## Documentation
 **http://vitalets.github.io/x-editable**
