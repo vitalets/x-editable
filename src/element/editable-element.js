@@ -387,7 +387,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 if(sent) {
                     this.$element.removeClass(this.options.unsavedclass); 
                 } else {
-                    this.$element.addClass(this.options.unsavedclass);                    
+                    if (this.options.unsavedclasstoparent) {
+                        this.$element.parent().addClass(this.options.unsavedclass);
+                    } else {
+                        this.$element.addClass(this.options.unsavedclass);
+                    }                  
                 }
             }
             
@@ -815,6 +819,16 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @default editable-unsaved
         **/        
         unsavedclass: 'editable-unsaved',
+        
+        /**
+         * Add the unsaved class to the parent element
+         * 
+         * @property unsavedclasstoparent
+         * @type boolean
+         * @default false
+         */
+        unsavedclasstoparent: false,
+        
         /**
         If selector is provided, editable will be delegated to the specified targets.  
         Usefull for dynamically generated DOM elements.  
