@@ -1125,7 +1125,7 @@ Applied as jQuery method.
         @param {string} reason Reason caused hiding. Can be <code>save|cancel|onblur|nochange|undefined (=manual)</code>
         **/         
         hide: function(reason) {  
-            if(!this.tip() || !this.tip().is(':visible') || !this.$element.hasClass('editable-open')) {
+            if (!this.tip() || (!this.tip().is(':visible') && this.options.mode !== "inline") || !this.$element.hasClass('editable-open')) {
                 return;
             }
             
