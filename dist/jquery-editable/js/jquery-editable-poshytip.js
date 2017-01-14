@@ -261,7 +261,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 }
 
                 //if success callback returns object like {newValue: <something>} --> use that value instead of submitted
-                //it is usefull if you want to chnage value in url-function
+                //it is useful if you want to chnage value in url-function
                 if(res && typeof res === 'object' && res.hasOwnProperty('newValue')) {
                     newValue = res.newValue;
                 }
