@@ -10,6 +10,9 @@ Please submit all Pull Requests to the `develop` branch:  https://github.com/vit
 ## Issue Tracker
 Please report all issues here:  https://github.com/vitalets/x-editable/issues
 
+## User Support
+Unfortunately, due to this project being supported by volunteers we cannot provide user support at this time. Please try a site like Stack Overflow:  http://stackoverflow.com/questions/tagged/x-editable
+
 ## Documentation
 **http://vitalets.github.io/x-editable**
 
