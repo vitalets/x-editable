@@ -27,7 +27,7 @@ $(function(){
         template: 'D / MMMM / YYYY',    
         combodate: {
                 minYear: 2000,
-                maxYear: 2015,
+                maxYear: new Date().getFullYear(),
                 minuteStep: 1
            }
         }
