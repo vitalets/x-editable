@@ -3727,10 +3727,11 @@ $(function(){
 
             if (typeof source === 'string') {
                 options.select2.ajax = options.select2.ajax || {};
-                // default ajax params
-				if(!options.select2.ajax.dataType) {
-					options.select2.ajax.dataType = 'json';
-				}
+                
+                // default ajax params		    
+                if(!options.select2.ajax.dataType) {
+                    options.select2.ajax.dataType = 'json';
+                }
 				
                 if(!options.select2.ajax.data) {
                     options.select2.ajax.data = function(term) { 
