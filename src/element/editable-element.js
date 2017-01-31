@@ -398,7 +398,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                     
                 $e.css('background-color', this.options.highlight);
                 setTimeout(function(){
-                    if(bgColor === 'transparent') {
+                    if((bgColor === 'transparent') || (bgColor === 'rgba(0, 0, 0, 0)')) {
                         bgColor = ''; 
                     }
                     $e.css('background-color', bgColor);
