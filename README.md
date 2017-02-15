@@ -17,7 +17,7 @@ Unfortunately, due to this project being supported by volunteers we cannot provi
 **http://vitalets.github.io/x-editable**
 
 ## Project Status
-Actively maintained
+Actively Maintained
 
 ## How to get it
 
