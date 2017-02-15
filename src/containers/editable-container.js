@@ -50,7 +50,7 @@ Applied as jQuery method.
                 //close all on escape
                 $(document).on('keyup.editable', function (e) {
                     if (e.which === 27) {
-                        $('.editable-open').editableContainer('hide');
+                        $('.editable-open').editableContainer('hide', 'cancel');
                         //todo: return focus on element 
                     }
                 });
@@ -66,17 +66,23 @@ Applied as jQuery method.
                                            '.bootstrap-wysihtml5-insert-image-modal', 
                                            '.bootstrap-wysihtml5-insert-link-modal'
                                            ];
-                    
+
+                    // select2 has extra body click in IE
+                    // see: https://github.com/ivaynberg/select2/issues/1058 
+                    if ($('.select2-drop-mask').is(':visible')) {
+                        return;
+                    }
+
                     //check if element is detached. It occurs when clicking in bootstrap datepicker
                     if (!$.contains(document.documentElement, e.target)) {
-                      return;
+                        return;
                     }
 
                     //for some reason FF 20 generates extra event (click) in select2 widget with e.target = document
                     //we need to filter it via construction below. See https://github.com/vitalets/x-editable/issues/199
                     //Possibly related to http://stackoverflow.com/questions/10119793/why-does-firefox-react-differently-from-webkit-and-ie-to-click-event-on-selec
                     if($target.is(document)) {
-                       return; 
+                        return;
                     }
                     
                     //if click inside one of exclude classes --> no nothing

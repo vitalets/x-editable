@@ -23,7 +23,7 @@
         */        
         setCursorPosition: function(elem, pos) {
             if (elem.setSelectionRange) {
-                elem.setSelectionRange(pos, pos);
+                try { elem.setSelectionRange(pos, pos); } catch (e) {}
             } else if (elem.createTextRange) {
                 var range = elem.createTextRange();
                 range.collapse(true);

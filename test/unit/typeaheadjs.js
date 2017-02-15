@@ -30,8 +30,8 @@ $(function () {
         equal(e.data().editable.value, v, 'initial value ok');    
 
         e.click();
-        var p = tip(e), 
-           $input = p.find('input.tt-query');
+        var p = tip(e); 
+        var $input = p.find('input.tt-query');
            
         ok(p.is(':visible'), 'popup visible');
         ok($input.length, 'input exists');
@@ -62,5 +62,38 @@ $(function () {
         }, timeout);                     
     });      
     
+    test("autosubmit ", function () {
+        var v = 'ru', 
+          e = $('<a href="#" data-name="text1" data-type="typeaheadjs"></a>').appendTo(sfx).editable({
+            value: v,
+            showbuttons: false,
+            typeahead: {
+                name: 'country',
+                local: [
+                    {value: 'ru', tokens: ['Russia']}, 
+                    {value: 'gb', tokens: ['Great Britain']}, 
+                    {value: 'us', tokens: ['United States']}
+                ],
+                template: function(item) {
+                    return item.tokens[0] + ' (' + item.value + ')'; 
+                } 
+            }   
+          }),
+          newText = 'abc';
+          
+         e.click();
+         var p = tip(e); 
+         var $input = p.find('input.tt-query'); 
+         
+         // simutale <enter>
+         var ev = jQuery.Event("keydown");
+         ev.which = 13;
+         $input.val(newText).trigger(ev);
+         
+         ok(!p.is(':visible'), 'popup closed');
+         equal(e.data('editable').value, newText, 'new text saved to value');
+         equal(e.text(), newText, 'new text shown');           
+    });
+
     
 });

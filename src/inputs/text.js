@@ -17,7 +17,7 @@ $(function(){
 **/
 (function ($) {
     "use strict";
-    
+
     var Text = function (options) {
         this.init('text', options, Text.defaults);
     };
@@ -30,17 +30,21 @@ $(function(){
            this.setClass();
            this.setAttr('placeholder');
         },
-        
+
         activate: function() {
             if(this.$input.is(':visible')) {
                 this.$input.focus();
-                $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+//                if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"],[type="number"],[type="email"]')) {
+                if (this.$input.is('input,textarea') && !this.$input.is('[type="checkbox"],[type="range"]')) {
+                    $.fn.editableutils.setCursorPosition(this.$input.get(0), this.$input.val().length);
+                }
+
                 if(this.toggleClear) {
                     this.toggleClear();
                 }
             }
         },
-        
+
         //render clear button
         renderClear:  function() {
            if (this.options.clear) {
@@ -51,21 +55,21 @@ $(function(){
                               //arrows, enter, tab, etc
                               if(~$.inArray(e.keyCode, [40,38,9,13,27])) {
                                 return;
-                              }                            
+                              }
 
                               clearTimeout(this.t);
                               var that = this;
                               this.t = setTimeout(function() {
                                 that.toggleClear(e);
                               }, 100);
-                              
+
                           }, this))
                           .parent().css('position', 'relative');
-                          
-               this.$clear.click($.proxy(this.clear, this));                       
-           }            
+
+               this.$clear.click($.proxy(this.clear, this));
+           }
         },
-        
+
         postrender: function() {
             /*
             //now `clear` is positioned via css
@@ -74,57 +78,57 @@ $(function(){
 //                var h = this.$input.outerHeight(true) || 20,
                 var h = this.$clear.parent().height(),
                     delta = (h - this.$clear.height()) / 2;
-                    
+
                 //this.$clear.css({bottom: delta, right: delta});
             }
-            */ 
+            */
         },
-        
+
         //show / hide clear button
         toggleClear: function(e) {
             if(!this.$clear) {
                 return;
             }
-            
+
             var len = this.$input.val().length,
                 visible = this.$clear.is(':visible');
-                 
+
             if(len && !visible) {
                 this.$clear.show();
-            } 
-            
+            }
+
             if(!len && visible) {
                 this.$clear.hide();
-            } 
+            }
         },
-        
+
         clear: function() {
            this.$clear.hide();
            this.$input.val('').focus();
-        }          
+        }
     });
 
     Text.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
-        @property tpl 
+        @property tpl
         @default <input type="text">
-        **/         
+        **/
         tpl: '<input type="text">',
         /**
         Placeholder attribute of input. Shown when input is empty.
 
-        @property placeholder 
+        @property placeholder
         @type string
         @default null
-        **/             
+        **/
         placeholder: null,
-        
+
         /**
-        Whether to show `clear` button 
-        
-        @property clear 
+        Whether to show `clear` button
+
+        @property clear
         @type boolean
-        @default true        
+        @default true
         **/
         clear: true
     });
