@@ -3140,13 +3140,16 @@ $(function(){
         @default null
         **/
         placeholder: null,
+        
+		/**
 		maxlength attribute of input.
 
         @property placeholder 
         @type string
         @default null
         **/
-        maxlength: null,
+        
+		maxlength: null,
         /**
         Number of rows in textarea
 
