@@ -2925,6 +2925,7 @@ $(function(){
            this.renderClear();
            this.setClass();
            this.setAttr('placeholder');
+		   this.setAttr('maxlength');
         },
         
         activate: function() {
@@ -3016,7 +3017,16 @@ $(function(){
         @default null
         **/             
         placeholder: null,
-        
+		
+        /**
+        maxlength attribute of input.
+ 
+        @property placeholder 
+        @type string
+        @default null
+        **/
+        maxlength: null,
+ 
         /**
         Whether to show `clear` button 
         
@@ -3062,7 +3072,8 @@ $(function(){
         render: function () {
             this.setClass();
             this.setAttr('placeholder');
-            this.setAttr('rows');                        
+            this.setAttr('rows');
+			this.setAttr('maxlength'); 			
             
             //ctrl + enter
             this.$input.keydown(function (e) {
@@ -3129,6 +3140,16 @@ $(function(){
         @default null
         **/
         placeholder: null,
+        
+		/**
+		maxlength attribute of input.
+
+        @property placeholder 
+        @type string
+        @default null
+        **/
+        
+		maxlength: null,
         /**
         Number of rows in textarea
 
