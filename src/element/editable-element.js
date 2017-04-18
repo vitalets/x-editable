@@ -385,12 +385,13 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 sent = sent || (this.options.savenochange && this.input.value2str(this.value) !== this.input.value2str(params.newValue)); 
                 
                 if(sent) {
-                    this.$element.removeClass(this.options.unsavedclass); 
+                    this.$element.removeClass(this.options.unsavedclass);
                 } else {
                     this.$element.addClass(this.options.unsavedclass);                    
                 }
             }
-            
+            if(this.$element.css("display") == "none")
+                this.$element.css("display","inline");
             //highlight when saving
             if(this.options.highlight) {
                 var $e = this.$element,
