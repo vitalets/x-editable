@@ -26,6 +26,7 @@
     "src",
     "test"
   ],
+  "license": "MIT",
   "dependencies": {
     "jquery": ">=1.6"
   }
