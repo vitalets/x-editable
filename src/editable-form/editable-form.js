@@ -159,15 +159,17 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         showForm: function(activate) {
             this.$loading.hide();
             this.$form.show();
-            if(activate !== false) {
-                this.input.activate(); 
-            }
+
             /**        
             Fired when form is shown
             @event show 
             @param {Object} event event object
             **/                    
             this.$div.triggerHandler('show');
+            
+            if(activate !== false) {
+                this.input.activate(); 
+            }
         },
 
         error: function(msg) {
