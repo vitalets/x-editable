@@ -204,12 +204,12 @@ $(function(){
        },
 
        value2input: function(value) {
-           //for remote source just set value, text is updated by initSelection
+           // Init select2 if not already initialized
            if(!this.$input.data('select2')) {
-               // Init select2 if not already initialized
                this.$input.select2(this.options.select2);
            }
 
+           //for remote source just set value, text is updated by initSelection
            //second argument needed to separate initial change from user's click (for autosubmit)   
            this.$input.val(value).trigger('change', true); 
 
