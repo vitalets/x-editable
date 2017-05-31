@@ -204,22 +204,17 @@ $(function(){
        },
 
        value2input: function(value) {
-           // if value array => join it anyway
-           if($.isArray(value)) {
-              value = value.join(this.getSeparator());
-           }
-
            //for remote source just set value, text is updated by initSelection
            if(!this.$input.data('select2')) {
-               this.$input.val(value);
+               // Init select2 if not already initialized
                this.$input.select2(this.options.select2);
-           } else {
-               //second argument needed to separate initial change from user's click (for autosubmit)   
-               this.$input.val(value).trigger('change', true); 
-
-               //Uncaught Error: cannot call val() if initSelection() is not defined
-               //this.$input.select2('val', value);
            }
+
+           //second argument needed to separate initial change from user's click (for autosubmit)   
+           this.$input.val(value).trigger('change', true); 
+
+           //Uncaught Error: cannot call val() if initSelection() is not defined
+           //this.$input.select2('val', value);
 
            // if defined remote source AND no multiple mode AND no user's initSelection provided --> 
            // we should somehow get text for provided id.
