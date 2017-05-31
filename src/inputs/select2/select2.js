@@ -310,9 +310,9 @@ $(function(){
     Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
-        @default <input type="hidden">
+        @default <select>
         **/
-        tpl:'<input type="hidden">',
+        tpl:'<select>',
         /**
         Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).
 
