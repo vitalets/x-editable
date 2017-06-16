@@ -82,6 +82,9 @@ $(function(){
                 //this.$clear.css({bottom: delta, right: delta});
             }
             */
+
+            if (this.options.selectContent)
+                this.$input.select();
         },
 
         //show / hide clear button
@@ -130,7 +133,16 @@ $(function(){
         @type boolean
         @default true
         **/
-        clear: true
+        clear: true,
+
+        /**
+        Select all content of the input at display
+
+        @property selectContent
+        @type boolean
+        @default false
+        **/
+        selectContent: false
     });
 
     $.fn.editabletypes.text = Text;
