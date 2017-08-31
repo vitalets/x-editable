@@ -25,7 +25,7 @@ Automatically shown in inline mode.
             this.setAttr('placeholder');
 
             //bootstrap-datepicker is set `bdateicker` to exclude conflict with jQuery UI one. (in date.js)
-            this.$tpl.bdatepicker(this.options.datepicker);
+            this.$input.bdatepicker(this.options.datepicker);
 
             //need to disable original event handlers
             this.$input.off('focus keydown');
