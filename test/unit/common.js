@@ -49,7 +49,8 @@
             esc_v = $('<div>').text(v).html(),
             e = $('<a href="#123" data-name="abc" data-value="123">qwe</a>').appendTo('#qunit-fixture').editable(),
             e2 = $('<a href="#" id="a2">'+v+'</a>').appendTo('#qunit-fixture').editable(),
-            e3 = $('<a href="#" id="a3">'+esc_v+'</a>').appendTo('#qunit-fixture').editable();
+            e3 = $('<a href="#" id="a3">'+esc_v+'</a>').appendTo('#qunit-fixture').editable(),
+            e4 = $('<a href="#" id="a4" data-value="null"></a>').appendTo('#qunit-fixture').editable();
        
         equal(e.data('editable').options.name, 'abc', 'name exists');
         equal(e.data('editable').value, '123', 'value exists');
@@ -59,7 +60,9 @@
 //        equal(e2.data('editable').lastSavedValue, visible_v, 'lastSavedValue taken from text correctly');  
         
         equal(e3.data('editable').value, v, 'value taken from elem content correctly (escaped)');     
-//        equal(e3.data('editable').lastSavedValue, v, 'lastSavedValue taken from text correctly (escaped)');             
+//        equal(e3.data('editable').lastSavedValue, v, 'lastSavedValue taken from text correctly (escaped)');
+
+        equal(e4.data('editable').value, "null", 'value "null" taken from elem\'s data-attribute "data-value" correctly');
       }); 
       
       test("container's title and placement from json options", function () {
