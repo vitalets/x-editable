@@ -95,7 +95,7 @@
         */
         getConfigData: function($element) {
             var data = {};
-            $.each($element.data(), function(k, v) {
+            $.each($element[0].dataset, function(k, v) {
                 if(typeof v !== 'object' || (v && typeof v === 'object' && (v.constructor === Object || v.constructor === Array))) {
                     data[k] = v;
                 }
