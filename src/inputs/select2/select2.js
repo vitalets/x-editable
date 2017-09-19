@@ -204,22 +204,17 @@ $(function(){
        },
 
        value2input: function(value) {
-           // if value array => join it anyway
-           if($.isArray(value)) {
-              value = value.join(this.getSeparator());
+           // Init select2 if not already initialized
+           if(!this.$input.data('select2')) {
+               this.$input.select2(this.options.select2);
            }
 
            //for remote source just set value, text is updated by initSelection
-           if(!this.$input.data('select2')) {
-               this.$input.val(value);
-               this.$input.select2(this.options.select2);
-           } else {
-               //second argument needed to separate initial change from user's click (for autosubmit)   
-               this.$input.val(value).trigger('change', true); 
+           //second argument needed to separate initial change from user's click (for autosubmit)   
+           this.$input.val(value).trigger('change', true); 
 
-               //Uncaught Error: cannot call val() if initSelection() is not defined
-               //this.$input.select2('val', value);
-           }
+           //Uncaught Error: cannot call val() if initSelection() is not defined
+           //this.$input.select2('val', value);
 
            // if defined remote source AND no multiple mode AND no user's initSelection provided --> 
            // we should somehow get text for provided id.
@@ -298,10 +293,8 @@ $(function(){
         },
         
         destroy: function() {
-	        if(this.$input) {
-	            if(this.$input.data('select2')) {
-	                this.$input.select2('destroy');
-	            }
+	        if(this.$input && this.$input.data('select2')) {
+	            this.$input.select2('destroy');
 	        }
         }
         
@@ -310,9 +303,9 @@ $(function(){
     Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
-        @default <input type="hidden">
+        @default <select>
         **/
-        tpl:'<input type="hidden">',
+        tpl:'<select>',
         /**
         Configuration of select2. [Full list of options](http://ivaynberg.github.com/select2).
 
