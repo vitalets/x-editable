@@ -124,8 +124,6 @@ $(function(){
 
                     results.results = this.convertSource(results.results);
 
-                    console.log('processResults', data, results)
-
                     return results;
                 }, this);
             }
@@ -248,7 +246,6 @@ $(function(){
         * Used to update the text in the link based on the selected value
         */
        value2html: function (value, element) {
-           console.log('value2html', arguments)
            Constructor.superclass.value2html.apply(this, arguments);
        },
 
@@ -262,7 +259,6 @@ $(function(){
            // We have to special case multiple selects, which aren't supported
            // by default.
            if (!$.isArray(value)) {
-               console.log('value2htmlFinal', arguments, 'non-array');
                return Constructor.superclass.value2htmlFinal.call(this, value, element);
            }
 
@@ -288,7 +284,6 @@ $(function(){
            // The output is the text joined by the viewseparator (comma by default)
            results = results.join(this.options.viewseparator);
 
-           console.log('value2htmlFinal', arguments, results);
 
            $(element)[this.options.escape ? 'text' : 'html']($.trim(results));
        },
@@ -303,8 +298,6 @@ $(function(){
            // This will convert it from a string to an array of data values
            if (value && !$.isArray(value) && this.isMultiple) {
                value = this.str2value(value);
-
-               console.log('value2input', value, 'fixed');
            }
 
            if (!value) {
