@@ -58,7 +58,7 @@ jQuery only build:
 ## Reporting issues
 Please **provide jsFiddle** when creating issues!   
 It's really saves much time. Use these as template:   
-1. [jsFiddle Bootstrap 3](http://jsfiddle.net/xBB5x/2265/)  
+1. [jsFiddle Bootstrap 3](http://jsfiddle.net/xBB5x/15155/)  
 2. [jsFiddle Bootstrap 2](http://jsfiddle.net/xBB5x/1817/)  
 3. [jsFiddle jQuery-ui](http://jsfiddle.net/xBB5x/2511/)  
 4. [jsFiddle jQuery](http://jsfiddle.net/xBB5x/197)    
