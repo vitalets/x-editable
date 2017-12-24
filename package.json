@@ -21,17 +21,22 @@
       "url": "https://github.com/vitalets/x-editable/blob/master/LICENSE-MIT"
     }
   ],
+  "scripts": {
+    "precommit": "grunt jshint",
+    "prepush": "grunt jshint"
+  },
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-qunit": "~0.2.2",
     "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.1"
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-qunit": "~0.2.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "husky": "^0.14.3"
   },
   "keywords": []
 }
