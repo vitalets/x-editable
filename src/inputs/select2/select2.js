@@ -88,7 +88,7 @@ $(function(){
         options.select2 = options.select2 || {};
 
         this.sourceData = null;
-        
+
         //placeholder
         if(options.placeholder) {
             options.select2.placeholder = options.placeholder;
@@ -294,15 +294,15 @@ $(function(){
         },
         
         activate: function() {
-        	this.$input.select2('open');
+            this.$input.select2('open');
         },
         
         destroy: function() {
-	        if(this.$input) {
-	            if(this.$input.data('select2')) {
-	                this.$input.select2('destroy');
-	            }
-	        }
+            if(this.$input) {
+                if(this.$input.data('select2')) {
+                    this.$input.select2('destroy');
+                }
+            }
         }
         
     });

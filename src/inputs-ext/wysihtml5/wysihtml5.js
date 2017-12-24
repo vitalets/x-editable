@@ -100,7 +100,7 @@ $(function(){
             } 
         },
         destroy:function (){
-        	this.$input.data('wysihtml5').editor.destroy();
+            this.$input.data('wysihtml5').editor.destroy();
         }
     });
 
