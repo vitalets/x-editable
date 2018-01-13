@@ -4702,166 +4702,1399 @@ $(function(){
 }(window.jQuery));
 
 /*
-Editableform based on jQuery UI
+Editableform based on Twitter Bootstrap 3
 */
 (function ($) {
     "use strict";
+    
+    //store parent methods
+    var pInitInput = $.fn.editableform.Constructor.prototype.initInput;
     
     $.extend($.fn.editableform.Constructor.prototype, {
-        initButtons: function() {
+        initTemplate: function() {
+            this.$form = $($.fn.editableform.template); 
+            this.$form.find('.control-group').addClass('form-group');
+            this.$form.find('.editable-error-block').addClass('help-block');
+        },
+        initInput: function() {  
+            pInitInput.apply(this);
+
+            var emptyInputClass = this.input.options.inputclass === null || this.input.options.inputclass === false;
+            var defaultClass = 'form-control-sm';
+            
+            //bs3 add `form-control` class to standard inputs
+            var stdtypes = 'text,select,textarea,password,email,url,tel,number,range,time,typeaheadjs'.split(','); 
+            if(~$.inArray(this.input.type, stdtypes)) {
+                this.input.$input.addClass('form-control');
+                if(emptyInputClass) {
+                    this.input.options.inputclass = defaultClass;
+                    this.input.$input.addClass(defaultClass);
+                }
+            }             
+        
+            //apply size class also to buttons (to fit size of control)
             var $btn = this.$form.find('.editable-buttons');
-            $btn.append($.fn.editableform.buttons);
-            if(this.options.showbuttons === 'bottom') {
-                $btn.addClass('editable-buttons-bottom');
+            var classes = emptyInputClass ? [defaultClass] : this.input.options.inputclass.split(' ');
+            for(var i=0; i<classes.length; i++) {
+                // `btn-sm` is default now
+                /*
+                if(classes[i].toLowerCase() === 'input-sm') { 
+                    $btn.find('button').addClass('btn-sm');  
+                }
+                */
+                if(classes[i].toLowerCase() === 'input-lg') {
+                    $btn.find('button').removeClass('btn-sm').addClass('btn-lg'); 
+                }
             }
-                          
-            this.$form.find('.editable-submit').button({
-                icons: { primary: "ui-icon-check" },
-                text: false
-            }).removeAttr('title');
-            this.$form.find('.editable-cancel').button({
-                icons: { primary: "ui-icon-closethick" },
-                text: false
-            }).removeAttr('title');
         }
-    });
+    });    
+    
+    //buttons
+    $.fn.editableform.buttons = 
+      '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
+        '<i class="fa fa-check" aria-hidden="true"></i>'+
+      '</button>'+
+      '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
+        '<i class="fa fa-times" aria-hidden="true"></i>'+
+      '</button>';         
     
     //error classes
-    $.fn.editableform.errorGroupClass = null;
-    $.fn.editableform.errorBlockClass = 'ui-state-error';
+    $.fn.editableform.errorGroupClass = 'has-error';
+    $.fn.editableform.errorBlockClass = null;  
     //engine
-    $.fn.editableform.engine = 'jquery-ui';
-    
+    $.fn.editableform.engine = 'bs4';  
 }(window.jQuery));
 /**
-* Editable jQuery UI Tooltip 
+* Editable Popover for Bootstrap 4 based on Popper.js
 * ---------------------
-* requires jquery ui 1.9.x 
+* requires bootstrap-popover.js
 */
 (function ($) {
     "use strict";
-
+    
     //extend methods
     $.extend($.fn.editableContainer.Popup.prototype, {
-        containerName: 'tooltip',  //jQuery method, aplying the widget
-        //object name in element's .data() 
-        containerDataName: 'ui-tooltip', 
-        innerCss: '.ui-tooltip-content', 
-        defaults: $.ui.tooltip.prototype.options,
-        
-        //split options on containerOptions and formOptions
-        splitOptions: function() {
-            this.containerOptions = {};
-            this.formOptions = {};
-            
-            //check that jQueryUI build contains tooltip widget
-            if(!$.ui[this.containerName]) {
-                $.error('Please use jQueryUI with "tooltip" widget! http://jqueryui.com/download');
-                return;
-            }
-            
-            //defaults for tooltip
-            for(var k in this.options) {
-              if(k in this.defaults) {
-                 this.containerOptions[k] = this.options[k];
-              } else {
-                 this.formOptions[k] = this.options[k];
-              } 
-            }
-        },        
+        containerName: 'popover',
+        containerDataName: 'bs.popover',
+        innerCss: '.popover-body',
+        defaults: $.fn.popover.Constructor.DEFAULTS,
         
         initContainer: function(){
-            this.handlePlacement();
             $.extend(this.containerOptions, {
-                items: '*',
+                trigger: 'manual',
+                selector: false,
                 content: ' ',
-                track:  false,
-                open: $.proxy(function() {
-                        //disable events hiding tooltip by default
-                        this.container()._on(this.container().element, {
-                            mouseleave: function(e){ e.stopImmediatePropagation(); },
-                            focusout: function(e){ e.stopImmediatePropagation(); }
-                        });  
-                    }, this)
+                template: this.defaults.template
             });
+            
+            //as template property is used in inputs, hide it from popover
+            var t;
+            if(this.$element.data('template')) {
+                t = this.$element.data('template');
+                this.$element.removeData('template');
+            }
             
             this.call(this.containerOptions);
             
-            //disable standart triggering tooltip events
-            this.container()._off(this.container().element, 'mouseover focusin');
-        },         
+            if(t) {
+                //restore data('template')
+                this.$element.data('template', t);
+            }
+        },
+        
+        /* show */
+        innerShow: function () {
+            this.call('show');
+        },
+        
+        /* hide */
+        innerHide: function () {
+            this.call('hide');
+        },
+        
+        /* destroy */
+        innerDestroy: function() {
+            this.call('dispose');
+        },
+        
+        setContainerOption: function(key, value) {
+            this.container().options[key] = value;
+        },
+        
+        setPosition: function () {
+            (function() {}).call(this.container());
+        },
         
         tip: function() {
-            return this.container() ? this.container()._find(this.container().element) : null;
-        },
-        
-        innerShow: function() {
-            this.call('open');
-            var label = this.options.title || this.$element.data( "ui-tooltip-title") || this.$element.data( "originalTitle"); 
-            this.tip().find(this.innerCss).empty().append($('<label>').text(label));
-        },  
-        
-        innerHide: function() {
-            this.call('close'); 
-        },
-        
-        innerDestroy: function() {
-            /* tooltip destroys itself on hide */
-        },         
-        
-        setPosition: function() {
-            this.tip().position( $.extend({
-                of: this.$element
-            }, this.containerOptions.position ) );     
-        },
-        
-        handlePlacement: function() {
-           var pos; 
-           switch(this.options.placement) {
-               case 'top':
-                      pos = {
-                          my: "center bottom-5", 
-                          at: "center top", 
-                          collision: 'flipfit'
-                      };
-               break;
-               case 'right':
-                      pos = {
-                          my: "left+5 center", 
-                          at: "right center", 
-                          collision: 'flipfit'
-                      };
-               break;
-               case 'bottom':
-                      pos = {
-                          my: "center top+5", 
-                          at: "center bottom", 
-                          collision: 'flipfit'
-                      };
-               break;
-               case 'left':
-                      pos = {
-                          my: "right-5 center", 
-                          at: "left center", 
-                          collision: 'flipfit'
-                      };
-               break;                                             
-           }
-           
-           this.containerOptions.position = pos;
+            return this.container() ? $(this.container().tip) : null;
         }
-                
     });
     
 }(window.jQuery));
 
-/**
-jQuery UI Datepicker.  
-Description and examples: http://jqueryui.com/datepicker.   
-This input is also accessible as **date** type. Do not use it together with __bootstrap-datepicker__ as both apply <code>$().datepicker()</code> method.  
-For **i18n** you should include js file from here: https://github.com/jquery/jquery-ui/tree/master/ui/i18n.
+/* =========================================================
+ * bootstrap-datepicker.js
+ * http://www.eyecon.ro/bootstrap-datepicker
+ * =========================================================
+ * Copyright 2012 Stefan Petre
+ * Improvements by Andrew Rowls
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================= */
 
-@class dateui
+(function( $ ) {
+
+	function UTCDate(){
+		return new Date(Date.UTC.apply(Date, arguments));
+	}
+	function UTCToday(){
+		var today = new Date();
+		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+	}
+
+	// Picker object
+
+	var Datepicker = function(element, options) {
+		var that = this;
+
+		this._process_options(options);
+
+		this.element = $(element);
+		this.isInline = false;
+		this.isInput = this.element.is('input');
+		this.component = this.element.is('.date') ? this.element.find('.add-on, .btn') : false;
+		this.hasInput = this.component && this.element.find('input').length;
+		if(this.component && this.component.length === 0)
+			this.component = false;
+
+		this.picker = $(DPGlobal.template);
+		this._buildEvents();
+		this._attachEvents();
+
+		if(this.isInline) {
+			this.picker.addClass('datepicker-inline').appendTo(this.element);
+		} else {
+			this.picker.addClass('datepicker-dropdown dropdown-menu');
+		}
+
+		if (this.o.rtl){
+			this.picker.addClass('datepicker-rtl');
+			this.picker.find('.prev i, .next i')
+						.toggleClass('icon-arrow-left icon-arrow-right');
+		}
+
+
+		this.viewMode = this.o.startView;
+
+		if (this.o.calendarWeeks)
+			this.picker.find('tfoot th.today')
+						.attr('colspan', function(i, val){
+							return parseInt(val) + 1;
+						});
+
+		this._allow_update = false;
+
+		this.setStartDate(this.o.startDate);
+		this.setEndDate(this.o.endDate);
+		this.setDaysOfWeekDisabled(this.o.daysOfWeekDisabled);
+
+		this.fillDow();
+		this.fillMonths();
+
+		this._allow_update = true;
+
+		this.update();
+		this.showMode();
+
+		if(this.isInline) {
+			this.show();
+		}
+	};
+
+	Datepicker.prototype = {
+		constructor: Datepicker,
+
+		_process_options: function(opts){
+			// Store raw options for reference
+			this._o = $.extend({}, this._o, opts);
+			// Processed options
+			var o = this.o = $.extend({}, this._o);
+
+			// Check if "de-DE" style date is available, if not language should
+			// fallback to 2 letter code eg "de"
+			var lang = o.language;
+			if (!dates[lang]) {
+				lang = lang.split('-')[0];
+				if (!dates[lang])
+					lang = defaults.language;
+			}
+			o.language = lang;
+
+			switch(o.startView){
+				case 2:
+				case 'decade':
+					o.startView = 2;
+					break;
+				case 1:
+				case 'year':
+					o.startView = 1;
+					break;
+				default:
+					o.startView = 0;
+			}
+
+			switch (o.minViewMode) {
+				case 1:
+				case 'months':
+					o.minViewMode = 1;
+					break;
+				case 2:
+				case 'years':
+					o.minViewMode = 2;
+					break;
+				default:
+					o.minViewMode = 0;
+			}
+
+			o.startView = Math.max(o.startView, o.minViewMode);
+
+			o.weekStart %= 7;
+			o.weekEnd = ((o.weekStart + 6) % 7);
+
+			var format = DPGlobal.parseFormat(o.format)
+			if (o.startDate !== -Infinity) {
+				o.startDate = DPGlobal.parseDate(o.startDate, format, o.language);
+			}
+			if (o.endDate !== Infinity) {
+				o.endDate = DPGlobal.parseDate(o.endDate, format, o.language);
+			}
+
+			o.daysOfWeekDisabled = o.daysOfWeekDisabled||[];
+			if (!$.isArray(o.daysOfWeekDisabled))
+				o.daysOfWeekDisabled = o.daysOfWeekDisabled.split(/[,\s]*/);
+			o.daysOfWeekDisabled = $.map(o.daysOfWeekDisabled, function (d) {
+				return parseInt(d, 10);
+			});
+		},
+		_events: [],
+		_secondaryEvents: [],
+		_applyEvents: function(evs){
+			for (var i=0, el, ev; i<evs.length; i++){
+				el = evs[i][0];
+				ev = evs[i][1];
+				el.on(ev);
+			}
+		},
+		_unapplyEvents: function(evs){
+			for (var i=0, el, ev; i<evs.length; i++){
+				el = evs[i][0];
+				ev = evs[i][1];
+				el.off(ev);
+			}
+		},
+		_buildEvents: function(){
+			if (this.isInput) { // single input
+				this._events = [
+					[this.element, {
+						focus: $.proxy(this.show, this),
+						keyup: $.proxy(this.update, this),
+						keydown: $.proxy(this.keydown, this)
+					}]
+				];
+			}
+			else if (this.component && this.hasInput){ // component: input + button
+				this._events = [
+					// For components that are not readonly, allow keyboard nav
+					[this.element.find('input'), {
+						focus: $.proxy(this.show, this),
+						keyup: $.proxy(this.update, this),
+						keydown: $.proxy(this.keydown, this)
+					}],
+					[this.component, {
+						click: $.proxy(this.show, this)
+					}]
+				];
+			}
+			else if (this.element.is('div')) {  // inline datepicker
+				this.isInline = true;
+			}
+			else {
+				this._events = [
+					[this.element, {
+						click: $.proxy(this.show, this)
+					}]
+				];
+			}
+
+			this._secondaryEvents = [
+				[this.picker, {
+					click: $.proxy(this.click, this)
+				}],
+				[$(window), {
+					resize: $.proxy(this.place, this)
+				}],
+				[$(document), {
+					mousedown: $.proxy(function (e) {
+						// Clicked outside the datepicker, hide it
+						if (!(
+							this.element.is(e.target) ||
+							this.element.find(e.target).size() ||
+							this.picker.is(e.target) ||
+							this.picker.find(e.target).size()
+						)) {
+							this.hide();
+						}
+					}, this)
+				}]
+			];
+		},
+		_attachEvents: function(){
+			this._detachEvents();
+			this._applyEvents(this._events);
+		},
+		_detachEvents: function(){
+			this._unapplyEvents(this._events);
+		},
+		_attachSecondaryEvents: function(){
+			this._detachSecondaryEvents();
+			this._applyEvents(this._secondaryEvents);
+		},
+		_detachSecondaryEvents: function(){
+			this._unapplyEvents(this._secondaryEvents);
+		},
+		_trigger: function(event, altdate){
+			var date = altdate || this.date,
+				local_date = new Date(date.getTime() + (date.getTimezoneOffset()*60000));
+
+			this.element.trigger({
+				type: event,
+				date: local_date,
+				format: $.proxy(function(altformat){
+					var format = altformat || this.o.format;
+					return DPGlobal.formatDate(date, format, this.o.language);
+				}, this)
+			});
+		},
+
+		show: function(e) {
+			if (!this.isInline)
+				this.picker.appendTo('body');
+			this.picker.show();
+			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
+			this.place();
+			this._attachSecondaryEvents();
+			if (e) {
+				e.preventDefault();
+			}
+			this._trigger('show');
+		},
+
+		hide: function(e){
+			if(this.isInline) return;
+			if (!this.picker.is(':visible')) return;
+			this.picker.hide().detach();
+			this._detachSecondaryEvents();
+			this.viewMode = this.o.startView;
+			this.showMode();
+
+			if (
+				this.o.forceParse &&
+				(
+					this.isInput && this.element.val() ||
+					this.hasInput && this.element.find('input').val()
+				)
+			)
+				this.setValue();
+			this._trigger('hide');
+		},
+
+		remove: function() {
+			this.hide();
+			this._detachEvents();
+			this._detachSecondaryEvents();
+			this.picker.remove();
+			delete this.element.data().datepicker;
+			if (!this.isInput) {
+				delete this.element.data().date;
+			}
+		},
+
+		getDate: function() {
+			var d = this.getUTCDate();
+			return new Date(d.getTime() + (d.getTimezoneOffset()*60000));
+		},
+
+		getUTCDate: function() {
+			return this.date;
+		},
+
+		setDate: function(d) {
+			this.setUTCDate(new Date(d.getTime() - (d.getTimezoneOffset()*60000)));
+		},
+
+		setUTCDate: function(d) {
+			this.date = d;
+			this.setValue();
+		},
+
+		setValue: function() {
+			var formatted = this.getFormattedDate();
+			if (!this.isInput) {
+				if (this.component){
+					this.element.find('input').val(formatted);
+				}
+			} else {
+				this.element.val(formatted);
+			}
+		},
+
+		getFormattedDate: function(format) {
+			if (format === undefined)
+				format = this.o.format;
+			return DPGlobal.formatDate(this.date, format, this.o.language);
+		},
+
+		setStartDate: function(startDate){
+			this._process_options({startDate: startDate});
+			this.update();
+			this.updateNavArrows();
+		},
+
+		setEndDate: function(endDate){
+			this._process_options({endDate: endDate});
+			this.update();
+			this.updateNavArrows();
+		},
+
+		setDaysOfWeekDisabled: function(daysOfWeekDisabled){
+			this._process_options({daysOfWeekDisabled: daysOfWeekDisabled});
+			this.update();
+			this.updateNavArrows();
+		},
+
+		place: function(){
+						if(this.isInline) return;
+			var zIndex = parseInt(this.element.parents().filter(function() {
+							return $(this).css('z-index') != 'auto';
+						}).first().css('z-index'))+10;
+			var offset = this.component ? this.component.parent().offset() : this.element.offset();
+			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(true);
+			this.picker.css({
+				top: offset.top + height,
+				left: offset.left,
+				zIndex: zIndex
+			});
+		},
+
+		_allow_update: true,
+		update: function(){
+			if (!this._allow_update) return;
+
+			var date, fromArgs = false;
+			if(arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof Date)) {
+				date = arguments[0];
+				fromArgs = true;
+			} else {
+				date = this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val();
+				delete this.element.data().date;
+			}
+
+			this.date = DPGlobal.parseDate(date, this.o.format, this.o.language);
+
+			if(fromArgs) this.setValue();
+
+			if (this.date < this.o.startDate) {
+				this.viewDate = new Date(this.o.startDate);
+			} else if (this.date > this.o.endDate) {
+				this.viewDate = new Date(this.o.endDate);
+			} else {
+				this.viewDate = new Date(this.date);
+			}
+			this.fill();
+		},
+
+		fillDow: function(){
+			var dowCnt = this.o.weekStart,
+			html = '<tr>';
+			if(this.o.calendarWeeks){
+				var cell = '<th class="cw">&nbsp;</th>';
+				html += cell;
+				this.picker.find('.datepicker-days thead tr:first-child').prepend(cell);
+			}
+			while (dowCnt < this.o.weekStart + 7) {
+				html += '<th class="dow">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
+			}
+			html += '</tr>';
+			this.picker.find('.datepicker-days thead').append(html);
+		},
+
+		fillMonths: function(){
+			var html = '',
+			i = 0;
+			while (i < 12) {
+				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
+			}
+			this.picker.find('.datepicker-months td').html(html);
+		},
+
+		setRange: function(range){
+			if (!range || !range.length)
+				delete this.range;
+			else
+				this.range = $.map(range, function(d){ return d.valueOf(); });
+			this.fill();
+		},
+
+		getClassNames: function(date){
+			var cls = [],
+				year = this.viewDate.getUTCFullYear(),
+				month = this.viewDate.getUTCMonth(),
+				currentDate = this.date.valueOf(),
+				today = new Date();
+			if (date.getUTCFullYear() < year || (date.getUTCFullYear() == year && date.getUTCMonth() < month)) {
+				cls.push('old');
+			} else if (date.getUTCFullYear() > year || (date.getUTCFullYear() == year && date.getUTCMonth() > month)) {
+				cls.push('new');
+			}
+			// Compare internal UTC date with local today, not UTC today
+			if (this.o.todayHighlight &&
+				date.getUTCFullYear() == today.getFullYear() &&
+				date.getUTCMonth() == today.getMonth() &&
+				date.getUTCDate() == today.getDate()) {
+				cls.push('today');
+			}
+			if (currentDate && date.valueOf() == currentDate) {
+				cls.push('active');
+			}
+			if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
+				$.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) {
+				cls.push('disabled');
+			}
+			if (this.range){
+				if (date > this.range[0] && date < this.range[this.range.length-1]){
+					cls.push('range');
+				}
+				if ($.inArray(date.valueOf(), this.range) != -1){
+					cls.push('selected');
+				}
+			}
+			return cls;
+		},
+
+		fill: function() {
+			var d = new Date(this.viewDate),
+				year = d.getUTCFullYear(),
+				month = d.getUTCMonth(),
+				startYear = this.o.startDate !== -Infinity ? this.o.startDate.getUTCFullYear() : -Infinity,
+				startMonth = this.o.startDate !== -Infinity ? this.o.startDate.getUTCMonth() : -Infinity,
+				endYear = this.o.endDate !== Infinity ? this.o.endDate.getUTCFullYear() : Infinity,
+				endMonth = this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
+				currentDate = this.date && this.date.valueOf(),
+				tooltip;
+			this.picker.find('.datepicker-days thead th.datepicker-switch')
+						.text(dates[this.o.language].months[month]+' '+year);
+			this.picker.find('tfoot th.today')
+						.text(dates[this.o.language].today)
+						.toggle(this.o.todayBtn !== false);
+			this.picker.find('tfoot th.clear')
+						.text(dates[this.o.language].clear)
+						.toggle(this.o.clearBtn !== false);
+			this.updateNavArrows();
+			this.fillMonths();
+			var prevMonth = UTCDate(year, month-1, 28,0,0,0,0),
+				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+			prevMonth.setUTCDate(day);
+			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
+			var nextMonth = new Date(prevMonth);
+			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
+			nextMonth = nextMonth.valueOf();
+			var html = [];
+			var clsName;
+			while(prevMonth.valueOf() < nextMonth) {
+				if (prevMonth.getUTCDay() == this.o.weekStart) {
+					html.push('<tr>');
+					if(this.o.calendarWeeks){
+						// ISO 8601: First week contains first thursday.
+						// ISO also states week starts on Monday, but we can be more abstract here.
+						var
+							// Start of current week: based on weekstart/current date
+							ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
+							// Thursday of this week
+							th = new Date(+ws + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
+							// First Thursday of year, year from thursday
+							yth = new Date(+(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
+							// Calendar week: ms between thursdays, div ms per day, div 7 days
+							calWeek =  (th - yth) / 864e5 / 7 + 1;
+						html.push('<td class="cw">'+ calWeek +'</td>');
+
+					}
+				}
+				clsName = this.getClassNames(prevMonth);
+				clsName.push('day');
+
+				var before = this.o.beforeShowDay(prevMonth);
+				if (before === undefined)
+					before = {};
+				else if (typeof(before) === 'boolean')
+					before = {enabled: before};
+				else if (typeof(before) === 'string')
+					before = {classes: before};
+				if (before.enabled === false)
+					clsName.push('disabled');
+				if (before.classes)
+					clsName = clsName.concat(before.classes.split(/\s+/));
+				if (before.tooltip)
+					tooltip = before.tooltip;
+
+				clsName = $.unique(clsName);
+				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+prevMonth.getUTCDate() + '</td>');
+				if (prevMonth.getUTCDay() == this.o.weekEnd) {
+					html.push('</tr>');
+				}
+				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
+			}
+			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
+			var currentYear = this.date && this.date.getUTCFullYear();
+
+			var months = this.picker.find('.datepicker-months')
+						.find('th:eq(1)')
+							.text(year)
+							.end()
+						.find('span').removeClass('active');
+			if (currentYear && currentYear == year) {
+				months.eq(this.date.getUTCMonth()).addClass('active');
+			}
+			if (year < startYear || year > endYear) {
+				months.addClass('disabled');
+			}
+			if (year == startYear) {
+				months.slice(0, startMonth).addClass('disabled');
+			}
+			if (year == endYear) {
+				months.slice(endMonth+1).addClass('disabled');
+			}
+
+			html = '';
+			year = parseInt(year/10, 10) * 10;
+			var yearCont = this.picker.find('.datepicker-years')
+								.find('th:eq(1)')
+									.text(year + '-' + (year + 9))
+									.end()
+								.find('td');
+			year -= 1;
+			for (var i = -1; i < 11; i++) {
+				html += '<span class="year'+(i == -1 ? ' old' : i == 10 ? ' new' : '')+(currentYear == year ? ' active' : '')+(year < startYear || year > endYear ? ' disabled' : '')+'">'+year+'</span>';
+				year += 1;
+			}
+			yearCont.html(html);
+		},
+
+		updateNavArrows: function() {
+			if (!this._allow_update) return;
+
+			var d = new Date(this.viewDate),
+				year = d.getUTCFullYear(),
+				month = d.getUTCMonth();
+			switch (this.viewMode) {
+				case 0:
+					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth()) {
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()) {
+						this.picker.find('.next').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+				case 1:
+				case 2:
+					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear()) {
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear()) {
+						this.picker.find('.next').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+			}
+		},
+
+		click: function(e) {
+			e.preventDefault();
+			var target = $(e.target).closest('span, td, th');
+			if (target.length == 1) {
+				switch(target[0].nodeName.toLowerCase()) {
+					case 'th':
+						switch(target[0].className) {
+							case 'datepicker-switch':
+								this.showMode(1);
+								break;
+							case 'prev':
+							case 'next':
+								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className == 'prev' ? -1 : 1);
+								switch(this.viewMode){
+									case 0:
+										this.viewDate = this.moveMonth(this.viewDate, dir);
+										break;
+									case 1:
+									case 2:
+										this.viewDate = this.moveYear(this.viewDate, dir);
+										break;
+								}
+								this.fill();
+								break;
+							case 'today':
+								var date = new Date();
+								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+
+								this.showMode(-2);
+								var which = this.o.todayBtn == 'linked' ? null : 'view';
+								this._setDate(date, which);
+								break;
+							case 'clear':
+								var element;
+								if (this.isInput)
+									element = this.element;
+								else if (this.component)
+									element = this.element.find('input');
+								if (element)
+									element.val("").change();
+								this._trigger('changeDate');
+								this.update();
+								if (this.o.autoclose)
+									this.hide();
+								break;
+						}
+						break;
+					case 'span':
+						if (!target.is('.disabled')) {
+							this.viewDate.setUTCDate(1);
+							if (target.is('.month')) {
+								var day = 1;
+								var month = target.parent().find('span').index(target);
+								var year = this.viewDate.getUTCFullYear();
+								this.viewDate.setUTCMonth(month);
+								this._trigger('changeMonth', this.viewDate);
+								if (this.o.minViewMode === 1) {
+									this._setDate(UTCDate(year, month, day,0,0,0,0));
+								}
+							} else {
+								var year = parseInt(target.text(), 10)||0;
+								var day = 1;
+								var month = 0;
+								this.viewDate.setUTCFullYear(year);
+								this._trigger('changeYear', this.viewDate);
+								if (this.o.minViewMode === 2) {
+									this._setDate(UTCDate(year, month, day,0,0,0,0));
+								}
+							}
+							this.showMode(-1);
+							this.fill();
+						}
+						break;
+					case 'td':
+						if (target.is('.day') && !target.is('.disabled')){
+							var day = parseInt(target.text(), 10)||1;
+							var year = this.viewDate.getUTCFullYear(),
+								month = this.viewDate.getUTCMonth();
+							if (target.is('.old')) {
+								if (month === 0) {
+									month = 11;
+									year -= 1;
+								} else {
+									month -= 1;
+								}
+							} else if (target.is('.new')) {
+								if (month == 11) {
+									month = 0;
+									year += 1;
+								} else {
+									month += 1;
+								}
+							}
+							this._setDate(UTCDate(year, month, day,0,0,0,0));
+						}
+						break;
+				}
+			}
+		},
+
+		_setDate: function(date, which){
+			if (!which || which == 'date')
+				this.date = new Date(date);
+			if (!which || which  == 'view')
+				this.viewDate = new Date(date);
+			this.fill();
+			this.setValue();
+			this._trigger('changeDate');
+			var element;
+			if (this.isInput) {
+				element = this.element;
+			} else if (this.component){
+				element = this.element.find('input');
+			}
+			if (element) {
+				element.change();
+				if (this.o.autoclose && (!which || which == 'date')) {
+					this.hide();
+				}
+			}
+		},
+
+		moveMonth: function(date, dir){
+			if (!dir) return date;
+			var new_date = new Date(date.valueOf()),
+				day = new_date.getUTCDate(),
+				month = new_date.getUTCMonth(),
+				mag = Math.abs(dir),
+				new_month, test;
+			dir = dir > 0 ? 1 : -1;
+			if (mag == 1){
+				test = dir == -1
+					// If going back one month, make sure month is not current month
+					// (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
+					? function(){ return new_date.getUTCMonth() == month; }
+					// If going forward one month, make sure month is as expected
+					// (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
+					: function(){ return new_date.getUTCMonth() != new_month; };
+				new_month = month + dir;
+				new_date.setUTCMonth(new_month);
+				// Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
+				if (new_month < 0 || new_month > 11)
+					new_month = (new_month + 12) % 12;
+			} else {
+				// For magnitudes >1, move one month at a time...
+				for (var i=0; i<mag; i++)
+					// ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+					new_date = this.moveMonth(new_date, dir);
+				// ...then reset the day, keeping it in the new month
+				new_month = new_date.getUTCMonth();
+				new_date.setUTCDate(day);
+				test = function(){ return new_month != new_date.getUTCMonth(); };
+			}
+			// Common date-resetting loop -- if date is beyond end of month, make it
+			// end of month
+			while (test()){
+				new_date.setUTCDate(--day);
+				new_date.setUTCMonth(new_month);
+			}
+			return new_date;
+		},
+
+		moveYear: function(date, dir){
+			return this.moveMonth(date, dir*12);
+		},
+
+		dateWithinRange: function(date){
+			return date >= this.o.startDate && date <= this.o.endDate;
+		},
+
+		keydown: function(e){
+			if (this.picker.is(':not(:visible)')){
+				if (e.keyCode == 27) // allow escape to hide and re-show picker
+					this.show();
+				return;
+			}
+			var dateChanged = false,
+				dir, day, month,
+				newDate, newViewDate;
+			switch(e.keyCode){
+				case 27: // escape
+					this.hide();
+					e.preventDefault();
+					break;
+				case 37: // left
+				case 39: // right
+					if (!this.o.keyboardNavigation) break;
+					dir = e.keyCode == 37 ? -1 : 1;
+					if (e.ctrlKey){
+						newDate = this.moveYear(this.date, dir);
+						newViewDate = this.moveYear(this.viewDate, dir);
+					} else if (e.shiftKey){
+						newDate = this.moveMonth(this.date, dir);
+						newViewDate = this.moveMonth(this.viewDate, dir);
+					} else {
+						newDate = new Date(this.date);
+						newDate.setUTCDate(this.date.getUTCDate() + dir);
+						newViewDate = new Date(this.viewDate);
+						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir);
+					}
+					if (this.dateWithinRange(newDate)){
+						this.date = newDate;
+						this.viewDate = newViewDate;
+						this.setValue();
+						this.update();
+						e.preventDefault();
+						dateChanged = true;
+					}
+					break;
+				case 38: // up
+				case 40: // down
+					if (!this.o.keyboardNavigation) break;
+					dir = e.keyCode == 38 ? -1 : 1;
+					if (e.ctrlKey){
+						newDate = this.moveYear(this.date, dir);
+						newViewDate = this.moveYear(this.viewDate, dir);
+					} else if (e.shiftKey){
+						newDate = this.moveMonth(this.date, dir);
+						newViewDate = this.moveMonth(this.viewDate, dir);
+					} else {
+						newDate = new Date(this.date);
+						newDate.setUTCDate(this.date.getUTCDate() + dir * 7);
+						newViewDate = new Date(this.viewDate);
+						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir * 7);
+					}
+					if (this.dateWithinRange(newDate)){
+						this.date = newDate;
+						this.viewDate = newViewDate;
+						this.setValue();
+						this.update();
+						e.preventDefault();
+						dateChanged = true;
+					}
+					break;
+				case 13: // enter
+					this.hide();
+					e.preventDefault();
+					break;
+				case 9: // tab
+					this.hide();
+					break;
+			}
+			if (dateChanged){
+				this._trigger('changeDate');
+				var element;
+				if (this.isInput) {
+					element = this.element;
+				} else if (this.component){
+					element = this.element.find('input');
+				}
+				if (element) {
+					element.change();
+				}
+			}
+		},
+
+		showMode: function(dir) {
+			if (dir) {
+				this.viewMode = Math.max(this.o.minViewMode, Math.min(2, this.viewMode + dir));
+			}
+			/*
+				vitalets: fixing bug of very special conditions:
+				jquery 1.7.1 + webkit + show inline datepicker in bootstrap popover.
+				Method show() does not set display css correctly and datepicker is not shown.
+				Changed to .css('display', 'block') solve the problem.
+				See https://github.com/vitalets/x-editable/issues/37
+
+				In jquery 1.7.2+ everything works fine.
+			*/
+			//this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
+			this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
+			this.updateNavArrows();
+		}
+	};
+
+	var DateRangePicker = function(element, options){
+		this.element = $(element);
+		this.inputs = $.map(options.inputs, function(i){ return i.jquery ? i[0] : i; });
+		delete options.inputs;
+
+		$(this.inputs)
+			.datepicker(options)
+			.bind('changeDate', $.proxy(this.dateUpdated, this));
+
+		this.pickers = $.map(this.inputs, function(i){ return $(i).data('datepicker'); });
+		this.updateDates();
+	};
+	DateRangePicker.prototype = {
+		updateDates: function(){
+			this.dates = $.map(this.pickers, function(i){ return i.date; });
+			this.updateRanges();
+		},
+		updateRanges: function(){
+			var range = $.map(this.dates, function(d){ return d.valueOf(); });
+			$.each(this.pickers, function(i, p){
+				p.setRange(range);
+			});
+		},
+		dateUpdated: function(e){
+			var dp = $(e.target).data('datepicker'),
+				new_date = dp.getUTCDate(),
+				i = $.inArray(e.target, this.inputs),
+				l = this.inputs.length;
+			if (i == -1) return;
+
+			if (new_date < this.dates[i]){
+				// Date being moved earlier/left
+				while (i>=0 && new_date < this.dates[i]){
+					this.pickers[i--].setUTCDate(new_date);
+				}
+			}
+			else if (new_date > this.dates[i]){
+				// Date being moved later/right
+				while (i<l && new_date > this.dates[i]){
+					this.pickers[i++].setUTCDate(new_date);
+				}
+			}
+			this.updateDates();
+		},
+		remove: function(){
+			$.map(this.pickers, function(p){ p.remove(); });
+			delete this.element.data().datepicker;
+		}
+	};
+
+	function opts_from_el(el, prefix){
+		// Derive options from element data-attrs
+		var data = $(el).data(),
+			out = {}, inkey,
+			replace = new RegExp('^' + prefix.toLowerCase() + '([A-Z])'),
+			prefix = new RegExp('^' + prefix.toLowerCase());
+		for (var key in data)
+			if (prefix.test(key)){
+				inkey = key.replace(replace, function(_,a){ return a.toLowerCase(); });
+				out[inkey] = data[key];
+			}
+		return out;
+	}
+
+	function opts_from_locale(lang){
+		// Derive options from locale plugins
+		var out = {};
+		// Check if "de-DE" style date is available, if not language should
+		// fallback to 2 letter code eg "de"
+		if (!dates[lang]) {
+			lang = lang.split('-')[0]
+			if (!dates[lang])
+				return;
+		}
+		var d = dates[lang];
+		$.each(locale_opts, function(i,k){
+			if (k in d)
+				out[k] = d[k];
+		});
+		return out;
+	}
+
+	var old = $.fn.datepicker;
+	var datepicker = $.fn.datepicker = function ( option ) {
+		var args = Array.apply(null, arguments);
+		args.shift();
+		var internal_return,
+			this_return;
+		this.each(function () {
+			var $this = $(this),
+				data = $this.data('datepicker'),
+				options = typeof option == 'object' && option;
+			if (!data) {
+				var elopts = opts_from_el(this, 'date'),
+					// Preliminary otions
+					xopts = $.extend({}, defaults, elopts, options),
+					locopts = opts_from_locale(xopts.language),
+					// Options priority: js args, data-attrs, locales, defaults
+					opts = $.extend({}, defaults, locopts, elopts, options);
+				if ($this.is('.input-daterange') || opts.inputs){
+					var ropts = {
+						inputs: opts.inputs || $this.find('input').toArray()
+					};
+					$this.data('datepicker', (data = new DateRangePicker(this, $.extend(opts, ropts))));
+				}
+				else{
+					$this.data('datepicker', (data = new Datepicker(this, opts)));
+				}
+			}
+			if (typeof option == 'string' && typeof data[option] == 'function') {
+				internal_return = data[option].apply(data, args);
+				if (internal_return !== undefined)
+					return false;
+			}
+		});
+		if (internal_return !== undefined)
+			return internal_return;
+		else
+			return this;
+	};
+
+	var defaults = $.fn.datepicker.defaults = {
+		autoclose: false,
+		beforeShowDay: $.noop,
+		calendarWeeks: false,
+		clearBtn: false,
+		daysOfWeekDisabled: [],
+		endDate: Infinity,
+		forceParse: true,
+		format: 'mm/dd/yyyy',
+		keyboardNavigation: true,
+		language: 'en',
+		minViewMode: 0,
+		rtl: false,
+		startDate: -Infinity,
+		startView: 0,
+		todayBtn: false,
+		todayHighlight: false,
+		weekStart: 0
+	};
+	var locale_opts = $.fn.datepicker.locale_opts = [
+		'format',
+		'rtl',
+		'weekStart'
+	];
+	$.fn.datepicker.Constructor = Datepicker;
+	var dates = $.fn.datepicker.dates = {
+		en: {
+			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			today: "Today",
+			clear: "Clear"
+		}
+	};
+
+	var DPGlobal = {
+		modes: [
+			{
+				clsName: 'days',
+				navFnc: 'Month',
+				navStep: 1
+			},
+			{
+				clsName: 'months',
+				navFnc: 'FullYear',
+				navStep: 1
+			},
+			{
+				clsName: 'years',
+				navFnc: 'FullYear',
+				navStep: 10
+		}],
+		isLeapYear: function (year) {
+			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+		},
+		getDaysInMonth: function (year, month) {
+			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+		},
+		validParts: /dd?|DD?|mm?|MM?|yy(?:yy)?/g,
+		nonpunctuation: /[^ -\/:-@\[\u3400-\u9fff-`{-~\t\n\r]+/g,
+		parseFormat: function(format){
+			// IE treats \0 as a string end in inputs (truncating the value),
+			// so it's a bad format delimiter, anyway
+			var separators = format.replace(this.validParts, '\0').split('\0'),
+				parts = format.match(this.validParts);
+			if (!separators || !separators.length || !parts || parts.length === 0){
+				throw new Error("Invalid date format.");
+			}
+			return {separators: separators, parts: parts};
+		},
+		parseDate: function(date, format, language) {
+			if (date instanceof Date) return date;
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
+			if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)) {
+				var part_re = /([\-+]\d+)([dmwy])/,
+					parts = date.match(/([\-+]\d+)([dmwy])/g),
+					part, dir;
+				date = new Date();
+				for (var i=0; i<parts.length; i++) {
+					part = part_re.exec(parts[i]);
+					dir = parseInt(part[1]);
+					switch(part[2]){
+						case 'd':
+							date.setUTCDate(date.getUTCDate() + dir);
+							break;
+						case 'm':
+							date = Datepicker.prototype.moveMonth.call(Datepicker.prototype, date, dir);
+							break;
+						case 'w':
+							date.setUTCDate(date.getUTCDate() + dir * 7);
+							break;
+						case 'y':
+							date = Datepicker.prototype.moveYear.call(Datepicker.prototype, date, dir);
+							break;
+					}
+				}
+				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0);
+			}
+			var parts = date && date.match(this.nonpunctuation) || [],
+				date = new Date(),
+				parsed = {},
+				setters_order = ['yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
+				setters_map = {
+					yyyy: function(d,v){ return d.setUTCFullYear(v); },
+					yy: function(d,v){ return d.setUTCFullYear(2000+v); },
+					m: function(d,v){
+						v -= 1;
+						while (v<0) v += 12;
+						v %= 12;
+						d.setUTCMonth(v);
+						while (d.getUTCMonth() != v)
+							d.setUTCDate(d.getUTCDate()-1);
+						return d;
+					},
+					d: function(d,v){ return d.setUTCDate(v); }
+				},
+				val, filtered, part;
+			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
+			setters_map['dd'] = setters_map['d'];
+			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+			var fparts = format.parts.slice();
+			// Remove noop parts
+			if (parts.length != fparts.length) {
+				fparts = $(fparts).filter(function(i,p){
+					return $.inArray(p, setters_order) !== -1;
+				}).toArray();
+			}
+			// Process remainder
+			if (parts.length == fparts.length) {
+				for (var i=0, cnt = fparts.length; i < cnt; i++) {
+					val = parseInt(parts[i], 10);
+					part = fparts[i];
+					if (isNaN(val)) {
+						switch(part) {
+							case 'MM':
+								filtered = $(dates[language].months).filter(function(){
+									var m = this.slice(0, parts[i].length),
+										p = parts[i].slice(0, m.length);
+									return m == p;
+								});
+								val = $.inArray(filtered[0], dates[language].months) + 1;
+								break;
+							case 'M':
+								filtered = $(dates[language].monthsShort).filter(function(){
+									var m = this.slice(0, parts[i].length),
+										p = parts[i].slice(0, m.length);
+									return m == p;
+								});
+								val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
+								break;
+						}
+					}
+					parsed[part] = val;
+				}
+				for (var i=0, s; i<setters_order.length; i++){
+					s = setters_order[i];
+					if (s in parsed && !isNaN(parsed[s]))
+						setters_map[s](date, parsed[s]);
+				}
+			}
+			return date;
+		},
+		formatDate: function(date, format, language){
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
+			var val = {
+				d: date.getUTCDate(),
+				D: dates[language].daysShort[date.getUTCDay()],
+				DD: dates[language].days[date.getUTCDay()],
+				m: date.getUTCMonth() + 1,
+				M: dates[language].monthsShort[date.getUTCMonth()],
+				MM: dates[language].months[date.getUTCMonth()],
+				yy: date.getUTCFullYear().toString().substring(2),
+				yyyy: date.getUTCFullYear()
+			};
+			val.dd = (val.d < 10 ? '0' : '') + val.d;
+			val.mm = (val.m < 10 ? '0' : '') + val.m;
+			var date = [],
+				seps = $.extend([], format.separators);
+			for (var i=0, cnt = format.parts.length; i <= cnt; i++) {
+				if (seps.length)
+					date.push(seps.shift());
+				date.push(val[format.parts[i]]);
+			}
+			return date.join('');
+		},
+		headTemplate: '<thead>'+
+							'<tr>'+
+								'<th class="prev"><i class="icon-arrow-left"/></th>'+
+								'<th colspan="5" class="datepicker-switch"></th>'+
+								'<th class="next"><i class="icon-arrow-right"/></th>'+
+							'</tr>'+
+						'</thead>',
+		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
+		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>'
+	};
+	DPGlobal.template = '<div class="datepicker">'+
+							'<div class="datepicker-days">'+
+								'<table class=" table-condensed">'+
+									DPGlobal.headTemplate+
+									'<tbody></tbody>'+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datepicker-months">'+
+								'<table class="table-condensed">'+
+									DPGlobal.headTemplate+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datepicker-years">'+
+								'<table class="table-condensed">'+
+									DPGlobal.headTemplate+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+						'</div>';
+
+	$.fn.datepicker.DPGlobal = DPGlobal;
+
+
+	/* DATEPICKER NO CONFLICT
+	* =================== */
+
+	$.fn.datepicker.noConflict = function(){
+		$.fn.datepicker = old;
+		return this;
+	};
+
+
+	/* DATEPICKER DATA-API
+	* ================== */
+
+	$(document).on(
+		'focus.datepicker.data-api click.datepicker.data-api',
+		'[data-provide="datepicker"]',
+		function(e){
+			var $this = $(this);
+			if ($this.data('datepicker')) return;
+			e.preventDefault();
+			// component click requires us to explicitly show it
+			datepicker.call($this, 'show');
+		}
+	);
+	$(function(){
+		//$('[data-provide="datepicker-inline"]').datepicker();
+        //vit: changed to support noConflict()
+        datepicker.call($('[data-provide="datepicker-inline"]'));
+	});
+
+}( window.jQuery ));
+
+/**
+Bootstrap-datepicker.  
+Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
+For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
+and set `language` option.  
+Since 1.4.0 date has different appearance in **popup** and **inline** modes. 
+
+@class date
 @extends abstractinput
 @final
 @example
@@ -4872,7 +6105,7 @@ $(function(){
         format: 'yyyy-mm-dd',    
         viewformat: 'dd/mm/yyyy',    
         datepicker: {
-                firstDay: 1
+                weekStart: 1
            }
         }
     });
@@ -4882,33 +6115,50 @@ $(function(){
 (function ($) {
     "use strict";
     
-    var DateUI = function (options) {
-        this.init('dateui', options, DateUI.defaults);
-        this.initPicker(options, DateUI.defaults);
+    //store bootstrap-datepicker as bdateicker to exclude conflict with jQuery UI one
+    $.fn.bdatepicker = $.fn.datepicker.noConflict();
+    if(!$.fn.datepicker) { //if there were no other datepickers, keep also original name
+        $.fn.datepicker = $.fn.bdatepicker;    
+    }    
+    
+    var Date = function (options) {
+        this.init('date', options, Date.defaults);
+        this.initPicker(options, Date.defaults);
     };
 
-    $.fn.editableutils.inherit(DateUI, $.fn.editabletypes.abstractinput);    
+    $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
     
-    $.extend(DateUI.prototype, {
+    $.extend(Date.prototype, {
         initPicker: function(options, defaults) {
+            //'format' is set directly from settings or data-* attributes
+
             //by default viewformat equals to format
             if(!this.options.viewformat) {
                 this.options.viewformat = this.options.format;
             }
             
-            //correct formats: replace yyyy with yy (for compatibility with bootstrap datepicker)
-            this.options.viewformat = this.options.viewformat.replace('yyyy', 'yy'); 
-            this.options.format = this.options.format.replace('yyyy', 'yy');             
+            //try parse datepicker config defined as json string in data-datepicker
+            options.datepicker = $.fn.editableutils.tryParseJson(options.datepicker, true);
             
             //overriding datepicker config (as by default jQuery extend() is not recursive)
             //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
             this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
-                dateFormat: this.options.viewformat
-            });                        
+                format: this.options.viewformat
+            });
+            
+            //language
+            this.options.datepicker.language = this.options.datepicker.language || 'en'; 
+
+            //store DPglobal
+            this.dpg = $.fn.bdatepicker.DPGlobal; 
+
+            //store parsed formats
+            this.parsedFormat = this.dpg.parseFormat(this.options.format);
+            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);            
         },
         
         render: function () {
-            this.$input.datepicker(this.options.datepicker);
+            this.$input.bdatepicker(this.options.datepicker);
             
             //"clear" link
             if(this.options.clear) {
@@ -4919,221 +6169,554 @@ $(function(){
                 }, this));
                 
                 this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            }              
+            }                
         },
-
+        
         value2html: function(value, element) {
-            var text = $.datepicker.formatDate(this.options.viewformat, value);
-            DateUI.superclass.value2html.call(this, text, element); 
+           var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
+           Date.superclass.value2html.call(this, text, element); 
         },
 
         html2value: function(html) {
-           if(typeof html !== 'string') {
-               return html;
-           }            
-            
-           //if string does not match format, UI datepicker throws exception
-           var d;
-           try {
-              d = $.datepicker.parseDate(this.options.viewformat, html);
-           } catch(e) {}
-           
-           return d;            
+            return this.parseDate(html, this.parsedViewFormat);
         },   
-        
+
         value2str: function(value) {
-           return $.datepicker.formatDate(this.options.format, value);
-       }, 
-       
-       str2value: function(str) {
-           if(typeof str !== 'string') {
-               return str;
-           }
-           
-           //if string does not match format, UI datepicker throws exception
-           var d;
-           try {
-              d = $.datepicker.parseDate(this.options.format, str);
-           } catch(e) {}
-           
-           return d;
-       }, 
-       
-       value2submit: function(value) { 
-           return this.value2str(value);
-       },                     
+            return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : '';
+        }, 
 
-       value2input: function(value) {
-           this.$input.datepicker('setDate', value);
-       },
-        
-       input2value: function() { 
-           return this.$input.datepicker('getDate');
-       },       
-       
-       activate: function() {
-       },
-       
-       clear:  function() {
-           this.$input.datepicker('setDate', null);
-           // submit automatically whe that are no buttons
-           if(this.isAutosubmit) {
-              this.submit();
-           }
-       },
-       
-       autosubmit: function() {
-           this.isAutosubmit = true; 
-           this.$input.on('mouseup', 'table.ui-datepicker-calendar a.ui-state-default', $.proxy(this.submit, this));
-       },
+        str2value: function(str) {
+            return this.parseDate(str, this.parsedFormat);
+        }, 
 
-       submit: function() {
-           var $form = this.$input.closest('form');
-           setTimeout(function() {
-               $form.submit();
-           }, 200);
+        value2submit: function(value) {
+            return this.value2str(value);
+        },                    
+
+        value2input: function(value) {
+            this.$input.bdatepicker('update', value);
+        },
+
+        input2value: function() { 
+            return this.$input.data('datepicker').date;
+        },       
+
+        activate: function() {
+        },
+
+        clear:  function() {
+            this.$input.data('datepicker').date = null;
+            this.$input.find('.active').removeClass('active');
+            if(!this.options.showbuttons) {
+                this.$input.closest('form').submit(); 
+            }
+        },
+
+        autosubmit: function() {
+            this.$input.on('mouseup', '.day', function(e){
+                if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
+                    return;
+                }
+                var $form = $(this).closest('form');
+                setTimeout(function() {
+                    $form.submit();
+                }, 200);
+            });
+           //changedate is not suitable as it triggered when showing datepicker. see #149
+           /*
+           this.$input.on('changeDate', function(e){
+               var $form = $(this).closest('form');
+               setTimeout(function() {
+                   $form.submit();
+               }, 200);
+           });
+           */
+       },
+       
+       /*
+        For incorrect date bootstrap-datepicker returns current date that is not suitable
+        for datefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+           var date = null, formattedBack;
+           if(str) {
+               date = this.dpg.parseDate(str, format, this.options.datepicker.language);
+               if(typeof str === 'string') {
+                   formattedBack = this.dpg.formatDate(date, format, this.options.datepicker.language);
+                   if(str !== formattedBack) {
+                       date = null;
+                   }
+               }
+           }
+           return date;
        }
 
     });
-    
-    DateUI.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+
+    Date.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         /**
         @property tpl 
         @default <div></div>
         **/         
-        tpl:'<div class="editable-date"></div>',
+        tpl:'<div class="editable-date well"></div>',
         /**
         @property inputclass 
         @default null
-        **/         
+        **/
         inputclass: null,
         /**
         Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        Full list of tokens: http://docs.jquery.com/UI/Datepicker/formatDate
-        
+        Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
+
         @property format 
         @type string
         @default yyyy-mm-dd
-        **/          
-        format:'yyyy-mm-dd', 
+        **/
+        format:'yyyy-mm-dd',
         /**
-        Format used for displaying date. Also applied when converting date from element's text on init.    
+        Format used for displaying date. Also applied when converting date from element's text on init.   
         If not specified equals to <code>format</code>
-        
+
         @property viewformat 
         @type string
         @default null
-        **/          
+        **/
         viewformat: null,
-        
         /**
         Configuration of datepicker.
-        Full list of options: http://api.jqueryui.com/datepicker
-        
+        Full list of options: http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
+
         @property datepicker 
         @type object
         @default {
-           firstDay: 0, 
-           changeYear: true, 
-           changeMonth: true
+            weekStart: 0,
+            startView: 0,
+            minViewMode: 0,
+            autoclose: false
         }
         **/
-        datepicker: {
-            firstDay: 0,
-            changeYear: true,
-            changeMonth: true,
-            showOtherMonths: true
+        datepicker:{
+            weekStart: 0,
+            startView: 0,
+            minViewMode: 0,
+            autoclose: false
         },
         /**
         Text shown as clear date button. 
         If <code>false</code> clear button will not be rendered.
-        
+
         @property clear 
         @type boolean|string
-        @default 'x clear'         
+        @default 'x clear'
         **/
-        clear: '&times; clear'        
-    });   
+        clear: '&times; clear'
+    });
 
-    $.fn.editabletypes.dateui = DateUI;
+    $.fn.editabletypes.date = Date;
 
 }(window.jQuery));
 
 /**
-jQuery UI datefield input - modification for inline mode.
-Shows normal <input type="text"> and binds popup datepicker.  
+Bootstrap datefield input - modification for inline mode.
+Shows normal <input type="text"> and binds popup datepicker.
 Automatically shown in inline mode.
 
-@class dateuifield
-@extends dateui
+@class datefield
+@extends date
 
 @since 1.4.0
 **/
 (function ($) {
     "use strict";
-    
-    var DateUIField = function (options) {
-        this.init('dateuifield', options, DateUIField.defaults);
-        this.initPicker(options, DateUIField.defaults);
+
+    var DateField = function (options) {
+        this.init('datefield', options, DateField.defaults);
+        this.initPicker(options, DateField.defaults);
     };
 
-    $.fn.editableutils.inherit(DateUIField, $.fn.editabletypes.dateui);    
-    
-    $.extend(DateUIField.prototype, {
-       render: function () {
-          //  this.$input = this.$tpl.find('input'); 
-            this.$input.datepicker(this.options.datepicker);
-            $.fn.editabletypes.text.prototype.renderClear.call(this);
+    $.fn.editableutils.inherit(DateField, $.fn.editabletypes.date);
+
+    $.extend(DateField.prototype, {
+        render: function () {
+            this.$input = this.$tpl.find('input');
+            this.setClass();
+            this.setAttr('placeholder');
+
+            //bootstrap-datepicker is set `bdateicker` to exclude conflict with jQuery UI one. (in date.js)
+            this.$input.bdatepicker(this.options.datepicker);
+
+            //need to disable original event handlers
+            this.$input.off('focus keydown');
+
+            //update value of datepicker
+            this.$input.keyup($.proxy(function(){
+               this.$tpl.removeData('date');
+               this.$tpl.bdatepicker('update');
+            }, this));
+
+        },
+
+       value2input: function(value) {
+           this.$input.val(value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '');
+           this.$tpl.bdatepicker('update');
        },
+
+       input2value: function() {
+           return this.html2value(this.$input.val());
+       },
+
+       activate: function() {
+           $.fn.editabletypes.text.prototype.activate.call(this);
+       },
+
+       autosubmit: function() {
+         //reset autosubmit to empty
+       }
+    });
+
+    DateField.defaults = $.extend({}, $.fn.editabletypes.date.defaults, {
+        /**
+        @property tpl
+        **/
+        tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
+        /**
+        @property inputclass
+        @default 'input-small'
+        **/
+        inputclass: 'input-small',
+
+        /* datepicker config */
+        datepicker: {
+            weekStart: 0,
+            startView: 0,
+            minViewMode: 0,
+            autoclose: true
+        }
+    });
+
+    $.fn.editabletypes.datefield = DateField;
+
+}(window.jQuery));
+
+/**
+Bootstrap-datetimepicker.  
+Based on [smalot bootstrap-datetimepicker plugin](https://github.com/smalot/bootstrap-datetimepicker). 
+Before usage you should manually include dependent js and css:
+
+    <link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
+    <script src="js/bootstrap-datetimepicker.js"></script>
+
+For **i18n** you should include js file from here: https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales
+and set `language` option.  
+
+@class datetime
+@extends abstractinput
+@final
+@since 1.4.4
+@example
+<a href="#" id="last_seen" data-type="datetime" data-pk="1" data-url="/post" title="Select date & time">15/03/2013 12:45</a>
+<script>
+$(function(){
+    $('#last_seen').editable({
+        format: 'yyyy-mm-dd hh:ii',    
+        viewformat: 'dd/mm/yyyy hh:ii',    
+        datetimepicker: {
+                weekStart: 1
+           }
+        }
+    });
+});
+</script>
+**/
+(function ($) {
+    "use strict";
+
+    var DateTime = function (options) {
+        this.init('datetime', options, DateTime.defaults);
+        this.initPicker(options, DateTime.defaults);
+    };
+
+    $.fn.editableutils.inherit(DateTime, $.fn.editabletypes.abstractinput);
+
+    $.extend(DateTime.prototype, {
+        initPicker: function(options, defaults) {
+            //'format' is set directly from settings or data-* attributes
+
+            //by default viewformat equals to format
+            if(!this.options.viewformat) {
+                this.options.viewformat = this.options.format;
+            }
+            
+            //try parse datetimepicker config defined as json string in data-datetimepicker
+            options.datetimepicker = $.fn.editableutils.tryParseJson(options.datetimepicker, true);
+
+            //overriding datetimepicker config (as by default jQuery extend() is not recursive)
+            //since 1.4 datetimepicker internally uses viewformat instead of format. Format is for submit only
+            this.options.datetimepicker = $.extend({}, defaults.datetimepicker, options.datetimepicker, {
+                format: this.options.viewformat
+            });
+
+            //language
+            this.options.datetimepicker.language = this.options.datetimepicker.language || 'en'; 
+
+            //store DPglobal
+            this.dpg = $.fn.datetimepicker.DPGlobal; 
+
+            //store parsed formats
+            this.parsedFormat = this.dpg.parseFormat(this.options.format, this.options.formatType);
+            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat, this.options.formatType);
+        },
+
+        render: function () {
+            this.$input.datetimepicker(this.options.datetimepicker);
+
+            //adjust container position when viewMode changes
+            //see https://github.com/smalot/bootstrap-datetimepicker/pull/80
+            this.$input.on('changeMode', function(e) {
+                var f = $(this).closest('form').parent();
+                //timeout here, otherwise container changes position before form has new size
+                setTimeout(function(){
+                    f.triggerHandler('resize');
+                }, 0);
+            });
+
+            //"clear" link
+            if(this.options.clear) {
+                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.clear();
+                }, this));
+
+                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
+            }
+        },
+
+        value2html: function(value, element) {
+            //formatDate works with UTCDate!
+            var text = value ? this.dpg.formatDate(this.toUTC(value), this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
+            if(element) {
+                DateTime.superclass.value2html.call(this, text, element);
+            } else {
+                return text;
+            }
+        },
+
+        html2value: function(html) {
+            //parseDate return utc date!
+            var value = this.parseDate(html, this.parsedViewFormat); 
+            return value ? this.fromUTC(value) : null;
+        },
+
+        value2str: function(value) {
+            //formatDate works with UTCDate!
+            return value ? this.dpg.formatDate(this.toUTC(value), this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : '';
+       },
+
+       str2value: function(str) {
+           //parseDate return utc date!
+           var value = this.parseDate(str, this.parsedFormat);
+           return value ? this.fromUTC(value) : null;
+       },
+
+       value2submit: function(value) {
+           return this.value2str(value);
+       },
+
+       value2input: function(value) {
+           if(value) {
+             this.$input.data('datetimepicker').setDate(value);
+           }
+       },
+
+       input2value: function() { 
+           //date may be cleared, in that case getDate() triggers error
+           var dt = this.$input.data('datetimepicker');
+           return dt.date ? dt.getDate() : null;
+       },
+
+       activate: function() {
+       },
+
+       clear: function() {
+          this.$input.data('datetimepicker').date = null;
+          this.$input.find('.active').removeClass('active');
+          if(!this.options.showbuttons) {
+             this.$input.closest('form').submit(); 
+          }          
+       },
+
+       autosubmit: function() {
+           this.$input.on('mouseup', '.minute', function(e){
+               var $form = $(this).closest('form');
+               setTimeout(function() {
+                   $form.submit();
+               }, 200);
+           });
+       },
+
+       //convert date from local to utc
+       toUTC: function(value) {
+         return value ? new Date(value.valueOf() - value.getTimezoneOffset() * 60000) : value;  
+       },
+
+       //convert date from utc to local
+       fromUTC: function(value) {
+         return value ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000) : value;  
+       },
+
+       /*
+        For incorrect date bootstrap-datetimepicker returns current date that is not suitable
+        for datetimefield.
+        This function returns null for incorrect date.  
+       */
+       parseDate: function(str, format) {
+           var date = null, formattedBack;
+           if(str) {
+               date = this.dpg.parseDate(str, format, this.options.datetimepicker.language, this.options.formatType);
+               if(typeof str === 'string') {
+                   formattedBack = this.dpg.formatDate(date, format, this.options.datetimepicker.language, this.options.formatType);
+                   if(str !== formattedBack) {
+                       date = null;
+                   } 
+               }
+           }
+           return date;
+       }
+
+    });
+
+    DateTime.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        /**
+        @property tpl 
+        @default <div></div>
+        **/         
+        tpl:'<div class="editable-date well"></div>',
+        /**
+        @property inputclass 
+        @default null
+        **/
+        inputclass: null,
+        /**
+        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
+        Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>  
+        
+        @property format 
+        @type string
+        @default yyyy-mm-dd hh:ii
+        **/         
+        format:'yyyy-mm-dd hh:ii',
+        formatType:'standard',
+        /**
+        Format used for displaying date. Also applied when converting date from element's text on init.   
+        If not specified equals to <code>format</code>
+        
+        @property viewformat 
+        @type string
+        @default null
+        **/
+        viewformat: null,
+        /**
+        Configuration of datetimepicker.
+        Full list of options: https://github.com/smalot/bootstrap-datetimepicker
+
+        @property datetimepicker 
+        @type object
+        @default { }
+        **/
+        datetimepicker:{
+            todayHighlight: false,
+            autoclose: false
+        },
+        /**
+        Text shown as clear date button. 
+        If <code>false</code> clear button will not be rendered.
+
+        @property clear 
+        @type boolean|string
+        @default 'x clear'
+        **/
+        clear: '&times; clear'
+    });
+
+    $.fn.editabletypes.datetime = DateTime;
+
+}(window.jQuery));
+/**
+Bootstrap datetimefield input - datetime input for inline mode.
+Shows normal <input type="text"> and binds popup datetimepicker.  
+Automatically shown in inline mode.
+
+@class datetimefield
+@extends datetime
+
+**/
+(function ($) {
+    "use strict";
+    
+    var DateTimeField = function (options) {
+        this.init('datetimefield', options, DateTimeField.defaults);
+        this.initPicker(options, DateTimeField.defaults);
+    };
+
+    $.fn.editableutils.inherit(DateTimeField, $.fn.editabletypes.datetime);
+    
+    $.extend(DateTimeField.prototype, {
+        render: function () {
+            this.$input = this.$tpl.find('input');
+            this.setClass();
+            this.setAttr('placeholder');
+            
+            this.$tpl.datetimepicker(this.options.datetimepicker);
+            
+            //need to disable original event handlers
+            this.$input.off('focus keydown');
+            
+            //update value of datepicker
+            this.$input.keyup($.proxy(function(){
+               this.$tpl.removeData('date');
+               this.$tpl.datetimepicker('update');
+            }, this));
+            
+        },   
       
        value2input: function(value) {
-           this.$input.val($.datepicker.formatDate(this.options.viewformat, value));
+           this.$input.val(this.value2html(value));
+           this.$tpl.datetimepicker('update');
        },
         
        input2value: function() { 
            return this.html2value(this.$input.val());
-       },        
+       },              
         
        activate: function() {
            $.fn.editabletypes.text.prototype.activate.call(this);
        },
        
-       toggleClear: function() {
-           $.fn.editabletypes.text.prototype.toggleClear.call(this);
-       },
-       
        autosubmit: function() {
-          //reset autosubmit to empty  
+         //reset autosubmit to empty  
        }
     });
     
-    DateUIField.defaults = $.extend({}, $.fn.editabletypes.dateui.defaults, {
+    DateTimeField.defaults = $.extend({}, $.fn.editabletypes.datetime.defaults, {
         /**
         @property tpl 
-        @default <input type="text">
         **/         
-        tpl: '<input type="text"/>',
+        tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
         /**
         @property inputclass 
-        @default null
+        @default 'input-medium'
         **/         
-        inputclass: null,
+        inputclass: 'input-medium',
         
-        /* datepicker config */
-        datepicker: {
-            showOn: "button",
-            buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-            buttonImageOnly: true,            
-            firstDay: 0,
-            changeYear: true,
-            changeMonth: true,
-            showOtherMonths: true
-        },
-        
-        /* disable clear link */ 
-        clear: false
+        /* datetimepicker config */
+        datetimepicker:{
+            todayHighlight: false,
+            autoclose: true
+        }
     });
     
-    $.fn.editabletypes.dateuifield = DateUIField;
+    $.fn.editabletypes.datetimefield = DateTimeField;
 
 }(window.jQuery));
