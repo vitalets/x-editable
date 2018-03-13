@@ -255,7 +255,7 @@
             e = $('<a href="#" data-type="text" data-pk="1" id="a">'+oldValue+'</a>').appendTo('#qunit-fixture').editable({
                onblur: 'submit',
                send: 'never',
-			   showbuttons: false
+               showbuttons: false
             }),  
             e2 = $('<a href="#" data-type="text" data-pk="1" data-url="post.php" id="b">abcd</a>').appendTo('#qunit-fixture').editable();  
         

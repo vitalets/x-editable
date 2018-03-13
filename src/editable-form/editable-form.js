@@ -89,13 +89,13 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 //setup input to submit automatically when no buttons shown
                 if(!this.options.showbuttons) {
                     this.input.autosubmit(); 
-					
-					//attach 'blur' handler if onblur option is 'submit'
-					if (this.options.onblur === 'submit') {
-						this.$form.find('input').on('blur', $.proxy(this.submit, this));
-					}
-				}
-                 
+
+                    //attach 'blur' handler if onblur option is 'submit'
+                    if (this.options.onblur === 'submit') {
+                        this.$form.find('input').on('blur', $.proxy(this.submit, this));
+                    }
+                }
+
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
                 
