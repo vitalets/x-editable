@@ -3817,7 +3817,7 @@ $(function(){
         },
 
         renderList: function() {
-            console.log('renderList', arguments)
+            //console.log('renderList', arguments)
             var $options = this.$input.children();
             Constructor.superclass.renderList.apply(this, arguments);
             this.$input.prepend($options);
@@ -3843,7 +3843,7 @@ $(function(){
         * by default.
         */
        str2value: function (str) {
-           console.log('str2value', str);
+           //console.log('str2value', str);
 
            if ($.isArray(str)) {
                return str;
@@ -3860,7 +3860,7 @@ $(function(){
         * Called when no value is supplied, used to determine the value based on the text.
         */
        html2value: function (html) {
-           console.log('html2value', html, this.isMultiple);
+           //console.log('html2value', html, this.isMultiple);
            if (!this.isMultiple) {
                return html;
            }
@@ -3905,7 +3905,7 @@ $(function(){
                }
            }
 
-           console.log('results', results);
+           //console.log('results', results);
 
            // The output is the text joined by the viewseparator (comma by default)
            results = results.join(this.options.viewseparator);
@@ -3918,7 +3918,7 @@ $(function(){
         * Used to set the value of Select2 based on the current x-editable selections.
         */
        value2input: function (value) {
-           console.log('value2input', value)
+           //console.log('value2input', value)
 
            // The value for a multiple select can be passed in as a single string
            // This will convert it from a string to an array of data values
@@ -4017,7 +4017,7 @@ $(function(){
                 data = this.$input.select2('data');
             }
 
-            console.log('makeArray', data);
+            //console.log('makeArray', data);
 
             if ($.isArray(data)) {
                 for (var i = 0; i < data.length; i++) {
