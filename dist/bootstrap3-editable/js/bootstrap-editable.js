@@ -1890,7 +1890,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
 
         validate: function () {
             if (typeof this.options.validate === 'function') {
-                return this.options.validate.call(this, this.value);
+                return this.options.validate.call(this, this.value, this.options);
             }
         },
         
