@@ -3810,7 +3810,21 @@ $(function(){
               data = value; 
               //data = $.fn.editableutils.itemsByValue(value, this.options.select2.tags, this.idFunc);
            } else if(this.sourceData) {
-              data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc); 
+               if(this.options.select2.multiple) {
+                   var sd = this.sourceData;
+                   data = value.filter(function (i) {
+                       return sd.filter(function (e) {
+                           return e.id == i;
+                       }).length >= 1;
+                   }).map(function (i) {
+                       return sd.filter(function (e) {
+                           return e.id == i;
+                       })[0];
+                   });
+               }
+               else {
+                   data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
+               }
            } else {
               //can not get list of possible values 
               //(e.g. autotext for select2 with ajax source)
