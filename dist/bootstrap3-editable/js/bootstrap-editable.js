@@ -5978,18 +5978,29 @@ Editableform based on Twitter Bootstrap 3
 		'rtl',
 		'weekStart'
 	];
-	$.fn.datepicker.Constructor = Datepicker;
-	var dates = $.fn.datepicker.dates = {
-		en: {
-			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			today: "Today",
-			clear: "Clear"
-		}
+
+	var defaultEn = {
+	    en: {
+	        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+	        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+	        daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+	        months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+	        today: "Today",
+	        clear: "Clear"
+	    }
 	};
+	
+	//Save preexisting dates
+	var oldDates = $.fn.datepicker.dates;
+	$.fn.datepicker.Constructor = Datepicker;
+
+	var dates;
+	if (oldDates) {		
+	    dates = $.fn.datepicker.dates = $.extend({}, oldDates, defaultEn);
+	} else {
+	    dates = $.fn.datepicker.dates = defaultEn;
+	}
 
 	var DPGlobal = {
 		modes: [
