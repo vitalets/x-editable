@@ -5916,6 +5916,8 @@ Editableform based on Twitter Bootstrap 3
 	}
 
 	var old = $.fn.datepicker;
+	//Save preexisting dates
+	var oldDates = $.fn.datepicker.dates;
 	var datepicker = $.fn.datepicker = function ( option ) {
 		var args = Array.apply(null, arguments);
 		args.shift();
@@ -5991,10 +5993,7 @@ Editableform based on Twitter Bootstrap 3
 	    }
 	};
 	
-	//Save preexisting dates
-	var oldDates = $.fn.datepicker.dates;
 	$.fn.datepicker.Constructor = Datepicker;
-
 	var dates;
 	if (oldDates) {		
 	    dates = $.fn.datepicker.dates = $.extend({}, oldDates, defaultEn);
