@@ -2,3 +2,4 @@ node_modules
 test/instrumented/
 *.nupkg
 *.orig
+/roadmap.txt
