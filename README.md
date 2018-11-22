@@ -12,7 +12,7 @@ In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.
  * [Issue Tracker](#issue-tracker)
  * [Project Status](#project-status)
  * [Contribution](#contribution)
- * [Bakers](#bakers)
+ * [Backers](#backers)
  * [License](#license)
 
 ## Live Demo
@@ -74,7 +74,7 @@ Not actively maintained.
 ## Contribution
 Please submit all Pull Requests to the **develop** branch. More details are in [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-## Bakers
+## Backers
 [![Logo Flatlogic](https://user-images.githubusercontent.com/1473072/48839602-0edfda80-ed9d-11e8-9e2d-eb8d4828ddcb.png)](https://flatlogic.com/admin-dashboards)
 
 Admin Dashboard Templates made with Vue, React and Angular by [Flatlogic](https://flatlogic.com/admin-dashboards).
