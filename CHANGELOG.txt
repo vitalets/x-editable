@@ -1,6 +1,16 @@
 X-editable changelog
 =============================
 
+Version 1.5.3 Nov 9, 2015
+----------------------------
+Working through various PRs to ultimately move dev to master
+
+Version 1.5.2 wip
+----------------------------
+[bug #433] typeaheadjs with showbuttons: false (vitalets)
+[bug #266] `escape` option not work for select/checklist items (vitalets)
+[bug #261] select2 disappears in IE when dropdown clicked (vitalets)
+
 
 Version 1.5.1 Nov 4, 2013
 ----------------------------

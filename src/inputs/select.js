@@ -31,6 +31,7 @@ $(function(){
     $.extend(Select.prototype, {
         renderList: function() {
             this.$input.empty();
+            var escape = this.options.escape;
 
             var fillItems = function($el, data) {
                 var attr;
@@ -45,7 +46,9 @@ $(function(){
                             if(data[i].disabled) {
                                 attr.disabled = true;
                             }
-                            $el.append($('<option>', attr).text(data[i].text)); 
+                            var $option = $('<option>', attr);
+                            $option[escape ? 'text' : 'html'](data[i].text);
+                            $el.append($option);
                         }
                     }
                 }

@@ -293,6 +293,10 @@ $(function(){
             return source;
         },
         
+        activate: function() {
+        	this.$input.select2('open');
+        },
+        
         destroy: function() {
 	        if(this.$input) {
 	            if(this.$input.data('select2')) {

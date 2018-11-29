@@ -1,5 +1,18 @@
 {
   "name": "x-editable",
+  "main": [
+    "./dist/bootstrap3-editable/css/bootstrap-editable.css",
+    "./dist/bootstrap3-editable/js/bootstrap-editable.min.js",
+
+    "./dist/bootstrap-editable/css/bootstrap-editable.css",
+    "./dist/bootstrap-editable/js/bootstrap-editable.min.js",
+
+    "./dist/jqueryui-editable/css/jqueryui-editable.css",
+    "./dist/jqueryui-editable/js/jqueryui-editable.min.js",
+
+    "./dist/jquery-editable/css/jquery-editable.css",
+    "./dist/jquery-editable/js/jquery-editable-poshytip.min.js"
+  ],
   "ignore": [
     "CHANGELOG.txt",
     "Gruntfile.js",
@@ -14,6 +27,6 @@
     "test"
   ],
   "dependencies": {
-    "jquery": "~1.11"
-  }   
+    "jquery": ">=1.6"
+  }
 }

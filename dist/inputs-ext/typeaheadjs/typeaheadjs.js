@@ -42,6 +42,22 @@ $(function(){
             this.renderClear();
             this.setClass();
             this.setAttr('placeholder');
+            
+            // need to set kewdown handler before apply typeahead
+            // for correct autosubmit
+            this.isAutosubmit = false;
+            var that = this;            
+            this.$input.on('keydown', function (e) {
+                if (!that.isAutosubmit) {
+                    return;
+                }
+                var $dropdown = that.$input.closest('.editable-input').find('.tt-dropdown-menu');
+                if (!$dropdown.is(':visible') && e.which === 13) {
+                    that.$input.closest('form').submit();
+                }
+            });            
+            
+            // apply typeaheadjs
             this.$input.typeahead(this.options.typeahead);
             
             // copy `input-sm | input-lg` classes to placeholder input
@@ -53,7 +69,11 @@ $(function(){
                     this.$input.siblings('input.tt-hint').addClass('input-lg');
                 }
             }
-        }
+        },
+        
+        autosubmit: function() {
+            this.isAutosubmit = true;
+        }        
     });      
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {

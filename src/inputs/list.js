@@ -283,8 +283,15 @@ List - abstract class for inputs that have source option loaded from js array or
           
         If **function**, it should return data in format above (since 1.4.0).
         
-        Since 1.4.1 key `children` supported to render OPTGROUP (for **select** input only).  
-        `[{text: "group1", children: [{value: 1, text: "text1"}, {value: 2, text: "text2"}]}, ...]` 
+        Since 1.4.1 key `children` supported to render OPTGROUP (for **select** input only):  
+        @example
+        [
+          {text: "group1", children: [
+            {value: 1, text: "text1"}, 
+            {value: 2, text: "text2"}
+          ]}, 
+          ...
+        ] 
 
 		
         @property source 
@@ -309,7 +316,7 @@ List - abstract class for inputs that have source option loaded from js array or
         **/          
         sourceError: 'Error when loading list',
         /**
-        if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
+        if `true` and source is **string url** - results will be cached for fields with the same source.    
         Usefull for editable column in grid to prevent extra requests.
         
         @property sourceCache 
@@ -320,12 +327,18 @@ List - abstract class for inputs that have source option loaded from js array or
         sourceCache: true,
         /**
         Additional ajax options to be used in $.ajax() when loading list from server.
-        Useful to send extra parameters (`data` key) or change request method (`type` key).
+        Useful to send extra parameters or change request method.
         
         @property sourceOptions 
         @type object|function
         @default null
         @since 1.5.0
+        @example
+        sourceOptions: {
+            data: {param: 123},
+            type: 'post'
+        }
+        
         **/        
         sourceOptions: null
     });
