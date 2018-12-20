@@ -852,7 +852,18 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.4.5        
         @default #FFFF80 
         **/
-        highlight: '#FFFF80'
+        highlight: '#FFFF80',
+
+        /**
+        Set the width of input created in the form. For example '150px'
+        Only for text and select type
+
+        @property inputWidth
+        @type string
+        @since 1.5.4
+        @default 'auto'
+        **/
+        inputWidth: 'auto'
     };
     
 }(window.jQuery));

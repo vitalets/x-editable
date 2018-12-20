@@ -98,6 +98,9 @@ $(function(){
                 //e.g. '<img>', '<br>', '<p></p>'
                 return !$element.height() || !$element.width();
             } 
+        },
+        destroy:function (){
+        	this.$input.data('wysihtml5').editor.destroy();
         }
     });
 
