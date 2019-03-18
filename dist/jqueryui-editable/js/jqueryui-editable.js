@@ -1,7 +1,7 @@
 /*! X-editable - v1.5.3 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
-* http://github.com/vitalets/x-editable
-* Copyright (c) 2018 Vitaliy Potapov; Licensed MIT */
+* http://github.com/patril/x-editable
+* Copyright (c) 2019 Vitaliy Potapov; Licensed MIT */
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -93,16 +93,16 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 //setup input to submit automatically when no buttons shown
                 if(!this.options.showbuttons) {
                     this.input.autosubmit(); 
-					
-					//attach 'blur' handler if onblur option is 'submit'
-					if (this.options.onblur === 'submit') {
-						this.$form.find('input').on('blur', $.proxy(this.submit, this));
-					}
-				}
-                 
+
+                    //attach 'blur' handler if onblur option is 'submit'
+                    if (this.options.onblur === 'submit') {
+                        this.$form.find('input').on('blur', $.proxy(this.submit, this));
+                    }
+                }
+
                 //attach 'cancel' handler
                 this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
-				
+                
                 if(this.input.error) {
                     this.error(this.input.error);
                     this.$form.find('.editable-submit').attr('disabled', true);

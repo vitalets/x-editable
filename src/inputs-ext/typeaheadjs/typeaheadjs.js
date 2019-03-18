@@ -58,7 +58,7 @@ $(function(){
             });            
             
             // apply typeaheadjs
-            this.$input.typeahead(this.options.typeahead);
+            this.$input.bstypeahead(this.options.typeahead, this.options.typeahead.dataSet);
             
             // copy `input-sm | input-lg` classes to placeholder input
             if($.fn.editableform.engine === 'bs3') {
@@ -101,6 +101,6 @@ $(function(){
         clear: true
     });
 
-    $.fn.editabletypes.typeaheadjs = Constructor;      
+    $.fn.editabletypes.typeahead = Constructor;      
     
 }(window.jQuery));
