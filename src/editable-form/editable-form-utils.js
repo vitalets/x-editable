@@ -22,7 +22,8 @@
         * see http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
         */        
         setCursorPosition: function(elem, pos) {
-            if (elem.setSelectionRange) {
+            // see: https://github.com/vitalets/x-editable/issues/939
+            if (elem.setSelectionRange && /text|search|password|tel|url/i.test(elem.type)) {
                 try { elem.setSelectionRange(pos, pos); } catch (e) {}
             } else if (elem.createTextRange) {
                 var range = elem.createTextRange();

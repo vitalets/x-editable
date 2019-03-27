@@ -1,8 +1,8 @@
-$(function () {         
+(function () {
    
    var dpg, f = 'dd.mm.yyyy', mode;
    
-   module("date", {
+   module("date-popup", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.bdatepicker.DPGlobal;
@@ -240,4 +240,4 @@ $(function () {
         
      });        
    
-});
+})();

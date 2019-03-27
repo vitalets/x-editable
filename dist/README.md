@@ -1,23 +1,27 @@
 # X-editable
-
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
 
-## Project status
-Unfortunately, **project is currently frozen**, as I don't have enough time for it.
-You could try use it as is, but there may be some bugs with newer versions of dependend libraries (e.g. bootstrap).
-I would really appreciate if someone take care of it.. See [#610](https://github.com/vitalets/x-editable/issues/610).
-Vitalets.
+## Contents
+ * [Live Demo](#live-demo)
+ * [Installation](#installation)
+   * [Manual download](#manual-download)
+   * [Bower](#bower)
+   * [CDN](#cdn)
+ * [Getting Started](#getting-started)
+ * [Documentation](#documentation)
+ * [Issue Tracker](#issue-tracker)
+ * [Project Status](#project-status)
+ * [Contribution](#contribution)
+ * [Backers](#backers)
+ * [License](#license)
 
-## Live demo
-**http://vitalets.github.io/x-editable/demo.html**
+## Live Demo
+Visit [X-editable demo](http://vitalets.github.io/x-editable/demo.html) to see all controls in action.
 
-## Documentation
-**http://vitalets.github.io/x-editable**
-
-## How to get it
+## Installation
 
 ### Manual download
-Use **http://vitalets.github.io/x-editable** main page.
+Use links on [X-editable home page](http://vitalets.github.io/x-editable).
 
 ### Bower
 ````
@@ -26,104 +30,54 @@ bower install x-editable
 
 ### CDN
 Bootstrap 3 build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 Bootstrap 2 build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 jQuery UI build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js"></script>
 ````
 
 jQuery only build:
-````js
+````html
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
 ````
 
+## Getting Started
+How to start using X-editable is described on [X-editable website](http://vitalets.github.io/x-editable/docs.html).
 
-## Reporting issues
-Please **provide jsFiddle** when creating issues!   
-It's really saves much time. Use these as template:   
-1. [jsFiddle Bootstrap 3](http://jsfiddle.net/xBB5x/2265/)  
+## Documentation
+Documentation on all available widgets and code samples can be found on [X-editable website](http://vitalets.github.io/x-editable/docs.html).
+
+## Issue Tracker
+Feel free to open [issues](https://github.com/vitalets/x-editable/issues).
+Please include working code sample in issue body. To save the time use these jsFiddle templates:
+1. [jsFiddle Bootstrap 3](http://jsfiddle.net/xBB5x/15155/)  
 2. [jsFiddle Bootstrap 2](http://jsfiddle.net/xBB5x/1817/)  
 3. [jsFiddle jQuery-ui](http://jsfiddle.net/xBB5x/2511/)  
 4. [jsFiddle jQuery](http://jsfiddle.net/xBB5x/197)    
 Your feedback is very appreciated!
 
+## Project Status
+Not actively maintained.
+
 ## Contribution
-A few steps how to start contributing.  
-Assuming you have [Node.js](http://nodejs.org/) already installed.
+Please submit all Pull Requests to the **develop** branch. More details are in [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-1.Fork *X-editable* on github and clone it to your local mashine:
-````
-git clone https://github.com/<your-github-name>/x-editable.git -b dev
-````
-2.Install *grunt-cli* globally (if not yet):
-````
-npm i -g grunt-cli
-````
-3.Install dependencies:  
-````
-cd x-editable
-npm i
-````
-4.Make your changes:  
-````
-vim editable-form.js
-````
-5.Write some tests for your changes:
-````
-vim /test/unit/*.js
-````
-6.Run tests in cli:  
-````
-grunt test
-````
-or directly in browser:
-````
-grunt server
-````
-and open http://127.0.0.1:8000/test  
-By default test run on bootstrap 3 popup version, but you can test any other build:  
+## Backers
+[![Logo Flatlogic](https://user-images.githubusercontent.com/1473072/48839602-0edfda80-ed9d-11e8-9e2d-eb8d4828ddcb.png)](https://flatlogic.com/admin-dashboards)
 
-* bootstrap 3
-  * popup: http://127.0.0.1:8000/test/?f=bootstrap3&c=popup  
-  * inline: http://127.0.0.1:8000/test/?f=bootstrap3&c=inline  
-* bootstrap 2
-  * popup: http://127.0.0.1:8000/test/?f=bootstrap2&c=popup 
-  * inline: http://127.0.0.1:8000/test/?f=bootstrap2&c=inline
-* jquery-ui
-  * popup: http://127.0.0.1:8000/test/?f=jqueryui&c=popup 
-  * inline: http://127.0.0.1:8000/test/?f=jqueryui&c=inline
-* jquery + poshytip
-  * popup: http://127.0.0.1:8000/test/?f=plain&c=popup 
-  * inline: http://127.0.0.1:8000/test/?f=plain&c=inline
-
-7.Commit and push back on github:  
-````
-git add .
-git commit -m'refactor editable form, fix #123'
-git push origin
-````
-8.Make pull request on github (to `dev` branch).  
- 
-Thanks for your support!
-
-### Local build
-To build x-editable locally please run:
-````
-grunt build
-````
-Result will appear in `dist` directory.
+Admin Dashboard Templates made with Vue, React and Angular by [Flatlogic](https://flatlogic.com/admin-dashboards).
 
 ## License
 Copyright (c) 2012 Vitaliy Potapov  

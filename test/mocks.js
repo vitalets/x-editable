@@ -1,6 +1,4 @@
-var timeout = 200;
 $(function () {
-    
     $.mockjaxSettings.responseTime = 50;
     
     $.mockjax({
@@ -55,9 +53,9 @@ $(function () {
     });     
     
     $.mockjax({
-        url: 'groupsArr2',
+        url: '/groupsArr2',
         responseText: groupsArr2
-    });    
+    });
 
     $.mockjax({
         url: 'groups-error.php',

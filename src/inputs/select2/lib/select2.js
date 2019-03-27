@@ -1317,7 +1317,8 @@ the specific language governing permissions and limitations under the Apache Lic
             this.dropdown.attr("id", "select2-drop");
 
             // show the elements
-            mask.show();
+            // see: https://github.com/vitalets/x-editable/issues/1124
+            setTimeout(function () {mask.show();}, 500);
 
             this.positionDropdown();
             this.dropdown.show();

@@ -292,9 +292,10 @@ $(function(){
             }
             return source;
         },
-        
+
+        // see: https://github.com/vitalets/x-editable/pull/953
         activate: function() {
-            this.$input.select2('open');
+            this.$input.select2('focus');
         },
         
         destroy: function() {

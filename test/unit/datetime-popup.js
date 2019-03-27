@@ -1,8 +1,8 @@
-$(function () {         
+(function () {
    
    var dpg, f = 'dd.mm.yyyy hh:ii', mode;
    
-   module("datetime", {
+   module("datetime-popup", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.datetimepicker.DPGlobal;
@@ -267,4 +267,4 @@ $(function () {
         }, timeout); 
         
      });             
-});
+})();

@@ -193,9 +193,14 @@ module.exports = function(grunt) {
       },
       bootstrap3: {
           options: {
+            puppeteer: {
+              headless: true
+            },
             urls: [
-                  'http://localhost:8000/test/index.html?f=bs3&c=popup'+module,
-                  'http://localhost:8000/test/index.html?f=bs3&c=inline'+module
+                  'http://localhost:8000/test/bs3.html?popup',
+                  'http://localhost:8000/test/bs3.html?inline',
+                  // 'http://localhost:8000/test/index.html?f=bs3&c=popup'+module,
+                  // 'http://localhost:8000/test/index.html?f=bs3&c=inline'+module
                  ]
           }
       },
@@ -225,8 +230,10 @@ module.exports = function(grunt) {
     
     connect: {
         server: {
-            port: 8000,
-            base: '.'
+            options: {
+                port: 8000,
+                base: '.'
+            }
         }
     },    
     

@@ -1,8 +1,8 @@
-$(function () {         
+(function () {
    
    var dpg, f = 'dd.mm.yyyy', mode;
    
-   module("datefield", {
+   module("date-inline", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.bdatepicker.DPGlobal;
@@ -42,7 +42,7 @@ $(function () {
           });
        
         equal(frmt(e.data('editable').value, 'dd.mm.yyyy'), d, 'value correct');
-            
+
         e.click();
         var p = tip(e);
         ok(p.find('input').is(':visible'), 'input exists');
@@ -50,9 +50,10 @@ $(function () {
         equal(p.find('input').val(), d, 'date set correct');
         
         //open picker
+
         p.find('span.add-on').click();
         var picker = p.find('span.add-on').parent().data().datepicker.picker;
-        
+
         ok(picker.is(':visible'), 'picker shown');
         ok(picker.find('td.day.active').is(':visible'), 'active day is visible');
         equal(picker.find('td.day.active').text(), 15, 'day shown correct');
@@ -60,25 +61,25 @@ $(function () {
 
         //set new day by picker
         picker.find('td.day.active').next().click();
-        ok(!picker.is(':visible'), 'picker closed'); 
-        
+        ok(!picker.is(':visible'), 'picker closed');
+
         equal(p.find('input').val(), nextD, 'next day set correct');
-                                              
+
         p.find('input').val(finalD).trigger('keyup');
-        
+
         equal(picker.find('td.day.active').text(), 17, 'picker active date updated');
-    
+
         //submit
         p.find('form').submit();
-    
-        setTimeout(function() {          
+
+        setTimeout(function() {
            ok(!p.is(':visible'), 'popover closed');
            ok(!picker.is(':visible'), 'picker closed');
            equal(frmt(e.data('editable').value, f), finalD, 'new date saved to value');
-           equal(e.text(), finalD, 'new text shown');            
-           e.remove();    
-           start();  
-        }, timeout); 
+           equal(e.text(), finalD, 'new text shown');
+           e.remove();
+           start();
+        }, timeout);
         
      }); 
      
@@ -132,4 +133,4 @@ $(function () {
         equal(e.data('editable').value, null, 'date set to null');
         equal(e.text(), $.fn.editable.defaults.emptytext , 'emptytext shown');            
      });     
-});
+})();

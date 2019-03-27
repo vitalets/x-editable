@@ -1,8 +1,8 @@
-$(function () {         
+(function () {
    
    var dpg, f = 'dd.mm.yyyy hh:ii', mode;
    
-   module("datetimefield", {
+   module("datetime-inline", {
         setup: function(){
             fx = $('#async-fixture');
             dpg = $.fn.datetimepicker.DPGlobal;
@@ -145,4 +145,4 @@ $(function () {
         equal(e.text(), $.fn.editable.defaults.emptytext , 'emptytext shown');            
      });   
    
-});
+})();
