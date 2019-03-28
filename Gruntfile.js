@@ -48,6 +48,27 @@ function getFiles() {
                //inputs+'datetime/bootstrap-datetimepicker/css/datetimepicker.css'
                 ]
         }, 
+        bootstrap4: {
+            filePrefix: 'bootstrap', //to have bootstrap-editable.js instead of bootstrap4-editable
+            form: [forms+'editable-form-bootstrap4.js'],
+            container: [containers+'editable-popover4.js'],
+            inputs: [
+                inputs+'date/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                inputs+'date/date.js', 
+                inputs+'date/datefield.js', 
+                inputs+'datetime/datetime.js', 
+                inputs+'datetime/datetimefield.js'
+                //don't build datetime lib, should be included manually 
+                //inputs+'datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+                //no typeahead in bs4
+                //inputs+'typeahead.js'
+                ], 
+            css: [
+                inputs+'date/bootstrap-datepicker/css/datepicker.css'
+               //don't build datetime lib, should be included manually
+               //inputs+'datetime/bootstrap-datetimepicker/css/datetimepicker.css'
+                ]
+        }, 
         jqueryui: {
             form: [forms+'editable-form-jqueryui.js'],
             container: [containers+'editable-tooltip.js'],
@@ -150,7 +171,7 @@ module.exports = function(grunt) {
 
 //test on several jquery versions
  var qunit_testover = [];
- ['bs3', 'bootstrap', 'jqueryui', 'plain'].forEach(function(f){
+ ['bs4', 'bs3', 'bootstrap', 'jqueryui', 'plain'].forEach(function(f){
      ['popup', 'inline'].forEach(function(c){
          ['1.7.2', '1.8.3', '1.9.1', '1.10.2', '2.0.3'].forEach(function(jqver) {
              qunit_testover.push('http://localhost:8000/test/index.html?f='+f+'&c='+c+'&jquery='+jqver+module); 
@@ -201,6 +222,14 @@ module.exports = function(grunt) {
                   'http://localhost:8000/test/bs3.html?inline',
                   // 'http://localhost:8000/test/index.html?f=bs3&c=popup'+module,
                   // 'http://localhost:8000/test/index.html?f=bs3&c=inline'+module
+                 ]
+          }
+      },
+      bootstrap4: {
+          options: {
+            urls: [
+                  'http://localhost:8000/test/index.html?f=bs4&c=popup'+module,
+                  'http://localhost:8000/test/index.html?f=bs4&c=inline'+module
                  ]
           }
       },
@@ -275,6 +304,7 @@ module.exports = function(grunt) {
         dist: {
             files: [
             //image
+            {expand: true, flatten: true, dest: '<%= dist %>/bootstrap4-editable/img/', src: 'src/img/*'}, 
             {expand: true, flatten: true, dest: '<%= dist %>/bootstrap3-editable/img/', src: 'src/img/*'}, 
             {expand: true, flatten: true, dest: '<%= dist %>/bootstrap-editable/img/', src: 'src/img/*'},
             {expand: true, flatten: true, dest: '<%= dist %>/jqueryui-editable/img/', src: 'src/img/*'},
@@ -306,11 +336,13 @@ module.exports = function(grunt) {
   //test task
   grunt.registerTask('test', ['jshint', 'connect', 'qunit:bootstrap2']);
   grunt.registerTask('test3', ['jshint', 'connect', 'qunit:bootstrap3']);
+  grunt.registerTask('test-bs4', ['jshint', 'connect', 'qunit:bootstrap4']);
   grunt.registerTask('testall', [
     'jshint', 
     'connect', 
     'qunit:bootstrap2', 
     'qunit:bootstrap3', 
+    'qunit:bootstrap4',
     'qunit:jqueryui', 
     'qunit:plain'
   ]);  
