@@ -41,22 +41,27 @@
         * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
         */
         tryParseJson: function(s, safe) {
-            if (typeof s === 'string' && s.length && s.match(/^[\{\[].*[\}\]]$/)) {
-                if (safe) {
-                    try {
+            if (typeof s === 'string' && s.length) {
+                try {
+                    JSON.parse(s);
+                    if (safe) {
+                        try {
+                            /*jslint evil: true*/
+                            s = (new Function('return ' + s))();
+                            /*jslint evil: false*/
+                        } catch (e) {} finally {
+                            return s;
+                        }
+                    } else {
                         /*jslint evil: true*/
                         s = (new Function('return ' + s))();
                         /*jslint evil: false*/
-                    } catch (e) {} finally {
-                        return s;
                     }
-                } else {
-                    /*jslint evil: true*/
-                    s = (new Function('return ' + s))();
-                    /*jslint evil: false*/
+                    return s;
+                } catch (e) {
+                    // pass
                 }
             }
-            return s;
         },
 
         /**
