@@ -183,6 +183,11 @@ module.exports = function(grunt) {
     uglify: files.min_files,
      
     qunit: {
+        options: {
+        puppeteer: {
+            headless: true
+        }
+    },
       bootstrap2: {
           options: {
             urls: [
@@ -193,9 +198,6 @@ module.exports = function(grunt) {
       },
       bootstrap3: {
           options: {
-            puppeteer: {
-              headless: true
-            },
             urls: [
                   'http://localhost:8000/test/bs3.html?popup',
                   'http://localhost:8000/test/bs3.html?inline',
