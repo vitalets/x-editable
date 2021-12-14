@@ -165,7 +165,7 @@ module.exports = function(grunt) {
         '* <%= pkg.description %>\n' +
         '* <%= pkg.homepage %>\n' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n';
+        ' Licensed <%= _.map(pkg.licenses, "type").join(", ") %> */\n';
  
  files.concat_files.options = {banner: banner};
  files.min_files.options = {banner: banner};
