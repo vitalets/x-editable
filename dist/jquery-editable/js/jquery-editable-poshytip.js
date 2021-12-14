@@ -1,7 +1,7 @@
 /*! X-editable - v1.5.3 
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
-* http://github.com/vitalets/x-editable
-* Copyright (c) 2019 Vitaliy Potapov; Licensed MIT */
+* http://github.com/factal-inc/x-editable
+* Copyright (c) 2021 Brian Stoots; Licensed MIT */
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
@@ -3918,10 +3918,11 @@ $(function(){
             }
             return source;
         },
-        
-        // activate: function() {
-        //     this.$input.select2('open');
-        // },
+
+        // see: https://github.com/vitalets/x-editable/pull/953
+        activate: function() {
+            this.$input.select2('focus');
+        },
         
         destroy: function() {
             if(this.$input) {
