@@ -6,30 +6,30 @@ Assuming you have [Node.js](http://nodejs.org/) already installed.
 ````
 git clone https://github.com/<your-github-name>/x-editable.git
 ````
-2.Install *grunt-cli* globally (if not yet):
-````
-npm i -g grunt-cli
-````
-3.Install dependencies:  
+
+2.Install dependencies:  
 ````
 cd x-editable
 npm i
 ````
-4.Make your changes:  
+
+3.Make your changes:  
 ````
 vim editable-form.js
 ````
-5.Write some tests for your changes:
+
+4.Write some tests for your changes:
 ````
 vim /test/unit/*.js
 ````
-6.Run tests in cli:  
+
+5.Run tests in cli:  
 ````
-grunt test
+node_modules/.bin/grunt test
 ````
 or directly in browser:
 ````
-grunt server
+node_modules/.bin/grunt server
 ````
 and open http://127.0.0.1:8000/test  
 By default test run on bootstrap 3 popup version, but you can test any other build:  
