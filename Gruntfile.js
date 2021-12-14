@@ -306,15 +306,17 @@ module.exports = function(grunt) {
   });
 
   //test task
-  grunt.registerTask('test', ['jshint', 'connect', 'qunit:bootstrap2']);
+//   grunt.registerTask('test', ['jshint', 'connect', 'qunit:bootstrap2']);
   grunt.registerTask('test3', ['jshint', 'connect', 'qunit:bootstrap3']);
+//   grunt.registerTask('testjqui', ['jshint', 'connect', 'qunit:jqueryui']);
+//   grunt.registerTask('testplain', ['jshint', 'connect', 'qunit:plain']);
   grunt.registerTask('testall', [
     'jshint', 
     'connect', 
-    'qunit:bootstrap2', 
+    // 'qunit:bootstrap2', 
     'qunit:bootstrap3', 
-    'qunit:jqueryui', 
-    'qunit:plain'
+    // 'qunit:jqueryui', 
+    // 'qunit:plain'
   ]);  
   grunt.registerTask('testover', ['jshint', 'connect', 'qunit:testover']);  
   
