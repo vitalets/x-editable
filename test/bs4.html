@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test X-editable - Bootstrap 4</title>
+
+  <script src="libs/jquery/jquery-1.9.1.js"></script>
+  <script src="libs/mockjax/jquery.mockjax.js"></script>
+
+  <link rel="stylesheet" href="libs/bootstrap400/css/bootstrap.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+
+  <script src="libs/bootstrap400/js/bootstrap.min.js"></script>
+  <script src="libs/bootstrap400/js/bootstrap.bundle.min.js"></script>
+
+
+  <link rel="stylesheet" href="../src/inputs/select2/lib/select2.css"/>
+  <link rel="stylesheet" href="../src/inputs/select2/lib/select2-bootstrap.css"/>
+  <script src="../src/inputs/select2/lib/select2.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+
+  <link rel="stylesheet" href="../src/inputs/datetime/bootstrap-datetimepicker/css/datetimepicker.css"/>
+  <script src="../src/inputs/datetime/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+  <link rel="stylesheet" href="../dist/inputs-ext/typeaheadjs/lib/typeahead.js-bootstrap.css"/>
+  <script src="../dist/inputs-ext/typeaheadjs/lib/typeahead.js"></script>
+
+  <link rel="stylesheet" href="../dist/bootstrap4-editable/css/bootstrap-editable.css"/>
+  <script src="../dist/bootstrap4-editable/js/bootstrap-editable.js"></script>
+
+  <link rel="stylesheet" href="../dist/bootstrap4-editable/css/bootstrap-editable.css"/>
+  <script src="../dist/bootstrap4-editable/js/bootstrap-editable.js"></script>
+  <script src="../dist/inputs-ext/typeaheadjs/typeaheadjs.js"></script>
+
+<!--  <script data-main="main.js" src="require-jquery.js"></script>-->
+  <!--<script data-main="main.js" src="require.js"></script>-->
+  
+   <!-- qunit (should be included here, otherwise phantomjs hangs-up on several tests )-->
+  <!--<link rel="stylesheet" href="libs/qunit/qunit-1.12.0.css"/>-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jquery/qunit@1.23.1/qunit/qunit.css"/>
+
+  <script>
+      // default timeout for setTimeout in sync tests
+      window.timeout = 200;
+      $.fx.off = true;
+      $.support.transition = false;
+      $.fn.editable.defaults.mode = location.href.indexOf('inline') >= 0 ? 'inline' : 'popup';
+  </script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div id="qunit-fixture1" style="margin: 100px"></div>
+  <div id="async-fixture" style="padding-left:300px"></div>
+
+  <!--<script src="libs/qunit/qunit-1.12.0.js"></script>-->
+  <script src="https://cdn.jsdelivr.net/gh/jquery/qunit@1.23.1/qunit/qunit.js"></script>
+  <script src="mocks.js"></script>
+
+  <script src="unit/api.js"></script>
+  <script src="unit/common.js"></script>
+  <script src="unit/text.js"></script>
+  <script src="unit/textarea.js"></script>
+  <script src="unit/select.js"></script>
+  <script src="unit/checklist.js"></script>
+  <script src="unit/combodate.js"></script>
+  <script src="unit/select2.js"></script>
+  <script src="unit/date-popup.js"></script>
+  <script src="unit/datetime-popup.js"></script>
+  <script src="unit/datetime-inline.js"></script>
+  <script src="unit/typeaheadjs.js"></script>
+
+  <!-- not implemented in bs3 datepicker -->
+  <!--<script src="/test/unit/date-inline.js"></script>-->
+</body>
+</html>
