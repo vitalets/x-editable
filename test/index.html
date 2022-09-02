@@ -1,27 +1,27 @@
+<!DOCTYPE HTML>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>Test X-editable</title>
-
+  <script>
+    window.onload = function() {
+        //console.log('onlonad');
+       QUnit.config.autostart = false;
+    };
+  </script>
+  
 <!--  <script data-main="main.js" src="require-jquery.js"></script>-->
-  <!--<script data-main="main.js" src="require.js"></script>-->
+  <script data-main="main.js" src="require.js"></script> 
   
    <!-- qunit (should be included here, otherwise phantomjs hangs-up on several tests )-->
    <link rel="stylesheet" href="libs/qunit/qunit-1.12.0.css"/>
-   <!--<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.9.2.css">-->
 </head>
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <div id="qunit-fixture1" style="margin: 100px"></div>
   <div id="async-fixture" style="padding-left:300px"></div>
-  <script src="libs/qunit/qunit-1.12.0.js"></script>
-  <script>
-     QUnit.config.autostart = false;
-  </script>
-
-  <!--<script src="https://code.jquery.com/qunit/qunit-2.9.2.js"></script>-->
-  <script src="/test/unit/test.js"></script>
+  <script src="libs/qunit/qunit-1.12.0.js"></script> 
 </body>
 </html>

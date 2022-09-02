@@ -29,28 +29,40 @@ bower install x-editable
 ````
 
 ### CDN
+Bootstrap 5 build:
+````html
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap5-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap5-editable/js/bootstrap-editable.js"></script>
+````
+
+Bootstrap 4 build:
+````html
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap4-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap4-editable/js/bootstrap-editable.min.js"></script>
+````
+
 Bootstrap 3 build:
 ````html
-<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 Bootstrap 2 build:
 ````html
-<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/bootstrap-editable/js/bootstrap-editable.min.js"></script>
 ````
 
 jQuery UI build:
 ````html
-<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/jqueryui-editable/js/jqueryui-editable.min.js"></script>
 ````
 
 jQuery only build:
 ````html
-<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.4/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
 ````
 
 ## Getting Started

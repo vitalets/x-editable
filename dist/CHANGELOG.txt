@@ -1,6 +1,11 @@
 X-editable changelog
 =============================
 
+Version 1.5.4 Sep 1, 2020
+----------------------------
+Bootstrap 5.x support
+Bootstrap 4 support
+
 Version 1.5.3 Nov 9, 2015
 ----------------------------
 Working through various PRs to ultimately move dev to master
