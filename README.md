@@ -1,6 +1,11 @@
 # X-editable
 In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery.  
 
+> ### :warning: Deprecation notice
+>
+> This library is **deprecated** and will no longer receive any updates or support.
+> Please consider migrating to alternative solutions. See [#610](https://github.com/vitalets/x-editable/issues/610) for details.
+
 ## Live Demo
 **http://vitalets.github.io/x-editable/demo.html**
 
