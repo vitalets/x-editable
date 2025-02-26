@@ -211,6 +211,22 @@
            if(type === 'wysihtml5' && !$.fn.editabletypes[type]) {
                type = 'textarea';
            }
+           
+           
+           var _defaults = $.fn.editable.defaults[options.type];
+
+            if (_defaults != undefined) {
+    
+                for (var i=0; i<_defaults.filters.length; i++) {
+                    var _options = _defaults.filters[i](options);
+                    if (_options != undefined) {
+                        options = _options;
+                    }
+                }
+    
+                $.extend(options, _defaults);
+            }
+           
 
            //create input of specified type. Input will be used for converting value, not in form
            if(typeof $.fn.editabletypes[type] === 'function') {
